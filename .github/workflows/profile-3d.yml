@@ -1,0 +1,36 @@
+# =====================================================================
+#  profile-3d.yml - Bieu do contribution 3D
+#  Dat file nay tai: .github/workflows/profile-3d.yml
+#  Khong can sua gi ca. Sau khi commit: tab Actions -> Run workflow.
+#  Anh se duoc tao tai: profile-3d-contrib/profile-night-rainbow.svg
+# =====================================================================
+name: GitHub Profile 3D Contrib
+
+on:
+  schedule:
+    - cron: "0 18 * * *"   # moi ngay 01:00 gio Viet Nam
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate 3D contribution graph
+        uses: yoshi389111/github-profile-3d-contrib@0.7.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USERNAME: ${{ github.repository_owner }}
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A .
+          git commit -m "chore: update 3d contribution graph" || echo "no changes"
+          git push
