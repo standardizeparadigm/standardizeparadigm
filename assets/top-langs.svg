@@ -24,24 +24,30 @@
   <clipPath id="clip"><rect x="25" y="60" width="350" height="11" rx="5.5" /></clipPath>
   <g clip-path="url(#clip)">
     <rect x="25" y="60" width="350" height="11" fill="#161B22" />
-    <rect x="25.0" y="60" width="349.0" height="11" fill="#F1E05A" class="bar" style="animation-delay: 0.00s" />
-    <rect x="374.0" y="60" width="1.0" height="11" fill="#C1F12E" class="bar" style="animation-delay: 0.08s" />
-    <rect x="374.7" y="60" width="1.0" height="11" fill="#0284C7" class="bar" style="animation-delay: 0.16s" />
+    <rect x="25.0" y="60" width="343.5" height="11" fill="#F1E05A" class="bar" style="animation-delay: 0.00s" />
+    <rect x="368.5" y="60" width="5.5" height="11" fill="#3572A5" class="bar" style="animation-delay: 0.08s" />
+    <rect x="374.0" y="60" width="1.0" height="11" fill="#C1F12E" class="bar" style="animation-delay: 0.16s" />
+    <rect x="374.7" y="60" width="1.0" height="11" fill="#7DD3FC" class="bar" style="animation-delay: 0.24s" />
   </g>
   <g class="row" style="animation-delay: 0.00s">
     <circle cx="30" cy="100" r="5" fill="#F1E05A" />
     <text x="42" y="104" class="k">JavaScript</text>
-    <text x="185" y="104" class="v" text-anchor="end">99.7%</text>
+    <text x="185" y="104" class="v" text-anchor="end">98.1%</text>
   </g>
   <g class="row" style="animation-delay: 0.10s">
-    <circle cx="220" cy="100" r="5" fill="#C1F12E" />
-    <text x="232" y="104" class="k">Batchfile</text>
-    <text x="375" y="104" class="v" text-anchor="end">0.2%</text>
+    <circle cx="220" cy="100" r="5" fill="#3572A5" />
+    <text x="232" y="104" class="k">Python</text>
+    <text x="375" y="104" class="v" text-anchor="end">1.6%</text>
   </g>
   <g class="row" style="animation-delay: 0.20s">
-    <circle cx="30" cy="124" r="5" fill="#0284C7" />
-    <text x="42" y="128" class="k">VBScript</text>
-    <text x="185" y="128" class="v" text-anchor="end">0.1%</text>
+    <circle cx="30" cy="124" r="5" fill="#C1F12E" />
+    <text x="42" y="128" class="k">Batchfile</text>
+    <text x="185" y="128" class="v" text-anchor="end">0.2%</text>
+  </g>
+  <g class="row" style="animation-delay: 0.30s">
+    <circle cx="220" cy="124" r="5" fill="#7DD3FC" />
+    <text x="232" y="128" class="k">VBScript</text>
+    <text x="375" y="128" class="v" text-anchor="end">0.1%</text>
   </g>
   <text x="25" y="191" class="s">Tinh theo so byte code that trong cac repo cua ban</text>
 </svg>
