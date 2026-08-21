@@ -1,11 +1,12 @@
 # =====================================================================
-#  profile-cards.yml  --  The thong ke GitHub (ban LTS, khong dung
-#  server ben thu ba nao ca)
+#  profile-cards.yml  --  The thong ke GitHub (ban LTS v6)
+#
+#  Ban nay TU TIM file generate_cards.py o bat ky vi tri nao trong repo,
+#  va neu khong tim thay thi in ra CAY FILE THUC TE + danh sach nguyen
+#  nhan thuong gap, thay vi chi bao "no such file or directory".
 #
 #  Dat file nay tai: .github/workflows/profile-cards.yml
-#  Can ca file:      scripts/generate_cards.py
 #  KHONG can sua gi, KHONG can tao token rieng.
-#  Sau khi commit: tab Actions -> "Profile Cards (LTS)" -> Run workflow
 # =====================================================================
 name: Profile Cards (LTS)
 
@@ -14,12 +15,11 @@ on:
     - cron: "0 1 * * *"     # moi ngay 08:00 gio Viet Nam
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, master]
     paths:
-      - "scripts/generate_cards.py"
+      - "**/generate_cards.py"
       - ".github/workflows/profile-cards.yml"
 
-# Chi cho phep 1 lan chay cung luc -> khong bao gio conflict khi push
 concurrency:
   group: profile-cards
   cancel-in-progress: false
@@ -33,19 +33,89 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Sinh the SVG
+      - name: Chan doan - in ra cay file thuc te
+        run: |
+          echo "Nhanh dang chay : ${{ github.ref_name }}"
+          echo "Nhanh mac dinh  : ${{ github.event.repository.default_branch }}"
+          echo "Commit          : $(git log -1 --oneline 2>/dev/null || echo khong-doc-duoc)"
+          echo "Thu muc lam viec: $(pwd)"
+          echo "Python          : $(python3 --version 2>&1)"
+          echo ""
+          echo "--- Noi dung goc repo ---"
+          ls -la
+          echo ""
+          echo "--- Moi file .py trong repo ---"
+          find . -type f -name "*.py" -not -path "./.git/*" 2>/dev/null || true
+          echo ""
+          echo "--- Moi thu muc ten scripts / assets ---"
+          find . -type d \( -iname scripts -o -iname assets \) -not -path "./.git/*" 2>/dev/null || true
+
+      - name: Tim va chay script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           USERNAME: ${{ github.repository_owner }}
           DISPLAY_NAME: Standardize Paradigm
-          OUT_DIR: assets
-        run: python3 scripts/generate_cards.py
+        run: |
+          set -e
+          SCRIPT=$(find . -type f -iname "generate_cards*" -not -path "./.git/*" 2>/dev/null | head -n 1)
+
+          if [ -z "$SCRIPT" ]; then
+            echo "================================================================="
+            echo " KHONG TIM THAY generate_cards.py TRONG NHANH NAY"
+            echo "================================================================="
+            echo " Script khong loi - van de la file khong co mat o nhanh dang chay."
+            echo " 5 nguyen nhan thuong gap (doi chieu voi cay file in o buoc tren):"
+            echo ""
+            echo "  1. NHANH KHAC NHAU (hay gap nhat)"
+            echo "     Workflow dang chay o nhanh: ${{ github.ref_name }}"
+            echo "     Nhanh mac dinh cua repo   : ${{ github.event.repository.default_branch }}"
+            echo "     Neu ban commit file vao 1 nhanh khac thi o day se khong thay."
+            echo ""
+            echo "  2. FILE DANG NAM TRONG PULL REQUEST CHUA MERGE"
+            echo "     Khi up file, GitHub co the tao branch moi + PR. Vao tab"
+            echo "     Pull requests, bam Merge, roi chay lai workflow."
+            echo ""
+            echo "  3. TEN FILE BI DOI"
+            echo "     Vi du generate_cards.py.txt (Windows tu them .txt)."
+            echo "     Buoc nay tim ca *.txt nen neu co thi no da chay duoc,"
+            echo "     tuc la file that su khong co trong repo."
+            echo ""
+            echo "  4. UP CA THU MUC GIAI NEN"
+            echo "     Duong dan bi long: profile-setup/scripts/generate_cards.py"
+            echo "     Buoc nay van chay duoc, nhung README se KHONG hien tren"
+            echo "     trang ca nhan vi GitHub chi doc README.md o GOC repo."
+            echo ""
+            echo "  5. UP NGUYEN FILE .ZIP"
+            echo "     GitHub khong tu giai nen. Phai giai nen truoc khi up."
+            exit 1
+          fi
+
+          echo "Da tim thay script: $SCRIPT"
+          ROOT=$(cd "$(dirname "$SCRIPT")/.." && pwd)
+          echo "Thu muc goc cua bo README: $ROOT"
+          echo "CARD_ROOT=$ROOT" >> "$GITHUB_ENV"
+
+          if [ "$ROOT" != "$(pwd)" ]; then
+            echo ""
+            echo "*** CANH BAO ***"
+            echo "File khong nam o GOC repo. The van duoc tao, nhung GitHub CHI"
+            echo "hien profile README o goc repo. Hay di chuyen README.md,"
+            echo "assets/, scripts/, .github/ ra ngoai cung roi commit lai."
+            echo ""
+          fi
+
+          cp "$SCRIPT" /tmp/generate_cards.py
+          mkdir -p "$ROOT/assets"
+          OUT_DIR="$ROOT/assets" python3 /tmp/generate_cards.py
+
+          echo "--- Ket qua trong assets/ ---"
+          ls -la "$ROOT/assets"
 
       - name: Commit neu co thay doi
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets
+          git add -A "$CARD_ROOT/assets"
           if git diff --quiet --cached; then
             echo "Khong co gi thay doi, bo qua."
           else
