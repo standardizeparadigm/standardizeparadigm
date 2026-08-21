@@ -351,13 +351,13 @@ motto:      "Cứ thử đi, sai thì học được nhiều hơn"
 
   <br /><br />
 
-  <a href="https://github.com/your-username">
+  <a href="https://github.com/standardizeparadigm">
     <img src="https://img.shields.io/badge/GitHub-0D1117?style=for-the-badge&logo=github&logoColor=38BDF8" alt="github" />
   </a>
-  <a href="mailto:youremail@example.com">
+  <a href="mailto:standardizeparadigm@donuco.com">
     <img src="https://img.shields.io/badge/Email-0D1117?style=for-the-badge&logo=gmail&logoColor=38BDF8" alt="email" />
   </a>
-  <a href="https://discord.com/users/your-id">
+  <a href="https://discord.com/users/1523863764464697424">
     <img src="https://img.shields.io/badge/Discord-0D1117?style=for-the-badge&logo=discord&logoColor=38BDF8" alt="discord" />
   </a>
   <a href="https://www.facebook.com/your-profile">
