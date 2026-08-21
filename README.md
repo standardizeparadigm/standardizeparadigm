@@ -21,7 +21,7 @@
   <img src="https://img.shields.io/github/followers/your-username?label=Followers&style=for-the-badge&color=0EA5E9&labelColor=0D1117&logo=github&logoColor=white" alt="followers" />
   <img src="https://img.shields.io/badge/Grade-7-38BDF8?style=for-the-badge&labelColor=0D1117&logo=googlescholar&logoColor=white" alt="grade 7" />
   <img src="https://img.shields.io/badge/Based%20in-Vietnam-7DD3FC?style=for-the-badge&labelColor=0D1117&logo=googlemaps&logoColor=white" alt="vietnam" />
-  <img src="https://img.shields.io/badge/Status-Learning%20every%20day-0284C7?style=for-the-badge&labelColor=0D1117&logo=bookstack&logoColor=white" alt="status" />
+  <img src="https://img.shields.io/badge/Build-LTS%20v4-0284C7?style=for-the-badge&labelColor=0D1117&logo=checkmarx&logoColor=white" alt="lts build" />
 
 </div>
 
@@ -75,41 +75,61 @@ motto:      "Cứ thử đi, sai thì học được nhiều hơn"
 
 ### 🗺️ &nbsp;Lộ trình học của mình
 
-```mermaid
-flowchart LR
-    A([Scratch]) --> B([Python cơ bản])
-    B --> C([HTML + CSS])
-    C --> D([JavaScript])
-    B --> E([Pygame - lam game])
-    D --> F([Web co tuong tac])
-    F --> G([React])
-    B --> H([Chatbot + AI co ban])
-    G --> Z([Full-stack 2027])
-    H --> Z
-    E --> Z
+<div align="center">
 
-    classDef done fill:#0EA5E9,stroke:#7DD3FC,stroke-width:2px,color:#FFFFFF
-    classDef now fill:#0369A1,stroke:#38BDF8,stroke-width:2px,color:#FFFFFF
-    classDef next fill:#0F172A,stroke:#38BDF8,stroke-width:2px,color:#7DD3FC
-    classDef goal fill:#38BDF8,stroke:#FFFFFF,stroke-width:3px,color:#0D1117
+  <img src="https://img.shields.io/badge/01-Scratch-38BDF8?style=for-the-badge&labelColor=0D1117" alt="scratch" />
+  &nbsp;➜&nbsp;
+  <img src="https://img.shields.io/badge/02-Python-38BDF8?style=for-the-badge&labelColor=0D1117" alt="python" />
+  &nbsp;➜&nbsp;
+  <img src="https://img.shields.io/badge/03-HTML%20%2B%20CSS-0EA5E9?style=for-the-badge&labelColor=0D1117" alt="html css" />
 
-    class A,B done
-    class C,D,E now
-    class F,G,H next
-    class Z goal
-```
+  <br />
+
+  <img src="https://img.shields.io/badge/04-JavaScript-0EA5E9?style=for-the-badge&labelColor=0D1117" alt="javascript" />
+  &nbsp;➜&nbsp;
+  <img src="https://img.shields.io/badge/05-React-0C4A6E?style=for-the-badge&labelColor=0D1117" alt="react" />
+  &nbsp;➜&nbsp;
+  <img src="https://img.shields.io/badge/%F0%9F%8E%AF-Full--stack%202027-0369A1?style=for-the-badge&labelColor=0D1117" alt="muc tieu" />
+
+</div>
+
+<div align="center">
+
+| Chặng | Mình học gì | Học được gì cụ thể | Trạng thái |
+| :--: | :-- | :-- | :--: |
+| `01` | 🧩 &nbsp;**Scratch** | Kéo thả logic, hiểu vòng lặp đầu tiên | ![](https://img.shields.io/badge/Xong-38BDF8?style=flat-square) |
+| `02` | 🐍 &nbsp;**Python** | Biến, if/else, list, dict, hàm | ![](https://img.shields.io/badge/Xong-38BDF8?style=flat-square) |
+| `03` | 🌐 &nbsp;**HTML + CSS** | Dựng layout, Flexbox, responsive | ![](https://img.shields.io/badge/%C4%90ang%20h%E1%BB%8Dc-0EA5E9?style=flat-square) |
+| `04` | 🎮 &nbsp;**Pygame** | Sprite, va chạm, tính điểm | ![](https://img.shields.io/badge/%C4%90ang%20h%E1%BB%8Dc-0EA5E9?style=flat-square) |
+| `05` | ⚡ &nbsp;**JavaScript** | DOM, event, web có tương tác | ![](https://img.shields.io/badge/%C4%90ang%20h%E1%BB%8Dc-0EA5E9?style=flat-square) |
+| `06` | 🤖 &nbsp;**Chatbot + AI** | Gọi API, xứ lý câu hỏi đơn giản | ![](https://img.shields.io/badge/S%E1%BA%AFp%20t%E1%BB%9Bi-0C4A6E?style=flat-square) |
+| `07` | ⚛️ &nbsp;**React** | Component, state, props | ![](https://img.shields.io/badge/S%E1%BA%AFp%20t%E1%BB%9Bi-0C4A6E?style=flat-square) |
+| `08` | 🚀 &nbsp;**Full-stack** | Ghép tất cả thành 1 sản phẩm thật | ![](https://img.shields.io/badge/M%E1%BB%A5c%20ti%C3%AAu%202027-0369A1?style=flat-square) |
+
+</div>
 
 ### ⏰ &nbsp;Một ngày của mình
 
-```mermaid
-pie showData
-    "Hoc o truong" : 35
-    "Lam bai tap" : 15
-    "Code va lam project" : 20
-    "Doc tai lieu / xem tutorial" : 10
-    "So thich khac (game, nhac, ve...)" : 12
-    "Nghi ngoi" : 8
-```
+<div align="center">
+
+🏫🏫🏫🏫🏫🏫🏫💻💻💻💻📝📝📝🎨🎨📚📚😴😴
+
+<sub>20 ô = 1 ngày &nbsp;•&nbsp; 🏫 trường &nbsp;•&nbsp; 💻 code &nbsp;•&nbsp; 📝 bài tập &nbsp;•&nbsp; 🎨 sở thích khác &nbsp;•&nbsp; 📚 đọc tài liệu &nbsp;•&nbsp; 😴 nghỉ</sub>
+
+</div>
+
+<div align="center">
+
+| Mình làm gì | Thời lượng trong ngày | |
+| :-- | :-- | --: |
+| 🏫 &nbsp;**Học ở trường** | `███████░░░░░░░░░░░░░` | `35%` |
+| 💻 &nbsp;**Code & làm project** | `████░░░░░░░░░░░░░░░░` | `20%` |
+| 📝 &nbsp;**Làm bài tập** | `███░░░░░░░░░░░░░░░░░` | `15%` |
+| 🎨 &nbsp;**Sở thích khác** | `██░░░░░░░░░░░░░░░░░░` | `12%` |
+| 📚 &nbsp;**Đọc tài liệu / tutorial** | `██░░░░░░░░░░░░░░░░░░` | `10%` |
+| 😴 &nbsp;**Nghỉ ngơi** | `██░░░░░░░░░░░░░░░░░░` | `8%` |
+
+</div>
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%" alt="divider" />
@@ -180,20 +200,42 @@ pie showData
 
 ## 📊 &nbsp;03 — Thống kê GitHub
 
+<!--
+  Hai thẻ dưới đây là file SVG nằm ngay trong repo này (assets/).
+  GitHub Actions tự sinh lại chúng mỗi ngày bằng GITHUB_TOKEN của repo.
+  → Không gọi server bên thứ ba nào → không bao giờ bị rate-limit / 503.
+-->
+
 <div align="center">
 
-  <img
-    height="172"
-    src="https://github-readme-stats.vercel.app/api?username=your-username&show_icons=true&include_all_commits=true&count_private=true&hide_border=true&bg_color=0D1117&title_color=38BDF8&icon_color=7DD3FC&text_color=C9D1D9&custom_title=GitHub%20Stats"
-    alt="github stats"
-  />
-  <img
-    height="172"
-    src="https://github-readme-stats.vercel.app/api/top-langs/?username=your-username&layout=compact&langs_count=8&hide_border=true&bg_color=0D1117&title_color=38BDF8&text_color=C9D1D9&custom_title=Most%20Used%20Languages"
-    alt="top languages"
-  />
+  <img src="./assets/stats.svg" width="500" height="205" alt="GitHub stats" />
+  <img src="./assets/top-langs.svg" width="400" height="205" alt="Most used languages" />
 
-  <br /><br />
+  <br />
+
+  <img src="https://img.shields.io/badge/%F0%9F%94%92%20Hai%20th%E1%BA%BB%20tr%C3%AAn%20t%E1%BB%B1%20sinh%20trong%20repo%20%E2%80%94%20kh%C3%B4ng%20ph%E1%BB%A5%20thu%E1%BB%99c%20server%20ngo%C3%A0i-0D1117?style=flat-square&labelColor=0284C7" alt="lts note" />
+
+</div>
+
+### 🏙️ &nbsp;Biểu đồ contribution 3D
+
+<div align="center">
+
+  <img src="./profile-3d-contrib/profile-night-rainbow.svg" width="100%" alt="3d contribution graph" />
+
+  <sub>Tự cập nhật mỗi ngày — ảnh lưu ngay trong repo này</sub>
+
+</div>
+
+<details>
+<summary><b>🧩 &nbsp;Widget bên thứ ba — đẹp nhưng phụ thuộc server ngoài (bấm để xem)</b></summary>
+
+<br />
+
+> [!WARNING]
+> Mấy thứ dưới đây lấy từ service miễn phí bên ngoài nên **có thể hiện lỗi bất kỳ lúc nào**. Mình đặt chúng trong mục đóng này để nếu chúng có lỗi thì trang chính vẫn đỉnh. Muốn bỏ hẳn thì xoá cả khối này.
+
+<div align="center">
 
   <img
     src="https://streak-stats.demolab.com?user=your-username&hide_border=true&background=0D1117&stroke=1F6FEB&ring=38BDF8&fire=7DD3FC&currStreakLabel=38BDF8&sideLabels=C9D1D9&dates=8B949E&currStreakNum=FFFFFF&sideNums=FFFFFF"
@@ -208,61 +250,20 @@ pie showData
     alt="activity graph"
   />
 
-</div>
+  <br /><br />
 
-<details open>
-<summary><b>📁 &nbsp;Thẻ thống kê chi tiết (có hiệu ứng đổi màu)</b></summary>
+  <img
+    src="https://github-profile-trophy.vercel.app/?username=your-username&theme=nord&no-frame=true&no-bg=true&column=7&margin-w=6&margin-h=6"
+    alt="trophies"
+  />
 
-<br />
+  <br /><br />
 
-<div align="center">
-
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=your-username&theme=github_dark&animation=rgb-soft&duration=10" width="98%" alt="profile details" />
-
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=your-username&theme=github_dark" width="48%" alt="repos per language" />
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=your-username&theme=github_dark" width="48%" alt="most commit language" />
-
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=your-username&theme=github_dark" width="48%" alt="stats" />
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=your-username&theme=github_dark&utcOffset=7" width="48%" alt="productive time" />
+  <img src="https://quotes-github-readme.vercel.app/api?type=horizontal&theme=tokyonight" alt="random dev quote" />
 
 </div>
 
 </details>
-
-<div align="center">
-
-### 🏆 &nbsp;Cúp thành tích
-
-<img
-  src="https://github-profile-trophy.vercel.app/?username=your-username&theme=nord&no-frame=true&no-bg=true&column=7&margin-w=6&margin-h=6"
-  alt="trophies"
-/>
-
-</div>
-
-### 🐍 &nbsp;Con rắn ăn ô contribution
-
-<div align="center">
-
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/your-username/your-username/output/github-snake-dark.svg" />
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/your-username/your-username/output/github-snake.svg" />
-    <img src="https://raw.githubusercontent.com/your-username/your-username/output/github-snake.svg" width="100%" alt="snake animation" />
-  </picture>
-
-  <sub>Tự cập nhật 12 tiếng/lần bằng GitHub Actions — cần file <code>snake.yml</code></sub>
-
-</div>
-
-### 🏙️ &nbsp;Biểu đồ contribution 3D
-
-<div align="center">
-
-  <img src="./profile-3d-contrib/profile-night-rainbow.svg" width="100%" alt="3d contribution graph" />
-
-  <sub>Tự cập nhật mỗi ngày — cần file <code>profile-3d.yml</code></sub>
-
-</div>
 
 <div align="right"><a href="#top">🔝 &nbsp;Về đầu trang</a></div>
 
@@ -277,16 +278,13 @@ pie showData
 <div align="center">
 
   <a href="https://github.com/your-username/your-repo-1">
-    <img
-      src="https://github-readme-stats.vercel.app/api/pin/?username=your-username&repo=your-repo-1&hide_border=true&bg_color=0D1117&title_color=38BDF8&text_color=C9D1D9&icon_color=7DD3FC"
-      alt="repo 1"
-    />
+    <img src="https://img.shields.io/badge/Mini%20Game-Xem%20repo-0EA5E9?style=for-the-badge&labelColor=0D1117&logo=python&logoColor=38BDF8" alt="mini game repo" />
   </a>
   <a href="https://github.com/your-username/your-repo-2">
-    <img
-      src="https://github-readme-stats.vercel.app/api/pin/?username=your-username&repo=your-repo-2&hide_border=true&bg_color=0D1117&title_color=38BDF8&text_color=C9D1D9&icon_color=7DD3FC"
-      alt="repo 2"
-    />
+    <img src="https://img.shields.io/badge/Portfolio%20Web-Xem%20repo-0EA5E9?style=for-the-badge&labelColor=0D1117&logo=html5&logoColor=38BDF8" alt="portfolio repo" />
+  </a>
+  <a href="https://github.com/your-username?tab=repositories">
+    <img src="https://img.shields.io/badge/T%E1%BA%A5t%20c%E1%BA%A3%20repo-0D1117?style=for-the-badge&labelColor=38BDF8&logo=github&logoColor=0D1117" alt="all repos" />
   </a>
 
 </div>
@@ -295,10 +293,10 @@ pie showData
 
 | Dự án | Mình làm gì | Công nghệ | Trạng thái |
 | :-- | :-- | :-- | :--: |
-| 🎮 &nbsp;**Mini Game** | Game 2D đầu tay, có tính điểm + âm thanh | `Python` `Pygame` | ![](https://img.shields.io/badge/Đang%20làm-0EA5E9?style=flat-square) |
-| 🌐 &nbsp;**Portfolio Web** | Trang giới thiệu bản thân, responsive | `HTML` `CSS` `JS` | ![](https://img.shields.io/badge/Đang%20làm-0EA5E9?style=flat-square) |
+| 🎮 &nbsp;**Mini Game** | Game 2D đầu tay, có tính điểm + âm thanh | `Python` `Pygame` | ![](https://img.shields.io/badge/%C4%90ang%20l%C3%A0m-0EA5E9?style=flat-square) |
+| 🌐 &nbsp;**Portfolio Web** | Trang giới thiệu bản thân, responsive | `HTML` `CSS` `JS` | ![](https://img.shields.io/badge/%C4%90ang%20l%C3%A0m-0EA5E9?style=flat-square) |
 | 🧰 &nbsp;**Study Tools** | Tool nhỏ giúp mình học và làm bài nhanh hơn | `Python` | ![](https://img.shields.io/badge/Xong-38BDF8?style=flat-square) |
-| 🤖 &nbsp;**Chatbot** | Bot trả lời câu hỏi đơn giản | `Python` | ![](https://img.shields.io/badge/Ấp%20ủ-7DD3FC?style=flat-square) |
+| 🤖 &nbsp;**Chatbot** | Bot trả lời câu hỏi đơn giản | `Python` | ![](https://img.shields.io/badge/%E1%BA%A4p%20%E1%BB%A7-7DD3FC?style=flat-square) |
 
 </div>
 
@@ -412,7 +410,7 @@ pie showData
   <br /><br />
 
   <a href="https://github.com/your-username/your-username/issues/new">
-    <img src="https://img.shields.io/badge/💬%20%C4%90%E1%BB%83%20l%E1%BA%A1i%20l%E1%BB%9Di%20nh%E1%BA%AFn%20cho%20m%C3%ACnh-0EA5E9?style=for-the-badge&labelColor=0D1117" alt="guestbook" />
+    <img src="https://img.shields.io/badge/%F0%9F%92%AC%20%C4%90%E1%BB%83%20l%E1%BA%A1i%20l%E1%BB%9Di%20nh%E1%BA%AFn%20cho%20m%C3%ACnh-0EA5E9?style=for-the-badge&labelColor=0D1117" alt="guestbook" />
   </a>
 
   <br />
@@ -423,10 +421,6 @@ pie showData
 ---
 
 <div align="center">
-
-  <img src="https://quotes-github-readme.vercel.app/api?type=horizontal&theme=tokyonight" alt="random dev quote" />
-
-  <br /><br />
 
   ### ⭐ &nbsp;Thấy project nào hay thì cho mình 1 star nhé — động lực của mình đó!
 
