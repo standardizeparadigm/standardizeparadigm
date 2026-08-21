@@ -17,11 +17,9 @@
 
 <div align="center">
 
-  <img src="https://komarev.com/ghpvc/?username=your-username&label=Profile%20views&color=0EA5E9&style=for-the-badge" alt="profile views" />
-  <img src="https://img.shields.io/github/followers/your-username?label=Followers&style=for-the-badge&color=0EA5E9&labelColor=0D1117&logo=github&logoColor=white" alt="followers" />
   <img src="https://img.shields.io/badge/Grade-7-38BDF8?style=for-the-badge&labelColor=0D1117&logo=googlescholar&logoColor=white" alt="grade 7" />
   <img src="https://img.shields.io/badge/Based%20in-Vietnam-7DD3FC?style=for-the-badge&labelColor=0D1117&logo=googlemaps&logoColor=white" alt="vietnam" />
-  <img src="https://img.shields.io/badge/Build-LTS%20v4-0284C7?style=for-the-badge&labelColor=0D1117&logo=checkmarx&logoColor=white" alt="lts build" />
+  <img src="https://img.shields.io/badge/Build-LTS%20v5-0284C7?style=for-the-badge&labelColor=0D1117&logo=checkmarx&logoColor=white" alt="lts build" />
 
 </div>
 
@@ -226,44 +224,6 @@ motto:      "Cứ thử đi, sai thì học được nhiều hơn"
   <sub>Tự cập nhật mỗi ngày — ảnh lưu ngay trong repo này</sub>
 
 </div>
-
-<details>
-<summary><b>🧩 &nbsp;Widget bên thứ ba — đẹp nhưng phụ thuộc server ngoài (bấm để xem)</b></summary>
-
-<br />
-
-> [!WARNING]
-> Mấy thứ dưới đây lấy từ service miễn phí bên ngoài nên **có thể hiện lỗi bất kỳ lúc nào**. Mình đặt chúng trong mục đóng này để nếu chúng có lỗi thì trang chính vẫn đỉnh. Muốn bỏ hẳn thì xoá cả khối này.
-
-<div align="center">
-
-  <img
-    src="https://streak-stats.demolab.com?user=your-username&hide_border=true&background=0D1117&stroke=1F6FEB&ring=38BDF8&fire=7DD3FC&currStreakLabel=38BDF8&sideLabels=C9D1D9&dates=8B949E&currStreakNum=FFFFFF&sideNums=FFFFFF"
-    alt="github streak"
-  />
-
-  <br /><br />
-
-  <img
-    src="https://github-readme-activity-graph.vercel.app/graph?username=your-username&custom_title=Contribution%20Graph&bg_color=0D1117&color=38BDF8&line=0EA5E9&point=7DD3FC&title_color=38BDF8&area=true&area_color=0EA5E9&hide_border=true"
-    width="100%"
-    alt="activity graph"
-  />
-
-  <br /><br />
-
-  <img
-    src="https://github-profile-trophy.vercel.app/?username=your-username&theme=nord&no-frame=true&no-bg=true&column=7&margin-w=6&margin-h=6"
-    alt="trophies"
-  />
-
-  <br /><br />
-
-  <img src="https://quotes-github-readme.vercel.app/api?type=horizontal&theme=tokyonight" alt="random dev quote" />
-
-</div>
-
-</details>
 
 <div align="right"><a href="#top">🔝 &nbsp;Về đầu trang</a></div>
 
