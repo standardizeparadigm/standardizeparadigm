@@ -36,12 +36,30 @@ import urllib.request
 # ------------------------------------------------------------------ config
 API = "https://api.github.com"
 TOKEN = os.environ.get("GITHUB_TOKEN", "")
-USER = os.environ.get("USERNAME", "")
+USER = (os.environ.get("GH_USER")
+        or os.environ.get("USERNAME")
+        or os.environ.get("GITHUB_REPOSITORY_OWNER")
+        or "")
 OUT_DIR = os.environ.get("OUT_DIR", "assets")
 DISPLAY_NAME = os.environ.get("DISPLAY_NAME", "")
 
 DEMO = "--demo" in sys.argv
 PLACEHOLDER = "--placeholder" in sys.argv
+STRICT = "--strict" in sys.argv
+
+BAD_USER = (
+    "\n!! KHONG BIET TAO THE CHO AI\n"
+    "   Khong co bien GH_USER / USERNAME / GITHUB_REPOSITORY_OWNER.\n"
+    "   Trong workflow phai co:  env:  GH_USER: ...owner...\n")
+
+BAD_DATA = (
+    "\n!! KHONG LAY DUOC DU LIEU TU API GITHUB\n"
+    "   Xem cac dong HTTP o tren de biet ly do. Thuong la:\n"
+    "    - HTTP 404: sai ten user (kiem tra bien GH_USER).\n"
+    "    - HTTP 401: GITHUB_TOKEN khong duoc truyen vao buoc nay.\n"
+    "    - HTTP 403 + rate limit: doi vai phut roi chay lai.\n"
+    "    - Loi mang: chay lai workflow.\n"
+    "   THE CU DUOC GIU NGUYEN (khong ghi de bang the rong).\n")
 for a in sys.argv[1:]:
     if not a.startswith("--"):
         USER = a
@@ -107,10 +125,19 @@ def api(path, tries=3):
             with urllib.request.urlopen(req, timeout=25) as r:
                 return json.loads(r.read().decode("utf-8"))
         except urllib.error.HTTPError as e:
+            body = ""
+            try:
+                body = e.read().decode("utf-8", "replace")[:250]
+                body = " ".join(body.split())
+            except Exception:
+                pass
             if e.code in (403, 429) and attempt < tries - 1:
+                sys.stderr.write("  HTTP %s -> thu lai | %s\n"
+                                 % (e.code, body))
                 time.sleep(5 * (attempt + 1))
                 continue
-            sys.stderr.write("HTTP %s tren %s\n" % (e.code, url))
+            sys.stderr.write("  !! HTTP %s tren %s\n     %s\n"
+                             % (e.code, url, body))
             return None
         except Exception as e:
             if attempt < tries - 1:
@@ -123,9 +150,14 @@ def api(path, tries=3):
 
 # ------------------------------------------------------------------ collect
 def collect():
+    print("  tao the cho user : %s" % USER)
+    print("  co GITHUB_TOKEN  : %s" % ("co" if TOKEN else "KHONG CO"))
     user = api("/users/" + urllib.parse.quote(USER))
     if not user:
+        sys.stderr.write("  !! khong doc duoc /users/%s\n" % USER)
         return None
+    print("  OK /users/%s -> public_repos=%s followers=%s"
+          % (USER, user.get("public_repos"), user.get("followers")))
 
     repos = []
     for page in range(1, 6):
@@ -158,6 +190,11 @@ def collect():
     s = api("/search/commits?q=author:%s&per_page=1" % urllib.parse.quote(USER))
     if isinstance(s, dict) and "total_count" in s:
         commits = s["total_count"]
+    else:
+        sys.stderr.write("  (chu y) khong lay duoc so commit -> the se hien '-'"
+                         " (khong sao, phan con lai van du)\n")
+    print("  tong ket: repos=%d own=%d stars=%d forks=%d langs=%d commits=%s"
+          % (len(repos), len(own), stars, forks, len(langs), commits))
 
     return {
         "name": DISPLAY_NAME or user.get("name") or user.get("login") or USER,
@@ -368,16 +405,16 @@ def main():
         d = demo_data()
     else:
         if not USER:
-            sys.stderr.write("Thieu USERNAME -> giu nguyen anh cu.\n")
-            return 0
+            sys.stderr.write(BAD_USER)
+            return 1 if STRICT else 0
         d = collect()
         if not d:
-            sys.stderr.write("Khong lay duoc du lieu -> GIU NGUYEN anh cu, "
-                             "README van hien binh thuong.\n")
-            return 0
+            sys.stderr.write(BAD_DATA)
+            return 1 if STRICT else 0
 
     write("stats.svg", card_stats(d))
     write("top-langs.svg", card_langs(d))
+    print("  XONG: 2 the da duoc ghi bang DU LIEU THAT")
     return 0
 
 
@@ -385,5 +422,7 @@ if __name__ == "__main__":
     try:
         sys.exit(main())
     except Exception as exc:
-        sys.stderr.write("Loi khong mong doi: %s -> giu nguyen anh cu.\n" % exc)
-        sys.exit(0)
+        import traceback
+        traceback.print_exc()
+        sys.stderr.write("Loi khong mong doi: %s\n" % exc)
+        sys.exit(1 if STRICT else 0)
