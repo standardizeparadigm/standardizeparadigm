@@ -1,0 +1,55 @@
+# =====================================================================
+#  profile-cards.yml  --  The thong ke GitHub (ban LTS, khong dung
+#  server ben thu ba nao ca)
+#
+#  Dat file nay tai: .github/workflows/profile-cards.yml
+#  Can ca file:      scripts/generate_cards.py
+#  KHONG can sua gi, KHONG can tao token rieng.
+#  Sau khi commit: tab Actions -> "Profile Cards (LTS)" -> Run workflow
+# =====================================================================
+name: Profile Cards (LTS)
+
+on:
+  schedule:
+    - cron: "0 1 * * *"     # moi ngay 08:00 gio Viet Nam
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/generate_cards.py"
+      - ".github/workflows/profile-cards.yml"
+
+# Chi cho phep 1 lan chay cung luc -> khong bao gio conflict khi push
+concurrency:
+  group: profile-cards
+  cancel-in-progress: false
+
+jobs:
+  cards:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sinh the SVG
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USERNAME: ${{ github.repository_owner }}
+          DISPLAY_NAME: Standardize Paradigm
+          OUT_DIR: assets
+        run: python3 scripts/generate_cards.py
+
+      - name: Commit neu co thay doi
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets
+          if git diff --quiet --cached; then
+            echo "Khong co gi thay doi, bo qua."
+          else
+            git commit -m "chore: cap nhat the thong ke"
+            git pull --rebase --autostash origin ${{ github.ref_name }} || true
+            git push
+          fi
