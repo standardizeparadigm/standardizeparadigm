@@ -237,30 +237,15 @@ motto:      "Cứ thử đi, sai thì học được nhiều hơn"
 
 <div align="center">
 
-  <a href="https://github.com/your-username/your-repo-1">
-    <img src="https://img.shields.io/badge/Mini%20Game-Xem%20repo-0EA5E9?style=for-the-badge&labelColor=0D1117&logo=python&logoColor=38BDF8" alt="mini game repo" />
+  <a href="https://github.com/standardizeparadigm/Discord-Cubitix-Studios-Bot">
+    <img src="https://img.shields.io/badge/Discord%20Cubitix%20Studios%20Bot%20Repo-0EA5E9?style=for-the-badge&labelColor=0D1117&logo=python&logoColor=38BDF8" alt="Discord-Cubitix-Studios-Bot" />
   </a>
-  <a href="https://github.com/your-username/your-repo-2">
-    <img src="https://img.shields.io/badge/Portfolio%20Web-Xem%20repo-0EA5E9?style=for-the-badge&labelColor=0D1117&logo=html5&logoColor=38BDF8" alt="portfolio repo" />
+  <a href="https://github.com/standardizeparadigm/standardizeparadigm">
+    <img src="https://img.shields.io/badge/Giới%20Thiệu%20Về%20Mình%20Repo-0EA5E9?style=for-the-badge&labelColor=0D1117&logo=html5&logoColor=38BDF8" alt="portfolio repo" />
   </a>
-  <a href="https://github.com/your-username?tab=repositories">
+  <a href="https://github.com/standardizeparadigm?tab=repositories">
     <img src="https://img.shields.io/badge/T%E1%BA%A5t%20c%E1%BA%A3%20repo-0D1117?style=for-the-badge&labelColor=38BDF8&logo=github&logoColor=0D1117" alt="all repos" />
   </a>
-
-</div>
-
-<div align="center">
-
-| Dự án | Mình làm gì | Công nghệ | Trạng thái |
-| :-- | :-- | :-- | :--: |
-| 🎮 &nbsp;**Mini Game** | Game 2D đầu tay, có tính điểm + âm thanh | `Python` `Pygame` | ![](https://img.shields.io/badge/%C4%90ang%20l%C3%A0m-0EA5E9?style=flat-square) |
-| 🌐 &nbsp;**Portfolio Web** | Trang giới thiệu bản thân, responsive | `HTML` `CSS` `JS` | ![](https://img.shields.io/badge/%C4%90ang%20l%C3%A0m-0EA5E9?style=flat-square) |
-| 🧰 &nbsp;**Study Tools** | Tool nhỏ giúp mình học và làm bài nhanh hơn | `Python` | ![](https://img.shields.io/badge/Xong-38BDF8?style=flat-square) |
-| 🤖 &nbsp;**Chatbot** | Bot trả lời câu hỏi đơn giản | `Python` | ![](https://img.shields.io/badge/%E1%BA%A4p%20%E1%BB%A7-7DD3FC?style=flat-square) |
-
-</div>
-
-<!-- Sửa 4 dòng trên thành project thật của bạn, hoặc xoá dòng chưa có -->
 
 <details>
 <summary><b>📚 &nbsp;Nhật ký học tập — mình học được gì gần đây</b></summary>
