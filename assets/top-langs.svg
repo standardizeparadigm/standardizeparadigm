@@ -24,25 +24,25 @@
   <clipPath id="clip"><rect x="25" y="60" width="350" height="11" rx="5.5" /></clipPath>
   <g clip-path="url(#clip)">
     <rect x="25" y="60" width="350" height="11" fill="#161B22" />
-    <rect x="25.0" y="60" width="344.5" height="11" fill="#F1E05A" class="bar" style="animation-delay: 0.00s" />
-    <rect x="369.5" y="60" width="4.8" height="11" fill="#3572A5" class="bar" style="animation-delay: 0.08s" />
-    <rect x="374.3" y="60" width="1.0" height="11" fill="#C1F12E" class="bar" style="animation-delay: 0.16s" />
+    <rect x="25.0" y="60" width="345.9" height="11" fill="#F1E05A" class="bar" style="animation-delay: 0.00s" />
+    <rect x="370.9" y="60" width="3.6" height="11" fill="#3572A5" class="bar" style="animation-delay: 0.08s" />
+    <rect x="374.5" y="60" width="1.0" height="11" fill="#C1F12E" class="bar" style="animation-delay: 0.16s" />
     <rect x="374.9" y="60" width="1.0" height="11" fill="#7DD3FC" class="bar" style="animation-delay: 0.24s" />
   </g>
   <g class="row" style="animation-delay: 0.00s">
     <circle cx="30" cy="100" r="5" fill="#F1E05A" />
     <text x="42" y="104" class="k">JavaScript</text>
-    <text x="185" y="104" class="v" text-anchor="end">98.4%</text>
+    <text x="185" y="104" class="v" text-anchor="end">98.8%</text>
   </g>
   <g class="row" style="animation-delay: 0.10s">
     <circle cx="220" cy="100" r="5" fill="#3572A5" />
     <text x="232" y="104" class="k">Python</text>
-    <text x="375" y="104" class="v" text-anchor="end">1.4%</text>
+    <text x="375" y="104" class="v" text-anchor="end">1.0%</text>
   </g>
   <g class="row" style="animation-delay: 0.20s">
     <circle cx="30" cy="124" r="5" fill="#C1F12E" />
     <text x="42" y="128" class="k">Batchfile</text>
-    <text x="185" y="128" class="v" text-anchor="end">0.2%</text>
+    <text x="185" y="128" class="v" text-anchor="end">0.1%</text>
   </g>
   <g class="row" style="animation-delay: 0.30s">
     <circle cx="220" cy="124" r="5" fill="#7DD3FC" />
