@@ -24,7 +24,7 @@
   <g class="row" style="animation-delay: 0.00s">
     <text x="27" y="68" class="k">⭐</text>
     <text x="52" y="68" class="k">Total Stars Earned</text>
-    <text x="330" y="68" class="v" text-anchor="end">3</text>
+    <text x="330" y="68" class="v" text-anchor="end">0</text>
   </g>
   <g class="row" style="animation-delay: 0.12s">
     <text x="27" y="90" class="k">🍴</text>
@@ -34,7 +34,7 @@
   <g class="row" style="animation-delay: 0.24s">
     <text x="27" y="112" class="k">📦</text>
     <text x="52" y="112" class="k">Public Repositories</text>
-    <text x="330" y="112" class="v" text-anchor="end">2</text>
+    <text x="330" y="112" class="v" text-anchor="end">1</text>
   </g>
   <g class="row" style="animation-delay: 0.36s">
     <text x="27" y="134" class="k">👥</text>
@@ -49,7 +49,7 @@
   <g class="row" style="animation-delay: 0.60s">
     <text x="27" y="178" class="k">⚡</text>
     <text x="52" y="178" class="k">Total Commits</text>
-    <text x="330" y="178" class="v" text-anchor="end">297</text>
+    <text x="330" y="178" class="v" text-anchor="end">38</text>
   </g>
   <circle cx="417" cy="112" r="44" stroke="#0EA5E9" stroke-width="7" fill="none" opacity="0.25" />
   <circle cx="417" cy="112" r="44" stroke="#38BDF8" stroke-width="7" fill="none" stroke-linecap="round" transform="rotate(-90 417 112)" stroke-dasharray="276.5" stroke-dashoffset="276.5">
