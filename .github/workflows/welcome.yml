@@ -1,0 +1,46 @@
+# =====================================================================
+#  welcome.yml  --  Chao mung issue va pull request moi
+#
+#  Moi lan co issue hoac PR moi duoc mo, bot se binh luan chao mung.
+#  Dat file tai: .github/workflows/welcome.yml
+# =====================================================================
+name: 👋 Welcome new contributors
+
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened]
+
+jobs:
+  welcome:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Chao mung thanh vien moi
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const payload = context.payload;
+            const isPr = payload.pull_request !== undefined;
+            const target = isPr ? payload.pull_request : payload.issue;
+            const number = target.number;
+            const actor = payload.sender.login;
+            const typeLabel = isPr ? "Pull Request" : "issue";
+            const typeEmoji = isPr ? "🚀" : "🎉";
+
+            let body;
+            if (isPr) {
+              body = `Chao mung @${actor} gui ${typeEmoji} **Pull Request**!\n\nCam on ban da dong hanh voi **Standardize Paradigm**. Minh se review PR rat som co the. Neu la lan dau lam PR, aloi doc file [CONTRIBUTING](./.github/CONTRIBUTING.md) de biet cach lam.\n\nChuc ban mot ngay vui ve! 💙`;
+            } else {
+              body = `Chao mung @${actor} den voi ${typeEmoji} **Standardize Paradigm**!\n\nCam on ban da gui **issue**. Minh se xem tra va phan hoi rat som co the.\n\nNeu la loi nhan xet, gap gap cho trang ca nhan nay, hui gui qua muc [Guestbook](./issues/new?template=guestbook.md) nhe.\n\nChuc ban mot ngay vui ve! 💙`;
+            }
+
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: number,
+              body: body,
+            });
