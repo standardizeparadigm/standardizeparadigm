@@ -20,7 +20,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Chao mung thanh vien moi
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const payload = context.payload;
