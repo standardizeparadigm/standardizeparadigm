@@ -546,7 +546,7 @@ Dưới đây là các giao diện 3D có sẵn (mỗi file là một "màu sắ
 
 <div align="center">
 
-  <sub>🌱 Trang này được nuôi dưỡng tự động — lần cập nhật gần nhất: <!-- TENDED_AT: 25/10/2026 --></sub>
+  <sub>🌱 Trang này được nuôi dưỡng tự động — lần cập nhật gần nhất: <!-- TENDED_AT: 28/10/2026 --></sub>
 
 </div>
 
