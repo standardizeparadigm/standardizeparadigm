@@ -24,42 +24,48 @@
   <clipPath id="clip"><rect x="25" y="60" width="350" height="11" rx="5.5" /></clipPath>
   <g clip-path="url(#clip)">
     <rect x="25" y="60" width="350" height="11" fill="#161B22" />
-    <rect x="25.0" y="60" width="242.8" height="11" fill="#3178C6" class="bar" style="animation-delay: 0.00s" />
-    <rect x="267.8" y="60" width="46.9" height="11" fill="#89E051" class="bar" style="animation-delay: 0.08s" />
-    <rect x="314.7" y="60" width="26.5" height="11" fill="#C1F12E" class="bar" style="animation-delay: 0.16s" />
-    <rect x="341.2" y="60" width="14.9" height="11" fill="#3572A5" class="bar" style="animation-delay: 0.24s" />
-    <rect x="356.1" y="60" width="13.1" height="11" fill="#563D7C" class="bar" style="animation-delay: 0.32s" />
-    <rect x="369.2" y="60" width="5.8" height="11" fill="#E34C26" class="bar" style="animation-delay: 0.40s" />
+    <rect x="25.0" y="60" width="277.0" height="11" fill="#3178C6" class="bar" style="animation-delay: 0.00s" />
+    <rect x="302.0" y="60" width="27.2" height="11" fill="#89E051" class="bar" style="animation-delay: 0.08s" />
+    <rect x="329.2" y="60" width="15.4" height="11" fill="#C1F12E" class="bar" style="animation-delay: 0.16s" />
+    <rect x="344.6" y="60" width="12.5" height="11" fill="#563D7C" class="bar" style="animation-delay: 0.24s" />
+    <rect x="357.1" y="60" width="8.7" height="11" fill="#3572A5" class="bar" style="animation-delay: 0.32s" />
+    <rect x="365.8" y="60" width="5.7" height="11" fill="#F1E05A" class="bar" style="animation-delay: 0.40s" />
+    <rect x="371.5" y="60" width="3.5" height="11" fill="#E34C26" class="bar" style="animation-delay: 0.48s" />
   </g>
   <g class="row" style="animation-delay: 0.00s">
     <circle cx="30" cy="100" r="5" fill="#3178C6" />
     <text x="42" y="104" class="k">TypeScript</text>
-    <text x="185" y="104" class="v" text-anchor="end">69.4%</text>
+    <text x="185" y="104" class="v" text-anchor="end">79.1%</text>
   </g>
   <g class="row" style="animation-delay: 0.10s">
     <circle cx="220" cy="100" r="5" fill="#89E051" />
     <text x="232" y="104" class="k">Shell</text>
-    <text x="375" y="104" class="v" text-anchor="end">13.4%</text>
+    <text x="375" y="104" class="v" text-anchor="end">7.8%</text>
   </g>
   <g class="row" style="animation-delay: 0.20s">
     <circle cx="30" cy="124" r="5" fill="#C1F12E" />
     <text x="42" y="128" class="k">Batchfile</text>
-    <text x="185" y="128" class="v" text-anchor="end">7.6%</text>
+    <text x="185" y="128" class="v" text-anchor="end">4.4%</text>
   </g>
   <g class="row" style="animation-delay: 0.30s">
-    <circle cx="220" cy="124" r="5" fill="#3572A5" />
-    <text x="232" y="128" class="k">Python</text>
-    <text x="375" y="128" class="v" text-anchor="end">4.3%</text>
+    <circle cx="220" cy="124" r="5" fill="#563D7C" />
+    <text x="232" y="128" class="k">CSS</text>
+    <text x="375" y="128" class="v" text-anchor="end">3.6%</text>
   </g>
   <g class="row" style="animation-delay: 0.40s">
-    <circle cx="30" cy="148" r="5" fill="#563D7C" />
-    <text x="42" y="152" class="k">CSS</text>
-    <text x="185" y="152" class="v" text-anchor="end">3.7%</text>
+    <circle cx="30" cy="148" r="5" fill="#3572A5" />
+    <text x="42" y="152" class="k">Python</text>
+    <text x="185" y="152" class="v" text-anchor="end">2.5%</text>
   </g>
   <g class="row" style="animation-delay: 0.50s">
-    <circle cx="220" cy="148" r="5" fill="#E34C26" />
-    <text x="232" y="152" class="k">HTML</text>
-    <text x="375" y="152" class="v" text-anchor="end">1.7%</text>
+    <circle cx="220" cy="148" r="5" fill="#F1E05A" />
+    <text x="232" y="152" class="k">JavaScript</text>
+    <text x="375" y="152" class="v" text-anchor="end">1.6%</text>
+  </g>
+  <g class="row" style="animation-delay: 0.60s">
+    <circle cx="30" cy="172" r="5" fill="#E34C26" />
+    <text x="42" y="176" class="k">HTML</text>
+    <text x="185" y="176" class="v" text-anchor="end">1.0%</text>
   </g>
   <text x="25" y="191" class="s">Tinh theo so byte code that trong cac repo cua ban</text>
 </svg>
