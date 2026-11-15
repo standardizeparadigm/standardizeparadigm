@@ -24,48 +24,48 @@
   <clipPath id="clip"><rect x="25" y="60" width="350" height="11" rx="5.5" /></clipPath>
   <g clip-path="url(#clip)">
     <rect x="25" y="60" width="350" height="11" fill="#161B22" />
-    <rect x="25.0" y="60" width="277.0" height="11" fill="#3178C6" class="bar" style="animation-delay: 0.00s" />
-    <rect x="302.0" y="60" width="27.2" height="11" fill="#89E051" class="bar" style="animation-delay: 0.08s" />
-    <rect x="329.2" y="60" width="15.4" height="11" fill="#C1F12E" class="bar" style="animation-delay: 0.16s" />
-    <rect x="344.6" y="60" width="12.5" height="11" fill="#563D7C" class="bar" style="animation-delay: 0.24s" />
-    <rect x="357.1" y="60" width="8.7" height="11" fill="#3572A5" class="bar" style="animation-delay: 0.32s" />
-    <rect x="365.8" y="60" width="5.7" height="11" fill="#F1E05A" class="bar" style="animation-delay: 0.40s" />
-    <rect x="371.5" y="60" width="3.5" height="11" fill="#E34C26" class="bar" style="animation-delay: 0.48s" />
+    <rect x="25.0" y="60" width="301.0" height="11" fill="#3178C6" class="bar" style="animation-delay: 0.00s" />
+    <rect x="326.0" y="60" width="13.6" height="11" fill="#89E051" class="bar" style="animation-delay: 0.08s" />
+    <rect x="339.6" y="60" width="11.0" height="11" fill="#563D7C" class="bar" style="animation-delay: 0.16s" />
+    <rect x="350.6" y="60" width="10.7" height="11" fill="#F1E05A" class="bar" style="animation-delay: 0.24s" />
+    <rect x="361.3" y="60" width="7.7" height="11" fill="#C1F12E" class="bar" style="animation-delay: 0.32s" />
+    <rect x="368.9" y="60" width="4.3" height="11" fill="#3572A5" class="bar" style="animation-delay: 0.40s" />
+    <rect x="373.3" y="60" width="1.7" height="11" fill="#E34C26" class="bar" style="animation-delay: 0.48s" />
   </g>
   <g class="row" style="animation-delay: 0.00s">
     <circle cx="30" cy="100" r="5" fill="#3178C6" />
     <text x="42" y="104" class="k">TypeScript</text>
-    <text x="185" y="104" class="v" text-anchor="end">79.1%</text>
+    <text x="185" y="104" class="v" text-anchor="end">86.0%</text>
   </g>
   <g class="row" style="animation-delay: 0.10s">
     <circle cx="220" cy="100" r="5" fill="#89E051" />
     <text x="232" y="104" class="k">Shell</text>
-    <text x="375" y="104" class="v" text-anchor="end">7.8%</text>
+    <text x="375" y="104" class="v" text-anchor="end">3.9%</text>
   </g>
   <g class="row" style="animation-delay: 0.20s">
-    <circle cx="30" cy="124" r="5" fill="#C1F12E" />
-    <text x="42" y="128" class="k">Batchfile</text>
-    <text x="185" y="128" class="v" text-anchor="end">4.4%</text>
+    <circle cx="30" cy="124" r="5" fill="#563D7C" />
+    <text x="42" y="128" class="k">CSS</text>
+    <text x="185" y="128" class="v" text-anchor="end">3.1%</text>
   </g>
   <g class="row" style="animation-delay: 0.30s">
-    <circle cx="220" cy="124" r="5" fill="#563D7C" />
-    <text x="232" y="128" class="k">CSS</text>
-    <text x="375" y="128" class="v" text-anchor="end">3.6%</text>
+    <circle cx="220" cy="124" r="5" fill="#F1E05A" />
+    <text x="232" y="128" class="k">JavaScript</text>
+    <text x="375" y="128" class="v" text-anchor="end">3.0%</text>
   </g>
   <g class="row" style="animation-delay: 0.40s">
-    <circle cx="30" cy="148" r="5" fill="#3572A5" />
-    <text x="42" y="152" class="k">Python</text>
-    <text x="185" y="152" class="v" text-anchor="end">2.5%</text>
+    <circle cx="30" cy="148" r="5" fill="#C1F12E" />
+    <text x="42" y="152" class="k">Batchfile</text>
+    <text x="185" y="152" class="v" text-anchor="end">2.2%</text>
   </g>
   <g class="row" style="animation-delay: 0.50s">
-    <circle cx="220" cy="148" r="5" fill="#F1E05A" />
-    <text x="232" y="152" class="k">JavaScript</text>
-    <text x="375" y="152" class="v" text-anchor="end">1.6%</text>
+    <circle cx="220" cy="148" r="5" fill="#3572A5" />
+    <text x="232" y="152" class="k">Python</text>
+    <text x="375" y="152" class="v" text-anchor="end">1.2%</text>
   </g>
   <g class="row" style="animation-delay: 0.60s">
     <circle cx="30" cy="172" r="5" fill="#E34C26" />
     <text x="42" y="176" class="k">HTML</text>
-    <text x="185" y="176" class="v" text-anchor="end">1.0%</text>
+    <text x="185" y="176" class="v" text-anchor="end">0.5%</text>
   </g>
   <text x="25" y="191" class="s">Tinh theo so byte code that trong cac repo cua ban</text>
 </svg>
