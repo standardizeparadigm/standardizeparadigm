@@ -49,6 +49,7 @@ trong `health.yml`:
 ```
 python3 scripts/check_repo.py          # chỉ báo lỗi
 python3 scripts/check_repo.py --fix    # tự sửa lỗi vô hình rồi báo lỗi còn lại
+python3 scripts/check_repo.py --rules  # 47 luật, mỗi luật một dòng giải thích
 ```
 
 `test_repo_workflows.py` chạy lại các luật đó **trên repo thật**, nên sai quy
