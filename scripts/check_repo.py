@@ -203,7 +203,7 @@ def check_url(url, where):
         i += 3
     # giải mã phải ra UTF-8 hợp lệ (bắt được kiểu vi%C3ean)
     try:
-        decoded = urllib.parse.unquote_to_bytes(url).decode("utf-8")
+        urllib.parse.unquote_to_bytes(url).decode("utf-8")
     except UnicodeDecodeError:
         err("%s: URL giải mã ra UTF-8 không hợp lệ: %s" % (where, url))
         return
