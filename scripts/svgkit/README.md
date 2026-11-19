@@ -127,3 +127,9 @@ Ba hàm này đều là hàm thuần (trừ `write`) nên test được mà khô
 | Icon | danh từ tiếng Anh | `star`, `flame`, `trophy` |
 | Class CSS | camelCase | `fadeUp`, `pulseSlow`, `secHand` |
 
+### Hiệu năng
+
+- Một lượt `--all` ở chế độ demo: **~0,2 giây** cho 7 ảnh, không I/O mạng.
+- Ảnh lớn nhất là `live-clock.svg` (~20 KB) vì có 60 vạch + CSS đầy đủ.
+- Toàn bộ CSS/defs lặp lại trong từng file — đổi lại là mỗi ảnh **tự đứng một mình**, không phụ thuộc file ngoài, nên dùng được ở bất cứ đâu (README, trang web, PDF).
+
