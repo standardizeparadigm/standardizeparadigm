@@ -69,3 +69,16 @@ Chỉ `generate_cards.py` chạm vào đĩa. Đó là lý do toàn bộ phần v
 - `Translator.__call__(key, **kw)` thay `{tên}`; khoá thiếu trả lại chính tên khoá để lỗi hiện ra trong ảnh thay vì làm sập workflow.
 - Tên thứ trong tuần là dữ liệu (`WEEKDAYS`), không phải chuỗi ghép tay.
 
+## `primitives` — nền của mọi thẻ
+
+`open_svg()` lo 6 việc mà thẻ nào cũng cần:
+
+1. Mở `<svg>` với `role="img"`, `aria-label`, `<title>`, `<desc>`.
+2. Nhúng CSS đã thay token.
+3. Nhúng `<defs>`: gradient, filter glow, mask.
+4. Khai báo `clipPath#cardBody` theo bán kính bo góc.
+5. Vẽ nền + hai quầng sáng **bên trong clip**.
+6. Vẽ viền gradient mảnh.
+
+Nhờ bước 4, mọi lớp trang trí (sóng, sao, bụi, halo) không bao giờ tràn ra ngoài góc bo tròn.
+
