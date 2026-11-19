@@ -228,3 +228,13 @@ Cùng một README vì thế cao thấp khác nhau, bảng lệch hàng, và tr�
 hình đọc tên bieu tượng thành lời ngay giữa câu.
 
 Chữ thuần thì mọi nơi giống mọi nơi. Luật `check_no_emoji` giữ điều đó.
+
+## Sao mỗi lần chỉ sửa một chút mà nhiều commit thế?
+
+Vì mỗi commit phải **đứng một mình**: gate `check_repo.py` xanh, cả bộ test
+xanh, và nếu phải revert đúng một commit thì phần còn lại vẫn chạy. Gộp năm
+thay đổi vào một commit làm ba việc khó hơn hẳn — đọc lại, tìm thủ phạm khi
+đỏ, và bỏ đúng phần sai.
+
+Ngoài ra lịch sử git ở đây là **tài liệu**: mỗi commit nói *vì sao*, không chỉ
+nói *cái gì*.
