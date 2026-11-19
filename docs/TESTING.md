@@ -77,6 +77,7 @@ chịu.
 | Ảnh gọi ra ngoài | ảnh README gọi một URL có thể chết bất cứ lúc nào |
 | Câu ghi cấp học | trang cá nhân ghi thông tin không còn đúng về người viết |
 | Ảnh thiếu `viewBox` | `width="48%"` bị hiểu là pixel: ảnh tràn khung trên điện thoại |
+| Hoạt ảnh lặp nhanh hơn 1 giây/chu kỳ | nháy nhanh là vấn đề an toàn thị giác, không phải thẩm mỹ |
 | Không dùng emoji | máy thiếu font emoji hiện ô vuông, máy có thì ảnh bị đẩy cao hơn |
 
 ## `helpers.py`
