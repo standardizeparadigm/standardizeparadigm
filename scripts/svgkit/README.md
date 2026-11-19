@@ -73,6 +73,8 @@ python3 scripts/generate_cards.py --demo --all --out /tmp/xem-thu
 - `_hands()`: xoay sẵn nhóm kim tới góc hiện tại rồi gắn `animation-delay` âm → kim khớp giờ ngay khung đầu.
 - `_greeting_key()`: chia ngày thành sáng / trưa / chiều / tối / đêm; `_sun_moon()` đổi icon theo giờ.
 - Thanh tiến độ ngày = số phút đã trôi / 1440.
+- Dấu `cập nhật HH:MM` ở góc phải: ảnh là ảnh chụp, kim vẫn quay bằng CSS
+  giữa hai lần cập nhật — không có dấu này thì người xem tưởng workflow treo.
 
 ## `activity.py`
 
