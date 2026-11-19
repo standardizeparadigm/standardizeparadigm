@@ -307,6 +307,71 @@ def check_workflows():
                 err("%s: action thiếu phiên bản: %s" % (rel(path), ref))
 
 
+# ---------------------------------------- 4a. Tài liệu phải khớp lịch chạy
+CRON_FIELD_OK = re.compile(r"^[0-9*/,\-]+$")
+
+
+def looks_like_cron(text):
+    fields = text.split()
+    return (len(fields) == 5
+            and all(CRON_FIELD_OK.match(f) for f in fields))
+
+
+def real_crons(root=None):
+    """{tên_file.yml: [cron, ...]} đọc từ .github/workflows/."""
+    root = root or ROOT
+    folder = os.path.join(root, ".github", "workflows")
+    found = {}
+    if not os.path.isdir(folder):
+        return found
+    for name in sorted(os.listdir(folder)):
+        if not name.lower().endswith((".yml", ".yaml")):
+            continue
+        with io.open(os.path.join(folder, name), encoding="utf-8") as handle:
+            found[name] = re.findall(r"cron:\s*[\"']([^\"']+)[\"']", handle.read())
+    return found
+
+
+def check_workflow_docs(root=None):
+    """Bảng lịch chạy trong tài liệu phải khớp cron thật trong workflow.
+
+    Vì sao cần: đổi `*/5` thành `*/30` trong YAML mà quên sửa bảng là tài
+    liệu nói dối. Chuyện này đã xảy ra hai lần, nên giờ để máy bắt.
+    """
+    root = root or ROOT
+    crons = real_crons(root)
+    if not crons:
+        return
+    everything = {c for values in crons.values() for c in values}
+
+    doc = os.path.join(root, "docs", "WORKFLOWS.md")
+    if os.path.exists(doc):
+        for number, line in enumerate(read(doc).split("\n"), 1):
+            files = re.findall(r"`([\w.\-]+\.ya?ml)`", line)
+            if not files:
+                continue
+            for name in files:
+                if name not in crons:
+                    err("docs/WORKFLOWS.md:%d nhắc workflow không tồn tại: %s"
+                        % (number, name))
+                    continue
+                for quoted in re.findall(r"`([^`]+)`", line):
+                    if not looks_like_cron(quoted):
+                        continue
+                    if quoted not in crons[name]:
+                        err("docs/WORKFLOWS.md:%d ghi lịch %r cho %s, nhưng file "
+                            "thật là %s" % (number, quoted, name,
+                                            ", ".join(crons[name]) or "không có schedule"))
+
+    readme = os.path.join(root, "README.md")
+    if os.path.exists(readme):
+        for number, line in enumerate(read(readme).split("\n"), 1):
+            for quoted in re.findall(r"<code>([^<]+)</code>", line):
+                if looks_like_cron(quoted) and quoted not in everything:
+                    err("README.md:%d có lịch %r mà không workflow nào dùng"
+                        % (number, quoted))
+
+
 # ------------------------------------------------------- 4b. Ảnh & link nội bộ
 LOCAL_REF = re.compile(r'(?:src|href)\s*=\s*"(\.[^"]+)"|\]\((\.[^)\s]+)\)')
 
@@ -359,6 +424,7 @@ def check_python():
 def main():
     check_svg()
     check_file_hygiene()
+    check_workflow_docs()
     check_workflows()
     check_asset_refs()
     check_python()
