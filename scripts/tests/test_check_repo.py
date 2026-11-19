@@ -603,6 +603,43 @@ class TestTodoMarkers(unittest.TestCase):
         check_repo.check_todo_markers(self.tmp)
         self.assertEqual(check_repo.errors, [])
 
+
+
+class TestWorkflowDispatch(unittest.TestCase):
+    """Workflow phải chạy tay được."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="dispatch-")
+        os.makedirs(os.path.join(self.tmp, ".github", "workflows"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _wf(self, name, text):
+        with open(os.path.join(self.tmp, ".github", "workflows", name), "w",
+                  encoding="utf-8") as handle:
+            handle.write(text)
+
+    def test_workflow_with_dispatch_passes(self):
+        self._wf("a.yml", "on:\n  workflow_dispatch:\n")
+        check_repo.check_workflow_dispatch(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_workflow_without_dispatch_is_flagged(self):
+        self._wf("a.yml", "on:\n  push:\n")
+        check_repo.check_workflow_dispatch(self.tmp)
+        self.assertTrue(any("workflow_dispatch" in e for e in check_repo.errors))
+
+    def test_missing_folder_is_not_an_error(self):
+        empty = tempfile.mkdtemp(prefix="no-wf-")
+        try:
+            check_repo.check_workflow_dispatch(empty)
+            self.assertEqual(check_repo.errors, [])
+        finally:
+            shutil.rmtree(empty, ignore_errors=True)
+
 if __name__ == "__main__":
     unittest.main()
 
