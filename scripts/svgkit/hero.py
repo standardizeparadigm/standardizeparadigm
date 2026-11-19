@@ -152,11 +152,18 @@ def _pill(x, width, text, pal, solid=True):
                 'fill="%s" stroke="%s" stroke-opacity=".8"/>'
                 '<text x="%s" y="166" text-anchor="middle" class="heroPill">%s</text>'
                 '</g>' % (x, width, pal.panel, pal.stroke, num(x + width / 2.0), text))
+    # Pill "nơi ở": viền nét đứt cũ trông như ô chưa điền xong, đứng cạnh
+    # ba pill đặc thì thành lỗi. Giờ nó là pill nền mờ + ghim vị trí nhấp
+    # nháy ở đầu — khác ba pill kia một cách có chủ ý, không phải thiếu.
+    cx = x + 13
     return ('  <g class="fadeUp" style="animation-delay:.3s">'
-            '<rect x="%d" y="150" width="%d" height="24" rx="12" fill="none" '
-            'stroke="%s" stroke-opacity=".55" stroke-dasharray="4 4"/>'
+            '<rect x="%d" y="150" width="%d" height="24" rx="12" '
+            'fill="%s" fill-opacity=".5" stroke="%s" stroke-opacity=".8"/>'
+            '<path d="M%d 156.5a3.4 3.4 0 016.8 0c0 2.6-3.4 5.6-3.4 5.6s'
+            '-3.4-3-3.4-5.6z" fill="%s" class="pulse"/>'
             '<text x="%s" y="166" text-anchor="middle" class="heroPill">%s</text>'
-            '</g>' % (x, width, pal.accent2, num(x + width / 2.0), text))
+            '</g>' % (x, width, pal.panel, pal.accent2, cx, pal.accent2,
+                      num(x + width / 2.0 + 5), text))
 
 
 def _chips(pal):
