@@ -4,7 +4,7 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 
 | Hình | Hoạt ảnh chính |
 | :-- | :-- |
-| `hero.svg` | quỹ đạo xoay, sao nhấp nháy, chip bồng bềnh, vệt sáng quét chữ, gõ chữ |
+| `hero.svg` | quỹ đạo xoay, sao nhấp nháy, bụi sáng bay lên, vòng lan toả, chip bồng bềnh, vệt sáng quét chữ, gõ chữ |
 | `divider.svg` | tia sáng chạy dọc đường kẻ |
 | `footer.svg` | hai lớp sóng trôi ngược chiều |
 | `stats.svg` | vòng rank tự vẽ, số đếm lên, vệt sáng |
