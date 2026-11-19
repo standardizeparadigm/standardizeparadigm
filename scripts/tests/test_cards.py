@@ -74,3 +74,28 @@ class TestWaitingCard(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestAccessibility(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        from helpers import render_demo_all
+
+        cls.cards = render_demo_all()
+
+    def test_title_matches_aria_label(self):
+        import re
+
+        for name, svg in self.cards.items():
+            if name == "divider.svg":
+                continue          # trang trí thuần, role="presentation"
+            aria = re.search(r'aria-label="([^"]*)"', svg)
+            self.assertIsNotNone(aria, name)
+            self.assertIn("<title>%s</title>" % aria.group(1), svg,
+                          "thiếu <title> khớp aria-label trong %s" % name)
+
+    def test_desc_present(self):
+        for name, svg in self.cards.items():
+            if name == "divider.svg":
+                continue
+            self.assertIn("<desc>", svg, "thiếu <desc> trong %s" % name)
