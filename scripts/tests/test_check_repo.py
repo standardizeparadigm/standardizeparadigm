@@ -872,6 +872,54 @@ class TestJobTimeouts(unittest.TestCase):
         check_repo.check_job_timeouts(self.tmp)
         self.assertEqual(check_repo.errors, [])
 
+
+
+class TestSvgTextAndIds(unittest.TestCase):
+    """Lỗi trong SVG mà không công cụ nào báo."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="svgtext-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _svg(self, body, name="a.svg"):
+        with open(os.path.join(self.tmp, "assets", name), "w",
+                  encoding="utf-8") as handle:
+            handle.write(body)
+
+    def test_text_with_class_passes(self):
+        self._svg('<text class="big">1</text>')
+        check_repo.check_svg_text_classes(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_text_without_class_is_flagged(self):
+        self._svg("<text>Times New Roman</text>")
+        check_repo.check_svg_text_classes(self.tmp)
+        self.assertTrue(any("class" in e for e in check_repo.errors))
+
+    def test_unique_ids_pass(self):
+        self._svg('<linearGradient id="a"/><linearGradient id="b"/>')
+        check_repo.check_svg_duplicate_ids(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_duplicate_id_is_flagged(self):
+        self._svg('<linearGradient id="a"/><linearGradient id="a"/>')
+        check_repo.check_svg_duplicate_ids(self.tmp)
+        self.assertTrue(any("2 lần" in e for e in check_repo.errors))
+
+    def test_missing_assets_folder_is_fine(self):
+        empty = tempfile.mkdtemp(prefix="no-assets-")
+        try:
+            check_repo.check_svg_text_classes(empty)
+            check_repo.check_svg_duplicate_ids(empty)
+            self.assertEqual(check_repo.errors, [])
+        finally:
+            shutil.rmtree(empty, ignore_errors=True)
+
 if __name__ == "__main__":
     unittest.main()
 
