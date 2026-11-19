@@ -69,7 +69,11 @@ ICONS = {
 
 
 def icon(name, x, y, color, scale=0.78, width=1.9):
-    """Chèn một icon tại (x, y) với kích thước 24x24 nhân `scale`."""
+    """Chèn một icon tại (x, y) với kích thước 24x24 nhân `scale`.
+
+    Tên lạ rơi về `spark` — thà hiện một ngôi sao nhỏ còn hơn để trống
+    một ô trong thẻ.
+    """
     body = ICONS.get(name, ICONS["spark"])
     return ('<g transform="translate(%s %s) scale(%s)" fill="none" stroke="%s" '
             'stroke-width="%s" stroke-linecap="round" stroke-linejoin="round">'

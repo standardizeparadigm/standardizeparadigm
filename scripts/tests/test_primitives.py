@@ -167,10 +167,12 @@ class TestEscape(unittest.TestCase):
 
 
 class TestIcons(unittest.TestCase):
-    def test_unknown_icon_is_empty(self):
-        from svgkit.primitives import icon
+    def test_unknown_icon_falls_back_to_spark(self):
+        from svgkit.primitives import ICONS, icon
 
-        self.assertEqual(icon("khong-co-icon-nay", 0, 0, "#FFFFFF"), "")
+        out = icon("khong-co-icon-nay", 0, 0, "#FFFFFF")
+        self.assertIn(ICONS["spark"], out)
+        self.assertIn("<g", out)
 
     def test_known_icons_draw_path(self):
         from svgkit.primitives import ICONS, icon
