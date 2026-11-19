@@ -263,8 +263,8 @@ class TestInternalLinks(unittest.TestCase):
 
 
 
-# Trình soạn thảo và công cụ dán web hay để lại những ký tự này. Mắt người
-# đọc "Báº¡n" vẫn đoán ra, nhưng grep thì không, và bản dịch thì hỏng.
+# Trình soạn thảo và công cụ dán web hay để lại những ký tự này. Chữ Việt bị
+# đọc sai bảng mã vẫn đoán ra được, nhưng grep thì không, và bản dịch thì hỏng.
 BROKEN_MARKS = {
     "\ufffd": "ký tự thay thế U+FFFD",
     "\u00a0": "dấu cách không ngắt (NBSP)",
