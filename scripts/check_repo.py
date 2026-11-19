@@ -471,6 +471,49 @@ def check_dead_assets(root=None):
             err("assets/%s không được nhúng ở đâu (ảnh chết)" % name)
 
 
+# ------------------------------------------------- 4b2. Số test trong tài liệu
+RE_TEST_CLAIM = re.compile(r"hơn (\d+) unit test")
+TEST_DEF = re.compile(r"^\s+def test_", flags=re.M)
+
+
+def real_test_count(root=None):
+    """Đếm test bằng cách đọc file — không import, không chạy gì."""
+    root = root or ROOT
+    total = 0
+    for path in sorted(glob.glob(os.path.join(root, "scripts", "tests", "test_*.py"))):
+        total += len(TEST_DEF.findall(read(path)))
+    return total
+
+
+def check_test_claims(root=None):
+    """Câu "hơn N unit test" phải còn đúng.
+
+    Tài liệu ghi "hơn 100" từ lúc bộ test còn 100 bài; giờ có hơn 320 mà
+    câu đó vẫn nằm đó. Người đọc không kiểm được, còn máy thì kiểm được.
+    Điều kiện: N <= số thật < N + 100 (đủ rộng để không phải sửa mỗi lần
+    thêm một test, đủ chặt để không nói dối quá một phần ba).
+    """
+    root = root or ROOT
+    total = real_test_count(root)
+    if not total:
+        return
+    for base, dirs, files in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.lower().endswith(".md"):
+                continue
+            path = os.path.join(base, name)
+            for number, line in enumerate(read(path).split("\n"), 1):
+                for claimed in RE_TEST_CLAIM.findall(line):
+                    claimed = int(claimed)
+                    if claimed > total:
+                        err("%s:%d ghi 'hơn %d unit test' nhưng chỉ có %d"
+                            % (rel(path), number, claimed, total))
+                    elif total >= claimed + 100:
+                        err("%s:%d ghi 'hơn %d unit test', con số thật đã là %d "
+                            "— hãy nâng lên" % (rel(path), number, claimed, total))
+
+
 # --------------------------------------------------- 4c. Tự sửa lỗi vô hình
 def fixable_text(text):
     """Chuẩn hoá một file văn bản về dạng sạch, KHÔNG đổi nội dung.
@@ -548,6 +591,7 @@ def main(argv=None):
     check_workflows()
     check_asset_refs()
     check_dead_assets()
+    check_test_claims()
     check_python()
     # Mọi file Markdown trong repo (README, docs, CONTRIBUTING, mẫu issue...).
     # Dùng os.walk vì glob không đi vào thư mục ẩn như .github/.
