@@ -84,7 +84,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
   <tr>
     <td><b>⏱️</b></td>
     <td><b>Live Clock — cập nhật theo phút</b><br /><sub><code>live-clock.yml</code></sub></td>
-    <td>Đồng hồ Việt Nam + tiến độ ngày, tay kim chạy mượt bằng CSS nên <b>không bao giờ đứng</b>. Vẽ lại mỗi 5 phút (chu kỳ ngắn nhất GitHub cho phép).</td>
+    <td>Đồng hồ Việt Nam + tiến độ ngày, tay kim chạy mượt bằng CSS nên <b>không bao giờ đứng</b>. Vẽ lại mỗi 5 phút — chu kỳ ngắn nhất GitHub cho phép với cron.</td>
     <td><b>Mỗi 30 phút</b> · <code>*/30 * * * *</code></td>
   </tr>
   <tr>
