@@ -110,3 +110,17 @@ Divider/footer:
 - Mã màu `#1A2B3C` **không** bị nhầm là escape hỏng.
 - Tham chiếu `./assets/khong-co.svg` → báo lỗi; `#anchor` thì bỏ qua.
 
+## `test_cli.py` (39 test)
+
+File lớn nhất, vì CLI là nơi mọi thứ gặp nhau:
+
+- `--demo --all` ghi đủ 7 file SVG, mỗi file parse được.
+- `--clock`, `--cards`, `--hero` chỉ ghi đúng nhóm của mình.
+- `--theme ocean --lang en` đổi màu và chữ thật.
+- Thiếu `GH_USER` → không crash, in hướng dẫn ra stderr.
+- `--smart`: lượt hai không đổi `mtime`; không có `--smart` thì luôn ghi.
+- `--dry-run`: không tạo file nào nhưng vẫn chạy hết logic.
+- `--quiet`: stdout rỗng.
+- `--check`: 7/7 hợp lệ; file hỏng → mã thoát 1; thư mục rỗng → mã thoát 1.
+- Chạy như **tiến trình con** (`subprocess`) để bắt lỗi thứ tự khai báo hàm.
+
