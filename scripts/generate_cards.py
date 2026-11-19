@@ -26,6 +26,7 @@
    python3 scripts/generate_cards.py --clock
    python3 scripts/generate_cards.py --hero --theme emerald --lang en
    python3 scripts/generate_cards.py --demo --all --out /tmp/thu
+   python3 scripts/generate_cards.py --clock --at 2026-11-19T23:50
    python3 scripts/generate_cards.py --list-themes
 
  Nguyên tắc ổn định:
@@ -37,6 +38,7 @@
 """
 
 import argparse
+from datetime import datetime
 import hashlib
 import json
 import os
@@ -186,6 +188,23 @@ def demo_contrib(dt):
 
 
 # ------------------------------------------------------------------ CLI
+def parse_moment(text):
+    """Đọc `--at`: ISO hoặc dạng ngày giờ thường, hiểu theo giờ Việt Nam.
+
+    Trả None khi không đọc được — người gọi tự báo lỗi. Nhận cả
+    "2026-11-19T23:50", "2026-11-19 23:50" và "2026-11-19T23:50:00".
+    """
+    if not text:
+        return None
+    cleaned = text.strip().replace(" ", "T")
+    for pattern in ("%Y-%m-%dT%H:%M:%S", "%Y-%m-%dT%H:%M", "%Y-%m-%dT%H"):
+        try:
+            return datetime.strptime(cleaned, pattern)
+        except ValueError:
+            continue
+    return None
+
+
 def parse_args(argv=None):
     parser = argparse.ArgumentParser(
         description="Vẽ toàn bộ SVG cho profile README.",
@@ -208,6 +227,10 @@ def parse_args(argv=None):
     parser.add_argument("--lang", default=i18n.DEFAULT_LANG,
                         help="ngôn ngữ thẻ: vi | en")
     parser.add_argument("--out", default=None, help="thư mục ghi ảnh")
+    parser.add_argument("--at", default=None, metavar="THỜI_ĐIỂM",
+                        help="vẽ như thể đang là lúc này (giờ Việt Nam), "
+                             "dạng 2026-11-19T23:50 — để xem đồng hồ ban đêm "
+                             "mà không phải chờ tới đêm")
     parser.add_argument("--list-themes", action="store_true",
                         help="in danh sách theme rồi thoát")
     parser.add_argument("--list-langs", action="store_true",
@@ -314,7 +337,14 @@ def main(argv=None):
 
     palette = _pick_theme(args.theme)
     translator = _pick_language(args.lang)
-    dt = api.now_vn()
+    if args.at:
+        dt = parse_moment(args.at)
+        if dt is None:
+            sys.stderr.write("Không đọc được --at %r (thử 2026-11-19T23:50)\n"
+                             % args.at)
+            return 2
+    else:
+        dt = api.now_vn()
 
     say("== generate_cards.py %s · theme=%s · lang=%s · %s (UTC+7) =="
           % (sys.modules["svgkit"].__version__, palette.name,
