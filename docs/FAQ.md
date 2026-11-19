@@ -64,6 +64,18 @@ mặc định của Actions có sẵn quyền này nên không cần tạo secre
 
 Với repo công khai, phút runner miễn phí — nhưng vẫn giữ ở mức này để không bị coi là lạm dụng.
 
+## `check_repo.py` báo lỗi BOM/CRLF, sửa tay từng file à?
+
+Không cần: `python3 scripts/check_repo.py --fix`.
+
+Cờ này chuẩn hoá những thứ vô hình với người đọc — BOM, xuống dòng CRLF,
+khoảng trắng cuối dòng, dòng trống cuối file, thiếu newline cuối — rồi chạy
+lại toàn bộ kiểm tra. Nó **không** đổi một ký tự nội dung nào: chữ tiếng Việt,
+dấu em dash và dấu giữa (`·`) đi qua nguyên vẹn, và điều đó được khoá bằng test.
+
+Chạy hai lần liên tiếp thì lần thứ hai không sửa gì — nếu không, workflow sẽ
+tự đẩy một commit mỗi 5 phút.
+
 ## Vì sao là SVG mà không phải PNG?
 
 - **Nhẹ**: thẻ 640×258 chỉ ~16 KB, PNG cùng kích thước dễ vượt 100 KB.
