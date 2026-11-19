@@ -79,7 +79,6 @@ class TestAssetRefs(unittest.TestCase):
     """Mọi ./... trong Markdown phải trỏ tới file có thật."""
 
     def setUp(self):
-        import os
         import tempfile
 
         self.tmp = tempfile.TemporaryDirectory()
