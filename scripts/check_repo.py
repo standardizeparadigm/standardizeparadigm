@@ -807,6 +807,38 @@ def check_font_shorthand(root=None):
                     "font-weight/font-size/font-family" % (rel(path), number))
 
 
+# ------------------------------------------------- 4be. Nhịp hoạt ảnh an toàn
+RE_ANIM_DECL = re.compile(r"\b(?:animation|animation-duration)\s*:\s*([^;}]+)")
+RE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)s\b")
+ANIM_FLOOR = 1.0
+
+
+def check_animation_pace(root=None, floor=ANIM_FLOOR):
+    """Hoạt ảnh lặp vô hạn không được nhanh hơn một chu kỳ mỗi giây.
+
+    WCAG 2.3.1 đặt ngưỡng an toàn ở ba lần nháy mỗi giây; một chu kỳ mỗi
+    giây là biên an toàn rộng hơn ba lần, đủ để không ai phải nheo mắt. Chu
+    kỳ dài (kim đồng hồ quay một vòng mỗi giờ) thì không sao — luật chỉ chặn
+    phía nhanh.
+    """
+    root = root or ROOT
+    for base, dirs, files in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.lower().endswith(".svg"):
+                continue
+            path = os.path.join(base, name)
+            for number, line in enumerate(read(path).split("\n"), 1):
+                for decl in RE_ANIM_DECL.findall(line):
+                    if "infinite" not in decl:
+                        continue
+                    for raw in RE_SECONDS.findall(decl):
+                        if float(raw) < floor:
+                            err("%s:%d hoạt ảnh lặp %ss quá nhanh "
+                                "(tối thiểu %gs)" % (rel(path), number,
+                                                     raw, floor))
+
+
 # ---------------------------------------------------- 4bf. Không dùng emoji
 # Khoảng mã của emoji (pictograph) và ký hiệu một-màu. Dấu tick `✓` và dấu
 # chéo `✗` cố tình nằm ngoài: chúng là ký tự đánh dấu trong output terminal,
@@ -1480,6 +1512,7 @@ def main(argv=None):
     check_bad_numbers()
     check_url_targets()
     check_keyframes()
+    check_animation_pace()
     check_doc_titles()
     check_svg_budget()
     check_svg_viewbox()
