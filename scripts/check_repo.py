@@ -633,6 +633,32 @@ def check_class_references(root=None):
 
 RE_STYLE = re.compile(r"<style[^>]*>(.*?)</style>", re.S)
 
+# ------------------------------ 4bl. url(#id) phải trỏ tới một định nghĩa
+PAINT_TAGS = ("linearGradient", "radialGradient", "filter", "clipPath",
+              "mask", "pattern", "symbol", "marker")
+RE_URL_REF = re.compile(r"url\(#([^)]+)\)")
+
+
+def check_url_targets(root=None):
+    """Mỗi `url(#x)` phải trỏ tới gradient / filter / clipPath / mask / pattern.
+
+    `filter="url(#gloww)"` không làm ảnh hỏng: trình duyệt bỏ qua thuộc tính
+    và vẽ nét sắc lẹm thay vì nét phát sáng. Không có thông báo nào — chỉ có
+    một chỗ trông hơi khác với ý định.
+    """
+    root = root or ROOT
+    for path in sorted(glob.glob(os.path.join(root, "assets", "*.svg"))):
+        text = read(path)
+        kinds = {}
+        for tag in PAINT_TAGS:
+            for ident in re.findall(r'<%s\b[^>]*\bid="([^"]+)"' % tag, text):
+                kinds[ident] = tag
+        for ident in sorted(set(RE_URL_REF.findall(text))):
+            if ident not in kinds:
+                err("%s: url(#%s) không trỏ tới định nghĩa nào (chỉ nhận %s)"
+                    % (rel(path), ident, ", ".join(PAINT_TAGS)))
+
+
 # ---------------------------------- 4bk. Không có NaN / None trong thuộc tính
 RE_BAD_NUMBER = re.compile(
     # NaN / None trong giá trị thuộc tính, hoặc số mũ kiểu 1.5e-07 ngay sau
@@ -1304,6 +1330,7 @@ def main(argv=None):
     check_duplicate_ids()
     check_class_references()
     check_bad_numbers()
+    check_url_targets()
     check_doc_titles()
     check_svg_budget()
     check_python()
