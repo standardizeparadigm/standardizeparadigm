@@ -157,3 +157,16 @@ python3 scripts/check_repo.py                                    # mojibake, lin
 ```
 
 Nghĩa là một bảng màu mới hay một ngôn ngữ mới đều được vẽ thử và parse XML trước khi ai đó nhìn thấy nó trên trang chủ.
+
+## `test_status.py`
+
+Dải trạng thái là chỗ dễ sai âm thầm nhất: sai màu thì người xem hiểu ngược
+ý nghĩa, sai bề rộng thì viên thuốc cuối bị cắt mất.
+
+- Bề rộng tính đúng theo số workflow; `viewBox` khớp với bề rộng đó.
+- Không có hàng nào → vẫn vẽ được một viên dự phòng, không vỡ XML.
+- Nhãn lấy từ `i18n`: `ĐẠT` (vi) và `PASSING` (en) không lẫn vào nhau.
+- Trạng thái lạ rơi về "không rõ" chứ không crash.
+- Vòng nhấp nháy chỉ có ở trạng thái "đang sống"; chấm đỏ lỗi đứng yên.
+- Mọi trạng thái trong `STATE_STYLE` phải có khoá i18n ở **cả hai** ngôn ngữ.
+- Vẽ hợp lệ với 6 theme × 2 ngôn ngữ.
