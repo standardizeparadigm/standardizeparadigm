@@ -129,6 +129,18 @@ def activity_card(pal, contrib, dt, t, width=640, height=258):
                      'style="font-size:8px;fill:%s;letter-spacing:.3px">%s</text>'
                      % (cx, color, weekdays[wd_index]))
 
+    # Nhãn ngày cao nhất: biết ngay "kỷ lục 2 tuần" là bao nhiêu.
+    peak_index = counts.index(peak)
+    if peak > 0 and peak_index != len(days) - 1:
+        peak_cx = 22 + peak_index * slot + slot / 2.0
+        peak_y = baseline - (4 + (baseline - top - 4)) - 8
+        parts.append('  <g class="fadeUp" style="animation-delay:.55s">')
+        parts.append('    <text x="%.1f" y="%d" text-anchor="middle" '
+                     'class="footNote" style="fill:%s">%s</text>'
+                     % (peak_cx, peak_y, pal.accent3,
+                        esc(t("act.peak", n=human(peak)))))
+        parts.append('  </g>')
+
     parts.append('  <g class="fadeUp" style="animation-delay:.7s">')
     parts.append('    <circle cx="26" cy="242" r="3" fill="%s" class="pulse"/>'
                  % pal.accent)

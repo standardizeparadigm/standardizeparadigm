@@ -79,6 +79,7 @@ STRINGS = {
         "desc.activity": "Biểu đồ contribution 14 ngày gần nhất",
         "langs.more": "+{n} ngôn ngữ khác · {pct}%",
         "act.avg": "TB {n}",
+        "act.peak": "cao nhất {n}",
     },
     "en": {
         "stats.title": "GITHUB STATS",
@@ -141,6 +142,7 @@ STRINGS = {
         "desc.activity": "Contribution chart for the last 14 days",
         "langs.more": "+{n} more languages · {pct}%",
         "act.avg": "AVG {n}",
+        "act.peak": "peak {n}",
     },
 }
 

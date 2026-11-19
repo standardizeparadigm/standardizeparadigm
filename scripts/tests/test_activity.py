@@ -98,3 +98,35 @@ class TestAverageLine(unittest.TestCase):
                    "streak_current": 0, "streak_longest": 3}
         return activity_card(get_palette(), contrib,
                              dtmod.datetime(2026, 11, 19, 15, 0), i18n.get("vi"))
+
+
+class TestPeakLabel(unittest.TestCase):
+    def test_peak_label_on_busiest_day(self):
+        counts = [0, 3, 1, 2, 9, 1, 0, 0, 2, 1, 0, 0, 1, 0]
+        from svgkit import i18n
+        from svgkit.activity import activity_card
+        from svgkit.palette import get_palette
+        import datetime as dtmod
+
+        base = dtmod.date(2026, 11, 19)
+        days = [(base - dtmod.timedelta(days=13 - i), c) for i, c in enumerate(counts)]
+        contrib = {"total": sum(counts), "days": days,
+                   "streak_current": 0, "streak_longest": 2}
+        svg = activity_card(get_palette(), contrib,
+                            dtmod.datetime(2026, 11, 19, 9, 0), i18n.get("vi"))
+        self.assertIn("cao nhất", svg)
+
+    def test_no_peak_label_when_today_is_peak(self):
+        import datetime as dtmod
+
+        from svgkit import i18n
+        from svgkit.activity import activity_card
+        from svgkit.palette import get_palette
+
+        base = dtmod.date(2026, 11, 19)
+        counts = [1] * 13 + [9]
+        days = [(base - dtmod.timedelta(days=13 - i), c) for i, c in enumerate(counts)]
+        contrib = {"total": 22, "days": days, "streak_current": 1, "streak_longest": 1}
+        svg = activity_card(get_palette(), contrib,
+                            dtmod.datetime(2026, 11, 19, 9, 0), i18n.get("vi"))
+        self.assertNotIn("cao nhất", svg)
