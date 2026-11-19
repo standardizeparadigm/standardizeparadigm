@@ -1723,6 +1723,46 @@ class TestAnimationPace(unittest.TestCase):
         self.assertEqual(len(self._run()), 1)
 
 
+class TestSmilPace(unittest.TestCase):
+    """SMIL lặp vô hạn cũng phải chậm hơn một chu kỳ mỗi giây."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.tmp)
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def _svg(self, body):
+        with open(os.path.join(self.tmp, "assets", "a.svg"), "w",
+                  encoding="utf-8") as handle:
+            handle.write('<svg viewBox="0 0 10 10">%s</svg>' % body)
+
+    def _run(self):
+        check_repo.errors = []
+        check_repo.check_smil_pace(root=self.tmp)
+        return list(check_repo.errors)
+
+    def test_fast_smil_loop_is_reported(self):
+        self._svg('<animate attributeName="r" dur="0.4s"'
+                  ' repeatCount="indefinite" />')
+        self.assertEqual(len(self._run()), 1)
+
+    def test_milliseconds_are_converted(self):
+        self._svg('<animate attributeName="r" dur="600ms"'
+                  ' repeatCount="indefinite" />')
+        errors = self._run()
+        self.assertEqual(len(errors), 1)
+        self.assertIn("600ms", errors[0])
+
+    def test_slow_smil_loop_is_fine(self):
+        self._svg('<animate attributeName="r" dur="2.9s"'
+                  ' repeatCount="indefinite" />')
+        self.assertEqual(self._run(), [])
+
+    def test_one_shot_smil_is_not_checked(self):
+        self._svg('<animate attributeName="opacity" dur="0.3s" />')
+        self.assertEqual(self._run(), [])
+
+
 if __name__ == "__main__":
     unittest.main()
 
