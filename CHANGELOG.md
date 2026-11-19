@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Đồng hồ: thêm thứ và ngày
+
+- Thẻ đồng hồ có thêm dòng `Thứ Năm · 19/11/2026` lấy từ `Translator.weekday()`.
+- Icon mặt trời / mặt trăng đổi theo giờ, canh cạnh pill lời chào.
+
 ## 2026-11-19 — Footer: nâng chữ khỏi sóng
 
 - Dòng “Làm bằng Python…” nằm đúng ngọn sóng nên chìm vào nền.
