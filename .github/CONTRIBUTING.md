@@ -1,8 +1,8 @@
-# 🤝 Đóng góp cho Standardize Paradigm
+# Đóng góp cho Standardize Paradigm
 
 Cảm ơn bạn đã quan tâm đến trang cá nhân này! Mình tự học code — mọi đóng góp, dù nhỏ, đều rất đáng giá.
 
-## 🚀 Cách bắt đầu
+## Cách bắt đầu
 
 1. **Fork** repo này về tài khoản của bạn.
 2. **Clone** repo đã fork:
@@ -22,7 +22,7 @@ Cảm ơn bạn đã quan tâm đến trang cá nhân này! Mình tự học cod
    ```
 5. Mở **Pull Request** trên GitHub và mô tả thay đổi.
 
-## 📝 Quy ước commit
+## Quy ước commit
 
 Dùng tiền tố tiếng Anh theo kiểu conventional commits (phần mô tả viết tiếng Việt cũng được):
 
@@ -34,7 +34,7 @@ Dùng tiền tố tiếng Anh theo kiểu conventional commits (phần mô tả 
 | `style:` | Định dạng, khoảng trắng, mã màu | `style: chỉnh màu badge` |
 | `chore:` | Việc vặt, bảo trì | `chore: cập nhật con dấu cập nhật` |
 
-## 🧪 Trước khi mở Pull Request
+## Trước khi mở Pull Request
 
 Chạy bộ kiểm tra ngay trên máy bạn (không cần cài gì):
 
@@ -65,7 +65,7 @@ khỏi phải chờ:
 python3 scripts/generate_cards.py --clock --at 2026-11-19T23:50 --out /tmp/thu
 ```
 
-## 🧩 Thêm một workflow mới
+## Thêm một workflow mới
 
 Ba chỗ, đừng bỏ chỗ nào:
 
@@ -77,16 +77,16 @@ Ba chỗ, đừng bỏ chỗ nào:
 Nhớ thêm `workflow_dispatch` nếu muốn chạy tay — nút đó chỉ hiện khi file đã có
 trên nhánh mặc định.
 
-## 🐛 Báo lỗi & yêu cầu tính năng
+## Báo lỗi & yêu cầu tính năng
 
 - Mở issue theo mẫu có sẵn trong `.github/ISSUE_TEMPLATE/`.
 - Mô tả rõ, kèm ảnh chụp màn hình nếu là lỗi giao diện.
 
-## 📜 Quy tắc nhỏ
+## Quy tắc nhỏ
 
 - Không spam, không phân biệt đối xử.
 - Nếu bạn là bạn cùng tuổi và muốn làm project chung, hãy nhắn mình qua issue hoặc Discord — mình rất mong được làm quen!
 
-## 📄 Giấy phép
+## Giấy phép
 
 Dự án này dùng giấy phép MIT — xem file `LICENSE`.
