@@ -3,6 +3,15 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Nhãn tuổi trên dải trạng thái
+
+- Dải trạng thái cũ 6 tiếng trông y hệt dải vừa vẽ — đúng loại lỗi khiến
+  người xem tưởng workflow đứng. Giờ mỗi viên thuốc có nhãn "9 giờ trước" ở
+  góc phải, lấy từ `updated_at` của lần chạy gần nhất.
+- `human_age()` gộp ba mốc: phút (<1 giờ), giờ (<1 ngày), ngày. "3 ngày
+  trước" đúng bản chất hơn "71 giờ trước".
+- `api.age_minutes()` trả `None` khi không đọc được mốc — thà thiếu nhãn còn
+  hơn nói dối "0 phút trước".
 ## 2026-11-19 — Hiệu ứng mới, vẫn tắt được bằng một dòng CSS
 
 - Vệt sáng chạy dọc mép trên mọi thẻ (130px, 8-12 giây, lệch nhịp theo bề
