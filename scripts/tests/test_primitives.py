@@ -140,3 +140,27 @@ class TestNumbers(unittest.TestCase):
 
         self.assertEqual(num(12.0), "12")
         self.assertEqual(num(12.345), "12.3")
+
+
+class TestEscape(unittest.TestCase):
+    def test_special_characters(self):
+        from svgkit.primitives import esc
+
+        self.assertEqual(esc("a & b"), "a &amp; b")
+        self.assertEqual(esc("<b>"), "&lt;b&gt;")
+        self.assertEqual(esc('nói "xin chào"'), "nói &quot;xin chào&quot;")
+
+    def test_vietnamese_untouched(self):
+        from svgkit.primitives import esc
+
+        self.assertEqual(esc("Lập trình viên tự học"), "Lập trình viên tự học")
+
+    def test_escaped_text_stays_parseable(self):
+        from helpers import parse
+        from svgkit.primitives import esc
+
+        svg = ('<svg xmlns="http://www.w3.org/2000/svg"><text>%s</text></svg>'
+               % esc('5 < 7 & "8" > 6'))
+        dom = parse(svg)
+        node = dom.getElementsByTagName("text")[0]
+        self.assertIn("<", node.firstChild.data)
