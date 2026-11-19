@@ -297,8 +297,8 @@ def main(argv=None):
     data = None
 
     if want_all or args.hero:
-        # Ảnh bìa / chân trang là thiết kế, không phải số liệu: vẽ lại mỗi
-        # giờ một lần (hoặc khi đổi theme / đổi tên) thay vì mỗi 10 phút.
+        # Ảnh bìa / chân trang là thiết kế, không phải số liệu: gộp theo khoá
+        # giờ nên chỉ vẽ lại khi sang giờ mới (hoặc khi đổi theme / đổi tên).
         design = data_hash({"design": [USER, DISPLAY_NAME, palette.name,
                                        translator.lang, dt.strftime("%Y-%m-%dT%H")]})
         write("hero.svg", hero(palette, dt, translator), design)
