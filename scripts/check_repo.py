@@ -843,6 +843,29 @@ def check_python_fences(root=None):
                         % (rel(path), line + (exc.lineno or 1) - 1, exc.msg))
 
 
+# ------------------------------------------------ 4bb. Mỗi file test có mục riêng
+def check_test_file_docs(root=None):
+    """Mỗi `scripts/tests/test_*.py` phải được kể tên trong docs/TESTING.md.
+
+    Không phải chuyện hình thức: danh sách file test trong tài liệu là bản đồ
+    duy nhất để người mới biết "test cái này nằm ở đâu". Một file test không
+    có tên trong đó thì lần sau muốn thêm ca cho nó, người ta sẽ tạo thêm một
+    file thứ hai — rồi hai chỗ cùng test một thứ.
+    """
+    root = root or ROOT
+    folder = os.path.join(root, "scripts", "tests")
+    doc = os.path.join(root, "docs", "TESTING.md")
+    if not os.path.isdir(folder) or not os.path.exists(doc):
+        return
+    text = read(doc)
+    for name in sorted(os.listdir(folder)):
+        if not name.startswith("test_") or not name.endswith(".py"):
+            continue
+        if name not in text:
+            err("docs/TESTING.md không nhắc tới %s (file test không có mục "
+                "riêng trong bản đồ)" % name)
+
+
 # ------------------------------------------------- 4be. Nhịp hoạt ảnh an toàn
 RE_CSS_BLOCK = re.compile(r"\{([^{}]*)\}")
 RE_ANIM_DECL = re.compile(r"animation(?:-duration)?\s*:\s*([^;}]*)")
@@ -1588,6 +1611,7 @@ def main(argv=None):
     check_smil_pace()
     check_doc_titles()
     check_python_fences()
+    check_test_file_docs()
     check_svg_budget()
     check_svg_viewbox()
     check_python()
