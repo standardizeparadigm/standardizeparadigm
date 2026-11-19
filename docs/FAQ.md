@@ -61,3 +61,14 @@ Không sửa file SVG. Sửa chỗ sinh ra nó:
 
 Sau đó vào tab **Actions → Profile Cards → Run workflow**.
 
+## Dùng lại code này cho trang của mình?
+
+Được — giấy phép MIT. Gọn nhất là:
+
+1. Fork repo.
+2. Sửa `GH_USER` (workflow đã tự lấy `github.repository_owner`, thường không cần sửa).
+3. Bật Actions, chạy `Profile Cards` một lần để có ảnh thật.
+4. Xoá bớt mục bạn không cần trong `README.md`.
+
+Nhớ đổi tên, tiểu sử và liên hệ — đừng để hai trang giống hệt nhau.
+
