@@ -25,10 +25,11 @@ Nên trang này làm hai lớp:
 | Workflow | Lượt/ngày | Thời gian mỗi lượt | Tổng |
 | :-- | --: | --: | --: |
 | `live-clock` | 288 | ~15 giây | ~72 phút |
-| `profile-3d` | 288 (phần lớn bị cổng chặn) | ~8 giây khi bị chặn | ~40 phút + vài lượt vẽ thật |
-| `profile-cards` | 144 (phần lớn `--smart` bỏ qua) | ~20 giây | ~48 phút |
+| `status` | 96 (+ mỗi lượt chạy xong) | ~10 giây | ~16 phút |
+| `profile-3d` | 48 (phần lớn bị cổng chặn) | ~8 giây khi bị chặn | ~7 phút + vài lượt vẽ thật |
+| `profile-cards` | 8 (phần lớn `--smart` bỏ qua) | ~25 giây | ~4 phút |
 | `readme-tend` | 8 | ~12 giây | ~2 phút |
-| `health` | 1 + mỗi push | ~40 giây | ~1 phút |
+| `health` | 1 + mỗi push | ~60 giây | ~2 phút |
 
 Với repo công khai, phút runner miễn phí — nhưng vẫn giữ ở mức này để không bị coi là lạm dụng.
 
