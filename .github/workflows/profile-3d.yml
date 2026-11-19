@@ -1,22 +1,27 @@
 # =====================================================================
-#  profile-3d.yml — Biểu đồ contribution 3D
+#  profile-3d.yml — Biểu đồ contribution 3D, kiểm tra mỗi 5 phút
 #
-#  Workflow này chỉ chạy trên NHÁNH MẶC ĐỊNH (main).
-#  Ảnh được sinh ra trong profile-3d-contrib/ rồi commit lại vào repo.
+#  GitHub Actions KHÔNG hỗ trợ cron mỗi phút; chu kỳ ngắn nhất là 5 phút.
+#  Vì vậy workflow này thức dậy mỗi 5 phút nhưng CỔNG THÔNG MINH sẽ quyết
+#  định có vẽ lại hay không:
 #
-#  Lịch: 01:00 mỗi ngày (giờ Việt Nam, UTC+7) = 18:00 UTC hôm trước.
-#  Chạy tay: tab Actions -> GitHub Profile 3D Contrib -> Run workflow.
+#    - có PushEvent mới kể từ lần chạy thành công trước  -> vẽ lại
+#    - đã quá 24 giờ kể từ lần chạy trước                -> vẽ lại (bắt mốc ngày mới)
+#    - còn lại                                           -> bỏ qua, thoát trong vài giây
+#
+#  Nhờ vậy ảnh vẫn "theo phút" mà không đốt hàng giờ runner mỗi ngày.
 # =====================================================================
 name: GitHub Profile 3D Contrib
 
 on:
   schedule:
-    - cron: "0 18 * * *"        # 01:00 giờ Việt Nam
+    - cron: "*/5 * * * *"        # mỗi 5 phút (GitHub không cho ngắn hơn)
   workflow_dispatch:
   push:
     branches: [main]
     paths:
       - ".github/workflows/profile-3d.yml"
+      - "scripts/fetch_contributions.py"
 
 concurrency:
   group: profile-3d
@@ -24,12 +29,13 @@ concurrency:
 
 permissions:
   contents: write
+  actions: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    # Bot commit ảnh -> không chạy lại chính mình (tránh vòng lặp vô hạn)
+    # bot commit ảnh -> không chạy lại chính mình (tránh vòng lặp)
     if: github.actor != 'github-actions[bot]'
     steps:
       - name: Checkout nhánh mặc định
@@ -37,13 +43,51 @@ jobs:
         with:
           ref: ${{ github.event.repository.default_branch }}
 
+      - name: Cổng thông minh — có gì mới không?
+        id: gate
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -uo pipefail
+          WF="profile-3d.yml"
+          LAST=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/$WF/runs?status=success&per_page=1" \
+                   --jq '.workflow_runs[0].created_at' 2>/dev/null || echo "")
+          NOW=$(date -u +%s)
+
+          if [ -z "$LAST" ] || [ "$LAST" = "null" ]; then
+            echo "Chưa từng chạy thành công -> vẽ lần đầu."
+            echo "run=1" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          LAST_TS=$(date -u -d "$LAST" +%s)
+          NEW=$(gh api "users/${GITHUB_REPOSITORY_OWNER}/events/public?per_page=100" \
+                  --jq "[.[] | select(.type == \"PushEvent\" and .created_at > \"$LAST\")] | length" \
+                  2>/dev/null || echo 0)
+          AGE=$((NOW - LAST_TS))
+          echo "Lần chạy tốt trước : $LAST (cách đây ${AGE}s)"
+          echo "PushEvent mới      : $NEW"
+
+          if [ "${NEW:-0}" -gt 0 ]; then
+            echo "Có push mới -> vẽ lại."
+            echo "run=1" >> "$GITHUB_OUTPUT"
+          elif [ "$AGE" -ge 86400 ]; then
+            echo "Đã quá 24 giờ -> vẽ lại để bắt mốc ngày mới."
+            echo "run=1" >> "$GITHUB_OUTPUT"
+          else
+            echo "Chưa có gì mới -> bỏ qua lượt này (tiết kiệm runner)."
+            echo "run=0" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Vẽ biểu đồ 3D
+        if: steps.gate.outputs.run == '1'
         uses: yoshi389111/github-profile-3d-contrib@v0.9.3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           USERNAME: ${{ github.repository_owner }}
 
       - name: Kiểm tra ảnh sinh ra
+        if: steps.gate.outputs.run == '1'
         run: |
           set -e
           if [ ! -d profile-3d-contrib ]; then
@@ -52,14 +96,15 @@ jobs:
           fi
           echo "Số file SVG: $(find profile-3d-contrib -name '*.svg' | wc -l)"
           python3 - <<'PY'
-          import glob, sys
+          import glob
+          import sys
           import xml.dom.minidom as md
           bad = []
-          for f in glob.glob("profile-3d-contrib/*.svg"):
+          for path in glob.glob("profile-3d-contrib/*.svg"):
               try:
-                  md.parse(f)
-              except Exception as e:
-                  bad.append("%s: %s" % (f, e))
+                  md.parse(path)
+              except Exception as error:
+                  bad.append("%s: %s" % (path, error))
           if bad:
               print("!! SVG bị lỗi XML:")
               print("\n".join(bad))
@@ -68,6 +113,7 @@ jobs:
           PY
 
       - name: Commit + push
+        if: steps.gate.outputs.run == '1'
         run: |
           set -e
           TARGET="${{ github.event.repository.default_branch }}"
@@ -85,7 +131,7 @@ jobs:
               echo "Đã push: $(git log -1 --oneline)"
               exit 0
             fi
-            echo "Push lần $i thất bại, thử lại sau ít giây..."
+            echo "Push lần $i thất bại, thử lại..."
             sleep $((i * 4))
           done
           echo "!! Push thất bại sau 3 lần thử." >&2
