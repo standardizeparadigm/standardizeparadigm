@@ -255,22 +255,59 @@ def check_workflows():
                 err("%s: action thiếu phiên bản: %s" % (rel(path), ref))
 
 
+# ------------------------------------------------------- 4b. Ảnh & link nội bộ
+LOCAL_REF = re.compile(r'(?:src|href)\s*=\s*"(\.[^"]+)"|\]\((\.[^)\s]+)\)')
+
+
+def check_asset_refs():
+    """Mọi tham chiếu ./... trong Markdown phải trỏ tới file có thật.
+
+    Bắt đúng loại lỗi hay gặp nhất: đổi tên ảnh trong assets/ mà quên
+    sửa README -> trang hiện biểu tượng ảnh vỡ.
+    """
+    for base, dirs, files in os.walk(ROOT):
+        dirs[:] = [d for d in dirs if d not in (".git", "node_modules", ".venv")]
+        for name in sorted(files):
+            if not name.lower().endswith(".md"):
+                continue
+            path = os.path.join(base, name)
+            for match in LOCAL_REF.finditer(read(path)):
+                ref = match.group(1) or match.group(2)
+                ref = ref.split("#", 1)[0].split("?", 1)[0]
+                if not ref or ref.startswith("./#"):
+                    continue
+                target = os.path.normpath(os.path.join(base, ref))
+                if not os.path.exists(target):
+                    err("%s: trỏ tới file không tồn tại: %s" % (rel(path), ref))
+
+
 # --------------------------------------------------------------- 5. Python
 def check_python():
-    for path in sorted(glob.glob(os.path.join(ROOT, "scripts", "*.py"))):
-        checked["py"] += 1
-        src = read(path)
-        check_text_encoding(path, src)
-        try:
-            compile(src, path, "exec")
-        except SyntaxError as e:
-            err("Python lỗi cú pháp: %s — %s" % (rel(path), e))
+    """Biên dịch MỌI file .py trong scripts/ (kể cả svgkit/ và tests/)."""
+    for base, dirs, files in os.walk(os.path.join(ROOT, "scripts")):
+        dirs[:] = [d for d in dirs if d != "__pycache__"]
+        for name in sorted(files):
+            if not name.endswith(".py"):
+                continue
+            path = os.path.join(base, name)
+            checked["py"] += 1
+            src = read(path)
+            check_text_encoding(path, src)
+            try:
+                compile(src, path, "exec")
+            except SyntaxError as e:
+                err("Python lỗi cú pháp: %s — %s" % (rel(path), e))
+        # mỗi gói con phải có __init__.py thì mới import được trên CI
+        if base != os.path.join(ROOT, "scripts") and files:
+            if "__init__.py" not in files:
+                warn("Thư mục %s thiếu __init__.py" % rel(base))
 
 
 # --------------------------------------------------------------- main
 def main():
     check_svg()
     check_workflows()
+    check_asset_refs()
     check_python()
     # Mọi file Markdown trong repo (README, docs, CONTRIBUTING, mẫu issue...).
     # Dùng os.walk vì glob không đi vào thư mục ẩn như .github/.
