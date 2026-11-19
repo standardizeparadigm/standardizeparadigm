@@ -79,3 +79,10 @@ python3 scripts/generate_cards.py --demo --all --out /tmp/xem-thu
 - 14 cột cuối, nhãn thứ theo ngôn ngữ; cột hôm nay có điểm nhấp nháy.
 - `contrib is None` → trả `None` để CLI giữ ảnh cũ.
 
+## `api.py`
+
+- `api()` gọi REST, `contributions()` gọi GraphQL — cả hai thử lại 3 lần với backoff.
+- Mọi lỗi (mạng, 403, 404, JSON hỏng, token thiếu) đều trả `None` / giá trị rỗng; workflow quyết định có báo đỏ hay không qua `--strict`.
+- `collect_user()` gom user + repos + ngôn ngữ + commit trong một dict phẳng để `cards.py` khỏi phải biết gì về HTTP.
+- `_streaks()` tính chuỗi ngày từ danh sách contribution.
+
