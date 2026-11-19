@@ -103,8 +103,15 @@ trắng thì thêm `--fix` để nó tự sửa — cờ này chỉ đụng th�
 - URL có `%`-escape sai hoặc giải mã ra UTF-8 không hợp lệ
 - Anchor `#mục` và đường dẫn `./...` trong Markdown có tồn tại
 - Workflow YAML parse được, cron đủ 5 trường, action có phiên bản
-- Vệ sinh file: BOM, CRLF, ký tự điều khiển, UTF-8 hỏng, khoảng trắng thừa
-- Mọi file Python biên dịch được
+- Quy ước an toàn workflow: `permissions`, `concurrency`, `timeout-minutes`,
+  cổng chặn bot khi có `git push`
+- Tài liệu khớp máy: bảng lịch chạy đúng cron, workflow nào cũng có dòng,
+  `workflow_run` khớp tên thật, câu "hơn N unit test" còn đúng
+- Vệ sinh file: BOM, CRLF, ký tự điều khiển, UTF-8 hỏng, khoảng trắng thừa,
+  dấu merge còn sót
+- Ảnh: XML hợp lệ, có `<title>`, dưới 40 KB, không có ảnh chết trong `assets/`
+- Tài liệu: không mồ côi, README dưới 360 dòng, Markdown đúng hình thức
+- Mọi file Python biên dịch được và mở đầu bằng docstring
 
 Chạy tay: `python3 scripts/check_repo.py`
 
