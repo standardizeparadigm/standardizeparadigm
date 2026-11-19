@@ -61,3 +61,12 @@ Phần lớn test nằm ở đây vì `primitives` là nền của mọi thẻ:
 - `open_svg()`: luôn có `clipPath#cardBody`, viền gradient, `aria-label`, `<title>`.
 - `prefers-reduced-motion`: mọi class có `animation` đều xuất hiện trong khối tắt hoạt ảnh.
 
+## `test_hero.py`
+
+- SVG hợp lệ, đúng 1000×280.
+- Tên hiển thị xuất hiện trong tiêu đề, đã escape.
+- Ba chip `PY` / `JS` / `TS` nằm trong lề phải, không tràn khỏi `viewBox`.
+- 14 hạt bụi có `class="dust"` và **không** rơi vào vùng chữ (kiểm tra toạ độ).
+- Hai vòng lan toả quanh lõi có chu kỳ 5.2s.
+- Bản tiếng Anh không còn chuỗi tiếng Việt nào.
+
