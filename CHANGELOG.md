@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Health: thử vẽ cả 6 theme × 2 ngôn ngữ
+
+- Mỗi lần push, CI vẽ lại toàn bộ SVG với mọi bảng màu và mọi ngôn ngữ rồi parse XML từng file.
+- Bảng màu nào làm vỡ bố cục là biết ngay.
+
 ## 2026-11-19 — README Garden: mỗi 3 giờ
 
 - Con dấu “lần cập nhật gần nhất” không cũ quá 3 giờ, chỉ tốn 8 lượt chạy mỗi ngày thay vì 1 lượt mỗi tuần.
