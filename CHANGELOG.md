@@ -3,6 +3,24 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Rà soát toàn bộ: 799 test, không lỗi nào còn mở
+
+Đợt này không thêm tính năng lớn nào; phần lớn thời gian dành cho việc tìm
+những chỗ **hỏng mà không ai báo**:
+
+| Chỗ hỏng | Vì sao không ai thấy |
+| :-- | :-- |
+| `font:` viết tắt trong CSS | trình duyệt vẫn đẹp, chỉ resvg/app GitHub mới vỡ |
+| trăng khuyết vẽ bằng cung bán kính 0 | chỉ hiện sau 18h, ban ngày không có |
+| activity sập khi 14 ngày trắng | chỉ xảy ra với người vừa nghỉ dài |
+| chuỗi ngày đứt lúc 00:05 | chỉ đúng vào lúc không ai mở trang |
+| `class="pulse-typo"` | ảnh vẫn hợp lệ, chỉ đứng im |
+| `url(#gloww)` | trình duyệt bỏ thuộc tính, nét vẫn vẽ ra |
+| `d="MNaN 12"` | XML hợp lệ, trình duyệt bỏ cả phần tử |
+
+Năm luật mới trong `check_repo.py` canh đúng những kiểu đó, và test của
+chúng chạy trên cả 8 ảnh thật lẫn 24 ảnh sinh từ 3 theme × 2 ngôn ngữ.
+
 ## 2026-11-19 — Nhãn tuổi đổi màu, và `--check` bắt ảnh phình
 
 - Dải trạng thái: tuổi quá một ngày chuyển sang hổ phách, để một dấu ĐẠT từ
