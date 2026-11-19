@@ -137,6 +137,11 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
   khai trong `permissions:` của `status.yml`; token mặc định của Actions có sẵn,
   không cần secret mới.
 
+## 2026-11-19 — svgkit 2.1.0
+
+- Thêm `status.py` (module thứ tám) nên nâng phiên bản nhỏ: 2.0.0 → 2.1.0. API
+  cũ không đổi, chỉ thêm `status_strip`, `api_status`, `workflow_states`.
+
 ## 2026-11-19 — Cổng 3D: sửa lỗi mốc 24 giờ không bao giờ tới
 
 - Cổng so "lần chạy thành công gần nhất", nhưng lượt bị cổng bỏ qua **vẫn** là lượt thành công → mốc 24 giờ không bao giờ đạt được, ảnh chỉ đổi khi có push.
