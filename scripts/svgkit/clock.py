@@ -107,7 +107,8 @@ def clock_card(pal, dt, t, width=640, height=258):
     px, bar_w = 244, 372
     done = ((hour * 60 + minute) / 1440.0) * 100
 
-    parts = open_svg(pal, width, height, "dong ho Viet Nam cap nhat moi 5 phut")
+    parts = open_svg(pal, width, height, t("clock.title"),
+                     desc=t("desc.clock"))
     parts.append('  <clipPath id="cardClip3"><rect x="0" y="0" width="%d" '
                  'height="%d" rx="18"/></clipPath>' % (width, height))
     parts.append('  <g clip-path="url(#cardClip3)"><rect x="-200" y="-60" '

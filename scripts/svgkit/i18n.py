@@ -75,6 +75,7 @@ STRINGS = {
         "desc.footer": "Chân trang: lời cảm ơn và hai lớp sóng chuyển động",
         "desc.stats": "Thẻ thống kê GitHub: stars, forks, repos, followers, following, commits và hạng",
         "desc.langs": "Thẻ ngôn ngữ lập trình dùng nhiều nhất, tính theo byte code",
+        "desc.clock": "Đồng hồ Việt Nam UTC+7 với kim quay liên tục",
     },
     "en": {
         "stats.title": "GITHUB STATS",
@@ -133,6 +134,7 @@ STRINGS = {
         "desc.footer": "Footer: thank-you line and two moving waves",
         "desc.stats": "GitHub stats card: stars, forks, repos, followers, following, commits and rank",
         "desc.langs": "Most used languages card, measured in code bytes",
+        "desc.clock": "Vietnam clock (UTC+7) with continuously moving hands",
     },
 }
 
