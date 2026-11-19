@@ -2,6 +2,12 @@
 
 Mọi hình trong `assets/` vẽ từ cùng một bộ token màu. Đổi một token là đổi cả trang.
 
+> [!NOTE]
+> Dải trạng thái (`assets/status.svg`) là ngoại lệ có chủ đích: nó dùng màu cố
+> định theo nghĩa — xanh `#34D399` đạt, đỏ `#F87171` lỗi, hổ phách `#FBBF24`
+> đang chạy, xám `#7A8CA3` chưa chạy, xanh dương `#60A5FA` chờ merge. "Đỏ =
+> lỗi" phải đúng ở cả 6 bảng màu, nên màu trạng thái không phải màu trang trí.
+
 ```bash
 python3 scripts/generate_cards.py --all --theme ocean   # vẽ lại toàn bộ theo bảng màu ocean
 python3 scripts/generate_cards.py --list-themes        # xem danh sách + mã màu
