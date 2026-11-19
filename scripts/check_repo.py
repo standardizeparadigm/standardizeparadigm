@@ -86,6 +86,27 @@ def check_svg():
                 err("SVG thiếu <title> (ảnh không có tên đọc lên): %s" % rel(path))
 
 
+# ------------------------------------------------- 1b. Ảnh phải co giãn được
+def check_svg_viewbox(root=None):
+    """Mỗi ảnh phải khai báo `viewBox`.
+
+    README đặt ảnh theo phần trăm (`width="48%"`). Không có `viewBox` thì
+    `width` bị hiểu là pixel và ảnh giữ nguyên kích thước gốc: nửa màn hình
+    trên laptop, tràn ra ngoài trên điện thoại. `viewBox` là thứ biến một
+    ảnh vẽ cứng thành một ảnh co giãn.
+    """
+    root = root or ROOT
+    for base, dirs, files in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.lower().endswith(".svg"):
+                continue
+            path = os.path.join(base, name)
+            head = read(path)[:600]
+            if "viewBox=" not in head:
+                err("%s thiếu 'viewBox' (không co giãn theo khung)" % rel(path))
+
+
 # --------------------------------------------------------------- 2. chữ
 RE_BAD_CHARS = [
     ("\ufffd", "ký tự thay thế U+FFFD (dữ liệu bị hỏng khi lưu file)"),
@@ -1461,6 +1482,7 @@ def main(argv=None):
     check_keyframes()
     check_doc_titles()
     check_svg_budget()
+    check_svg_viewbox()
     check_python()
     check_module_docstrings()
     # Mọi file Markdown trong repo (README, docs, CONTRIBUTING, mẫu issue...).
