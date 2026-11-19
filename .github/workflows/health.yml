@@ -42,7 +42,7 @@ jobs:
       - name: Chuẩn bị Python + PyYAML (không bắt buộc)
         run: |
           python3 --version
-          python3 -m pip install --quiet --disable-pip-version-check pyyaml \
+          python3 -m pip install --quiet --disable-pip-version-check "pyyaml==6.0.2" \
             || echo "(không cài được pyyaml — sẽ kiểm tra YAML ở mức văn bản)"
 
       - name: Kiểm tra sức khỏe repo
