@@ -3,6 +3,16 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Hai luật tài liệu, và một luật ảnh
+
+- `check_workflow_docs()` bắt cả hai chiều: bảng ghi sai cron, **và**
+  workflow mới không có dòng nào trong bảng.
+- `check_dead_assets()`: ảnh trong `assets/` mà không được nhúng ở đâu là ảnh
+  chết — vẫn được vẽ lại mỗi ngày, vẫn nằm trong lịch sử git, không ai thấy.
+- `check_svg()` đòi `<title>`, trừ ảnh tự khai `role="presentation"` /
+  `aria-hidden="true"`. Đường kẻ trang trí phải nói rõ "đừng đọc tôi".
+- `test_docs.py` kiểm hình thức Markdown (một H1, không nhảy cấp, dòng trống
+  trước tiêu đề) và đếm lại tổng số test so với `docs/TESTING.md`.
 ## 2026-11-19 — Nhãn tuổi trên dải trạng thái
 
 - Dải trạng thái cũ 6 tiếng trông y hệt dải vừa vẽ — đúng loại lỗi khiến
