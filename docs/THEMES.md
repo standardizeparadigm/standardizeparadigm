@@ -32,3 +32,7 @@ python3 scripts/generate_cards.py --list-themes        # xem danh sách + mã m�
 
 - Nhấn `#FB923C`, phụ `#F97316`, nhạt `#FDBA74`.
 - Cam ấm; chữ phụ vẫn dùng xám xanh để không bị "nóng" cả trang.
+## `ocean`
+
+- Nhấn `#22D3EE`, phụ `#06B6D4`, nhạt `#67E8F9`.
+- Lạnh và sắc; hợp với ảnh chụp màn hình code.
