@@ -123,3 +123,10 @@ Nguyên tắc: **nếu hoạt ảnh làm khung đầu tiên xấu, đổi sang S
 - **Không chạy mã lạ**: không `eval`, không render HTML từ dữ liệu ngoài; SVG sinh ra là văn bản do ta kiểm soát.
 - **Action bên thứ ba duy nhất**: `github-profile-3d-contrib`, ghim `v0.9.3`.
 
+## Quy ước số
+
+- `human(n)`: `< 1000` giữ nguyên, `1000 → 1k`, `3476 → 3.5k`, `1200000 → 1.2M`. Một chữ số thập phân, bỏ `.0`.
+- Phần trăm: một chữ số thập phân (`89.3%`), tính trên **tổng thật** chứ không trên tập đã cắt.
+- Rank: `grade()` cho chữ cái + phần trăm; vòng rank vẽ đúng phần trăm đó, không làm tròn lên.
+- Thời gian: luôn `Asia/Ho_Chi_Minh` (UTC+7), định dạng `%d/%m · %H:%M`.
+
