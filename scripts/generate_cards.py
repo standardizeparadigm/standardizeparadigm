@@ -36,8 +36,11 @@
 """
 
 import argparse
+import hashlib
+import json
 import os
 import random
+import re
 import sys
 import tempfile
 
@@ -69,9 +72,46 @@ BAD_DATA = (
     "   ẢNH CŨ ĐƯỢC GIỮ NGUYÊN (không ghi đè bằng ảnh rỗng).\n")
 
 
+SMART = False          # --smart: bỏ qua ghi khi dữ liệu chưa đổi
+DATA_MARK = re.compile(r"<!-- data:([0-9a-f]{8,}) -->")
+
+
 # ------------------------------------------------------------------ output
-def write(name, content):
-    """Ghi file kiểu atomic: hoặc xong hẳn, hoặc không đụng gì tới file cũ."""
+def data_hash(payload):
+    """Vân tay ngắn của dữ liệu (không gồm thời gian) để so sánh ảnh."""
+    if payload is None:
+        return None
+    blob = json.dumps(payload, sort_keys=True, ensure_ascii=False, default=str)
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()[:12]
+
+
+def stamp_data_mark(content, fingerprint):
+    """Nhúng dấu dữ liệu vào ảnh để lượt sau biết có cần vẽ lại không."""
+    if not fingerprint or "<!-- data:" in content:
+        return content
+    return content.replace("</svg>", "<!-- data:%s -->\n</svg>" % fingerprint)
+
+
+def read_mark(path):
+    try:
+        with open(path, encoding="utf-8") as handle:
+            found = DATA_MARK.search(handle.read())
+    except OSError:
+        return None
+    return found.group(1) if found else None
+
+
+def write(name, content, fingerprint=None):
+    """Ghi file kiểu atomic: hoặc xong hẳn, hoặc không đụng gì tới file cũ.
+
+    Ở chế độ --smart, nếu ảnh cũ đã mang đúng dấu dữ liệu này thì bỏ qua:
+    dữ liệu GitHub chưa đổi thì không cần commit thêm một dòng thời gian.
+    """
+    content = stamp_data_mark(content, fingerprint)
+    final_path = os.path.join(OUT_DIR, name)
+    if SMART and fingerprint and read_mark(final_path) == fingerprint:
+        print("= %s không đổi (bỏ qua)" % name)
+        return False
     if not os.path.isdir(OUT_DIR):
         os.makedirs(OUT_DIR)
     final_path = os.path.join(OUT_DIR, name)
@@ -88,6 +128,7 @@ def write(name, content):
             pass
         raise
     print("đã ghi %s (%d bytes)" % (final_path, len(content.encode("utf-8"))))
+    return True
 
 
 # ------------------------------------------------------------------ demo
@@ -145,6 +186,8 @@ def parse_args(argv=None):
                         help="in phiên bản rồi thoát")
     parser.add_argument("--check", action="store_true",
                         help="kiểm tra các SVG đã có trong thư mục ra")
+    parser.add_argument("--smart", action="store_true",
+                        help="chỉ ghi ảnh khi dữ liệu thật sự đổi (bớt commit rác)")
     return parser.parse_args(argv)
 
 
@@ -172,8 +215,9 @@ def check_assets(directory):
 
 
 def main(argv=None):
-    global OUT_DIR, USER
+    global OUT_DIR, USER, SMART
     args = parse_args(argv)
+    SMART = bool(args.smart)
 
     if args.version:
         print("generate_cards.py %s (svgkit)" % sys.modules["svgkit"].__version__)
@@ -240,8 +284,9 @@ def main(argv=None):
             if not data:
                 sys.stderr.write(BAD_DATA)
                 return 1 if args.strict else 0
-        write("stats.svg", stats_card(palette, data, dt, translator))
-        write("top-langs.svg", langs_card(palette, data, dt, translator))
+        fingerprint = data_hash({"cards": data})
+        write("stats.svg", stats_card(palette, data, dt, translator), fingerprint)
+        write("top-langs.svg", langs_card(palette, data, dt, translator), fingerprint)
         print("  XONG: 2 thẻ đã được ghi bằng dữ liệu thật")
 
     if want_all or args.activity:
@@ -250,7 +295,8 @@ def main(argv=None):
         if contrib:
             content = activity_card(palette, contrib, dt, translator)
             if content:
-                write("activity.svg", content)
+                write("activity.svg", content,
+                      data_hash({"activity": contrib}))
         else:
             print("  (bỏ qua) không có dữ liệu contribution — giữ nguyên ảnh cũ")
             status = status or (1 if args.strict else 0)
