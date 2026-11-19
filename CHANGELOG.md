@@ -3,6 +3,26 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Chữ trong ảnh hiện đúng ở mọi trình vẽ, không chỉ trình duyệt
+
+- CSS trong ảnh dùng `font: 800 54px Arial` — cú pháp hợp lệ, trình duyệt hiểu
+  đủ. Nhưng resvg, một số bản librsvg và trình xem ảnh desktop **bỏ qua cả
+  khai báo**, nên chữ rơi về 16px: số giờ teo lại, nhãn tuổi trên dải trạng
+  thái chèn lên nhãn trạng thái.
+- Đổi toàn bộ 28 chỗ sang `font-weight` / `font-size` / `font-family`. Ảnh
+  giống nhau ở mọi nơi đọc nó, không chỉ trong Chrome.
+- Luật mới: cấm `font:` viết tắt trong `assets/*.svg`, để không ai vô tình
+  quay lại cú pháp chỉ-một-trình-duyệt-hiểu.
+
+## 2026-11-19 — Sửa: trăng khuyết vẽ bằng cung tròn bán kính 0
+
+- Icon ban đêm dùng `a4.6 4.6 0 106.4 6.4 5.6 5.6 0 01-0 -0`: bán kính truyền
+  vào là hằng số 0, nên mọi trình vẽ đều ra một cục méo ở cạnh pill lời chào.
+- Giờ là một hình tròn bị "cắn" bởi hình tròn khác, cắt bằng `mask` — đúng ở
+  mọi bộ dựng, kể cả trình xem không hiểu CSS.
+- Lỗi này chỉ hiện sau 18h, nên ban ngày nó nằm im. Tám test mới khoá cả hai
+  nhánh mặt trời / trăng.
+
 ## 2026-11-19 — Sửa: `main()` không dọn lỗi của lượt trước
 
 - `check_repo.py` giữ danh sách lỗi ở cấp module. Gọi `main()` hai lần trong
