@@ -106,7 +106,7 @@ i18n:
 - Khoá lạ trả về chính tên khoá (để thấy được trong ảnh) chứ không ném `KeyError`.
 - `{pct}` được thay đúng; `weekday(0..6)` trả đúng tên.
 
-## `test_primitives.py` (26 test)
+## `test_primitives.py` (74 test)
 
 Phần lớn test nằm ở đây vì `primitives` là nền của mọi thẻ:
 
