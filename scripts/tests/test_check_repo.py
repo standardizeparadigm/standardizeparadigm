@@ -174,6 +174,46 @@ class TestDeadAssets(unittest.TestCase):
         finally:
             shutil.rmtree(empty, ignore_errors=True)
 
+
+
+class TestWorkflowDocCoverage(unittest.TestCase):
+    """Chiều ngược: mọi workflow phải có dòng trong bảng."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="cron-cover-")
+        os.makedirs(os.path.join(self.tmp, ".github", "workflows"))
+        os.makedirs(os.path.join(self.tmp, "docs"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _workflow(self, name, cron):
+        with open(os.path.join(self.tmp, ".github", "workflows", name), "w",
+                  encoding="utf-8") as handle:
+            handle.write("name: x\non:\n  schedule:\n    - cron: \"%s\"\n" % cron)
+
+    def _doc(self, text):
+        with open(os.path.join(self.tmp, "docs", "WORKFLOWS.md"), "w",
+                  encoding="utf-8") as handle:
+            handle.write(text)
+
+    def test_missing_row_is_flagged(self):
+        self._workflow("a.yml", "*/5 * * * *")
+        self._workflow("b.yml", "*/30 * * * *")
+        self._doc("| `a.yml` | `*/5 * * * *` | x |\n")
+        check_repo.check_workflow_docs(self.tmp)
+        self.assertTrue(any("b.yml" in e for e in check_repo.errors))
+
+    def test_every_workflow_listed_passes(self):
+        self._workflow("a.yml", "*/5 * * * *")
+        self._workflow("b.yml", "*/30 * * * *")
+        self._doc("| `a.yml` | `*/5 * * * *` | x |\n"
+                  "| `b.yml` | `*/30 * * * *` | y |\n")
+        check_repo.check_workflow_docs(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
 if __name__ == "__main__":
     unittest.main()
 
