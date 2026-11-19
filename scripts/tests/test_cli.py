@@ -29,7 +29,7 @@ class TestCli(unittest.TestCase):
     def test_demo_all_writes_every_asset(self):
         self.assertEqual(self.run_cli("--demo", "--all"), 0)
         expected = {"hero.svg", "divider.svg", "footer.svg", "live-clock.svg",
-                    "stats.svg", "top-langs.svg", "activity.svg"}
+                    "stats.svg", "top-langs.svg", "activity.svg", "status.svg"}
         self.assertEqual(set(os.listdir(self.out)), expected)
         for name in expected:
             path = os.path.join(self.out, name)
@@ -242,13 +242,13 @@ class TestAsScript(unittest.TestCase):
             self._run("--demo", "--all", "--out", tmp)
             result = self._run("--check", "--out", tmp)
             self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertIn("7/7", result.stdout)
+            self.assertIn("8/8", result.stdout)
 
     def test_demo_all_as_script(self):
         with tempfile.TemporaryDirectory() as tmp:
             result = self._run("--demo", "--all", "--out", tmp)
             self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertEqual(len([f for f in os.listdir(tmp) if f.endswith(".svg")]), 7)
+            self.assertEqual(len([f for f in os.listdir(tmp) if f.endswith(".svg")]), 8)
 
 
 class TestSmartMode(unittest.TestCase):
