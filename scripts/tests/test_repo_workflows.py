@@ -99,5 +99,55 @@ class TestStatusTriggerNames(unittest.TestCase):
         self.assertEqual([n for n in listed if n not in real], [])
 
 
+
+
+class TestNewLawsOnRealRepo(unittest.TestCase):
+    """Các luật mới chạy trên repo thật — sai là đỏ ngay trên máy."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+
+    def test_no_stale_places(self):
+        check_repo.check_stale_places()
+        self.assertEqual(check_repo.errors, [])
+
+    def test_no_todo_markers(self):
+        check_repo.check_todo_markers()
+        self.assertEqual(check_repo.errors, [])
+
+    def test_every_workflow_is_dispatchable(self):
+        check_repo.check_workflow_dispatch()
+        self.assertEqual(check_repo.errors, [])
+
+    def test_no_shields_workflow_badges(self):
+        check_repo.check_shields_workflow_badges()
+        self.assertEqual(check_repo.errors, [])
+
+    def test_cron_is_not_faster_than_github_allows(self):
+        check_repo.check_cron_resolution()
+        self.assertEqual(check_repo.errors, [])
+
+    def test_actions_are_pinned(self):
+        check_repo.check_action_pins()
+        self.assertEqual(check_repo.errors, [])
+
+    def test_jobs_have_timeouts(self):
+        check_repo.check_job_timeouts()
+        self.assertEqual(check_repo.errors, [])
+
+    def test_assets_are_clean(self):
+        check_repo.check_svg_text_classes()
+        check_repo.check_svg_duplicate_ids()
+        check_repo.check_svg_artifacts()
+        check_repo.check_svg_safety()
+        self.assertEqual(check_repo.errors, [])
+
+    def test_markdown_is_well_formed(self):
+        check_repo.check_heading_levels()
+        check_repo.check_markdown_tables()
+        check_repo.check_doc_titles()
+        self.assertEqual(check_repo.errors, [])
+
 if __name__ == "__main__":
     unittest.main()
