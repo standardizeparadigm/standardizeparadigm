@@ -120,4 +120,5 @@ Tự bình luận chào mừng khi có issue/PR mới. Bỏ qua tài khoản bot
 - [scripts/svgkit/README.md](../scripts/svgkit/README.md) — bản đồ thư viện vẽ
 - [docs/ARCHITECTURE.md](./ARCHITECTURE.md) — luồng dữ liệu và ranh giới module
 - [docs/TESTING.md](./TESTING.md) — bộ test và cách viết test mới
+- [docs/FAQ.md](./FAQ.md) — ảnh không đổi, số liệu lệch, tốn bao nhiêu runner…
 - [CHANGELOG.md](../CHANGELOG.md) — vì sao mỗi thay đổi được làm
