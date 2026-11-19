@@ -160,3 +160,19 @@ class TestWaitingCard(unittest.TestCase):
     def test_smaller_width_supported(self):
         svg = waiting_card(get_palette(), 420, "TITLE", "line", "line2")
         self.assertIn('width="420"', svg)
+
+class TestCardScan(unittest.TestCase):
+    """Thẻ số liệu và thẻ ngôn ngữ có vệt sáng quét như ảnh bìa."""
+
+    def test_stats_card_scans(self):
+        svg = stats_card(get_palette(), DATA, DT, i18n.get("vi"))
+        self.assertIn('class="scan"', svg)
+        self.assertIn('clip-path="url(#cardBody)"', svg)
+
+    def test_langs_card_scans(self):
+        svg = langs_card(get_palette(), DATA, DT, i18n.get("vi"))
+        self.assertIn('class="scan"', svg)
+
+    def test_scan_is_subtle(self):
+        svg = stats_card(get_palette(), DATA, DT, i18n.get("vi"))
+        self.assertIn('opacity=".26"', svg)

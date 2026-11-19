@@ -22,6 +22,16 @@ def _header(pal, title, right_text):
     ]
 
 
+def _scan(pal, width, height=258):
+    """Vệt sáng quét dọc thẻ — cùng nhịp với ảnh bìa để cả trang đồng bộ."""
+    return [
+        '  <g clip-path="url(#cardBody)">',
+        '    <rect x="0" y="-40" width="%d" height="30" fill="url(#sheenGrad)" '
+        'opacity=".26" class="scan" style="animation-duration:9s"/>' % width,
+        '  </g>',
+    ]
+
+
 def _footer(pal, text):
     return [
         '  <g class="fadeUp" style="animation-delay:.62s">',
@@ -102,6 +112,7 @@ def stats_card(pal, data, dt, t, width=640, height=258):
                  'fill="url(#sheenGrad)" class="sheen" opacity=".55"/></g>')
 
     parts += _header(pal, t("stats.title"), t("stats.updated", stamp=stamp))
+    parts += _scan(pal, width)
 
     rows = [
         ("star", t("stats.stars"), data.get("stars")),
@@ -156,6 +167,7 @@ def langs_card(pal, data, dt, t, width=640, height=258):
     parts = open_svg(pal, width, height, t("langs.title"),
                      desc=t("desc.langs"))
     parts += _header(pal, t("langs.title"), t("langs.sub"))
+    parts += _scan(pal, width)
 
     bx, by, bw, bh = 22, 54, width - 44, 16
     parts.append('  <clipPath id="barClip"><rect x="%d" y="%d" width="%d" '
