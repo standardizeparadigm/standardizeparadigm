@@ -93,6 +93,16 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
 - Sáu dòng badge shields (3 hỏng) → một ảnh `assets/status.svg`.
 - Bảng workflow thêm dòng `Workflow Status`, sửa nhịp chạy của 3D và thẻ số liệu.
 
+## 2026-11-19 — Tài liệu: nhịp chạy và badge
+
+- `docs/WORKFLOWS.md`: mục "Chọn nhịp thế nào" (bảng bốn loại dữ liệu), mục 7
+  về dải trạng thái, ba dòng sự cố mới về badge và `workflow_dispatch`.
+- `docs/FAQ.md`: vì sao badge báo `not found`, vì sao `Run workflow` không
+  thấy workflow mới, bảng phút runner tính lại (~103 phút/ngày).
+- `docs/ANIMATIONS.md`: mục hoạt ảnh của dải trạng thái.
+- `docs/ARCHITECTURE.md`, `docs/TESTING.md`, `scripts/svgkit/README.md`: thêm
+  `status.py` vào bản đồ module và bản đồ test.
+
 ## 2026-11-19 — Cổng 3D: sửa lỗi mốc 24 giờ không bao giờ tới
 
 - Cổng so "lần chạy thành công gần nhất", nhưng lượt bị cổng bỏ qua **vẫn** là lượt thành công → mốc 24 giờ không bao giờ đạt được, ảnh chỉ đổi khi có push.
