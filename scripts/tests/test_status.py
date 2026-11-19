@@ -354,5 +354,36 @@ class TestSummaryLine(unittest.TestCase):
         self.assertIn("19/11", svg)
         self.assertIn("22:04", svg)   # 15:04 UTC -> 22:04 giờ Việt Nam
 
+
+
+class TestAgeTint(unittest.TestCase):
+    """Tuổi của lần chạy phải tự tố cáo khi đã quá cũ."""
+
+    AMBER = status.STATE_STYLE["running"][0]
+
+    def _svg(self, minutes):
+        rows = [("A", "passing", minutes)]
+        return status.status_strip(get_palette("sky"), rows, DT, i18n.get("vi"))
+
+    def test_fresh_age_is_dim(self):
+        svg = self._svg(12)
+        self.assertIn("12 phút trước", svg)
+        self.assertNotIn(self.AMBER, svg)
+
+    def test_day_old_age_is_amber(self):
+        svg = self._svg(60 * 24 * 3)
+        self.assertIn("3 ngày trước", svg)
+        self.assertIn(self.AMBER, svg)
+
+    def test_just_under_a_day_stays_dim(self):
+        svg = self._svg(60 * 24 - 1)
+        self.assertIn("23 giờ trước", svg)
+        self.assertNotIn(self.AMBER, svg)
+
+    def test_missing_age_draws_no_label(self):
+        rows = [("A", "passing", None)]
+        svg = status.status_strip(get_palette("sky"), rows, DT, i18n.get("vi"))
+        self.assertNotIn("trước", svg)
+
 if __name__ == "__main__":
     unittest.main()
