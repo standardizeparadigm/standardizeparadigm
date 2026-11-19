@@ -244,6 +244,42 @@ class TestHumanFormatting(unittest.TestCase):
             self.assertEqual(human(junk), "-", repr(junk))
 
 
+
+
+class TestIconShapes(unittest.TestCase):
+    """Mỗi icon là một nhóm path, tô theo màu truyền vào, đặt đúng chỗ."""
+
+    def test_every_icon_renders(self):
+        for name in primitives.ICONS:
+            svg = primitives.icon(name, 10, 20, "#38BDF8")
+            self.assertIn("<g", svg, name)
+            self.assertIn("path", svg, name)
+
+    def test_icon_uses_the_colour_it_is_given(self):
+        self.assertIn("#FF0000", primitives.icon("star", 0, 0, "#FF0000"))
+
+    def test_icon_is_centred_on_the_point(self):
+        for name in ("star", "fork", "repo", "users", "commit"):
+            svg = primitives.icon(name, 100, 100, "#FFFFFF")
+            self.assertIn("translate", svg, name)
+
+    def test_unknown_icon_falls_back(self):
+        self.assertEqual(primitives.icon("khong-co", 0, 0, "#fff"),
+                         primitives.icon("spark", 0, 0, "#fff"))
+
+    def test_icons_are_all_distinct(self):
+        shapes = {name: primitives.ICONS[name] for name in primitives.ICONS}
+        self.assertEqual(len(set(shapes.values())), len(shapes))
+
+    def test_scale_changes_the_size(self):
+        small = primitives.icon("star", 0, 0, "#fff", scale=0.5)
+        big = primitives.icon("star", 0, 0, "#fff", scale=1.0)
+        self.assertNotEqual(small, big)
+
+    def test_icons_are_not_emoji(self):
+        for name in primitives.ICONS:
+            self.assertTrue(all(ord(ch) < 0x2190 for ch in name), name)
+
 if __name__ == "__main__":
     unittest.main()
 
