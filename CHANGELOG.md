@@ -74,6 +74,13 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
   của chính nó thay vì tâm cả ảnh; có mặt trong danh sách tắt của
   `prefers-reduced-motion`.
 
+## 2026-11-19 — `api_status()` tách 404 khỏi lỗi mạng
+
+- `api()` trả `None` cho mọi lỗi nên không phân biệt được "workflow chưa có
+  trên nhánh mặc định" với "mạng hỏng". `api_status()` trả `(mã, json)`.
+- `api()` và `request_json()` có thêm `quiet=True` để dò workflow không làm
+  ngập log CI bằng ba dòng 404 mỗi lượt chạy.
+
 ## 2026-11-19 — Cổng 3D: sửa lỗi mốc 24 giờ không bao giờ tới
 
 - Cổng so "lần chạy thành công gần nhất", nhưng lượt bị cổng bỏ qua **vẫn** là lượt thành công → mốc 24 giờ không bao giờ đạt được, ảnh chỉ đổi khi có push.
