@@ -13,7 +13,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from svgkit import i18n  # noqa: E402
 from svgkit.palette import get_palette  # noqa: E402
 from svgkit.status import (GAP, MARGIN, PILL_W, STATE_STYLE, STRIP_H,  # noqa: E402
-                           WORKFLOWS, status_strip, width_for)
+                           WORKFLOWS, human_age, status_strip, width_for)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(
     os.path.abspath(__file__))))
@@ -168,6 +168,34 @@ class TestStripTimezone(unittest.TestCase):
                            i18n.get("vi"))
         self.assertIn("19/11 · 16:00", svg)
 
+
+
+
+class TestHumanAge(unittest.TestCase):
+    """human_age() — ba mốc: phút, giờ, ngày."""
+
+    def setUp(self):
+        self.t = i18n.get("vi")
+
+    def test_none_is_none(self):
+        self.assertIsNone(human_age(None, self.t))
+
+    def test_under_an_hour_uses_minutes(self):
+        self.assertEqual(human_age(0, self.t), "0 phút trước")
+        self.assertEqual(human_age(59, self.t), "59 phút trước")
+
+    def test_under_a_day_uses_hours(self):
+        self.assertEqual(human_age(60, self.t), "1 giờ trước")
+        self.assertEqual(human_age(1439, self.t), "23 giờ trước")
+
+    def test_a_day_or_more_uses_days(self):
+        self.assertEqual(human_age(1440, self.t), "1 ngày trước")
+        self.assertEqual(human_age(1440 * 3 + 59, self.t), "3 ngày trước")
+
+    def test_english_labels(self):
+        en = i18n.get("en")
+        self.assertEqual(human_age(5, en), "5m ago")
+        self.assertEqual(human_age(120, en), "2h ago")
 
 if __name__ == "__main__":
     unittest.main()
