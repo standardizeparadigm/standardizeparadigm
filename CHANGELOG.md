@@ -3,6 +3,14 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — svgkit 2.2.0
+
+- Vòng này thêm ba thứ làm thay đổi API công khai, nên nâng phiên bản nhỏ:
+  `api.to_vn()` / `api.age_minutes()`, khoá i18n `clock.updated` +
+  `clock.left`, và `status_strip()` nhận hàng ba phần tử có nhãn tuổi.
+- Không có thay đổi phá vỡ: mọi lời gọi cũ với hàng hai phần tử vẫn chạy
+  đúng — điều này được khoá bằng test, không phải bằng lời hứa.
+
 ## 2026-11-19 — README có ngân sách dòng
 
 - Trang cá nhân là thứ người lạ mở 20 giây rồi đóng. README hiện 338 dòng;
