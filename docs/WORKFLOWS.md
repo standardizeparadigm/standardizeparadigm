@@ -25,7 +25,7 @@ Một câu hỏi duy nhất quyết định nhịp: **ảnh này đổi nhanh đ
 | Giờ, lời chào, tiến độ ngày | mỗi phút | `*/5` (sàn của GitHub) |
 | Số contribution, biểu đồ 3D | khi bạn push hoặc sang ngày mới | 30 phút + cổng 24h |
 | Star, fork, ngôn ngữ | vài ngày một lần | 3 giờ |
-| Trạng thái workflow | mỗi khi có lượt chạy xong | 15 phút + `workflow_run` |
+| Trạng thái workflow | mỗi khi có lượt chạy xong | 10 phút + `workflow_run` |
 
 Hai workflow ghi file cùng lúc sẽ giành nhau `git push`, nên các nhịp được
 **lệch phút**: thẻ số liệu ở phút 15, README ở phút 45. Cơ chế push có sẵn
