@@ -99,6 +99,7 @@ Vẽ lại `assets/live-clock.svg`: đồng hồ Việt Nam (UTC+7), lời chào
 - URL có `%`-escape sai hoặc giải mã ra UTF-8 không hợp lệ
 - Anchor `#mục` và đường dẫn `./...` trong Markdown có tồn tại
 - Workflow YAML parse được, cron đủ 5 trường, action có phiên bản
+- Vệ sinh file: BOM, CRLF, ký tự điều khiển, UTF-8 hỏng, khoảng trắng thừa
 - Mọi file Python biên dịch được
 
 Chạy tay: `python3 scripts/check_repo.py`
