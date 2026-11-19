@@ -230,6 +230,18 @@ luật đó **trên repo thật**:
 - Lịch chạy: không hai job nào cùng phút; không job nào dày hơn 5 phút.
 - Nhịp chạy trong workflow khớp bảng trong `docs/WORKFLOWS.md` và README.
 
+## `test_workflow_states.py`
+
+`api.workflow_states()` đọc trạng thái từng workflow từ Actions API. Test
+thay `api.api_status()` bằng hàm giả nên không gọi mạng, nhưng vẫn đi qua
+đủ mọi nhánh:
+
+- Mã 200 + `conclusion` khác nhau → nhãn khác nhau: thành công, lỗi, đang
+  chạy, bị huỷ, chờ merge.
+- Mã 404 (workflow chưa từng chạy) → "chờ merge", không phải "lỗi".
+- Tuổi tính theo phút: `just now`, `5m`, `2h`, `3d` — và không bao giờ âm.
+- Mỗi dòng trả về đủ bốn trường mà `status.py` cần để vẽ.
+
 ## `test_workflow_gate.py`
 
 Cổng thông minh của `profile-3d.yml` là shell nằm trong YAML — loại code dễ hỏng mà không ai thấy. Test này:
