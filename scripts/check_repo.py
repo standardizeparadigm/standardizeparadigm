@@ -471,6 +471,42 @@ def check_dead_assets(root=None):
             err("assets/%s không được nhúng ở đâu (ảnh chết)" % name)
 
 
+# --------------------------------------------------- 4c. Tự sửa lỗi vô hình
+def fixable_text(text):
+    """Chuẩn hoá một file văn bản về dạng sạch, KHÔNG đổi nội dung.
+
+    Chỉ sửa những thứ mà người đọc không thấy nhưng máy thì khó chịu: BOM,
+    CRLF, khoảng trắng cuối dòng, dòng trống cuối file, thiếu newline cuối.
+    Không bao giờ đụng vào chữ, thứ tự dòng hay ký tự tiếng Việt.
+    """
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    if text.startswith("\ufeff"):
+        text = text[1:]
+    lines = [line.rstrip() for line in text.split("\n")]
+    while lines and lines[-1] == "":
+        lines.pop()
+    return "\n".join(lines) + "\n"
+
+
+def fix_text_files(root=None):
+    """Chạy `fixable_text()` trên mọi file văn bản; trả về danh sách đã sửa."""
+    root = root or ROOT
+    changed = []
+    for base, dirs, files in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.lower().endswith(TEXT_SUFFIXES):
+                continue
+            path = os.path.join(base, name)
+            raw = open(path, encoding="utf-8", errors="replace").read()
+            clean = fixable_text(raw)
+            if clean != raw:
+                with open(path, "w", encoding="utf-8", newline="\n") as handle:
+                    handle.write(clean)
+                changed.append(rel(path))
+    return changed
+
+
 # --------------------------------------------------------------- 5. Python
 def check_python():
     """Biên dịch MỌI file .py trong scripts/ (kể cả svgkit/ và tests/)."""
@@ -494,7 +530,17 @@ def check_python():
 
 
 # --------------------------------------------------------------- main
-def main():
+def main(argv=None):
+    argv = list(sys.argv[1:] if argv is None else argv)
+    if "--help" in argv or "-h" in argv:
+        print("Dùng: python3 scripts/check_repo.py [--fix]")
+        print("  --fix   chuẩn hoá BOM/CRLF/khoảng trắng thay vì chỉ báo lỗi")
+        return 0
+    if "--fix" in argv:
+        fixed = fix_text_files()
+        print("Đã sửa %d file." % len(fixed))
+        for name in fixed:
+            print("  ~ " + name)
     check_svg()
     check_file_hygiene()
     check_workflow_docs()
