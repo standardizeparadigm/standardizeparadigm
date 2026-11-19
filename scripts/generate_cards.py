@@ -158,10 +158,15 @@ def demo_data():
 
 
 def status_demo_rows():
-    """Trạng thái mẫu cho --demo: đủ 5 loại để xem màu."""
-    return [("3D CONTRIB", "passing"), ("STATS CARDS", "passing"),
-            ("LIVE CLOCK", "running"), ("README GARDEN", "passing"),
-            ("HEALTH", "failing"), ("WELCOME", "none"), ("STATUS", "passing")]
+    """Trạng thái mẫu cho --demo: đủ 5 loại để xem màu.
+
+    Kèm tuổi lần chạy đủ cả ba mốc (phút / giờ / ngày) và hai viên không
+    có tuổi, để chế độ demo thấy luôn cả trường hợp thiếu dữ liệu.
+    """
+    return [("3D CONTRIB", "passing", 24), ("STATS CARDS", "passing", 130),
+            ("LIVE CLOCK", "running", 0), ("README GARDEN", "passing", None),
+            ("HEALTH", "failing", 1440), ("WELCOME", "none", None),
+            ("STATUS", "passing", 3)]
 
 
 def demo_contrib(dt):
