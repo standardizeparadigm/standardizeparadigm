@@ -39,6 +39,30 @@ class TestFooter(unittest.TestCase):
         self.assertIn(" Z", self.svg)
 
 
+
+
+class TestSmilReducedMotion(unittest.TestCase):
+    """SMIL không tắt được bằng CSS — phải ẩn phần tử mang SMIL."""
+
+    def test_divider_declares_the_rule(self):
+        svg = divider(get_palette())
+        self.assertIn("prefers-reduced-motion", svg)
+        self.assertIn(".smilOnly { display: none }", svg)
+
+    def test_divider_marks_its_sparks(self):
+        svg = divider(get_palette())
+        self.assertGreaterEqual(svg.count('class="smilOnly"'), 5)
+
+    def test_footer_marks_its_bubbles(self):
+        svg = footer(get_palette(), i18n.get("vi"))
+        self.assertIn(".smilOnly { display: none }", svg)
+        self.assertEqual(svg.count("smilOnly"), 7)
+
+    def test_static_line_survives_reduced_motion(self):
+        # đường kẻ và viên kim cương tĩnh không mang class nên vẫn hiện
+        svg = divider(get_palette())
+        self.assertIn('height="1.6" fill="url(#ln)"', svg)
+
 if __name__ == "__main__":
     unittest.main()
 
@@ -51,7 +75,7 @@ class TestMotion(unittest.TestCase):
 
     def test_footer_has_bubbles(self):
         svg = footer(get_palette(), i18n.get("vi"))
-        self.assertEqual(svg.count('class="bubble"'), 6)
+        self.assertEqual(svg.count('"bubble smilOnly"'), 6)
         self.assertIn('values="0;.55;0"', svg)
 
     def test_travelling_dot_crosses_the_line(self):
