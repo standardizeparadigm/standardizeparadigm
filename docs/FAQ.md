@@ -238,3 +238,12 @@ thay đổi vào một commit làm ba việc khó hơn hẳn — đọc lại, t
 
 Ngoài ra lịch sử git ở đây là **tài liệu**: mỗi commit nói *vì sao*, không chỉ
 nói *cái gì*.
+
+## Vì sao ảnh dùng `viewBox` mà không đặt `width`/`height` cố định?
+
+Vì README đặt ảnh theo phần trăm (`width="48%"`). Thiếu `viewBox` thì trình
+duyệt hiểu `width="48%"` là phần trăm của **kích thước gốc**, không phải của
+khung — ảnh giữ nguyên pixel và tràn ra ngoài trên điện thoại.
+
+`viewBox` là thứ biến ảnh vẽ cứng thành ảnh co giãn. Luật `check_svg_viewbox`
+bắt buộc mọi file trong `assets/` có nó.
