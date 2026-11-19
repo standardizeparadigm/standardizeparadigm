@@ -142,6 +142,11 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
 - Thêm `status.py` (module thứ tám) nên nâng phiên bản nhỏ: 2.0.0 → 2.1.0. API
   cũ không đổi, chỉ thêm `status_strip`, `api_status`, `workflow_states`.
 
+## 2026-11-19 — Bảng chu kỳ đã đủ
+
+- Thêm `spinDot` 1.6s, `dashFlow` 2.6s, đèn chạy 6s, hạt bay 22s, scan 12.5s và
+  9s, thanh ngôn ngữ "thở" 5s/6s — chỉnh nhịp cả trang giờ nằm ở một bảng.
+
 ## 2026-11-19 — Cổng 3D: sửa lỗi mốc 24 giờ không bao giờ tới
 
 - Cổng so "lần chạy thành công gần nhất", nhưng lượt bị cổng bỏ qua **vẫn** là lượt thành công → mốc 24 giờ không bao giờ đạt được, ảnh chỉ đổi khi có push.
