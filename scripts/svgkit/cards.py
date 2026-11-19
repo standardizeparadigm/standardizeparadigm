@@ -137,7 +137,13 @@ def stats_card(pal, data, dt, t, width=640, height=258):
         parts.append('    <rect x="%d" y="%d" width="34" height="34" rx="10" '
                      'fill="%s" fill-opacity=".14" stroke="%s" stroke-opacity=".45"/>'
                      % (x + 8, y + 8, pal.accent, pal.accent))
+        # Icon nhích nhẹ theo nhịp riêng của từng ô: sáu biểu tượng không
+        # cùng lên xuống một lúc thì thẻ trông như đang thở, không như đang
+        # rung.
+        parts.append('    <g class="bob" style="animation-delay:%.2fs">'
+                     % (-0.6 * i))
         parts.append(icon(icon_name, x + 15.5, y + 15.5, pal.accent3, 0.8, 1.7))
+        parts.append('    </g>')
         shown = human(value) if value is not None else "-"
         parts.append('    <text x="%d" y="%d" class="tileValue">%s</text>'
                      % (x + 52, y + 27, esc(shown)))
