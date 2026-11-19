@@ -36,3 +36,14 @@ python3 scripts/generate_cards.py --list-themes        # xem danh sách + mã m�
 
 - Nhấn `#22D3EE`, phụ `#06B6D4`, nhạt `#67E8F9`.
 - Lạnh và sắc; hợp với ảnh chụp màn hình code.
+## `mono`
+
+- Nhấn `#E5E5E5`, phụ `#A3A3A3`, nhạt `#FAFAFA`.
+- Không màu: in giấy, chụp ảnh đen trắng, hoặc khi cần sự tập trung tuyệt đối.
+
+## Thêm bảng màu mới
+
+1. Mở `scripts/svgkit/palette.py`.
+2. Thêm một `Palette(...)` vào `THEMES` với đủ 14 token.
+3. Chạy `python3 scripts/generate_cards.py --all --theme ten-moi`.
+4. `health.yml` sẽ tự thử vẽ bảng màu mới ở cả hai ngôn ngữ trong lần push kế tiếp.
