@@ -1157,6 +1157,62 @@ class TestFontShorthand(unittest.TestCase):
         check_repo.check_font_shorthand(self.tmp)
         self.assertEqual(check_repo.errors, [])
 
+
+
+class TestCronMinutes(unittest.TestCase):
+    """Dịch trường phút của cron thành tập phút — và cảnh báo khi trùng."""
+
+    def test_star_is_every_minute(self):
+        self.assertEqual(check_repo._cron_minutes("*"), set(range(60)))
+
+    def test_step_from_zero(self):
+        self.assertEqual(check_repo._cron_minutes("*/5"),
+                         {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55})
+
+    def test_offset_range(self):
+        self.assertEqual(check_repo._cron_minutes("7-59/30"), {7, 37})
+
+    def test_list_and_single(self):
+        self.assertEqual(check_repo._cron_minutes("2,12,22"), {2, 12, 22})
+        self.assertEqual(check_repo._cron_minutes("13"), {13})
+
+    def test_nonsense_returns_none(self):
+        for bad in ("", "abc", "60", "9-3", "*/0", "1/x"):
+            self.assertIsNone(check_repo._cron_minutes(bad), bad)
+
+
+class TestCronCollisions(unittest.TestCase):
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="cron-")
+        self.wf = os.path.join(self.tmp, ".github", "workflows")
+        os.makedirs(self.wf)
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _add(self, name, cron):
+        with open(os.path.join(self.wf, name), "w", encoding="utf-8") as handle:
+            handle.write('name: %s\non:\n  schedule:\n    - cron: "%s"\n'
+                         % (name, cron))
+
+    def test_shared_minute_is_reported(self):
+        self._add("a.yml", "0 */3 * * *")
+        self._add("b.yml", "0 */6 * * *")
+        check_repo.check_cron_minute_collisions(self.tmp)
+        self.assertTrue(any("cùng chạy" in w for w in check_repo.warnings))
+
+    def test_disjoint_minutes_are_quiet(self):
+        self._add("a.yml", "13 */3 * * *")
+        self._add("b.yml", "*/5 * * * *")
+        check_repo.check_cron_minute_collisions(self.tmp)
+        self.assertEqual(check_repo.warnings, [])
+
+    def test_real_repo_has_no_collision(self):
+        check_repo.check_cron_minute_collisions()
+        self.assertEqual([w for w in check_repo.warnings if "cùng chạy" in w], [])
+
 if __name__ == "__main__":
     unittest.main()
 
