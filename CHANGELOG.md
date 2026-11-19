@@ -3,6 +3,10 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Top languages: khoanh sáng ngôn ngữ đứng đầu
+
+- Chấm màu của ngôn ngữ lớn nhất có thêm vòng mờ nhấp nháy — mắt bám vào đó trước.
+
 ## 2026-11-19 — Activity: nhãn ngày cao nhất
 
 - Cột cao nhất có nhãn `cao nhất 1.1k`, ẩn đi khi hôm nay đã là ngày cao nhất (chỗ đó đã có chấm nhấp nháy).
