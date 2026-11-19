@@ -39,10 +39,15 @@ Dùng tiền tố tiếng Anh theo kiểu conventional commits (phần mô tả 
 Chạy bộ kiểm tra ngay trên máy bạn (không cần cài gì):
 
 ```bash
-python3 scripts/check_repo.py
+python3 scripts/check_repo.py                          # sức khỏe repo
+python3 -m unittest discover -s scripts/tests -t scripts   # 105 unit test
 ```
 
-Nó sẽ chỉ ra ký tự lỗi encoding, SVG hỏng, link chết, workflow sai — đúng những gì CI của repo kiểm tra.
+Chúng chỉ ra ký tự lỗi encoding, SVG hỏng, link chết, workflow sai — đúng những gì CI của repo kiểm tra.
+
+**Sửa ảnh thì sửa code, đừng sửa tay file SVG.** Toàn bộ `assets/*.svg` do
+`scripts/generate_cards.py` + `scripts/svgkit/` sinh ra; chạm tay vào SVG là
+lượt workflow kế tiếp sẽ ghi đè.
 
 ## 🐛 Báo lỗi & yêu cầu tính năng
 
