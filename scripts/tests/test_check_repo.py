@@ -330,6 +330,50 @@ class TestTestClaims(unittest.TestCase):
         check_repo.check_test_claims(self.tmp)
         self.assertEqual(check_repo.real_test_count(self.tmp), 3)
 
+
+
+class TestOrphanDocs(unittest.TestCase):
+    """Tài liệu trong docs/ phải được dẫn tới từ đâu đó."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="orphan-")
+        os.makedirs(os.path.join(self.tmp, "docs"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _put(self, name, text, folder=""):
+        path = os.path.join(self.tmp, folder, name)
+        with open(path, "w", encoding="utf-8") as handle:
+            handle.write(text)
+
+    def test_linked_doc_passes(self):
+        self._put("README.md", "xem [kiến trúc](docs/ARCHITECTURE.md)")
+        self._put("ARCHITECTURE.md", "# Kiến trúc\n", "docs")
+        check_repo.check_orphan_docs(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_unlinked_doc_is_flagged(self):
+        self._put("README.md", "không nhắc gì")
+        self._put("THEMES.md", "# Bảng màu\n", "docs")
+        check_repo.check_orphan_docs(self.tmp)
+        self.assertTrue(any("THEMES.md" in e for e in check_repo.errors))
+
+    def test_readme_and_changelog_are_exempt(self):
+        self._put("README.md", "a")
+        self._put("CHANGELOG.md", "b")
+        check_repo.check_orphan_docs(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_doc_can_be_linked_from_another_doc(self):
+        self._put("README.md", "[faq](docs/FAQ.md)")
+        self._put("FAQ.md", "xem [themes](THEMES.md)", "docs")
+        self._put("THEMES.md", "# Bảng màu\n", "docs")
+        check_repo.check_orphan_docs(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
 if __name__ == "__main__":
     unittest.main()
 
