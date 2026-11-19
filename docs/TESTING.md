@@ -50,3 +50,14 @@ i18n:
 - Khoá lạ trả về chính tên khoá (để thấy được trong ảnh) chứ không ném `KeyError`.
 - `{pct}` được thay đúng; `weekday(0..6)` trả đúng tên.
 
+## `test_primitives.py` (26 test)
+
+Phần lớn test nằm ở đây vì `primitives` là nền của mọi thẻ:
+
+- `esc()`: `&`, `<`, `>`, `"` đều được thoát; chữ Việt **không** bị đổi; chuỗi đã escape vẫn parse được thành XML.
+- `human()`: 0 → `0`, 999 → `999`, 1000 → `1k`, 3476 → `3.5k`, 1200000 → `1.2M`.
+- `num()`: bỏ `.0` thừa, giữ một chữ số thập phân.
+- `icon()`: mọi tên icon trong `ICONS` vẽ ra được path hợp lệ; tên lạ trả chuỗi rỗng chứ không crash.
+- `open_svg()`: luôn có `clipPath#cardBody`, viền gradient, `aria-label`, `<title>`.
+- `prefers-reduced-motion`: mọi class có `animation` đều xuất hiện trong khối tắt hoạt ảnh.
+
