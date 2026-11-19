@@ -89,10 +89,10 @@ def _rank_ring(pal, percent, letter, label, progress_text,
                  % (tip_x, tip_y, pal.accent3))
     parts.append('    </g>')
     parts.append('    <text x="%d" y="%d" text-anchor="middle" class="fSans" '
-                 'style="font:800 32px %s;fill:%s">%s</text>'
+                 'style="font-weight:800;font-size:32px;font-family:%s;fill:%s">%s</text>'
                  % (cx, cy + 6, pal.font, pal.title, esc(letter)))
     parts.append('    <text x="%d" y="%d" text-anchor="middle" class="fSans" '
-                 'style="font:700 8.5px %s;fill:%s;letter-spacing:2px">%s</text>'
+                 'style="font-weight:700;font-size:8.5px;font-family:%s;fill:%s;letter-spacing:2px">%s</text>'
                  % (cx, cy + 24, pal.font, pal.label, esc(label)))
     parts.append('    <text x="%d" y="%d" text-anchor="middle" class="cardSub">'
                  '%s</text>' % (cx, cy + 80, esc(progress_text)))
@@ -251,7 +251,7 @@ def waiting_card(pal, width, title, line1, line2, desc=None):
     """Thẻ tạm khi chưa có dữ liệu (không bao giờ đè lên ảnh thật)."""
     parts = open_svg(pal, width, 258, title, desc=desc)
     parts.append('  <text x="%d" y="112" text-anchor="middle" class="fSans" '
-                 'style="font:700 14px %s;fill:%s">%s</text>'
+                 'style="font-weight:700;font-size:14px;font-family:%s;fill:%s">%s</text>'
                  % (width // 2, pal.font, pal.text, esc(line1)))
     parts.append('  <text x="%d" y="138" text-anchor="middle" class="footNote" '
                  'style="font-size:10px">%s</text>' % (width // 2, esc(line2)))

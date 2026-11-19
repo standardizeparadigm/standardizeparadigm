@@ -96,7 +96,7 @@ def _orbit(pal, cx=148, cy=140):
     parts.append('    <circle cx="%d" cy="%d" r="25" fill="url(#coreGrad)" '
                  'filter="url(#glow)"/>' % (cx, cy))
     parts.append('    <text x="%d" y="%d" text-anchor="middle" class="fSans" '
-                 'style="font:800 18px %s;fill:%s;letter-spacing:.5px">SP</text>'
+                 'style="font-weight:800;font-size:18px;font-family:%s;fill:%s;letter-spacing:.5px">SP</text>'
                  % (cx, cy + 6, pal.font, pal.bg_top))
     for ang, radius, color, speed in ((0, 56, pal.accent3, 15),
                                       (128, 72, pal.accent, 22),
@@ -176,7 +176,7 @@ def _chips(pal):
             '<rect x="%d" y="%d" width="52" height="26" rx="9" fill="%s" '
             'fill-opacity=".7" stroke="%s" stroke-opacity=".5"/>'
             '<text x="%d" y="%d" text-anchor="middle" class="fMono" '
-            'style="font:700 11px %s;fill:%s;letter-spacing:.6px">%s</text>'
+            'style="font-weight:700;font-size:11px;font-family:%s;fill:%s;letter-spacing:.6px">%s</text>'
             '</g>' % (delay, x, y, pal.panel, pal.stroke, x + 26, y + 17,
                       pal.mono, pal.accent3, label))
     return parts

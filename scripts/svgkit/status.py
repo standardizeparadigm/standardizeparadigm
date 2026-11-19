@@ -86,10 +86,10 @@ def _pill(pal, x, name, state, t, delay, age=None):
     parts.append('    <circle cx="%d" cy="29" r="4.4" fill="%s"%s/>'
                  % (x + 17, color,
                     ' filter="url(#glow)"' if state in ("passing", "running") else ""))
-    parts.append('    <text x="%d" y="25" class="fMono" style="font:600 7.5px %s;'
+    parts.append('    <text x="%d" y="25" class="fMono" style="font-weight:600;font-size:7.5px;font-family:%s;'
                  'fill:%s;letter-spacing:.9px">%s</text>'
                  % (x + 30, pal.mono, pal.dim, esc(name)))
-    parts.append('    <text x="%d" y="39" class="fSans" style="font:800 10px %s;'
+    parts.append('    <text x="%d" y="39" class="fSans" style="font-weight:800;font-size:10px;font-family:%s;'
                  'fill:%s;letter-spacing:.4px">%s</text>'
                  % (x + 30, pal.font, color, esc(label)))
     age_label = human_age(age, t)
@@ -97,7 +97,7 @@ def _pill(pal, x, name, state, t, delay, age=None):
         # Nhãn "cách đây bao lâu" ở góc phải: một dải trạng thái cũ 6 tiếng
         # trông y hệt một dải vừa vẽ, nên phải nói tuổi của nó ra.
         parts.append('    <text x="%d" y="39" text-anchor="end" class="fMono" '
-                     'style="font:600 6.8px %s;fill:%s;letter-spacing:.2px">%s</text>'
+                     'style="font-weight:600;font-size:6.8px;font-family:%s;fill:%s;letter-spacing:.2px">%s</text>'
                      % (x + PILL_W - 9, pal.mono, pal.dim, esc(age_label)))
     parts.append("  </g>")
     return parts
