@@ -440,6 +440,31 @@ class TestWeekdayNames(unittest.TestCase):
                          datetime(2026, 1, 5, 8, 0), i18n.get("vi"))
         self.assertIn("05/01", svg)
 
+
+
+class TestProgressHalo(unittest.TestCase):
+    """Quầng lan từ đầu thanh tiến độ — dấu hiệu "chỗ này đang tiến"."""
+
+    def setUp(self):
+        self.svg = clock_card(get_palette("sky"),
+                              datetime(2026, 11, 19, 15, 4, 5), i18n.get("vi"))
+
+    def test_halo_exists(self):
+        self.assertIn('values="6;17"', self.svg)
+
+    def test_halo_fades_out(self):
+        self.assertIn('values=".65;0"', self.svg)
+
+    def test_halo_sits_at_the_bar_tip(self):
+        # Cùng toạ độ với chấm sáng ở đầu thanh, không lệch một pixel.
+        tips = re.findall(r'<circle cx="([\d.]+)" cy="216"', self.svg)
+        self.assertGreaterEqual(len(tips), 2)
+        self.assertEqual(len(set(tips)), 1, tips)
+
+    def test_halo_is_smil_not_css(self):
+        # SMIL chạy được cả trong trình xem không hiểu CSS.
+        self.assertIn('<animate attributeName="r"', self.svg)
+
 if __name__ == "__main__":
     unittest.main()
 

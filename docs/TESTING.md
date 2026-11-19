@@ -13,7 +13,7 @@ python3 -m unittest tests.test_clock.TestSunMoon.test_six_pm_is_already_moon
 Thứ tự tham số quan trọng: `-t scripts` để `sys.path` có `scripts/`, nhờ vậy
 test import được `svgkit.*` mà không cần cài gì.
 
-Hiện có **823 test** trên 17 file, chạy xong trong chưa tới 1,5 giây.
+Hiện có **827 test** trên 17 file, chạy xong trong chưa tới 1,5 giây.
 
 Con số này được kiểm tự động: `test_docs.py` đếm lại toàn bộ bộ test và so
 với chữ trong file bạn đang đọc, nên nó không thể lệch âm thầm.
