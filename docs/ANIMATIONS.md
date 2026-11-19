@@ -151,3 +151,13 @@ Mỗi file SVG có sẵn khối `@media (prefers-reduced-motion: reduce)` tắt 
 
 Đổi số ở đây là đổi nhịp của cả trang — không cần sửa từng ảnh.
 
+## Tất định: cùng đầu vào, cùng đầu ra
+
+Không có `random` nào không seed. `_stars()` dùng `Random(20260820)`, `_particles()` dùng `Random(77123)`, dữ liệu demo dùng `Random(7)`.
+
+Vì vậy:
+
+- Hai lần build liên tiếp cho ra file **giống hệt nhau** (trừ phần thời gian) — `git diff` sạch nghĩa là thật sự không có gì đổi.
+- `--smart` so vân tay dữ liệu là đủ tin cậy, không bị "nhiễu" do vị trí sao đổi mỗi lần.
+- Test có thể khẳng định chính xác toạ độ, số lượng, chu kỳ.
+
