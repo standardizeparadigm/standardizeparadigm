@@ -142,7 +142,7 @@ def hero(pal, dt, t, width=1000, height=280):
     stamp = dt.strftime("%d/%m · %H:%M")
     parts = open_svg(pal, width, height,
                      "Standardize Paradigm - " + t("hero.sub"),
-                     halo=False, radius=22)
+                     desc=t("desc.hero"), halo=False, radius=22)
 
     parts.append('  <g clip-path="url(#cardBody)">')
     parts += _grid(width, height, pal)

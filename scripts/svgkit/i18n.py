@@ -71,6 +71,7 @@ STRINGS = {
         "footer.title": "Thanks for visiting!",
         "footer.sub": "Keep learning • Keep building • Keep being curious",
         "footer.made": "Làm bằng Python và rất nhiều lần Ctrl+S",
+        "desc.hero": "Ảnh bìa: tên, vai trò và nơi sống của tác giả",
     },
     "en": {
         "stats.title": "GITHUB STATS",
@@ -125,6 +126,7 @@ STRINGS = {
         "footer.title": "Thanks for visiting!",
         "footer.sub": "Keep learning • Keep building • Keep being curious",
         "footer.made": "Made with Python and a lot of Ctrl+S",
+        "desc.hero": "Cover image: the author's name, role and location",
     },
 }
 
