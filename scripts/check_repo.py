@@ -599,6 +599,35 @@ def check_test_claims(root=None):
                             "— hãy nâng lên" % (rel(path), number, claimed, total))
 
 
+# ------------------------------------------------- 4b4. Địa danh đã đổi chỗ
+STALE_PLACES = ("Long Xuyên", "Long Xuyen", "An Giang")
+
+
+def check_stale_places(root=None):
+    """Không được còn địa danh cũ trong bất kỳ file nào.
+
+    Chỗ ở đã đổi sang phường Kon Tum, tỉnh Quảng Ngãi. Một chuỗi còn sót
+    trong ảnh hero hay trong README là thông tin sai về chính chủ repo —
+    loại lỗi người đọc không thể tự phát hiện là đã cũ.
+    """
+    root = root or ROOT
+    # Chính file này và test của nó phải chứa chuỗi cũ để định nghĩa/kiểm
+    # tra luật — không tính là vi phạm.
+    exempt = ("scripts/check_repo.py", "scripts/tests/test_check_repo.py")
+    for base, dirs, files in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.lower().endswith(TEXT_SUFFIXES):
+                continue
+            path = os.path.join(base, name)
+            if rel(path) in exempt:
+                continue
+            text = read(path)
+            for stale in STALE_PLACES:
+                if stale in text:
+                    err("%s còn địa danh cũ %r" % (rel(path), stale))
+
+
 # --------------------------------------------------- 4b3. Dấu merge còn sót
 RE_CONFLICT = re.compile(r"^(<{7}|={7}|>{7})(\s|$)", flags=re.M)
 
@@ -729,6 +758,7 @@ def main(argv=None):
     check_orphan_docs()
     check_readme_length()
     check_conflict_markers()
+    check_stale_places()
     check_svg_budget()
     check_python()
     check_module_docstrings()
