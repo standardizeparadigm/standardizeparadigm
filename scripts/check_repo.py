@@ -906,8 +906,12 @@ def check_cron_resolution(root=None):
 # ----------------------------------- 4b6b. Hai workflow không chạy cùng phút
 def _cron_minutes(field):
     """Tập phút (0-59) mà trường cron phút sẽ nổ. None nếu không hiểu."""
+    if not field:
+        return None
     minutes = set()
     for part in field.split(","):
+        if not part:
+            return None
         step = 1
         span = part
         if "/" in part:
