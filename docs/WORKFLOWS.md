@@ -33,11 +33,16 @@ một phút riêng trong giờ — không job nào chạm phút của job khác:
 | Phút | Job | Vì sao đúng phút đó |
 | :-- | :-- | :-- |
 | :00 :05 :10 … :55 | `live-clock` | nhịp 5 phút, sàn của GitHub |
-| :02 :12 :22 :32 :42 :52 | `status` | lệch 2 phút để không đứng sau đồng hồ |
-| :07 :37 | `profile-3d` | không phải bội số của 5 nên không chạm đồng hồ |
-| :13 (mỗi 3 giờ) | `profile-cards` | chen giữa :10 và :15 của đồng hồ |
-| :23 (mỗi 3 giờ) | `readme-tend` | ngay sau `status` (:22) |
+| :02 :07 :12 … :57 | `status` | chen giữa hai lượt đồng hồ, không bao giờ trùng |
+| :08 :18 :28 :38 :48 :58 | `profile-3d` | mỗi 10 phút, né lưới 5 phút và lưới của `status` |
+| :13 (mỗi giờ) | `profile-cards` | chen giữa :10 và :15 của đồng hồ |
+| :23 (mỗi 2 giờ) | `readme-tend` | ngay sau `status` (:22) |
 | 23:03 UTC | `health` | 06:03 giờ Việt Nam, sau lượt đồng hồ :00 |
+
+Nhịp ngắn nhất có thể mà vẫn lịch sự: đồng hồ 5 phút, dải trạng thái 5 phút,
+biểu đồ 3D 10 phút, thẻ số liệu 1 giờ, con dấu README 2 giờ. Ba job nặng
+(`cards`, `3d`, `tend`) đều có cổng riêng nên phần lớn lượt chạy kết thúc
+trong vài giây mà không commit gì.
 
 `check_repo.py` cảnh báo nếu sau này ai thêm lịch mà chạm phút của job khác.
 Cơ chế push có sẵn vòng thử lại 3 lần, nhưng phòng tránh từ đầu vẫn rẻ hơn.
