@@ -74,6 +74,18 @@ def activity_card(pal, contrib, dt, t, width=640, height=258):
                      'stroke-width="1"/>' % (gy, pal.label))
 
     peak = max([c for _, c in days] + [1])
+    counts = [c for _, c in days]
+    average = sum(counts) / float(len(counts) or 1)
+    avg_y = baseline - (average / float(peak)) * (baseline - top - 4)
+    if 0 < average < peak:
+        parts.append('  <g class="fadeUp" style="animation-delay:.3s">')
+        parts.append('    <path d="M22 %.1fH618" stroke="%s" stroke-opacity=".38" '
+                     'stroke-width="1" stroke-dasharray="4 6"/>'
+                     % (avg_y, pal.accent3))
+        parts.append('    <text x="24" y="%.1f" class="footNote" style="fill:%s">%s</text>'
+                     % (avg_y - 5, pal.accent3,
+                        esc(t("act.avg", n=human(int(round(average)))))))
+        parts.append('  </g>')
     slot = (width - 44) / float(len(days))
     bar_w = min(26.0, slot * 0.62)
 

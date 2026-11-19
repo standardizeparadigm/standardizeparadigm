@@ -78,6 +78,7 @@ STRINGS = {
         "desc.clock": "Đồng hồ Việt Nam UTC+7 với kim quay liên tục",
         "desc.activity": "Biểu đồ contribution 14 ngày gần nhất",
         "langs.more": "+{n} ngôn ngữ khác · {pct}%",
+        "act.avg": "TB {n}",
     },
     "en": {
         "stats.title": "GITHUB STATS",
@@ -139,6 +140,7 @@ STRINGS = {
         "desc.clock": "Vietnam clock (UTC+7) with continuously moving hands",
         "desc.activity": "Contribution chart for the last 14 days",
         "langs.more": "+{n} more languages · {pct}%",
+        "act.avg": "AVG {n}",
     },
 }
 

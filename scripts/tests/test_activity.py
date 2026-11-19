@@ -73,3 +73,28 @@ class TestStreaks(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestAverageLine(unittest.TestCase):
+    def test_line_appears_for_mixed_data(self):
+        svg = self.card([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 40])
+        self.assertIn('stroke-dasharray="4 6"', svg)
+        self.assertIn("TB ", svg)
+
+    def test_no_line_when_all_equal(self):
+        svg = self.card([5] * 14)
+        self.assertNotIn('stroke-dasharray="4 6"', svg)
+
+    def card(self, counts):
+        import datetime as dtmod
+
+        from svgkit import i18n
+        from svgkit.activity import activity_card
+        from svgkit.palette import get_palette
+
+        base = dtmod.date(2026, 11, 19)
+        days = [(base - dtmod.timedelta(days=13 - i), c) for i, c in enumerate(counts)]
+        contrib = {"total": sum(counts), "days": days,
+                   "streak_current": 0, "streak_longest": 3}
+        return activity_card(get_palette(), contrib,
+                             dtmod.datetime(2026, 11, 19, 15, 0), i18n.get("vi"))

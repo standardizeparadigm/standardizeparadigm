@@ -159,7 +159,7 @@
   <g class="fadeUp">
     <rect x="22" y="22" width="4" height="18" rx="2" fill="url(#accentGrad)"/>
     <text x="36" y="37" class="cardTitle">CONTRIBUTION ACTIVITY</text>
-    <text x="618" y="36" text-anchor="end" class="cardSub">365 NGÀY · 19/11 · 15:21</text>
+    <text x="618" y="36" text-anchor="end" class="cardSub">365 NGÀY · 19/11 · 15:34</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.10s">
     <rect x="22" y="58" width="184" height="52" rx="12" fill="#0B1B2B" stroke="#17334F" stroke-opacity=".8"/>
@@ -187,6 +187,10 @@
     <path d="M22 165H618" stroke="#8CA4BD" stroke-opacity=".10" stroke-width="1"/>
     <path d="M22 186H618" stroke="#8CA4BD" stroke-opacity=".10" stroke-width="1"/>
     <path d="M22 208H618" stroke="#8CA4BD" stroke-opacity=".10" stroke-width="1"/>
+  <g class="fadeUp" style="animation-delay:.3s">
+    <path d="M22 197.6H618" stroke="#7DD3FC" stroke-opacity=".38" stroke-width="1" stroke-dasharray="4 6"/>
+    <text x="24" y="192.6" class="footNote" style="fill:#7DD3FC">TB 196</text>
+  </g>
   <g class="fadeUp" style="animation-delay:0.10s">
     <rect x="30.3" y="204" width="26.0" height="4.0" rx="6.0" fill="#17334F" opacity=".7">
     </rect>
@@ -274,6 +278,7 @@
   <text x="596.7" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#7DD3FC;letter-spacing:.3px">T5</text>
   <g class="fadeUp" style="animation-delay:.7s">
     <circle cx="26" cy="242" r="3" fill="#38BDF8" class="pulse"/>
-    <text x="36" y="245" class="footNote">Đếm từ lịch contribution thật của GitHub · cập nhật 19/11 · 15:21</text>
+    <text x="36" y="245" class="footNote">Đếm từ lịch contribution thật của GitHub · cập nhật 19/11 · 15:34</text>
   </g>
+<!-- data:b24c8da78a09 -->
 </svg>
