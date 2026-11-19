@@ -23,7 +23,7 @@ class TestHero(unittest.TestCase):
 
     def test_has_title_and_subtitle(self):
         self.assertIn("Standardize Paradigm", self.svg)
-        self.assertIn("Học sinh lớp 7", self.svg)
+        self.assertIn("Lập trình viên tự học", self.svg)
 
     def test_has_typing_animation(self):
         self.assertIn("typeClip0", self.svg)
@@ -34,7 +34,7 @@ class TestHero(unittest.TestCase):
 
     def test_english_variant(self):
         svg = hero(get_palette(), DT, i18n.get("en"))
-        self.assertIn("Grade 7 student", svg)
+        self.assertIn("Self-taught developer", svg)
         self.assertNotIn("Học sinh", svg)
 
     def test_theme_changes_colors(self):
@@ -154,7 +154,7 @@ class TestHeroContent(unittest.TestCase):
         self.assertIn("Standardize Paradigm", self.svg)
 
     def test_four_pills_plus_location(self):
-        # LỚP 7, UTC+7, TỰ HỌC, (ghim) KON TUM, đang code.
+        # TỰ HỌC, UTC+7, MÃ NGUỒN MỞ, (ghim) KON TUM, đang code.
         self.assertEqual(self.svg.count('class="heroPill"'), 5)
 
     def test_location_pill_says_kon_tum(self):
