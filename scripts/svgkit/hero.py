@@ -83,6 +83,15 @@ def _orbit(pal, cx=148, cy=140):
                  'stroke="url(#accentGrad)" stroke-opacity=".55" stroke-width="2" '
                  'stroke-dasharray="90 40" class="spinRev" '
                  'style="transform-origin:%dpx %dpx"/>' % (cx, cy, cx, cy))
+    # Hai vòng lan toả chậm quanh lõi, như nhịp thở của thành phố nhỏ.
+    for delay, duration in ((0, 5.2), (-2.6, 5.2)):
+        parts.append('    <circle cx="%d" cy="%d" r="26" fill="none" '
+                     'stroke="%s" stroke-width="1.4" opacity="0">'
+                     '<animate attributeName="r" values="26;86" dur="%.1fs" '
+                     'begin="%.1fs" repeatCount="indefinite"/>'
+                     '<animate attributeName="opacity" values=".55;0" dur="%.1fs" '
+                     'begin="%.1fs" repeatCount="indefinite"/>'
+                     '</circle>' % (cx, cy, pal.accent3, duration, delay, duration, delay))
     parts.append('    <circle cx="%d" cy="%d" r="25" fill="url(#coreGrad)" '
                  'filter="url(#glow)"/>' % (cx, cy))
     parts.append('    <text x="%d" y="%d" text-anchor="middle" class="fSans" '

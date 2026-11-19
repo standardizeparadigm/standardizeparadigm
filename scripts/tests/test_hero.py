@@ -71,3 +71,14 @@ class TestParticles(unittest.TestCase):
             x, y = int(cx), int(cy)
             inside = 250 < x < 840 and 40 < y < 220
             self.assertFalse(inside, "hạt sáng rơi vào vùng chữ tại (%d, %d)" % (x, y))
+
+
+class TestCorePulse(unittest.TestCase):
+    def test_two_expanding_rings(self):
+        svg = hero(get_palette(), DT, i18n.get("vi"))
+        self.assertEqual(svg.count('values="26;86"'), 2)
+        self.assertIn('values=".55;0"', svg)
+
+    def test_rings_slower_than_second_hand(self):
+        svg = hero(get_palette(), DT, i18n.get("vi"))
+        self.assertIn('dur="5.2s"', svg)

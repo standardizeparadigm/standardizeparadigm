@@ -236,6 +236,8 @@
     <circle cx="148" cy="140" r="72" fill="none" stroke="#17334F" stroke-opacity=".35" stroke-width="1"/>
     <circle cx="148" cy="140" r="55" fill="none" stroke="url(#accentGrad)" stroke-width="1.4" stroke-dasharray="3 7" class="spinSlow" style="transform-origin:148px 140px"/>
     <circle cx="148" cy="140" r="36" fill="none" stroke="url(#accentGrad)" stroke-opacity=".55" stroke-width="2" stroke-dasharray="90 40" class="spinRev" style="transform-origin:148px 140px"/>
+    <circle cx="148" cy="140" r="26" fill="none" stroke="#7DD3FC" stroke-width="1.4" opacity="0"><animate attributeName="r" values="26;86" dur="5.2s" begin="0.0s" repeatCount="indefinite"/><animate attributeName="opacity" values=".55;0" dur="5.2s" begin="0.0s" repeatCount="indefinite"/></circle>
+    <circle cx="148" cy="140" r="26" fill="none" stroke="#7DD3FC" stroke-width="1.4" opacity="0"><animate attributeName="r" values="26;86" dur="5.2s" begin="-2.6s" repeatCount="indefinite"/><animate attributeName="opacity" values=".55;0" dur="5.2s" begin="-2.6s" repeatCount="indefinite"/></circle>
     <circle cx="148" cy="140" r="25" fill="url(#coreGrad)" filter="url(#glow)"/>
     <text x="148" y="146" text-anchor="middle" class="fSans" style="font:800 18px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#07111D;letter-spacing:.5px">SP</text>
     <g transform="rotate(0 148 140)"><g class="spinSlow" style="transform-origin:148px 140px;animation-duration:15s"><circle cx="204.0" cy="140.0" r="3.2" fill="#7DD3FC" filter="url(#glow)"/></g></g>
