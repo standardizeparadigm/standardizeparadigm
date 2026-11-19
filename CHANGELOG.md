@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Bộ test vượt 130
+
+- Thêm test cho `human()`, `esc()`, i18n dự phòng, tiêu đề/desc của từng thẻ và cổng workflow 3D.
+- Test không cần mạng: mọi lời gọi API đều được thay bằng dữ liệu mẫu.
+
 ## 2026-11-19 — Cổng 3D không được chết im lặng
 
 - `${GITHUB_REPOSITORY_OWNER}` chưa đặt + `set -u` → cổng thoát giữa đường và luôn bỏ qua lượt vẽ.
