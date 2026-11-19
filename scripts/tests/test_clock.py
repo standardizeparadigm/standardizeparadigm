@@ -224,6 +224,31 @@ class TestLiveSlotTiming(unittest.TestCase):
     def test_next_hour_waits_out_the_rest_of_this_one(self):
         self.assertEqual(self._delay(308, "16"), 3600 - (4 * 60 + 5))
 
+
+
+class TestLiveSlotRules(unittest.TestCase):
+    """CSS và chế độ giảm chuyển động của các ô số."""
+
+    def setUp(self):
+        self.svg = clock_card(get_palette(), DT, i18n.get("vi"))
+
+    def test_minute_cycle_is_one_hour(self):
+        self.assertIn("slotMin 3600s linear infinite", self.svg)
+
+    def test_hour_cycle_is_one_day(self):
+        self.assertIn("slotHour 86400s linear infinite", self.svg)
+
+    def test_keyframes_show_for_one_minute(self):
+        # 60/3600 = 1.666%
+        self.assertIn("@keyframes slotMin  { 0%, 1.666% { opacity: 1 }", self.svg)
+
+    def test_keyframes_show_for_one_hour(self):
+        # 3600/86400 = 4.166%
+        self.assertIn("@keyframes slotHour { 0%, 4.166% { opacity: 1 }", self.svg)
+
+    def test_reduced_motion_disables_the_digits(self):
+        self.assertIn(".liveHour text, .liveMin text,", self.svg)
+
 if __name__ == "__main__":
     unittest.main()
 
