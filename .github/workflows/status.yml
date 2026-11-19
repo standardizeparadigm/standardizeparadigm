@@ -26,7 +26,7 @@ on:
       - "Profile Cards (LTS)"
       - "README Garden"
       - "Repo Health"
-      - "👋 Welcome new contributors"
+      - "Welcome new contributors"
     types: [completed]
   workflow_dispatch:
   push:
