@@ -599,6 +599,48 @@ def check_test_claims(root=None):
                             "— hãy nâng lên" % (rel(path), number, claimed, total))
 
 
+# ------------------------------------------------ 4b8. Nhịp cron hợp lệ
+RE_CRON = re.compile(r"^\s*-\s*cron:\s*[\"']([^\"']+)[\"']", re.M)
+RE_CRON_STEP = re.compile(r"^\*/(\d+)$")
+
+
+def _minute_step(field):
+    """Bước nhảy của trường phút, hoặc None nếu là 'mỗi phút'."""
+    step = RE_CRON_STEP.match(field)
+    if step:
+        return int(step.group(1))
+    if field == "*":
+        return 0
+    return None
+
+
+def check_cron_resolution(root=None):
+    """Cron phải lịch sự với hạn mức của GitHub.
+
+    GitHub không chạy cron dày hơn 5 phút một lần và cũng không báo lỗi:
+    `* * * * *` chỉ đơn giản là chạy mỗi 5 phút trong khi người viết tưởng
+    là mỗi phút. Ảnh "cập nhật mỗi phút" nhờ vậy là lời hẹn không bao giờ
+    thành hiện thực — phút nhảy trong ảnh là do CSS, không phải do cron.
+    """
+    root = root or ROOT
+    folder = os.path.join(root, ".github", "workflows")
+    if not os.path.isdir(folder):
+        return
+    for name in sorted(os.listdir(folder)):
+        if not name.lower().endswith((".yml", ".yaml")):
+            continue
+        path = os.path.join(folder, name)
+        for expression in RE_CRON.findall(read(path)):
+            fields = expression.split()
+            if len(fields) != 5:
+                err("%s: cron %r không đủ 5 trường" % (rel(path), expression))
+                continue
+            step = _minute_step(fields[0])
+            if step is not None and step < 5:
+                err("%s: cron %r dày hơn 5 phút — GitHub sẽ âm thầm gộp lại"
+                    % (rel(path), expression))
+
+
 # ------------------------------------------- 4b7. Badge workflow của shields
 SHIELDS_WORKFLOW = ("img.shields.io/github/actions/workflow",
                     "img.shields.io/github/workflow/status")
@@ -836,6 +878,7 @@ def main(argv=None):
     check_todo_markers()
     check_workflow_dispatch()
     check_shields_workflow_badges()
+    check_cron_resolution()
     check_svg_budget()
     check_python()
     check_module_docstrings()
