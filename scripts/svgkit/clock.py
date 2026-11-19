@@ -180,6 +180,14 @@ def clock_card(pal, dt, t, width=640, height=258):
                  % (px, esc(t("clock.day"))))
     parts.append('    <text x="%d" y="206" text-anchor="end" class="legendValue">'
                  '%.0f%%</text>' % (px + bar_w, done))
+    # Còn bao lâu nữa hết ngày: phần trăm nói "đã đi được bao xa", con số này
+    # nói "còn bao xa" — cùng một dữ liệu, hai cách đọc, và cách thứ hai là
+    # cách người ta thật sự cần lúc 23h.
+    left_min = 24 * 60 - (hour * 60 + dt.minute)
+    parts.append('    <text x="%d" y="206" text-anchor="end" class="footNote" '
+                 'style="letter-spacing:.6px;fill:%s">%s</text>'
+                 % (px + bar_w - 46, pal.dim,
+                    esc(t("clock.left", h=left_min // 60, m=left_min % 60))))
     parts.append('    <rect x="%d" y="212" width="%d" height="8" rx="4" '
                  'fill="%s" fill-opacity=".6"/>' % (px, bar_w, pal.panel))
     parts.append('    <rect x="%d" y="212" width="%.1f" height="8" rx="4" '
