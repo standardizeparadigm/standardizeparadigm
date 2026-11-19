@@ -1,24 +1,24 @@
 # =====================================================================
-#  profile-cards.yml — Thẻ thống kê GitHub (bản LTS)
+#  profile-cards.yml — Thẻ thống kê, ngôn ngữ, ảnh bìa, hoạt động
 #
-#  Chạy scripts/generate_cards.py để vẽ:
-#    assets/stats.svg, assets/top-langs.svg, assets/hero.svg, assets/divider.svg
+#  Chạy mỗi 30 phút: số liệu GitHub đổi không nhanh bằng đồng hồ, nhưng
+#  cập nhật nửa tiếng một lần thì trang luôn "tươi" mà vẫn nhẹ.
 #
-#  Chế độ --strict: API lỗi là báo đỏ ngay, không âm thầm giữ ảnh cũ.
-#  Dùng GITHUB_TOKEN có sẵn của repo -> quota riêng, không bị 503.
-#
-#  Lịch: 08:00 mỗi ngày (giờ Việt Nam) = 01:00 UTC.
+#  Bước 1: --cards --hero --strict   (lỗi API là báo đỏ ngay)
+#  Bước 2: --activity               (GraphQL; lỗi thì giữ ảnh cũ, không đỏ)
+#  Bước 3: kiểm tra XML từng ảnh trước khi commit
 # =====================================================================
 name: Profile Cards (LTS)
 
 on:
   schedule:
-    - cron: "0 1 * * *"         # 08:00 giờ Việt Nam
+    - cron: "*/30 * * * *"       # mỗi 30 phút
   workflow_dispatch:
   push:
     branches: [main, master]
     paths:
       - "scripts/generate_cards.py"
+      - "scripts/svgkit/**"
       - ".github/workflows/profile-cards.yml"
 
 concurrency:
@@ -45,7 +45,6 @@ jobs:
           echo "Chủ repo        : ${{ github.repository_owner }}"
           echo "Commit          : $(git log -1 --oneline)"
           echo "Python          : $(python3 --version 2>&1)"
-          find . -type f -name "*.py" -not -path "./.git/*"
 
       - name: Vẽ thẻ (chế độ --strict)
         env:
@@ -53,28 +52,41 @@ jobs:
           GH_USER: ${{ github.repository_owner }}
           DISPLAY_NAME: Standardize Paradigm
           OUT_DIR: assets
+        run: python3 scripts/generate_cards.py --cards --hero --strict
+
+      - name: Vẽ thẻ hoạt động (không chặn workflow)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_USER: ${{ github.repository_owner }}
+          OUT_DIR: assets
         run: |
-          set -e
-          python3 scripts/generate_cards.py --cards --hero --strict
+          python3 scripts/generate_cards.py --activity \
+            || echo "(bỏ qua) không lấy được lịch contribution — giữ ảnh cũ"
 
       - name: Kiểm tra ảnh vừa ghi
         run: |
           set -e
           python3 - <<'PY'
+          import os
           import sys
           import xml.dom.minidom as md
-          for f in ("assets/stats.svg", "assets/top-langs.svg",
-                    "assets/hero.svg", "assets/divider.svg"):
+
+          required = ["assets/stats.svg", "assets/top-langs.svg",
+                      "assets/hero.svg", "assets/divider.svg",
+                      "assets/footer.svg"]
+          optional = ["assets/activity.svg", "assets/live-clock.svg"]
+
+          for path in required + [p for p in optional if os.path.exists(p)]:
               try:
-                  md.parse(f)
-              except Exception as e:
-                  print("!! %s lỗi XML: %s" % (f, e))
+                  md.parse(path)
+              except Exception as error:
+                  print("!! %s lỗi XML: %s" % (path, error))
                   sys.exit(1)
-              raw = open(f, encoding="utf-8").read()
+              raw = open(path, encoding="utf-8").read()
               if "Chưa có dữ liệu" in raw or "Chạy workflow" in raw:
-                  print("!! %s vẫn là thẻ tạm" % f)
+                  print("!! %s vẫn là thẻ tạm" % path)
                   sys.exit(1)
-              print("OK  %-22s %6d bytes" % (f, len(raw.encode("utf-8"))))
+              print("OK  %-24s %6d bytes" % (path, len(raw.encode("utf-8"))))
           PY
 
       - name: Commit + push
@@ -88,7 +100,7 @@ jobs:
             echo "Không có thay đổi — bỏ qua commit."
             exit 0
           fi
-          git commit -m "chore(cards): cập nhật thẻ thống kê"
+          git commit -m "chore(cards): cập nhật thẻ $(TZ=Asia/Ho_Chi_Minh date '+%H:%M')"
           for i in 1 2 3; do
             git pull --rebase --autostash origin "$TARGET" || true
             if git push origin "HEAD:$TARGET"; then
@@ -103,5 +115,5 @@ jobs:
       - name: Nhắc về cache ảnh
         if: always()
         run: |
-          echo "Nếu trang cá nhân vẫn hiện ảnh cũ thì đó là CACHE của GitHub,"
-          echo "không phải lỗi. Đợi 1–5 phút rồi Ctrl+F5."
+          echo "Trang vẫn hiện ảnh cũ thì đó là CACHE của GitHub, không phải lỗi."
+          echo "Đợi 1–5 phút rồi Ctrl+F5."
