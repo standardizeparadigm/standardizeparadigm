@@ -50,8 +50,9 @@ jobs:
         run: |
           set -uo pipefail
           WF="profile-3d.yml"
+          OWNER="${GITHUB_REPOSITORY_OWNER:-${GITHUB_REPOSITORY%%/*}}"
           LAST=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/$WF/runs?status=success&per_page=1" \
-                   --jq '.workflow_runs[0].created_at' 2>/dev/null || echo "")
+                   --jq '.workflow_runs[0].created_at' 2>/dev/null || true)
           NOW=$(date -u +%s)
 
           if [ -z "$LAST" ] || [ "$LAST" = "null" ]; then
@@ -61,9 +62,10 @@ jobs:
           fi
 
           LAST_TS=$(date -u -d "$LAST" +%s)
-          NEW=$(gh api "users/${GITHUB_REPOSITORY_OWNER}/events/public?per_page=100" \
+          NEW=$(gh api "users/$OWNER/events/public?per_page=100" \
                   --jq "[.[] | select(.type == \"PushEvent\" and .created_at > \"$LAST\")] | length" \
-                  2>/dev/null || echo 0)
+                  2>/dev/null || true)
+          case "$NEW" in ''|*[!0-9]*) NEW=0 ;; esac
           AGE=$((NOW - LAST_TS))
           echo "Lần chạy tốt trước : $LAST (cách đây ${AGE}s)"
           echo "PushEvent mới      : $NEW"
