@@ -149,4 +149,3 @@ Checklist 7 bước:
 5. Thêm khoá i18n cho **cả** `vi` và `en`.
 6. Thêm test vào `scripts/tests/`, thêm một dòng vào bảng trong `docs/ANIMATIONS.md`.
 7. Thêm cờ CLI nếu thẻ cần dữ liệu riêng, và một dòng trong workflow.
-
