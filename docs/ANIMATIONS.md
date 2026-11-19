@@ -19,3 +19,9 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 - **Sao** (`twinkle` 4s, độ trễ so le): mờ 12% rồi sáng 85%, giống sao thật.
 - **Dải quét** (`scan` 7.5s): một vệt sáng mảnh chạy từ trên xuống; đặt `opacity="0"` để khung hình tĩnh vẫn sạch.
 
+## Hero — quỹ đạo quanh monogram
+
+- Vòng nét đứt bán kính 55 xoay một vòng 26 giây (`spinSlow`), vòng cung 36 xoay ngược 34 giây (`spinRev`).
+- Ba hạt sáng nằm trên ba quỹ đạo khác nhau, mỗi hạt một tốc độ (15s / 22s / 29s) — nhìn như hệ hành tinh nhỏ.
+- Hạt sáng dùng `filter="url(#glow)"` để có quầng; lõi "SP" đứng yên làm điểm neo.
+
