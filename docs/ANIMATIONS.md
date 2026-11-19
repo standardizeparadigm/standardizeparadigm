@@ -85,6 +85,20 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
   tên ở mọi kích thước. Mask là cách duy nhất đọc ra hình trăng ở mọi trình
   vẽ, kể cả trình không hiểu CSS.
 
+## Top languages — vệt sáng thứ hai
+
+- Thanh xếp chồng đã có `sheen` 5.5 giây. Thêm một vệt mảnh 64px chạy chậm
+  hơn (`barSweep`, 4.6 giây) với độ trễ 0.9 giây: hai vệt không bao giờ trùng
+  nhau nên thanh không rơi vào nhịp đều đặn.
+- Vệt được cắt bằng `clip-path="url(#barClip)"` — không cắt thì nó chạy ra
+  ngoài thanh và trông như vết bẩn trên thẻ.
+
+## Stats — icon nhích theo nhịp riêng
+
+- Sáu icon trong sáu ô cùng dùng `bob` (lên xuống 1.6px trong 4.8 giây) nhưng
+  lệch nhau 0.6 giây mỗi ô. Cùng nhịp thì cả thẻ rung; lệch nhịp thì thẻ thở.
+- Biên độ chỉ 1.6px: đủ để mắt thấy ảnh sống, không đủ để mắt bỏ con số.
+
 ## Activity — 14 ngày
 
 - Mỗi cột mọc từ đáy lên bằng SMIL `animate` trên `height` + `y`, độ trễ tăng 40ms mỗi ngày.
@@ -149,6 +163,8 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 | `spinDot` (vòng cung "đang chạy") | 1.6s | CSS |
 | `dashFlow` (nét đứt tự chạy) | 2.6s | CSS |
 | `wave` / `wave2` | 14s / 19s | CSS |
+| `barSweep` (vệt sáng trong thanh xếp chồng) | 4.6s | CSS |
+| `bob` (icon nhích 1.6px) | 4.8s | CSS |
 | kim giây / phút / giờ | 60s / 3600s / 43200s | CSS |
 | vành đồng hồ | 18s | CSS |
 | bụi sáng hero | 7–13s | SMIL |
