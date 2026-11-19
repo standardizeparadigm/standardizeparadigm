@@ -10,7 +10,7 @@ Tài liệu mô tả các GitHub Actions đang chạy trong repo `standardizepar
 | :-- | :-- | :-- | :-- |
 | `live-clock.yml` | `*/5 * * * *` | mỗi 5 phút | `assets/live-clock.svg` |
 | `profile-3d.yml` | `*/5 * * * *` + cổng | mỗi 5 phút kiểm tra | `profile-3d-contrib/*.svg` khi có push mới |
-| `profile-cards.yml` | `*/30 * * * *` | mỗi 30 phút | `stats`, `top-langs`, `hero`, `activity` |
+| `profile-cards.yml` | `*/10 * * * *` | mỗi 10 phút | `stats`, `top-langs`, `hero`, `activity` (chỉ ghi khi đổi) |
 | `readme-tend.yml` | `0 */3 * * *` | mỗi 3 giờ | con dấu `TENDED_AT` |
 | `health.yml` | push/PR + `0 23 * * *` | 06:00 hằng ngày | test + kiểm tra repo |
 | `welcome.yml` | theo sự kiện | — | chào issue/PR mới |
@@ -41,7 +41,8 @@ Vẽ bằng Python thuần, không cần thư viện ngoài:
 | `assets/divider.svg` | đường kẻ động dùng giữa các mục |
 | `assets/footer.svg` | dải sóng cuối trang |
 
-- **Chạy:** `*/30 * * * *` (mỗi 30 phút) · `workflow_dispatch` · khi `scripts/**` thay đổi.
+- **Chạy:** `*/10 * * * *` (mỗi 10 phút) · `workflow_dispatch` · khi `scripts/**` thay đổi.
+- **`--smart`:** mỗi ảnh mang một dấu `<!-- data:… -->` là vân tay của dữ liệu đã dùng. Lượt sau, nếu vân tay không đổi thì **không ghi file, không commit** — trang vẫn được kiểm tra mỗi 10 phút mà lịch sử git không đầy commit rỗng. Ảnh thiết kế (`hero`, `divider`, `footer`) vẽ lại mỗi giờ một lần.
 - **Dữ liệu:** `GITHUB_TOKEN` có sẵn của repo → quota riêng, không chia sẻ với hàng nghìn repo khác. Thẻ `activity` dùng GraphQL; thiếu dữ liệu thì giữ ảnh cũ chứ không làm đỏ workflow.
 - **Chế độ `--strict`:** API lỗi là workflow báo đỏ ngay, không âm thầm giữ ảnh cũ.
 - **An toàn:** ghi file kiểu *atomic* (file tạm rồi `os.replace`), nên mất mạng giữa chừng thì ảnh cũ vẫn nguyên vẹn.
