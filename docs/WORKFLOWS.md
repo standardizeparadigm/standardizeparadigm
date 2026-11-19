@@ -82,6 +82,12 @@ Vẽ lại `assets/live-clock.svg`: đồng hồ Việt Nam (UTC+7), lời chào
 - **Chạy:** `*/5 * * * *` — chu kỳ ngắn nhất GitHub Actions hỗ trợ. Các lượt theo lịch có thể trễ vài phút khi hệ thống tải cao.
 - **Không gọi API** → mỗi lượt chỉ vài giây, không tốn quota.
 - Kim đồng hồ **tự quay bằng CSS/SMIL** giữa hai lần cập nhật, nên nhìn luôn "sống".
+- **Con số giờ:phút cũng tự nhảy mỗi phút**: nó là 24 ô giờ + 60 ô phút xếp
+  chồng, mỗi ô chỉ hiện trong đúng phút của nó (xem
+  [docs/ARCHITECTURE.md](./ARCHITECTURE.md#thời-gian-trong-một-file-tĩnh)).
+  Vì vậy cron 5 phút **không** làm con số đứng yên — nó chỉ làm phần thứ/ngày
+  và vòng cung tiến độ ngày được vẽ lại.
+- **Vòng cung ngoài cùng** = hôm nay đã trôi bao nhiêu: một vòng mỗi 24 giờ.
 
 ## 4. README Garden — `readme-tend.yml`
 
