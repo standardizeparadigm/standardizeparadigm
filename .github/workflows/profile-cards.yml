@@ -14,7 +14,7 @@ name: Profile Cards (LTS)
 
 on:
   schedule:
-    - cron: "15 */3 * * *"       # mỗi 3 giờ; số liệu GitHub đổi rất chậm
+    - cron: "13 */3 * * *"       # mỗi 3 giờ ở phút :13; số liệu GitHub đổi rất chậm
   workflow_dispatch:
   push:
     branches: [main, master]

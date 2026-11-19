@@ -79,7 +79,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
     <td><b>📊</b></td>
     <td><b>Profile Cards (LTS)</b><br /><sub><code>profile-cards.yml</code> + <code>scripts/generate_cards.py</code></sub></td>
     <td>Vẽ <code>stats.svg</code>, <code>top-langs.svg</code>, <code>hero.svg</code>, <code>activity.svg</code> bằng dữ liệu thật; chế độ <code>--smart</code> chỉ commit khi số liệu thật sự đổi.</td>
-    <td><b>Mỗi 3 giờ</b> · <code>15 */3 * * *</code></td>
+    <td><b>Mỗi 3 giờ</b> · <code>13 */3 * * *</code></td>
   </tr>
   <tr>
     <td><b>⏱️</b></td>
