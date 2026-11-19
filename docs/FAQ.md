@@ -34,6 +34,13 @@ Nên trang này làm hai lớp:
   đồng hồ để hai workflow không cùng `git push` một lúc. Chỗ nào có `--smart` thì
   chỉ commit khi số liệu thật sự đổi.
 - **Lớp hoạt ảnh**: CSS/SMIL trong file SVG làm ảnh **luôn chuyển động** giữa hai lần cập nhật. Kim đồng hồ quay liên tục, không cần workflow nào cả.
+- **Lớp chữ số**: con số giờ:phút không phải một chuỗi tĩnh mà là 24 ô giờ +
+  60 ô phút chồng lên nhau, mỗi ô chỉ hiện trong đúng phút của nó. Nên **số
+  phút nhảy đúng mỗi phút** trên màn hình người xem, dù workflow chỉ chạy 5
+  phút một lần — và kể cả khi máy bạn mất mạng.
+
+Nói cách khác: thứ duy nhất cần workflow là phần *ngày tháng* và *vòng cung
+tiến độ ngày*; phần "mấy giờ rồi" thì trình duyệt tự lo.
 
 ## Nhãn `9 giờ trước` trên dải trạng thái nghĩa là gì?
 
