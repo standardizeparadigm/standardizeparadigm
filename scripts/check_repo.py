@@ -543,7 +543,7 @@ README_BUDGET = 360            # dòng: đủ để giới thiệu, không đủ
 
 
 def check_readme_length(root=None, limit=README_BUDGET):
-    """README phải ngắn.
+    """README không được dài quá ngân sách dòng đã đặt.
 
     Trang cá nhân là thứ người lạ mở 20 giây rồi đóng. README dài quá 360
     dòng là dấu hiệu nội dung đã tràn ra khỏi phần giới thiệu và nên
