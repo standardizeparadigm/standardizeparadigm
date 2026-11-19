@@ -116,3 +116,10 @@ Nguyên tắc: **nếu hoạt ảnh làm khung đầu tiên xấu, đổi sang S
 
 `--strict` đổi "im lặng giữ ảnh cũ" thành mã thoát 1, để workflow báo đỏ khi bạn muốn biết.
 
+## Bảo mật
+
+- **Escaping**: mọi chuỗi từ API đi qua `esc()` trước khi vào SVG. Tên repo hay tên người có `<script>` cũng chỉ là chữ.
+- **Token**: chỉ nằm trong `secrets.GITHUB_TOKEN`, không ghi ra file, không in ra log.
+- **Không chạy mã lạ**: không `eval`, không render HTML từ dữ liệu ngoài; SVG sinh ra là văn bản do ta kiểm soát.
+- **Action bên thứ ba duy nhất**: `github-profile-3d-contrib`, ghim `v0.9.3`.
+
