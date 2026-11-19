@@ -50,7 +50,22 @@ def width_for(count):
     return MARGIN * 2 + count * PILL_W + max(0, count - 1) * GAP
 
 
-def _pill(pal, x, name, state, t, delay):
+def human_age(minutes, t):
+    """Số phút -> cụm ngắn: "12 phút trước", "5 giờ trước", "2 ngày trước".
+
+    Ba mốc là đủ: dưới một giờ thì phút có nghĩa, dưới một ngày thì giờ có
+    nghĩa, dài hơn nữa thì "3 ngày" nói đúng bản chất hơn "71 giờ".
+    """
+    if minutes is None:
+        return None
+    if minutes < 60:
+        return t("status.ago_min", n=int(minutes))
+    if minutes < 60 * 24:
+        return t("status.ago_hr", n=int(minutes // 60))
+    return t("status.ago_day", n=int(minutes // (60 * 24)))
+
+
+def _pill(pal, x, name, state, t, delay, age=None):
     color, key = STATE_STYLE.get(state, STATE_STYLE["unknown"])
     label = t(key)
     parts = ['  <g class="fadeUp" style="animation-delay:%.2fs">' % delay]
@@ -77,12 +92,19 @@ def _pill(pal, x, name, state, t, delay):
     parts.append('    <text x="%d" y="39" class="fSans" style="font:800 10px %s;'
                  'fill:%s;letter-spacing:.4px">%s</text>'
                  % (x + 30, pal.font, color, esc(label)))
+    age_label = human_age(age, t)
+    if age_label:
+        # Nhãn "cách đây bao lâu" ở góc phải: một dải trạng thái cũ 6 tiếng
+        # trông y hệt một dải vừa vẽ, nên phải nói tuổi của nó ra.
+        parts.append('    <text x="%d" y="39" text-anchor="end" class="fMono" '
+                     'style="font:600 6.8px %s;fill:%s;letter-spacing:.2px">%s</text>'
+                     % (x + PILL_W - 9, pal.mono, pal.dim, esc(age_label)))
     parts.append("  </g>")
     return parts
 
 
 def status_strip(pal, rows, dt, t, width=None):
-    """Vẽ dải trạng thái. `rows` = [(tên_ngắn, trạng_thái), ...]."""
+    """Vẽ dải trạng thái. `rows` = [(tên_ngắn, trạng_thái[, số_phút]), ...]."""
     dt = to_vn(dt)
     if not rows:
         rows = [("—", "unknown")]
@@ -98,8 +120,12 @@ def status_strip(pal, rows, dt, t, width=None):
     parts.append("  </g>")
 
     x = MARGIN
-    for index, (name, state) in enumerate(rows):
-        parts += _pill(pal, x, name, state, t, 0.06 * index)
+    for index, row in enumerate(rows):
+        # Hai phần tử là đủ (tên, trạng thái); phần tử thứ ba — số phút từ
+        # lần chạy cuối — là tuỳ chọn, để test và lời gọi cũ không phải sửa.
+        name, state = row[0], row[1]
+        age = row[2] if len(row) > 2 else None
+        parts += _pill(pal, x, name, state, t, 0.06 * index, age=age)
         x += PILL_W + GAP
 
     parts.append('  <g class="fadeUp" style="animation-delay:.5s">')

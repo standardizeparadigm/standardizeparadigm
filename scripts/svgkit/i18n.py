@@ -88,6 +88,10 @@ STRINGS = {
         "status.running": "ĐANG CHẠY",
         "status.none": "CHƯA CHẠY",
         "status.unknown": "KHÔNG RÕ",
+        "status.ago_min": "{n} phút trước",
+        "status.ago_hr": "{n} giờ trước",
+        "status.ago_day": "{n} ngày trước",
+
         "status.foot": "Workflow tự vẽ và commit dải này · cập nhật {stamp}",
         "status.missing": "CHỜ MERGE",
         "clock.updated": "cập nhật {hhmm}",
@@ -162,6 +166,10 @@ STRINGS = {
         "status.running": "RUNNING",
         "status.none": "NO RUNS",
         "status.unknown": "UNKNOWN",
+        "status.ago_min": "{n}m ago",
+        "status.ago_hr": "{n}h ago",
+        "status.ago_day": "{n}d ago",
+
         "status.foot": "Workflow tự vẽ và commit dải này · cập nhật {stamp}",
         "status.missing": "CHỜ MERGE",
         "clock.updated": "updated {hhmm}",
