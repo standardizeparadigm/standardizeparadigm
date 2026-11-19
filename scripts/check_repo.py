@@ -296,6 +296,11 @@ def check_markdown(path):
 
 # --------------------------------------------------------------- 4. YAML
 def check_workflows():
+    """Đọc từng workflow bằng PyYAML (nếu có) và kiểm cấu trúc cơ bản.
+
+    Không có PyYAML thì chỉ kiểm ở mức văn bản — vẫn bắt được cron sai và
+    action thiếu phiên bản, hai thứ hay hỏng nhất.
+    """
     paths = sorted(glob.glob(os.path.join(ROOT, ".github", "workflows", "*.yml"))
                    + glob.glob(os.path.join(ROOT, ".github", "workflows", "*.yaml")))
     try:
