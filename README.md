@@ -1,11 +1,11 @@
 <a name="top"></a>
 
 <div align="center">
-  <img src="./assets/hero.svg" width="100%" alt="Standardize Paradigm — học sinh lớp 7, lập trình viên tự học" />
+  <img src="./assets/hero.svg" width="100%" alt="Standardize Paradigm — lập trình viên tự học" />
 </div>
 
 <div align="center">
-  <img src="https://img.shields.io/badge/Grade-7-38BDF8?style=for-the-badge&labelColor=0D1117&logo=googlescholar&logoColor=white" alt="Lớp 7" />
+  <img src="https://img.shields.io/badge/Self--taught-38BDF8?style=for-the-badge&labelColor=0D1117&logo=bookstack&logoColor=white" alt="Tự học" />
   <img src="https://img.shields.io/badge/Based%20in-Vi%E1%BB%87t%20Nam-7DD3FC?style=for-the-badge&labelColor=0D1117&logo=googlemaps&logoColor=white" alt="Việt Nam" />
   <img src="https://img.shields.io/badge/Ward-Kon%20Tum-0284C7?style=for-the-badge&labelColor=0D1117&logo=homeassistant&logoColor=white" alt="Phường Kon Tum" />
   <img src="https://img.shields.io/badge/Build-LTS%20v6-0EA5E9?style=for-the-badge&labelColor=0D1117&logo=checkmarx&logoColor=white" alt="LTS v6" />
@@ -32,10 +32,10 @@
 
 ## 01 — Về mình
 
-Xin chào 👋 Mình là **Standardize Paradigm**, học sinh **lớp 7** ở phường Kon Tum, tỉnh Quảng Ngãi. Mình học code vì **nó vui thật sự**: bắt đầu từ một dòng `print("Hello World")`, rồi mò dần sang web, game và chatbot. Học được một thứ là lại thấy mười thứ khác muốn thử 🚀
+Xin chào 👋 Mình là **Standardize Paradigm**, một người **tự học code** ở phường Kon Tum, tỉnh Quảng Ngãi. Mình học code vì **nó vui thật sự**: bắt đầu từ một dòng `print("Hello World")`, rồi mò dần sang web, game và chatbot. Học được một thứ là lại thấy mười thứ khác muốn thử 🚀
 
 ```yaml
-role:       Học sinh lớp 7 · Lập trình viên tự học
+role:       Lập trình viên tự học · xây dựng mỗi ngày
 location:   Phường Kon Tum, Quảng Ngãi, Việt Nam (UTC+7)
 learning:   [Python, JavaScript, Web, "mọi thứ trông thú vị"]
 superpower: học nhanh + không sợ code lỗi
