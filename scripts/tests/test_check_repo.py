@@ -245,3 +245,63 @@ class TestWorkflowDocDrift(unittest.TestCase):
         self.assertTrue(check_repo.looks_like_cron("0 23 * * *"))
         self.assertFalse(check_repo.looks_like_cron("mỗi 5 phút"))
         self.assertFalse(check_repo.looks_like_cron("*/5 * *"))
+
+
+class TestWorkflowHygiene(unittest.TestCase):
+    """Bốn quy ước an toàn của workflow."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="wf-hygiene-")
+        os.makedirs(os.path.join(self.tmp, ".github", "workflows"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _write(self, text):
+        with open(os.path.join(self.tmp, ".github", "workflows", "a.yml"),
+                  "w", encoding="utf-8") as handle:
+            handle.write(text)
+
+    GOOD = (
+        "name: x\n"
+        "on:\n  schedule:\n    - cron: \"*/5 * * * *\"\n"
+        "concurrency:\n  group: g\n"
+        "permissions:\n  contents: write\n"
+        "jobs:\n  j:\n    runs-on: ubuntu-latest\n    timeout-minutes: 5\n"
+        "    if: github.actor != 'github-actions[bot]'\n"
+        "    steps:\n      - run: git push origin HEAD\n"
+    )
+
+    def test_good_workflow_passes(self):
+        self._write(self.GOOD)
+        check_repo.check_workflow_hygiene(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_missing_permissions(self):
+        self._write(self.GOOD.replace("permissions:\n  contents: write\n", ""))
+        check_repo.check_workflow_hygiene(self.tmp)
+        self.assertTrue(any("permissions" in e for e in check_repo.errors))
+
+    def test_schedule_needs_concurrency(self):
+        self._write(self.GOOD.replace("concurrency:\n  group: g\n", ""))
+        check_repo.check_workflow_hygiene(self.tmp)
+        self.assertTrue(any("concurrency" in e for e in check_repo.errors))
+
+    def test_job_needs_timeout(self):
+        self._write(self.GOOD.replace("    timeout-minutes: 5\n", ""))
+        check_repo.check_workflow_hygiene(self.tmp)
+        self.assertTrue(any("timeout-minutes" in e for e in check_repo.errors))
+
+    def test_push_needs_bot_guard(self):
+        self._write(self.GOOD.replace(
+            "    if: github.actor != 'github-actions[bot]'\n", ""))
+        check_repo.check_workflow_hygiene(self.tmp)
+        self.assertTrue(any("vòng lặp" in e for e in check_repo.errors))
+
+    def test_workflow_without_push_needs_no_guard(self):
+        self._write(self.GOOD.replace("      - run: git push origin HEAD\n",
+                                      "      - run: echo hi\n"))
+        check_repo.check_workflow_hygiene(self.tmp)
+        self.assertEqual(check_repo.errors, [])
