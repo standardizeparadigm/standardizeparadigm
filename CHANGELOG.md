@@ -120,6 +120,12 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
   `*/5` cho 3D. Sửa cả ba chỗ cho khớp nhịp mới — chú thích sai còn tệ hơn
   không có chú thích.
 
+## 2026-11-19 — Khoá CSS mới và chuỗi mới bằng test
+
+- 3 test cho `.spinDot`/`.dashFlow` (có định nghĩa + có trong danh sách tắt của
+  `prefers-reduced-motion`), 3 test cho 9 khoá chuỗi của dải trạng thái ở cả
+  hai ngôn ngữ.
+
 ## 2026-11-19 — Cổng 3D: sửa lỗi mốc 24 giờ không bao giờ tới
 
 - Cổng so "lần chạy thành công gần nhất", nhưng lượt bị cổng bỏ qua **vẫn** là lượt thành công → mốc 24 giờ không bao giờ đạt được, ảnh chỉ đổi khi có push.
