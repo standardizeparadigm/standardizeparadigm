@@ -12,6 +12,7 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
 - `docs/WORKFLOWS.md` có thêm bảng "Ai push lúc nào" và ba lớp bảo hiểm:
   `concurrency` riêng từng workflow, `git pull --rebase` trước khi push, và
   dải trạng thái là thứ chịu thiệt sau cùng nếu có lượt trượt.
+
 ## 2026-11-19 — Hai luật tài liệu, và một luật ảnh
 
 - `check_workflow_docs()` bắt cả hai chiều: bảng ghi sai cron, **và**
@@ -22,6 +23,7 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
   `aria-hidden="true"`. Đường kẻ trang trí phải nói rõ "đừng đọc tôi".
 - `test_docs.py` kiểm hình thức Markdown (một H1, không nhảy cấp, dòng trống
   trước tiêu đề) và đếm lại tổng số test so với `docs/TESTING.md`.
+
 ## 2026-11-19 — Nhãn tuổi trên dải trạng thái
 
 - Dải trạng thái cũ 6 tiếng trông y hệt dải vừa vẽ — đúng loại lỗi khiến
@@ -31,6 +33,7 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
   trước" đúng bản chất hơn "71 giờ trước".
 - `api.age_minutes()` trả `None` khi không đọc được mốc — thà thiếu nhãn còn
   hơn nói dối "0 phút trước".
+
 ## 2026-11-19 — Hiệu ứng mới, vẫn tắt được bằng một dòng CSS
 
 - Vệt sáng chạy dọc mép trên mọi thẻ (130px, 8-12 giây, lệch nhịp theo bề
