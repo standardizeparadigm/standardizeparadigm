@@ -3,6 +3,16 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Bốn quy ước an toàn cho workflow
+
+- `check_workflow_hygiene()` bắt bốn thứ mà thiếu là sinh sự cố khó lần:
+  - không có `permissions:` → mặc định rộng hoặc thiếu quyền ở bước push;
+  - có lịch chạy mà không có `concurrency:` → hai lượt chồng nhau cùng push;
+  - mỗi job phải có `timeout-minutes` → mặc định của GitHub là **6 tiếng**;
+  - có `git push` mà không có cổng `github.actor != 'github-actions[bot]'`
+    → workflow tự kích hoạt chính nó, vòng lặp vô hạn.
+- Cùng luật đó chạy lại trên repo thật trong `test_repo_workflows.py`, nên
+  sai quy ước là đỏ ngay trên máy chứ không phải đợi CI.
 ## 2026-11-19 — Tài liệu phải khớp lịch chạy thật
 
 - Trong một vòng đã có hai lần bảng lịch chạy trong `docs/WORKFLOWS.md` và
