@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — `check_assets()` khai báo sai thứ tự
+
+- Hàm nằm sau khối `if __name__ == "__main__"` nên khi chạy bằng script thì `NameError`.
+- Đã chuyển lên trước `main()`, kèm 3 test chạy CLI qua `subprocess`.
+
 ## 2026-11-19 — Sửa lỗi `--check` chọn nhầm thư mục
 
 - `--check` từng bỏ qua `--out` vì biến toàn cục `OUT_DIR` luôn khác rỗng — kiểm tra nhầm thư mục `assets/`.
