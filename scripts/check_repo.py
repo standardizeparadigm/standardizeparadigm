@@ -599,6 +599,31 @@ def check_test_claims(root=None):
                             "— hãy nâng lên" % (rel(path), number, claimed, total))
 
 
+# --------------------------------------------------- 4b3. Dấu merge còn sót
+RE_CONFLICT = re.compile(r"^(<{7}|={7}|>{7})(\s|$)", flags=re.M)
+
+
+def check_conflict_markers(root=None):
+    """Không được còn dấu `<<<<<<<` / `=======` / `>>>>>>>` trong file.
+
+    Sau một lần merge có xung đột, dấu này lọt vào file là chuyện thường.
+    Markdown thì hiện ra như chữ, Python thì `SyntaxError`, SVG thì XML
+    hỏng — nhưng nếu file đó không ai mở lại thì lỗi nằm im rất lâu.
+    """
+    root = root or ROOT
+    for base, dirs, files in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.lower().endswith(TEXT_SUFFIXES):
+                continue
+            path = os.path.join(base, name)
+            for number, line in enumerate(read(path).split("\n"), 1):
+                if RE_CONFLICT.match(line):
+                    err("%s:%d còn dấu merge (%s)"
+                        % (rel(path), number, line[:7]))
+                    break
+
+
 # --------------------------------------------------- 4c. Tự sửa lỗi vô hình
 def fixable_text(text):
     """Chuẩn hoá một file văn bản về dạng sạch, KHÔNG đổi nội dung.
@@ -703,6 +728,7 @@ def main(argv=None):
     check_test_claims()
     check_orphan_docs()
     check_readme_length()
+    check_conflict_markers()
     check_svg_budget()
     check_python()
     check_module_docstrings()
