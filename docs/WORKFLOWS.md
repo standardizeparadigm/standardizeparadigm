@@ -12,7 +12,7 @@ Tài liệu mô tả các GitHub Actions đang chạy trong repo `standardizepar
 | `profile-3d.yml` | `*/5 * * * *` + cổng | mỗi 5 phút kiểm tra | `profile-3d-contrib/*.svg` khi có push mới |
 | `profile-cards.yml` | `*/30 * * * *` | mỗi 30 phút | `stats`, `top-langs`, `hero`, `activity` |
 | `readme-tend.yml` | `0 */3 * * *` | mỗi 3 giờ | con dấu `TENDED_AT` |
-| `health.yml` | push/PR + `0 23 * * *` | 06:00 hằng ngày | 105 test + kiểm tra repo |
+| `health.yml` | push/PR + `0 23 * * *` | 06:00 hằng ngày | test + kiểm tra repo |
 | `welcome.yml` | theo sự kiện | — | chào issue/PR mới |
 
 > GitHub Actions **không hỗ trợ cron mỗi phút** — chu kỳ ngắn nhất là `*/5`. Vì vậy phần "chạy liên tục" được lo bằng hoạt ảnh ngay trong SVG (CSS/SMIL), còn workflow chỉ vẽ lại để ảnh không bị lệch số liệu.
