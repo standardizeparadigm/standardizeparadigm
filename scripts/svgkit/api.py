@@ -69,6 +69,27 @@ def request_json(url, token="", payload=None, tries=3, quiet=False):
     return None
 
 
+def api_status(path, token=""):
+    """GET một lần, trả (mã_http, json|None).
+
+    Khác api(): ở đây ta cần biết 404 (workflow chưa có trên nhánh mặc
+    định) tách khỏi lỗi mạng, nên phải giữ lại mã trạng thái.
+    """
+    url = path if path.startswith("http") else API + path
+    headers = {"Accept": "application/vnd.github+json",
+               "User-Agent": "profile-cards-lts"}
+    if token:
+        headers["Authorization"] = "Bearer " + token
+    try:
+        req = urllib.request.Request(url, headers=headers)
+        with urllib.request.urlopen(req, timeout=20) as response:
+            return response.status, json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as error:
+        return error.code, None
+    except Exception:
+        return 0, None
+
+
 def api(path, token="", tries=3, quiet=False):
     url = path if path.startswith("http") else API + path
     return request_json(url, token=token, tries=tries, quiet=quiet)
@@ -183,9 +204,20 @@ def workflow_states(owner, repo, token="", files=None):
     wanted = files or WORKFLOWS
     rows = []
     for filename, short in wanted:
-        info = api("/repos/%s/%s/actions/workflows/%s/runs?per_page=1&exclude_pull_requests=true"
-                   % (owner, repo, filename), token, quiet=True) if token else None
+        if not token:
+            rows.append((short, "unknown"))
+            continue
+        code, info = api_status(
+            "/repos/%s/%s/actions/workflows/%s/runs?per_page=1&exclude_pull_requests=true"
+            % (owner, repo, filename), token)
+        if code == 404:
+            # workflow chưa nằm trên nhánh mặc định -> đúng lý do shields báo đỏ
+            rows.append((short, "missing"))
+            continue
         runs = ((info or {}).get("workflow_runs") or [])
+        if code != 200:
+            rows.append((short, "unknown"))
+            continue
         if not runs:
             rows.append((short, "none"))
             continue
