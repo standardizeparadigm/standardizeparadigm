@@ -7,10 +7,10 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 | `hero.svg` | quỹ đạo xoay, sao nhấp nháy, bụi sáng bay lên, vòng lan toả, chip bồng bềnh, vệt sáng quét chữ, gõ chữ |
 | `divider.svg` | tia sáng chạy dọc đường kẻ |
 | `footer.svg` | hai lớp sóng trôi ngược chiều |
-| `stats.svg` | vòng rank tự vẽ, số đếm lên, vệt sáng |
-| `top-langs.svg` | thanh xếp chồng lớn dần, chú giải hiện lần lượt |
+| `stats.svg` | vòng rank tự vẽ, số đếm lên, vệt sáng mép trên |
+| `top-langs.svg` | thanh xếp chồng lớn dần, chú giải hiện lần lượt, chấm sáng ở đầu mỗi thanh |
 | `live-clock.svg` | ba kim quay, chấm nhấp nháy, thanh tiến độ ngày |
-| `activity.svg` | cột mọc lên, điểm hôm nay nhấp nháy |
+| `activity.svg` | cột mọc lên, vòng thở + chấm sáng ở cột hôm nay |
 | `status.svg` | viên thuốc hiện lần lượt, vệt sáng quét, vòng cung quay khi đang chạy |
 
 ## Hero — lớp nền
