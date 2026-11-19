@@ -16,7 +16,8 @@ name: GitHub Profile 3D Contrib
 
 on:
   schedule:
-    - cron: "*/30 * * * *"       # mỗi 30 phút; cổng 24h bên dưới tự bỏ qua
+    - cron: "7-59/30 * * * *"     # :07 và :37 — không trùng phút nào với
+                                  # các workflow khác; cổng 24h bên dưới tự bỏ qua
   workflow_dispatch:
   push:
     branches: [main]
