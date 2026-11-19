@@ -1852,6 +1852,53 @@ class TestTestFileDocs(unittest.TestCase):
         self.assertEqual(self._run(), [])
 
 
+class TestPipPins(unittest.TestCase):
+    """Lệnh pip trong workflow phải ghim phiên bản như action."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.tmp)
+        os.makedirs(os.path.join(self.tmp, ".github", "workflows"))
+
+    def _wf(self, text):
+        with open(os.path.join(self.tmp, ".github", "workflows", "a.yml"),
+                  "w", encoding="utf-8") as handle:
+            handle.write(text)
+
+    def _run(self):
+        check_repo.errors = []
+        check_repo.check_pip_pins(root=self.tmp)
+        return list(check_repo.errors)
+
+    def test_unpinned_is_reported(self):
+        self._wf("run: python3 -m pip install pyyaml\n")
+        errors = self._run()
+        self.assertEqual(len(errors), 1)
+        self.assertIn("a.yml:1", errors[0])
+
+    def test_pinned_passes(self):
+        self._wf('run: python3 -m pip install "pyyaml==6.0.2"\n')
+        self.assertEqual(self._run(), [])
+
+    def test_requirements_file_is_reported(self):
+        self._wf("run: pip install -r requirements.txt\n")
+        self.assertEqual(len(self._run()), 1)
+
+    def test_comment_mention_is_ignored(self):
+        self._wf("# pip install pyyaml  (vi du)\n")
+        self.assertEqual(self._run(), [])
+
+    def test_echo_mention_is_ignored(self):
+        self._wf("run: echo 'pip install pyyaml'\n")
+        self.assertEqual(self._run(), [])
+
+    def test_optional_pip_without_package_passes(self):
+        self._wf("run: pip install --upgrade pip\n")
+        # `--upgrade pip` khong phai ten goi kem phien ban, nhung cung khong
+        # phai mot goi that su duoc ghim — luat chi doi `==x.y.z` khi co ten.
+        self.assertEqual(len(self._run()), 1)
+
+
 if __name__ == "__main__":
     unittest.main()
 
