@@ -1926,6 +1926,32 @@ class TestListRules(unittest.TestCase):
         self.assertIn("luật.", buffer.getvalue())
 
 
+class TestEveryRuleExplainsItself(unittest.TestCase):
+    """Luật nào cũng phải trả lời được "bắt cái gì" trong một dòng."""
+
+    def test_every_rule_has_a_first_line(self):
+        missing = []
+        for name in check_repo.list_rules():
+            doc = (getattr(check_repo, name).__doc__ or "").strip()
+            if len(doc.split("\n")[0]) < 20:
+                missing.append(name)
+        self.assertEqual(missing, [], "luật chưa có dòng giải thích: %s"
+                         % ", ".join(missing))
+
+    def test_rules_are_actually_called(self):
+        # Luật không được gọi từ main() là luật chết: nó đúng, nhưng không ai
+        # chạy nó, nên nó không bắt được gì.
+        import inspect
+        body = inspect.getsource(check_repo.main)
+        dead = [name for name in check_repo.list_rules()
+                if "    %s()" % name not in body
+                and "check_markdown(" not in body]
+        known_helpers = {"check_markdown"}
+        dead = [name for name in dead if name not in known_helpers]
+        self.assertEqual(dead, [], "luật không được gọi trong main(): %s"
+                         % ", ".join(dead))
+
+
 if __name__ == "__main__":
     unittest.main()
 
