@@ -739,6 +739,55 @@ class TestCronResolution(unittest.TestCase):
         self.assertIsNone(check_repo._minute_step("7"))
         self.assertIsNone(check_repo._minute_step("2-59/10"))
 
+
+
+class TestActionPins(unittest.TestCase):
+    """`uses:` phải ghim phiên bản."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="pins-")
+        os.makedirs(os.path.join(self.tmp, ".github", "workflows"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _wf(self, uses):
+        with open(os.path.join(self.tmp, ".github", "workflows", "a.yml"),
+                  "w", encoding="utf-8") as handle:
+            handle.write("jobs:\n  j:\n    steps:\n      - uses: %s\n" % uses)
+
+    def test_major_tag_passes(self):
+        self._wf("actions/checkout@v7")
+        check_repo.check_action_pins(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_semver_tag_passes(self):
+        self._wf("yoshi389111/github-profile-3d-contrib@v0.9.3")
+        check_repo.check_action_pins(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_sha_pin_passes(self):
+        self._wf("actions/checkout@" + "a" * 40)
+        check_repo.check_action_pins(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_branch_is_flagged(self):
+        self._wf("actions/checkout@main")
+        check_repo.check_action_pins(self.tmp)
+        self.assertTrue(any("ghim" in e for e in check_repo.errors))
+
+    def test_no_version_is_flagged(self):
+        self._wf("actions/checkout")
+        check_repo.check_action_pins(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_local_action_is_exempt(self):
+        self._wf("./.github/actions/local")
+        check_repo.check_action_pins(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
 if __name__ == "__main__":
     unittest.main()
 
