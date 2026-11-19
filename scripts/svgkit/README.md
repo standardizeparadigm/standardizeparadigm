@@ -108,3 +108,12 @@ python3 scripts/generate_cards.py --demo --all --out /tmp/xem-thu
 --version / --list-themes / --list-langs
 ```
 
+### `--smart` hoạt động thế nào
+
+- `data_hash(payload)` → 12 ký tự SHA-256 của dữ liệu (không gồm thời gian).
+- `stamp_data_mark(svg, hash)` chèn `<!-- data:… -->` ngay trước `</svg>`.
+- `read_mark(path)` đọc lại dấu đó từ file cũ.
+- `write(name, content, hash)` so sánh; trùng thì bỏ qua, khác thì ghi atomic.
+
+Ba hàm này đều là hàm thuần (trừ `write`) nên test được mà không cần đĩa.
+
