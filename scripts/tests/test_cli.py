@@ -324,3 +324,28 @@ class TestDataFingerprint(unittest.TestCase):
         once = generate_cards.stamp_data_mark("<svg></svg>", "abcdef123456")
         twice = generate_cards.stamp_data_mark(once, "abcdef123456")
         self.assertEqual(once, twice)
+
+
+class TestDryRunAndQuiet(unittest.TestCase):
+    def test_dry_run_writes_nothing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                code = generate_cards.main(["--demo", "--all", "--dry-run", "--out", tmp])
+            self.assertEqual(code, 0)
+            self.assertEqual([f for f in os.listdir(tmp) if f.endswith(".svg")], [])
+            self.assertIn("[dry-run]", out.getvalue())
+
+    def test_dry_run_still_validates(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with contextlib.redirect_stdout(io.StringIO()):
+                generate_cards.main(["--demo", "--all", "--dry-run", "--out", tmp])
+            self.assertFalse(os.path.exists(os.path.join(tmp, "stats.svg")))
+
+    def test_quiet_prints_nothing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                generate_cards.main(["--demo", "--cards", "--quiet", "--out", tmp])
+            self.assertEqual(out.getvalue(), "")
+            self.assertTrue(os.path.exists(os.path.join(tmp, "stats.svg")))

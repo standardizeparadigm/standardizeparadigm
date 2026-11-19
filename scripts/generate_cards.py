@@ -73,10 +73,18 @@ BAD_DATA = (
 
 
 SMART = False          # --smart: bỏ qua ghi khi dữ liệu chưa đổi
+DRY_RUN = False        # --dry-run: vẽ nhưng không ghi file nào
+QUIET = False          # --quiet: chỉ in cảnh báo và lỗi
 DATA_MARK = re.compile(r"<!-- data:([0-9a-f]{8,}) -->")
 
 
 # ------------------------------------------------------------------ output
+def say(message):
+    """In tiến trình — trừ khi người dùng chọn --quiet."""
+    if not QUIET:
+        print(message)
+
+
 def data_hash(payload):
     """Vân tay ngắn của dữ liệu (không gồm thời gian) để so sánh ảnh."""
     if payload is None:
@@ -110,7 +118,11 @@ def write(name, content, fingerprint=None):
     content = stamp_data_mark(content, fingerprint)
     final_path = os.path.join(OUT_DIR, name)
     if SMART and fingerprint and read_mark(final_path) == fingerprint:
-        print("= %s không đổi (bỏ qua)" % name)
+        say("= %s không đổi (bỏ qua)" % name)
+        return False
+    if DRY_RUN:
+        say("[dry-run] sẽ ghi %s (%d bytes)"
+            % (final_path, len(content.encode("utf-8"))))
         return False
     if not os.path.isdir(OUT_DIR):
         os.makedirs(OUT_DIR)
@@ -127,7 +139,7 @@ def write(name, content, fingerprint=None):
         except OSError:
             pass
         raise
-    print("đã ghi %s (%d bytes)" % (final_path, len(content.encode("utf-8"))))
+    say("đã ghi %s (%d bytes)" % (final_path, len(content.encode("utf-8"))))
     return True
 
 
@@ -188,6 +200,10 @@ def parse_args(argv=None):
                         help="kiểm tra các SVG đã có trong thư mục ra")
     parser.add_argument("--smart", action="store_true",
                         help="chỉ ghi ảnh khi dữ liệu thật sự đổi (bớt commit rác)")
+    parser.add_argument("--dry-run", action="store_true",
+                        help="vẽ và kiểm tra nhưng không ghi file nào")
+    parser.add_argument("--quiet", action="store_true",
+                        help="không in tiến trình, chỉ in lỗi")
     return parser.parse_args(argv)
 
 
@@ -215,9 +231,11 @@ def check_assets(directory):
 
 
 def main(argv=None):
-    global OUT_DIR, USER, SMART
+    global OUT_DIR, USER, SMART, DRY_RUN, QUIET
     args = parse_args(argv)
     SMART = bool(args.smart)
+    DRY_RUN = bool(args.dry_run)
+    QUIET = bool(args.quiet)
 
     if args.version:
         print("generate_cards.py %s (svgkit)" % sys.modules["svgkit"].__version__)
@@ -233,7 +251,7 @@ def main(argv=None):
 
     if args.list_themes:
         for name, palette in THEMES.items():
-            print("%-9s accent=%s accent2=%s accent3=%s"
+            say("%-9s accent=%s accent2=%s accent3=%s"
                   % (name, palette.accent, palette.accent2, palette.accent3))
         return 0
 
@@ -249,7 +267,7 @@ def main(argv=None):
     translator = i18n.get(args.lang)
     dt = api.now_vn()
 
-    print("== generate_cards.py %s · theme=%s · lang=%s · %s (UTC+7) =="
+    say("== generate_cards.py %s · theme=%s · lang=%s · %s (UTC+7) =="
           % (sys.modules["svgkit"].__version__, palette.name,
              translator.lang, dt.strftime("%d/%m/%Y %H:%M:%S")))
 
@@ -291,7 +309,7 @@ def main(argv=None):
         fingerprint = data_hash({"cards": data})
         write("stats.svg", stats_card(palette, data, dt, translator), fingerprint)
         write("top-langs.svg", langs_card(palette, data, dt, translator), fingerprint)
-        print("  XONG: 2 thẻ đã được ghi bằng dữ liệu thật")
+        say("  XONG: 2 thẻ đã được ghi bằng dữ liệu thật")
 
     if want_all or args.activity:
         contrib = (demo_contrib(dt) if args.demo
@@ -302,7 +320,7 @@ def main(argv=None):
                 write("activity.svg", content,
                       data_hash({"activity": contrib}))
         else:
-            print("  (bỏ qua) không có dữ liệu contribution — giữ nguyên ảnh cũ")
+            say("  (bỏ qua) không có dữ liệu contribution — giữ nguyên ảnh cũ")
             status = status or (1 if args.strict else 0)
 
     return status
