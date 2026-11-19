@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — `--smart`: kiểm tra mỗi 10 phút, commit khi có lý do
+
+- Mỗi ảnh mang một dấu `<!-- data:… -->` là vân tay dữ liệu đã dùng để vẽ.
+- Lượt sau, vân tay không đổi thì không ghi file và không commit — trang vẫn được kiểm tra mỗi 10 phút.
+
 ## 2026-11-19 — Bộ test vượt 130
 
 - Thêm test cho `human()`, `esc()`, i18n dự phòng, tiêu đề/desc của từng thẻ và cổng workflow 3D.
