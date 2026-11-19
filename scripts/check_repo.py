@@ -599,6 +599,43 @@ def check_test_claims(root=None):
                             "— hãy nâng lên" % (rel(path), number, claimed, total))
 
 
+# ------------------------------------------------ 4bc. Chữ trong SVG có class
+RE_TEXT = re.compile(r"<text\b[^>]*>")
+RE_ID = re.compile(r'\bid="([^"]+)"')
+
+
+def check_svg_text_classes(root=None):
+    """Mọi `<text>` phải mang `class`.
+
+    Chữ không có class thừa hưởng font mặc định của trình duyệt — Times
+    New Roman 16px đen — nên một nhãn quên class sẽ hiện giữa thẻ như dán
+    từ tài liệu khác sang. Không có lỗi nào báo; chỉ mắt thấy.
+    """
+    root = root or ROOT
+    for path in sorted(glob.glob(os.path.join(root, "assets", "*.svg"))):
+        for tag in RE_TEXT.findall(read(path)):
+            if "class=" not in tag:
+                err("%s: thẻ %s thiếu class" % (rel(path), tag[:60]))
+
+
+def check_svg_duplicate_ids(root=None):
+    """Trong một file SVG, `id` phải là duy nhất.
+
+    `url(#id)` chỉ trỏ tới phần tử đầu tiên trùng id. Một gradient khai
+    báo hai lần nghĩa là nửa số hình dùng sai màu — và trông vẫn "có vẻ
+    đúng" nên rất khó lần ra.
+    """
+    root = root or ROOT
+    for path in sorted(glob.glob(os.path.join(root, "assets", "*.svg"))):
+        seen = {}
+        for found in RE_ID.findall(read(path)):
+            seen[found] = seen.get(found, 0) + 1
+        for found, count in sorted(seen.items()):
+            if count > 1:
+                err("%s: id '%s' xuất hiện %d lần" % (rel(path), found, count))
+
+
+
 # -------------------------------------------- 4bb. Mọi job phải có hạn giờ
 RE_JOB = re.compile(r"^  ([A-Za-z0-9_-]+):\s*$", re.M)
 RE_TIMEOUT = re.compile(r"^\s{4}timeout-minutes:\s*\d+\s*$", re.M)
@@ -980,6 +1017,8 @@ def main(argv=None):
     check_action_pins()
     check_heading_levels()
     check_job_timeouts()
+    check_svg_text_classes()
+    check_svg_duplicate_ids()
     check_svg_budget()
     check_python()
     check_module_docstrings()
