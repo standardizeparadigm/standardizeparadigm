@@ -709,9 +709,10 @@ def check_bad_numbers(root=None):
     root = root or ROOT
     for path in sorted(glob.glob(os.path.join(root, "assets", "*.svg"))):
         for number, line in enumerate(read(path).split("\n"), 1):
-            # Mã màu #0EA5E9 có thể chứa chuỗi trông như số mũ; bỏ chúng đi
-            # trước khi soi để không bắt oan.
-            cleaned = re.sub(r"#[0-9A-Fa-f]{3,8}", "#hex", line)
+            # Bỏ chú thích (dấu dữ liệu hex cũng giống số mũ) và mã màu
+            # (#0EA5E9 cũng vậy) trước khi soi, để không bắt oan.
+            cleaned = re.sub(r"<!--.*?-->", "", line)
+            cleaned = re.sub(r"#[0-9A-Fa-f]{3,8}", "#hex", cleaned)
             for match in RE_BAD_NUMBER.findall(cleaned):
                 err("%s:%d có số không hợp lệ trong thuộc tính: %s"
                     % (rel(path), number, match.strip()))
