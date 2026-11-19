@@ -32,7 +32,7 @@
 
 ## 01 — Về mình
 
-Xin chào 👋 Mình là **Standardize Paradigm**, một người **tự học code** ở phường Kon Tum, tỉnh Quảng Ngãi. Mình học code vì **nó vui thật sự**: bắt đầu từ một dòng `print("Hello World")`, rồi mò dần sang web, game và chatbot. Học được một thứ là lại thấy mười thứ khác muốn thử 🚀
+Xin chào. Mình là **Standardize Paradigm**, một người **tự học code** ở phường Kon Tum, tỉnh Quảng Ngãi. Mình học code vì **nó vui thật sự**: bắt đầu từ một dòng `print("Hello World")`, rồi mò dần sang web, game và chatbot. Học được một thứ là lại thấy mười thứ khác muốn thử
 
 ```yaml
 role:       Lập trình viên tự học · xây dựng mỗi ngày
@@ -48,7 +48,7 @@ motto:      "Cứ thử đi, sai thì học được nhiều hơn"
 - 💬 &nbsp;**Hỏi mình về:** Python, HTML/CSS, cách bắt đầu code khi còn đi học
 
 > [!NOTE]
-> Mình còn nhỏ, code còn nhiều chỗ chưa tối ưu — thấy gì cần sửa thì mở issue chỉ mình nhé. Mình rất thích được góp ý 🙌
+> Mình còn nhỏ, code còn nhiều chỗ chưa tối ưu — thấy gì cần sửa thì mở issue chỉ mình nhé. Mình rất thích được góp ý
 
 <div align="right"><a href="#top">Về đầu trang</a></div>
 
