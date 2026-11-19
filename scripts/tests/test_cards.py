@@ -302,6 +302,38 @@ class TestLangsLegend(unittest.TestCase):
         self.assertTrue(values)
         self.assertLessEqual(sum(values), 100.5)
 
+
+
+class TestNewEffects(unittest.TestCase):
+    """Hai hiệu ứng thêm ở đợt này: vệt sáng trong thanh và icon nhích."""
+
+    def test_lang_bar_has_a_second_sweep(self):
+        svg = langs_card(get_palette(), DATA, DT, i18n.get())
+        self.assertIn('class="barSweep"', svg)
+
+    def test_sweep_is_clipped_to_the_bar(self):
+        # Không cắt thì vệt sáng chạy ra ngoài thanh và trông như vết bẩn.
+        svg = langs_card(get_palette(), DATA, DT, i18n.get())
+        line = [l for l in svg.split("\n")
+                if 'class="barSweep"' in l][0]
+        self.assertIn('clip-path="url(#barClip)"', line)
+
+    def test_sweep_delays_are_not_zero(self):
+        svg = langs_card(get_palette(), DATA, DT, i18n.get())
+        self.assertIn("animation-delay:.9s", svg)
+
+    def test_icons_bob_with_staggered_delays(self):
+        svg = stats_card(get_palette(), DATA, DT, i18n.get())
+        self.assertEqual(svg.count('class="bob"'), 6)
+        delays = re.findall(r'class="bob" style="animation-delay:(-?[\d.]+)s"', svg)
+        self.assertEqual(len(set(delays)), 6, delays)
+
+    def test_bob_wraps_the_icon_not_the_number(self):
+        svg = stats_card(get_palette(), DATA, DT, i18n.get())
+        # Mỗi nhóm bob phải đóng ngay sau phần tử icon, trước class tileValue.
+        for chunk in svg.split('class="bob"')[1:]:
+            self.assertLess(chunk.index("</g>"), chunk.index("tileValue"))
+
 if __name__ == "__main__":
     unittest.main()
 
