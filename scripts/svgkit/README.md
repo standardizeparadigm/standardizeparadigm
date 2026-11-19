@@ -95,6 +95,7 @@ python3 scripts/generate_cards.py --demo --all --out /tmp/xem-thu
 3. Mọi chuỗi vào SVG phải qua `esc()`.
 4. Thêm thẻ mới thì thêm test trong `scripts/tests/` và một dòng vào bảng trên.
 5. Chạy `python3 -m unittest discover -s scripts/tests -t scripts` trước khi commit — CI chạy đúng lệnh đó.
+
 ### Cờ CLI đáng chú ý
 
 ```bash
