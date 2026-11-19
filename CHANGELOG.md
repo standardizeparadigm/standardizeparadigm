@@ -3,6 +3,35 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Đồng hồ tự đếm phút, không cần JavaScript
+
+- Con số giờ:phút trước đây là một chuỗi tĩnh, chỉ đổi khi workflow chạy lại
+  (5 phút một lần, và GitHub hay trễ thêm). Kim quay mà số đứng yên trông
+  như ảnh hỏng.
+- Cách làm: 24 ô giờ + 60 ô phút chồng đúng một chỗ, mỗi ô có `animation-delay`
+  âm bằng quãng thời gian từ bây giờ tới lượt nó. Trình duyệt tự đổi số mỗi
+  phút, kể cả khi mất mạng. Không script, không cron phút.
+- Ô của ảnh chụp vẫn `opacity: 1` mặc định nên trình xem tĩnh thấy đúng giờ
+  của lần vẽ cuối; `prefers-reduced-motion` đóng băng cả 84 ô.
+
+## 2026-11-19 — Vòng cung tiến độ ngày trên mặt đồng hồ
+
+- Kim nói "mấy giờ", nhưng không nói "ngày còn dài hay đã gần hết". Thêm
+  vòng cung ngoài cùng chạy đúng một vòng mỗi 24 giờ, chấm ở đầu cung thở
+  nhẹ để thấy chỗ đang tiến.
+- 06:00 là đúng một phần tư vòng, 18:00 là ba phần tư — kiểm bằng toạ độ
+  tuyệt đối trong test, không phải bằng mắt.
+- Dưới 0,4° (vài phút sau nửa đêm) thì không vẽ cung: một cung dài vài phần
+  nghìn độ chỉ thành chấm méo ở đỉnh.
+
+## 2026-11-19 — Sửa: chân thẻ đồng hồ bị cắt mất chữ
+
+- Chuỗi tiếng Việt "Kim và số phút tự chạy bằng CSS giữa hai lần cập nhật ·
+  workflow vẽ lại mỗi 5 phút" dài 78 ký tự, chạy quá khổ 640px và bị cắt
+  thành "mỗi 5 p…". Chữ SVG không tự xuống dòng nên không có gì báo lỗi.
+- Rút gọn cả hai ngôn ngữ còn dưới 56 ký tự, và thêm test khoá ngưỡng đó —
+  chân thẻ 9px chỉ chứa được khoảng 55 ký tự.
+
 ## 2026-11-19 — Hero cũng tôn trọng "giảm chuyển động"
 
 - 14 hạt bụi (mỗi hạt hai `<animate>`), hai vòng lan toả quanh lõi và vệt
