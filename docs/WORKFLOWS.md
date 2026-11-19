@@ -57,6 +57,7 @@ Vẽ bằng Python thuần, không cần thư viện ngoài:
 | `assets/activity.svg` | 14 ngày gần nhất, chuỗi ngày, tổng contribution |
 | `assets/divider.svg` | đường kẻ động dùng giữa các mục |
 | `assets/footer.svg` | dải sóng cuối trang |
+| `assets/status.svg` | dải trạng thái 7 workflow (do `status.yml` vẽ) |
 
 - **Chạy:** `*/10 * * * *` (mỗi 10 phút) · `workflow_dispatch` · khi `scripts/**` thay đổi.
 - **`--smart`:** mỗi ảnh mang một dấu `<!-- data:… -->` là vân tay của dữ liệu đã dùng. Lượt sau, nếu vân tay không đổi thì **không ghi file, không commit** — trang vẫn được kiểm tra mỗi 10 phút mà lịch sử git không đầy commit rỗng. Ảnh thiết kế (`hero`, `divider`, `footer`) vẽ lại mỗi giờ một lần.
