@@ -96,3 +96,17 @@ Phần lớn test nằm ở đây vì `primitives` là nền của mọi thẻ:
 - Đường trung bình chỉ hiện khi dữ liệu lệch; nhãn `cao nhất` ẩn khi hôm nay là cao nhất.
 - `contrib is None` → trả `None` để CLI giữ ảnh cũ.
 
+## `test_divider.py` và `test_check_repo.py`
+
+Divider/footer:
+
+- `role="presentation"` (trang trí thuần), không có `aria-label`.
+- Hai tia sáng chạy ngược chiều; sóng nằm trong `clip-path`; sáu bong bóng.
+
+`check_repo`:
+
+- URL có `%`-escape sai hoặc giải mã không ra UTF-8 → báo lỗi.
+- Mojibake kiểu `Ã¡Â»` và chữ Hán/Hàn lạc vào văn bản Việt → báo lỗi.
+- Mã màu `#1A2B3C` **không** bị nhầm là escape hỏng.
+- Tham chiếu `./assets/khong-co.svg` → báo lỗi; `#anchor` thì bỏ qua.
+
