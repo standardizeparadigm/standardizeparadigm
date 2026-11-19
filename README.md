@@ -50,7 +50,7 @@ motto:      "Cứ thử đi, sai thì học được nhiều hơn"
 > [!NOTE]
 > Mình còn nhỏ, code còn nhiều chỗ chưa tối ưu — thấy gì cần sửa thì mở issue chỉ mình nhé. Mình rất thích được góp ý 🙌
 
-<div align="right"><a href="#top">🔝 &nbsp;Về đầu trang</a></div>
+<div align="right"><a href="#top">Về đầu trang</a></div>
 
 <div align="center">
   <img src="./assets/divider.svg" width="100%" alt="" />
@@ -116,7 +116,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 > [!TIP]
 > Chạy lại ngay không cần chờ: tab **Actions** → chọn workflow → **Run workflow** → xong là ảnh mới lên trang chủ.
 
-<div align="right"><a href="#top">🔝 &nbsp;Về đầu trang</a></div>
+<div align="right"><a href="#top">Về đầu trang</a></div>
 
 <div align="center">
   <img src="./assets/divider.svg" width="100%" alt="" />
@@ -156,7 +156,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 - [ ] Tự viết trang portfolio bằng HTML/CSS/JS 🌐
 - [ ] Góp 1 pull request vào project open-source 🤝
 
-<div align="right"><a href="#top">🔝 &nbsp;Về đầu trang</a></div>
+<div align="right"><a href="#top">Về đầu trang</a></div>
 
 <div align="center">
   <img src="./assets/divider.svg" width="100%" alt="" />
@@ -174,7 +174,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 
 <sub>⏱️ Cả hai thẻ tự vẽ lại bằng GitHub Actions; kim đồng hồ quay và <b>số phút tự nhảy mỗi phút</b> bằng CSS. GitHub cache ảnh một lúc — chậm vài phút là cache, không phải lỗi.</sub>
 
-<div align="right"><a href="#top">🔝 &nbsp;Về đầu trang</a></div>
+<div align="right"><a href="#top">Về đầu trang</a></div>
 
 <div align="center">
   <img src="./assets/divider.svg" width="100%" alt="" />
@@ -208,7 +208,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 
 </details>
 
-<div align="right"><a href="#top">🔝 &nbsp;Về đầu trang</a></div>
+<div align="right"><a href="#top">Về đầu trang</a></div>
 
 <div align="center">
   <img src="./assets/divider.svg" width="100%" alt="" />
@@ -249,7 +249,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 
 </details>
 
-<div align="right"><a href="#top">🔝 &nbsp;Về đầu trang</a></div>
+<div align="right"><a href="#top">Về đầu trang</a></div>
 
 <div align="center">
   <img src="./assets/divider.svg" width="100%" alt="" />
@@ -286,7 +286,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 
 </details>
 
-<div align="right"><a href="#top">🔝 &nbsp;Về đầu trang</a></div>
+<div align="right"><a href="#top">Về đầu trang</a></div>
 
 <div align="center">
   <img src="./assets/divider.svg" width="100%" alt="" />
