@@ -75,5 +75,81 @@ class TestLiveClockAsset(unittest.TestCase):
         self.assertIn("clockTime", self.text)
 
 
+
+
+class TestCommittedAssetsContent(unittest.TestCase):
+    """Những thứ phải có trong *file đã commit*, không phải trong hàm vẽ."""
+
+    def test_every_asset_has_a_title(self):
+        # Thẻ <title> là thứ trình đọc màn hình đọc lên thay cho hình.
+        # Ngoại lệ: ảnh trang trí thuần (role="presentation") thì không có
+        # gì để đọc — nhưng bù lại phải mang aria-hidden.
+        for name in asset_files():
+            text = read(name)
+            if 'role="presentation"' in text:
+                self.assertIn('aria-hidden="true"', text, name)
+                continue
+            self.assertRegex(text, r"<title[^>]*>[^<]+</title>", name)
+
+    def test_every_asset_declares_a_description(self):
+        for name in asset_files():
+            text = read(name)
+            if 'role="presentation"' in text:
+                continue
+            self.assertIn("<desc", text, name)
+
+    def test_no_asset_is_empty_or_tiny(self):
+        for name in asset_files():
+            self.assertGreater(len(read(name)), 500, name)
+
+    def test_no_asset_contains_python_placeholder(self):
+        # Dấu hiệu file được ghi từ template mà quên thay biến.
+        for name in asset_files():
+            text = read(name)
+            for token in ("{", "}", "%s", "@FONT@"):
+                if token in ("{", "}"):
+                    continue
+                self.assertNotIn(token, text, name)
+
+    def test_no_trailing_whitespace_in_drawn_text(self):
+        for name in asset_files():
+            for line in read(name).split("\n"):
+                if "<text" in line:
+                    self.assertNotIn(" >", line, name)
+
+    def test_no_asset_uses_emoji(self):
+        # Emoji phụ thuộc font của máy người xem; repo vẽ mọi thứ bằng path.
+        for name in asset_files():
+            text = read(name)
+            self.assertFalse(
+                any(0x1F300 <= ord(ch) <= 0x1FAFF for ch in text), name)
+
+
+class TestLiveClockSlotsInFile(unittest.TestCase):
+    """84 ô số phải thật sự nằm trong file đã commit."""
+
+    def setUp(self):
+        self.text = read("live-clock.svg")
+
+    def test_has_24_hour_slots(self):
+        self.assertEqual(len(re.findall(r'class="clockTime[^"]*" x="308"', self.text)), 24)
+
+    def test_has_60_minute_slots(self):
+        self.assertEqual(len(re.findall(r'class="clockTime[^"]*" x="324"', self.text)), 60)
+
+    def test_exactly_one_slot_is_highlighted_per_column(self):
+        hour = re.findall(r'class="clockTime nowSlot" x="308"', self.text)
+        minute = re.findall(r'class="clockTime nowSlot" x="324"', self.text)
+        self.assertEqual((len(hour), len(minute)), (1, 1))
+
+    def test_hour_slots_cycle_in_a_day(self):
+        self.assertIn("animation-duration: 86400s", self.text)
+
+    def test_minute_slots_cycle_in_an_hour(self):
+        self.assertIn("slotMin 3600s", self.text)
+
+    def test_day_arc_ring_is_present(self):
+        self.assertIn('r="95"', self.text)
+
 if __name__ == "__main__":
     unittest.main()
