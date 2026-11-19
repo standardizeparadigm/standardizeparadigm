@@ -3,6 +3,16 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Sửa: README ghi nhầm lịch của đồng hồ
+
+- Bảng workflow trong README ghi dòng Live Clock chạy `*/30` "mỗi 30 phút".
+  Nó chạy `*/5`. Con số đó là bản sao của dòng biểu đồ 3D nằm ngay dưới.
+- Trong cùng ô, phần mô tả lại viết đúng "vẽ lại mỗi 5 phút" — nên chỉ người
+  đối chiếu hai chỗ mới thấy. Đây là loại lỗi không công cụ nào bắt: cả hai
+  câu đều là văn xuôi tiếng Việt.
+- Sửa luôn câu chân trang dưới ảnh: nói thêm **số phút tự nhảy**, không chỉ
+  tay kim quay.
+
 ## 2026-11-19 — Sửa: dải trạng thái tiếng Anh vẫn hiện 'CHỜ MERGE'
 
 - Bảng `en` có hai giá trị chép nguyên tiếng Việt: `status.foot` và
