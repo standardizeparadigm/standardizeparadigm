@@ -20,3 +20,10 @@ python3 scripts/generate_cards.py --demo --all --out /tmp/xem-thu
 | `../generate_cards.py` | CLI ghép mọi thứ lại |
 | `../tests/` | hơn 100 unit test |
 
+## `palette.py`
+
+- `Palette` là dataclass bất biến, 14 trường; `as_tokens()` đổi thành bảng `@ACCENT@` để thay vào CSS/defs.
+- `THEMES`: `sky`, `emerald`, `violet`, `sunset`, `ocean`, `mono`. Tên lạ rơi về `DEFAULT_THEME` chứ không crash.
+- `LANG_COLORS` giữ mã màu chính thức của GitHub Linguist; `lang_color(name, i)` trả màu đã biết, ngôn ngữ lạ lấy màu từ `RAMP` theo thứ hạng.
+- `grade(stats)` → `("B+", 74)` để vẽ vòng rank.
+
