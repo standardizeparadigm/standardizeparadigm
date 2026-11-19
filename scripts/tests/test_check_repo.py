@@ -527,6 +527,43 @@ class TestConflictMarkers(unittest.TestCase):
         check_repo.check_conflict_markers(self.tmp)
         self.assertEqual(check_repo.errors, [])
 
+
+
+class TestStalePlaces(unittest.TestCase):
+    """Địa danh cũ không được quay lại."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="places-")
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _put(self, text, name="README.md"):
+        with open(os.path.join(self.tmp, name), "w", encoding="utf-8") as handle:
+            handle.write(text)
+
+    def test_new_place_passes(self):
+        self._put("Mình ở phường Kon Tum, tỉnh Quảng Ngãi.")
+        check_repo.check_stale_places(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_old_place_is_flagged(self):
+        self._put("Mình ở Long Xuyên, An Giang.")
+        check_repo.check_stale_places(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_ascii_variant_is_flagged(self):
+        self._put("based in Long Xuyen")
+        check_repo.check_stale_places(self.tmp)
+        self.assertTrue(any("Long Xuyen" in e for e in check_repo.errors))
+
+    def test_filename_mentioning_place_is_flagged(self):
+        self._put('<title>Long Xuyên</title>', name="hero.svg")
+        check_repo.check_stale_places(self.tmp)
+        self.assertTrue(check_repo.errors)
+
 if __name__ == "__main__":
     unittest.main()
 
