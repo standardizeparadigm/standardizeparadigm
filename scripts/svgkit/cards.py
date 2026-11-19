@@ -7,7 +7,7 @@ Cả hai cùng kích thước 640x258 để đứng cạnh nhau cho thẳng hàn
 """
 
 from .api import to_vn
-from .palette import grade, lang_color
+from .palette import grade_progress, lang_color
 from .primitives import esc, human, icon, open_svg
 
 
@@ -103,7 +103,7 @@ def _rank_ring(pal, percent, letter, label, progress_text,
 def stats_card(pal, data, dt, t, width=640, height=258):
     dt = to_vn(dt)
     """Thẻ thống kê: 6 ô số liệu + vòng hạng."""
-    letter, percent = grade(data)
+    letter, percent, next_letter = grade_progress(data)
     stamp = dt.strftime("%d/%m · %H:%M")
     parts = open_svg(pal, width, height, t("stats.title"),
                      desc=t("desc.stats"))
@@ -145,8 +145,11 @@ def stats_card(pal, data, dt, t, width=640, height=258):
                      % (x + 52, y + 41, esc(label)))
         parts.append('  </g>')
 
-    parts += _rank_ring(pal, percent, letter, t("stats.rank"),
-                        t("stats.progress", pct=int(percent * 100)))
+    # Nhãn dưới vòng: còn bao xa tới hạng kế, hoặc đã ở hạng cao nhất.
+    progress_text = (t("stats.to_next", pct=int(round(percent * 100)),
+                       next=next_letter)
+                     if next_letter else t("stats.max"))
+    parts += _rank_ring(pal, percent, letter, t("stats.rank"), progress_text)
     parts += _footer(pal, t("stats.foot"))
     parts.append("</svg>")
     return "\n".join(parts)

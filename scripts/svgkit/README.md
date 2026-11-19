@@ -19,7 +19,7 @@ python3 scripts/generate_cards.py --demo --all --out /tmp/xem-thu
 | `status.py` | dải trạng thái các workflow |
 | `api.py` | client GitHub REST + GraphQL |
 | `../generate_cards.py` | CLI ghép mọi thứ lại |
-| `../tests/` | hơn 500 unit test |
+| `../tests/` | hơn 600 unit test |
 | `../../docs/ARCHITECTURE.md` | vì sao chia module như vậy |
 
 ## `palette.py`
@@ -32,7 +32,7 @@ python3 scripts/generate_cards.py --demo --all --out /tmp/xem-thu
 ## `i18n.py`
 
 - `LANGS = ("vi", "en")`; mọi chuỗi nằm trong `STRINGS[lang]`.
-- `get("vi")` trả một `Translator`; gọi `t("hero.sub")` hoặc `t("stats.progress", pct=74)` — có `{}` format.
+- `get("vi")` trả một `Translator`; gọi `t("hero.sub")` hoặc `t("stats.to_next", pct=74, next="A")` — có `{}` format.
 - Khoá thiếu thì trả chính tên khoá (dễ thấy trong ảnh), không ném lỗi giữa workflow.
 - `t.weekday(3)` → `"Thứ Năm"` / `"Thursday"` cho dòng ngày của đồng hồ.
 

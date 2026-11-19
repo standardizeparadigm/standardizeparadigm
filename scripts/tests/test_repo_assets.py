@@ -151,5 +151,35 @@ class TestLiveClockSlotsInFile(unittest.TestCase):
     def test_day_arc_ring_is_present(self):
         self.assertIn('r="95"', self.text)
 
+
+
+class TestAssetsCrossRenderer(unittest.TestCase):
+    """Những thứ một trình vẽ khắt khe (resvg) sẽ bỏ qua hoặc crash."""
+
+    def test_no_font_shorthand(self):
+        for name in asset_files():
+            for line in read(name).split("\n"):
+                self.assertNotIn("font:", line.replace("font-family", ""), name)
+
+    def test_no_filter_on_gradient_ellipse(self):
+        # resvg panic khi tính vùng lọc cho ellipse tô gradient lấn ra ngoài.
+        for name in asset_files():
+            for line in read(name).split("\n"):
+                if "<ellipse" in line:
+                    self.assertNotIn("filter=", line, name)
+
+    def test_every_url_reference_exists(self):
+        for name in asset_files():
+            text = read(name)
+            defined = set(re.findall(r'id="([^"]+)"', text))
+            used = set(re.findall(r"url\(#([^)]+)\)", text))
+            self.assertEqual(sorted(used - defined), [], name)
+
+    def test_no_negative_zero_numbers(self):
+        # '-0' xuất hiện khi một phép tính ra -0.0; vô hại nhưng là dấu hiệu
+        # của toạ độ suy biến.
+        for name in asset_files():
+            self.assertNotIn('="-0"', read(name), name)
+
 if __name__ == "__main__":
     unittest.main()

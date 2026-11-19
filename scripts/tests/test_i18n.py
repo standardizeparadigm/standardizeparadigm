@@ -50,10 +50,10 @@ class TestTranslator(unittest.TestCase):
 
     def test_formatting(self):
         t = i18n.get()
-        self.assertIn("42%", t("stats.progress", pct=42))
+        self.assertIn("42%", t("stats.to_next", pct=42, next="A"))
 
     def test_missing_format_arg_does_not_crash(self):
-        self.assertIn("{pct}", i18n.get()("stats.progress"))
+        self.assertIn("{pct}", i18n.get()("stats.to_next"))
 
     def test_weekday_names(self):
         self.assertEqual(i18n.get("vi").weekday(3), "Thứ Năm")
@@ -141,7 +141,7 @@ class TestFallbacks(unittest.TestCase):
     def test_placeholder_substitution(self):
         from svgkit import i18n
 
-        text = i18n.get("vi")("stats.progress", pct=74)
+        text = i18n.get("vi")("stats.to_next", pct=74, next="A")
         self.assertIn("74", text)
         self.assertNotIn("{pct}", text)
 
