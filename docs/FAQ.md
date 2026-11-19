@@ -32,3 +32,12 @@ Nên trang này làm hai lớp:
 
 Với repo công khai, phút runner miễn phí — nhưng vẫn giữ ở mức này để không bị coi là lạm dụng.
 
+## Vì sao là SVG mà không phải PNG?
+
+- **Nhẹ**: thẻ 640×258 chỉ ~16 KB, PNG cùng kích thước dễ vượt 100 KB.
+- **Nét**: phóng to bao nhiêu cũng sắc, hợp màn hình Retina.
+- **Động**: chứa được CSS/SMIL — PNG thì không.
+- **Chữ chọn được**: người xem có thể bôi đen số liệu, trình đọc màn hình đọc được.
+
+Đổi lại: SVG cần trình duyệt để render, và một số nơi (email, một số trình xem markdown) chặn hoạt ảnh — nên mọi khung hình đầu tiên đều được vẽ đẹp sẵn.
+
