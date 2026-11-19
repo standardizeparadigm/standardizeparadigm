@@ -411,8 +411,12 @@ class TestHumanAge(unittest.TestCase):
     def test_none_gives_no_label(self):
         self.assertIsNone(status.human_age(None, self.t))
 
-    def test_english_wording(self):
-        self.assertIn("min", status.human_age(5, i18n.get("en")))
+    def test_english_wording_is_short(self):
+        # Bản tiếng Anh dùng dạng rút gọn "5m ago" để vừa viên thuốc 162px.
+        self.assertEqual(status.human_age(5, i18n.get("en")), "5m ago")
+        self.assertEqual(status.human_age(90, i18n.get("en")), "1h ago")
+        self.assertEqual(status.human_age(60 * 24 * 3, i18n.get("en")),
+                         "3d ago")
 
 if __name__ == "__main__":
     unittest.main()
