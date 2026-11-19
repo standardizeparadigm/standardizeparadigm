@@ -43,3 +43,12 @@ python3 scripts/generate_cards.py --demo --all --out /tmp/xem-thu
 - `open_svg()` mở thẻ: `<svg>` + CSS + defs + nền + viền gradient + `clipPath#cardBody` để lớp trang trí không tràn góc bo.
 - Có khối `@media (prefers-reduced-motion: reduce)` tắt hết hoạt ảnh khi người xem yêu cầu.
 
+## `hero.py`
+
+`hero(pal, dt, t)` → 1000×280.
+
+- Nền: lưới mờ, ba quầng sáng trôi, sao nhấp nháy, dải quét.
+- Trái: monogram "SP" trong hệ quỹ đạo ba hạt sáng.
+- Phải: tên, mô tả, ba chip công nghệ bồng bềnh, dòng gõ chữ, con dấu thời gian.
+- Mọi lớp trang trí nằm trong `<g clip-path="url(#cardBody)">`.
+
