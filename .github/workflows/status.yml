@@ -22,7 +22,7 @@ on:
     # Một workflow vừa xong -> cập nhật dải trạng thái ngay
     workflows:
       - "GitHub Profile 3D Contrib"
-      - "⏱️ Live Clock"
+      - "Live Clock"
       - "Profile Cards (LTS)"
       - "🌱 README Garden"
       - "🩺 Repo Health"
