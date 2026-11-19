@@ -9,7 +9,7 @@ Không cần dữ liệu GitHub, chỉ cần palette + thời điểm chạy. To
 
 import random
 
-from .primitives import esc, num, open_svg
+from .primitives import esc, num, open_svg, smil_reduce_style
 
 
 def _grid(width, height, pal):
@@ -57,7 +57,7 @@ def _particles(pal, width, height, seed=77123):
         color = rnd.choice([pal.accent3, pal.accent])
         parts.append(
             '    <circle cx="%.0f" cy="%.0f" r="%.1f" fill="%s" opacity="0" '
-            'class="dust">'
+            'class="dust smilOnly">'
             '<animate attributeName="cy" values="%.0f;%.0f" dur="%.1fs" '
             'begin="%.1fs" repeatCount="indefinite"/>'
             '<animate attributeName="opacity" values="0;.7;0" dur="%.1fs" '
@@ -86,7 +86,8 @@ def _orbit(pal, cx=148, cy=140):
     # Hai vòng lan toả chậm quanh lõi, như nhịp thở của thành phố nhỏ.
     for delay, duration in ((0, 5.2), (-2.6, 5.2)):
         parts.append('    <circle cx="%d" cy="%d" r="26" fill="none" '
-                     'stroke="%s" stroke-width="1.4" opacity="0">'
+                     'stroke="%s" stroke-width="1.4" opacity="0" '
+                     'class="smilOnly">'
                      '<animate attributeName="r" values="26;86" dur="%.1fs" '
                      'begin="%.1fs" repeatCount="indefinite"/>'
                      '<animate attributeName="opacity" values=".55;0" dur="%.1fs" '
@@ -180,6 +181,9 @@ def hero(pal, dt, t, width=1000, height=280):
     parts = open_svg(pal, width, height,
                      "Standardize Paradigm - " + t("hero.sub"),
                      desc=t("desc.hero"), halo=False, radius=22)
+    # SMIL không tắt được bằng CSS: mọi phần tử mang <animate> có class
+    # smilOnly để media query ẩn hẳn khi người dùng bật giảm chuyển động.
+    parts.append(smil_reduce_style())
 
     parts.append('  <g clip-path="url(#cardBody)">')
     parts += _grid(width, height, pal)
@@ -218,8 +222,9 @@ def hero(pal, dt, t, width=1000, height=280):
                  'keySplines="0.4 0 0.6 1;0 0 1 1"/>')
     parts.append('      </rect>')
     parts.append('    </clipPath>')
-    parts.append('    <text x="252" y="96" class="heroTitle" fill="#FFFFFF" '
-                 'opacity=".28" clip-path="url(#sheenClip)">Standardize Paradigm</text>')
+    parts.append('    <text x="252" y="96" class="heroTitle smilOnly" '
+                 'fill="#FFFFFF" opacity=".28" '
+                 'clip-path="url(#sheenClip)">Standardize Paradigm</text>')
     parts.append('    <rect x="253" y="106" width="74" height="3" rx="1.5" '
                  'fill="url(#accentGrad)" class="pulse"/>')
     parts.append('    <text x="252" y="134" class="heroSub">%s</text>' % esc(t("hero.sub")))
