@@ -36,6 +36,13 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
 - Quyền `contents: write` + `actions: read`; kiểm tra XML trước khi commit;
   không đọc được API thì giữ ảnh cũ chứ không ghi thẻ rỗng.
 
+## 2026-11-19 — Vệ sinh file trong check_repo
+
+- Bốn loại lỗi vô hình: BOM UTF-8, xuống dòng CRLF, ký tự điều khiển dưới
+  U+0020, và file không phải UTF-8 hợp lệ. Đều là mầm của "hỏng kí tự".
+- Khoảng trắng thừa cuối dòng chỉ là cảnh báo để không chặn CI.
+- Bỏ qua `.git`, `node_modules`, `.venv`, `__pycache__` và file nhị phân.
+
 ## 2026-11-19 — Cổng 3D: sửa lỗi mốc 24 giờ không bao giờ tới
 
 - Cổng so "lần chạy thành công gần nhất", nhưng lượt bị cổng bỏ qua **vẫn** là lượt thành công → mốc 24 giờ không bao giờ đạt được, ảnh chỉ đổi khi có push.
