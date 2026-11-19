@@ -471,6 +471,45 @@ def check_dead_assets(root=None):
             err("assets/%s không được nhúng ở đâu (ảnh chết)" % name)
 
 
+# ---------------------------------------------------- 4b1. Tài liệu mồ côi
+MD_LINK = re.compile(r"\]\(([^)\s]+)")
+
+
+def markdown_files(root=None):
+    root = root or ROOT
+    found = []
+    for base, dirs, files in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if name.lower().endswith(".md"):
+                found.append(os.path.join(base, name))
+    return found
+
+
+def check_orphan_docs(root=None):
+    """Bài trong docs/ phải được nhắc tới từ một bài khác.
+
+    Tài liệu không ai dẫn tới thì coi như không tồn tại: người mới sẽ không
+    bao giờ đọc `docs/ARCHITECTURE.md` nếu README không có link. README và
+    CHANGELOG được miễn — chúng là cửa vào và nhật ký, không phải bài con.
+    """
+    root = root or ROOT
+    files = markdown_files(root)
+    if not files:
+        return
+    corpus = "\n".join(read(path) for path in files)
+    exempt = ("README.md", "CHANGELOG.md")
+    docs_dir = os.path.join(root, "docs")
+    for path in files:
+        if os.path.dirname(path) != docs_dir:
+            continue
+        name = os.path.basename(path)
+        if name in exempt:
+            continue
+        if name not in corpus.replace(os.sep, "/"):
+            err("docs/%s không được bài nào dẫn tới (tài liệu mồ côi)" % name)
+
+
 # ------------------------------------------------- 4b2. Số test trong tài liệu
 RE_TEST_CLAIM = re.compile(r"hơn (\d+) unit test")
 TEST_DEF = re.compile(r"^\s+def test_", flags=re.M)
@@ -592,6 +631,7 @@ def main(argv=None):
     check_asset_refs()
     check_dead_assets()
     check_test_claims()
+    check_orphan_docs()
     check_python()
     # Mọi file Markdown trong repo (README, docs, CONTRIBUTING, mẫu issue...).
     # Dùng os.walk vì glob không đi vào thư mục ẩn như .github/.
