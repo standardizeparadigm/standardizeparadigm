@@ -177,6 +177,7 @@ Ba lớp bảo hiểm khi vẫn trùng giờ:
 | :-- | :-- | :-- |
 | Ảnh cũ không đổi | GitHub cache ảnh (camo/CDN) | Đợi 1–5 phút, Ctrl+F5 |
 | Đồng hồ chậm vài phút | Lượt chạy theo lịch bị trễ | Bình thường, xem mục 3 |
+| Đồng hồ lệch đúng 7 tiếng | Mốc thời gian chưa quy về UTC+7 | Kiểm `api.to_vn()` và `test_api_time.py` |
 | `profile-3d` "không chạy" | Cổng thông minh bỏ qua vì chưa có push mới | Bình thường; `Run workflow` để ép vẽ |
 | Workflow đỏ ở bước API | Token thiếu quyền hoặc hết quota | Kiểm tra `permissions: contents: write`, chạy lại sau vài phút |
 | Ảnh không hiện | Thiếu file trong `assets/` | Chạy `health.yml` để xem lỗi cụ thể |
