@@ -186,6 +186,28 @@ Dải này kể chuyện bằng **màu và chuyển động cùng lúc**, nên n
 Tất cả các lớp trên đều nằm trong danh sách tắt của `prefers-reduced-motion`,
 nên ai bật "giảm chuyển động" sẽ thấy một dải tĩnh nhưng vẫn đủ màu và chữ.
 
+## Mọi thẻ — vệt sáng mép trên
+
+- Mỗi thẻ (kể cả `live-clock`, `status`) có một vệt 130px chạy dọc mép trên,
+  dùng lại keyframe `sheen` nên cùng nhịp với vệt sáng quét trong thân thẻ.
+- Chu kỳ 8–12 giây, **lệch nhau theo bề rộng thẻ** (`8 + width % 5`), nên
+  hai thẻ cạnh nhau không bao giờ chớp cùng lúc.
+- Vệt nằm trong `<g clip-path="url(#cardBody)">` — không tràn qua góc bo, và
+  tự tắt theo `prefers-reduced-motion` vì nó là `sheen`.
+
+## Top languages — chấm sáng ở đầu thanh
+
+- Mỗi thanh tiến độ 3px có một chấm `r=2.4` đặt đúng tại điểm dừng
+  (`x = lề + bề dài thanh`), nhấp nháy `pulse` với độ trễ lệch 0.2 giây.
+- Thanh tĩnh trả lời "bao nhiêu phần trăm"; chấm sáng trả lời "thanh này
+  vừa được vẽ lại" và cho mắt một điểm bám khi quét nhanh cả cột.
+
+## Activity — vòng thở quanh cột hôm nay
+
+- Sau lưng chấm sáng có thêm vòng `stroke` bán kính 11, `pulseSlow`
+  4.4 giây. Cột hôm nay vì thế vẫn nổi bật kể cả khi nó thấp bằng cột bên
+  cạnh — trước đây chỉ một chấm 3.4px là không đủ.
+
 ## Tắt hoạt ảnh
 
 Mỗi file SVG có sẵn khối `@media (prefers-reduced-motion: reduce)` tắt toàn bộ hoạt ảnh CSS. Nếu bạn thấy chuyển động gây khó chịu:
