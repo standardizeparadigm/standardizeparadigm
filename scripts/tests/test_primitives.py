@@ -6,6 +6,7 @@ import unittest
 from helpers import SCRIPTS, assert_valid_svg  # noqa: F401
 
 from svgkit import primitives
+from svgkit.primitives import human
 from svgkit.palette import get_palette
 
 
@@ -104,6 +105,64 @@ class TestOpenSvg(unittest.TestCase):
         self.assertGreater(before.count("<g clip-path"), before.count("</g>"))
         self.assertIn("</g>", after)
 
+
+
+
+class TestSheen(unittest.TestCase):
+    """Vệt sáng quét mép trên: trang trí, nhưng dễ vỡ khi đổi kích thước."""
+
+    def test_uses_the_sheen_gradient_and_keyframes(self):
+        svg = primitives.sheen(get_palette("sky"), 640, 258)
+        self.assertIn("url(#sheenGrad)", svg)
+        self.assertIn('class="sheen"', svg)
+
+    def test_delay_can_be_negative(self):
+        svg = primitives.sheen(get_palette("sky"), 640, 258, delay=-2.5)
+        self.assertIn("-2.5s", svg)
+
+    def test_opacity_is_carried_through(self):
+        self.assertIn('opacity="0.3"',
+                      primitives.sheen(get_palette("sky"), 640, 258, opacity=0.3))
+
+    def test_clip_id_is_derived_from_size(self):
+        # id phải khác nhau giữa hai thẻ cùng trang, nếu không cả hai dùng
+        # chung một clip và vệt sáng của thẻ nhỏ tràn sang thẻ lớn.
+        small = primitives.sheen(get_palette("sky"), 640, 258)
+        large = primitives.sheen(get_palette("sky"), 1000, 280)
+        self.assertNotEqual(small.split('"')[1], large.split('"')[1])
+
+    def test_class_matches_the_keyframes(self):
+        self.assertIn('class="sheen"', primitives.sheen(get_palette("sky"), 640, 258))
+
+
+class TestHumanNumbers(unittest.TestCase):
+    """`human()` là chỗ dễ làm sai dấu thập phân nhất."""
+
+    def test_exactly_one_thousand(self):
+        # Bỏ ".0" là chủ ý: "1k" đọc nhanh hơn "1.0k".
+        self.assertEqual(human(1000), "1k")
+
+    def test_nine_ninety_nine(self):
+        self.assertEqual(human(999), "999")
+
+    def test_one_million(self):
+        self.assertEqual(human(1_000_000), "1M")
+
+    def test_rounds_to_one_decimal(self):
+        self.assertEqual(human(1234), "1.2k")
+
+    def test_negative_is_kept(self):
+        self.assertEqual(human(-15), "-15")
+
+    def test_string_input_is_accepted(self):
+        self.assertEqual(human("42"), "42")
+
+    def test_garbage_becomes_a_dash(self):
+        self.assertEqual(human(None), "-")
+        self.assertEqual(human("abc"), "-")
+
+    def test_just_under_a_million(self):
+        self.assertEqual(human(999_999), "1000k")
 
 if __name__ == "__main__":
     unittest.main()
