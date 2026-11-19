@@ -24,3 +24,7 @@ python3 scripts/generate_cards.py --list-themes        # xem danh sách + mã m�
 
 - Nhấn `#34D399`, phụ `#10B981`, nhạt `#6EE7B7`.
 - Xanh ngọc có độ sáng cao nên hợp làm màu cho thanh tiến độ và số liệu nhỏ.
+## `violet`
+
+- Nhấn `#A78BFA`, phụ `#8B5CF6`, nhạt `#C4B5FD`.
+- Màu tiêu đề riêng `#F3EBFF` (không dùng trắng tinh) để chữ tím không bị "chói".
