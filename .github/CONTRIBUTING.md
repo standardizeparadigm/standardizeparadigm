@@ -5,7 +5,7 @@ Cảm ơn bạn đã quan tâm đến trang cá nhân này! Mình là học sinh
 ## 🚀 Cách bắt đầu
 
 1. **Fork** repo này về tài khoản của bạn.
-2. **Clone** repo forked:
+2. **Clone** repo đã fork:
    ```bash
    git clone https://github.com/<username-cua-ban>/standardizeparadigm.git
    cd standardizeparadigm
@@ -14,25 +14,35 @@ Cảm ơn bạn đã quan tâm đến trang cá nhân này! Mình là học sinh
    ```bash
    git checkout -b feat/ten-ban-than
    ```
-4. Thay đổi, commit và push:
+4. Sửa, commit và push:
    ```bash
    git add .
-   git commit -m "feat: mo ta ngan gon thay doi"
+   git commit -m "feat: mô tả ngắn gọn thay đổi"
    git push origin feat/ten-ban-than
    ```
 5. Mở **Pull Request** trên GitHub và mô tả thay đổi.
 
 ## 📝 Quy ước commit
 
-Sử dụng tiền tố tiếng Anh theo kiểu conventional commits:
+Dùng tiền tố tiếng Anh theo kiểu conventional commits (phần mô tả viết tiếng Việt cũng được):
 
 | Tiền tố | Ý nghĩa | Ví dụ |
 | :-- | :-- | :-- |
-| `feat:` | Tính năng mới / section mới | `feat: them bo cau hoi thuong gap` |
-| `fix:` | Sửa lỗi | `fix: sua lien ket sai trang lien he` |
-| `docs:` | Thay đổi tài liệu | `docs: cap nhat huong dan dong gop` |
-| `style:` | Format, css, thiaz thiet | `style: sua mau sac badge` |
-| `chore:` | D잡 vụ, bảo trì | `chore: cap nhat cong duong anh` |
+| `feat:` | Tính năng mới / mục mới | `feat: thêm mục câu hỏi thường gặp` |
+| `fix:` | Sửa lỗi | `fix: sửa liên kết sai ở mục liên hệ` |
+| `docs:` | Thay đổi tài liệu | `docs: cập nhật hướng dẫn đóng góp` |
+| `style:` | Định dạng, khoảng trắng, mã màu | `style: chỉnh màu badge` |
+| `chore:` | Việc vặt, bảo trì | `chore: cập nhật con dấu cập nhật` |
+
+## 🧪 Trước khi mở Pull Request
+
+Chạy bộ kiểm tra ngay trên máy bạn (không cần cài gì):
+
+```bash
+python3 scripts/check_repo.py
+```
+
+Nó sẽ chỉ ra ký tự lỗi encoding, SVG hỏng, link chết, workflow sai — đúng những gì CI của repo kiểm tra.
 
 ## 🐛 Báo lỗi & yêu cầu tính năng
 
@@ -44,6 +54,6 @@ Sử dụng tiền tố tiếng Anh theo kiểu conventional commits:
 - Không spam, không phân biệt đối xử.
 - Nếu bạn là bạn cùng tuổi và muốn làm project chung, hãy nhắn mình qua issue hoặc Discord — mình rất mong được làm quen!
 
-## 📄 License
+## 📄 Giấy phép
 
 Dự án này dùng giấy phép MIT — xem file `LICENSE`.

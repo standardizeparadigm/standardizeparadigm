@@ -1,62 +1,88 @@
 # ⚙️ Các workflow tự động
 
-Tài liệu này mô tả các GitHub Actions đang chạy trong repo `standardizeparadigm/standardizeparadigm`. Tất cả đều lưu ảnh ngay trong repo — không gọi server bên thứ ba, không bị rate-limit.
+Tài liệu này mô tả các GitHub Actions đang chạy trong repo `standardizeparadigm/standardizeparadigm`.
 
-## 1. GitHub Profile 3D Contrib (`.github/workflows/profile-3d.yml`)
+**Nguyên tắc chung:** mọi hình đều do workflow vẽ và **commit ngay vào repo** — không gọi server bên thứ ba, không bao giờ bị rate-limit hay lỗi 503. Tất cả workflow đều ghim phiên bản action (`@vN`) và có `permissions` tối thiểu.
 
-**Chức năng:** Tạo biểu đồ contribution dạng khối 3D, gradient đổi màu mượt mà, lưu vào `profile-3d-contrib/`.
+---
 
-- **File ảnh mặc định:** `profile-night-rainbow.svg`
-- **Số giao diện:** 10 giao diện màu sắc (xem bảng trong README section 05)
-- **Kích hoạt:**
-  - Lúc 01:00 mỗi ngày (giờ Việt Nam, UTC+7)
-  - Thủ động: tab Actions → **Run workflow**
-  - Mỗi khi push nhánh `main`
+## 1. GitHub Profile 3D Contrib — `profile-3d.yml`
 
-## 2. Profile Stats Cards (LTS) (`.github/workflows/profile-cards.yml` + `scripts/generate_cards.py`)
+Tạo biểu đồ contribution dạng khối 3D, lưu vào `profile-3d-contrib/`.
 
-**Chức năng:** Sinh hai thẻ SVG động bằng Python thuần (không cần cài thư viện):
+- **File ảnh:** `profile-3d-contrib/profile-night-rainbow.svg` (và 9 giao diện khác)
+- **Chạy:** 01:00 mỗi ngày (giờ Việt Nam) · `workflow_dispatch` · khi sửa chính file workflow
+- **Chống lỗi:** kiểm tra ảnh sinh ra có phải XML hợp lệ trước khi commit; bỏ qua commit của bot để không lặp vô hạn.
 
-- `assets/stats.svg` — stars, forks, repositories, followers, following, commits, rank
-- `assets/top-langs.svg` — ngôn ngữ dùng nhiều nhất, thanh进度 hiện từng cột
+## 2. Profile Cards (LTS) — `profile-cards.yml` + `scripts/generate_cards.py`
 
-Điểm mạnh: dùng `GITHUB_TOKEN` riêng của repo nên quota API không bị chia sẻ với hàng ngàn repo khác — không bao giờ 503.
+Vẽ bằng Python thuần (không cần cài thư viện):
 
-- **Kích hoạt:** 08:00 mỗi ngày, thủ động, và khi file script thay đổi.
-- **Chế độStrict:** Nếu API lỗi, ảnh cũ được giữ nguyên, không ghi đè ảnh trống.
+| File | Nội dung |
+| :-- | :-- |
+| `assets/stats.svg` | stars, forks, repos, followers, following, commits + vòng rank |
+| `assets/top-langs.svg` | ngôn ngữ dùng nhiều nhất, thanh xếp chồng + thanh tiến độ từng ngôn ngữ |
+| `assets/hero.svg` | ảnh bìa động (gradient, quỹ đạo, hiệu ứng gõ chữ) |
+| `assets/divider.svg` | đường kẻ động dùng giữa các mục |
 
-## 3. README Garden — Tự nuôi dưỡng (`.github/workflows/readme-tend.yml`)
+- **Chạy:** 08:00 mỗi ngày (giờ Việt Nam) · `workflow_dispatch` · khi `scripts/generate_cards.py` thay đổi
+- **Dữ liệu:** `GITHUB_TOKEN` có sẵn của repo → quota riêng, không chia sẻ với hàng nghìn repo khác.
+- **Chế độ `--strict`:** API lỗi là workflow báo đỏ ngay, không âm thầm giữ ảnh cũ.
+- **An toàn:** ghi file kiểu *atomic* (file tạm rồi `os.replace`), nên mất mạng giữa chừng thì ảnh cũ vẫn nguyên vẹn.
 
-**Chức năng:** Cập nhật con dấu "lần cập nhật gần nhất" (`<!-- TENDED_AT -->`) ở cuối README và kiểm tra xem các thư mục ảnh còn intact không.
+## 3. Live Clock — `live-clock.yml` (cập nhật theo phút)
 
-- **Kích hoạt:** 14:00 mỗi Chủ nhật (giờ Việt Nam), thủ động.
+Vẽ lại `assets/live-clock.svg`: đồng hồ Việt Nam (UTC+7), lời chào theo giờ, tiến độ trong ngày.
 
-## 4. Welcome new contributors (`.github/workflows/welcome.yml`)
+- **Chạy:** `*/5 * * * *` — **mỗi 5 phút**, là chu kỳ ngắn nhất GitHub Actions hỗ trợ. GitHub **không** cho cron mỗi phút, và các lượt chạy theo lịch có thể bị trễ vài phút khi hệ thống tải cao.
+- **Không gọi API** → mỗi lượt chỉ vài giây, không tốn quota.
+- Muốn thưa hơn: đổi `"*/5 * * * *"` thành `"*/15 * * * *"` hoặc `"0 * * * *"`.
+- Kim đồng hồ còn **tự quay** bằng CSS/SMIL giữa hai lần cập nhật, nên nhìn luôn "sống".
 
-**Chức năng:** Bot tự bình luận chào mừng khi có issue hoặc pull request mới được mở.
+## 4. README Garden — `readme-tend.yml`
 
-- **Kích hoạt:** khi có issue/PR mới.
+- Cập nhật con dấu `<!-- TENDED_AT: ... -->` ở cuối README (ngày **và giờ phút**, giờ Việt Nam).
+- Kiểm tra `assets/` và `profile-3d-contrib/` còn đủ file.
+- **Chạy:** 14:00 mỗi **Chủ nhật** (giờ Việt Nam) · `workflow_dispatch` · khi README thay đổi.
 
-## 5. Dependabot (`.github/dependabot.yml`)
+## 5. Repo Health — `health.yml` + `scripts/check_repo.py`
 
-Cập nhật phiên bản các action GitHub hàng tháng.
+"Bác sĩ" của repo, chạy mỗi lần push/PR và 06:00 mỗi ngày:
 
-## Cách chạy lại workflow ngay
+- SVG có phải XML hợp lệ
+- Chữ có lỗi encoding (ký tự hỏng, chữ Hán/Hàn lạc vào, mojibake)
+- URL có `%`-escape sai hoặc giải mã ra UTF-8 không hợp lệ
+- Anchor `#mục` và đường dẫn ảnh tương đối có tồn tại
+- Workflow YAML parse được, cron đủ 5 trường, action có phiên bản
+- Script Python biên dịch được
 
-1. Vào repo trên GitHub → tab **Actions**.
-2. Chọn workflow muốn chạy ở thanh bên trái.
-3. Nhấn nút **Run workflow** (màu xanh) → chọn nhánh → **Run workflow**.
-4. Đợi xong, refresh trang chủ là thấy ảnh mới.
+Chạy tay: `python3 scripts/check_repo.py`
 
-## Khắc phục sự cố thường gặp
+## 6. Welcome New Contributors — `welcome.yml`
 
-| Triệu chứng | Nguyên nhân có thể | Cách xử lý |
+Tự bình luận chào mừng khi có issue/PR mới. Bỏ qua tài khoản bot, chỉ chào **một lần** cho mỗi issue/PR (kiểm tra bình luận cũ trước khi gửi).
+
+---
+
+## Chạy lại ngay
+
+1. Vào repo → tab **Actions**.
+2. Chọn workflow ở thanh bên trái.
+3. **Run workflow** → chọn nhánh → **Run workflow**.
+4. Đợi xong, tải lại trang chủ là thấy ảnh mới.
+
+## Sự cố thường gặp
+
+| Triệu chứng | Nguyên nhân | Cách xử lý |
 | :-- | :-- | :-- |
-| Ảnh stats cũ không đổi | GitHub cache ảnh | Đợi 1–5 phút, nhấn Ctrl+F5 |
-| Workflow báo lỗi HTTP 401 | GITHUB_TOKEN không được truyền | Kiểm tra quyền `contents: write` của workflow |
-| Thiếu file ảnh | Repo clone thiếu thư mục | Kiểm tra `assets/` và `profile-3d-contrib/` đã được commit |
+| Ảnh cũ không đổi | GitHub cache ảnh (camo/CDN) | Đợi 1–5 phút, Ctrl+F5 |
+| Đồng hồ chậm vài phút | Lượt chạy theo lịch bị trễ | Bình thường, xem mục 3 |
+| Workflow đỏ ở bước API | Token thiếu quyền hoặc hết quota | Kiểm tra `permissions: contents: write`, chạy lại sau vài phút |
+| Ảnh không hiện | Thiếu file trong `assets/` | Chạy `health.yml` để xem lỗi cụ thể |
+| Push thất bại | Hai workflow commit cùng lúc | Workflow đã tự thử lại 3 lần; nếu vẫn lỗi thì chạy lại |
 
 ## Tham khảo
 
-- [README.md](./../README.md) — trang cá nhân chính
-- [scripts/generate_cards.py](./../scripts/generate_cards.py) — script sinh thẻ thống kê
+- [README.md](../README.md) — trang cá nhân
+- [scripts/generate_cards.py](../scripts/generate_cards.py) — sinh toàn bộ SVG
+- [scripts/check_repo.py](../scripts/check_repo.py) — kiểm tra sức khỏe repo

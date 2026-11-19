@@ -1,0 +1,32 @@
+<svg width="1000" height="26" viewBox="0 0 1000 26" xmlns="http://www.w3.org/2000/svg" role="presentation">
+  <defs>
+    <linearGradient id="ln" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#38BDF8" stop-opacity="0"/>
+      <stop offset="20%" stop-color="#38BDF8" stop-opacity=".55"/>
+      <stop offset="50%" stop-color="#7DD3FC" stop-opacity=".95"/>
+      <stop offset="80%" stop-color="#38BDF8" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="sparkLine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity=".95"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="dGlow"><feGaussianBlur stdDeviation="2.4"/></filter>
+  </defs>
+  <rect x="0" y="12" width="1000" height="1.6" fill="url(#ln)"/>
+  <rect x="-120" y="11.4" width="120" height="2.8" fill="url(#sparkLine)" filter="url(#dGlow)">
+    <animate attributeName="x" values="-120;1020" dur="7s" repeatCount="indefinite"/>
+  </rect>
+  <g transform="translate(500 13)">
+    <rect x="-4.5" y="-4.5" width="9" height="9" rx="2" transform="rotate(45)" fill="#7DD3FC" opacity=".9">
+      <animateTransform attributeName="transform" type="rotate" values="45;225;45" dur="12s" repeatCount="indefinite"/>
+    </rect>
+    <circle r="13" fill="none" stroke="#38BDF8" stroke-opacity=".25">
+      <animate attributeName="r" values="8;16;8" dur="4.5s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values=".3;0;.3" dur="4.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  <circle cx="150" cy="13" r="2" fill="#38BDF8" opacity=".55"/>
+  <circle cx="850" cy="13" r="2" fill="#38BDF8" opacity=".55"/>
+</svg>

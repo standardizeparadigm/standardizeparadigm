@@ -1,0 +1,63 @@
+# =====================================================================
+#  health.yml — "Bác sĩ" của repo
+#
+#  Chạy scripts/check_repo.py để bắt lỗi TRƯỚC khi bạn nhìn thấy trên
+#  trang: ký tự hỏng, SVG lỗi XML, URL %-escape sai, anchor chết,
+#  workflow YAML hỏng, script Python không biên dịch được...
+#
+#  Lịch: mỗi push / pull request + 06:00 mỗi ngày (giờ Việt Nam).
+# =====================================================================
+name: 🩺 Repo Health
+
+on:
+  push:
+    branches: [main, master]
+    # Đồng hồ commit mỗi 5 phút -> bỏ qua để không chạy 288 lần/ngày
+    paths-ignore:
+      - "assets/live-clock.svg"
+  pull_request:
+  schedule:
+    - cron: "0 23 * * *"        # 06:00 giờ Việt Nam
+  workflow_dispatch:
+
+concurrency:
+  group: health-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Chuẩn bị Python + PyYAML (không bắt buộc)
+        run: |
+          python3 --version
+          python3 -m pip install --quiet --disable-pip-version-check pyyaml \
+            || echo "(không cài được pyyaml — sẽ kiểm tra YAML ở mức văn bản)"
+
+      - name: Kiểm tra sức khỏe repo
+        run: python3 scripts/check_repo.py
+
+      - name: Thử vẽ lại toàn bộ SVG (chế độ demo, không gọi API)
+        run: python3 scripts/generate_cards.py --demo --all --out /tmp/svg-test
+
+      - name: Kiểm tra SVG vừa vẽ
+        run: |
+          python3 - <<'PY'
+          import glob
+          import sys
+          import xml.dom.minidom as md
+          files = sorted(glob.glob("/tmp/svg-test/*.svg"))
+          if not files:
+              print("!! Không có SVG nào được sinh ra")
+              sys.exit(1)
+          for f in files:
+              md.parse(f)
+              print("OK  %s" % f)
+          PY
