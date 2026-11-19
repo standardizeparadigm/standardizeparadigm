@@ -1329,6 +1329,45 @@ class TestBadNumbers(unittest.TestCase):
         check_repo.check_bad_numbers(self.tmp)
         self.assertEqual(check_repo.errors, [])
 
+
+
+class TestUrlTargets(unittest.TestCase):
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="url-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _svg(self, body):
+        with open(os.path.join(self.tmp, "assets", "a.svg"), "w",
+                  encoding="utf-8") as handle:
+            handle.write(body)
+
+    def test_paint_targets_pass(self):
+        self._svg('<defs><linearGradient id="g"/><filter id="f"/>'
+                  '<clipPath id="c"/><mask id="m"/></defs>'
+                  '<rect fill="url(#g)" filter="url(#f)" clip-path="url(#c)" '
+                  'mask="url(#m)"/>')
+        check_repo.check_url_targets(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_unknown_target_is_reported(self):
+        self._svg('<rect filter="url(#gloww)"/>')
+        check_repo.check_url_targets(self.tmp)
+        self.assertTrue(any("gloww" in e for e in check_repo.errors))
+
+    def test_target_that_is_not_a_definition_is_reported(self):
+        self._svg('<circle id="halo"/><rect fill="url(#halo)"/>')
+        check_repo.check_url_targets(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_real_assets_pass(self):
+        check_repo.check_url_targets()
+        self.assertEqual(check_repo.errors, [])
+
 if __name__ == "__main__":
     unittest.main()
 
