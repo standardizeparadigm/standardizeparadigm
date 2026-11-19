@@ -6,7 +6,12 @@ Bộ test chạy bằng `unittest` của Python — không cần `pytest`, khôn
 python3 -m unittest discover -s scripts/tests -t scripts        # chạy hết
 python3 -m unittest discover -s scripts/tests -t scripts -v     # in tên từng test
 python3 -m unittest tests.test_clock -v                          # chỉ một file
+python3 -m unittest tests.test_status.TestPillGeometry -v        # chỉ một lớp
+python3 -m unittest tests.test_clock.TestSunMoon.test_six_pm_is_already_moon
 ```
+
+Thứ tự tham số quan trọng: `-t scripts` để `sys.path` có `scripts/`, nhờ vậy
+test import được `svgkit.*` mà không cần cài gì.
 
 Hiện có **779 test** trên 17 file, chạy xong trong chưa tới 1,5 giây.
 
