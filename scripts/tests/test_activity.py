@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Test thẻ hoạt động contribution."""
 
+import re
 import unittest
 from datetime import date, datetime, timedelta, timezone
 
@@ -108,6 +109,59 @@ class TestStreakRendering(unittest.TestCase):
                             {"total": None, "days": series([1])},
                             DT, i18n.get("vi"))
         self.assertIn('class="bigValue">-<', svg)
+
+
+
+RE_BAR = re.compile(r'<rect x="([\d.]+)" y="(-?\d+)" width="([\d.]+)" '
+                    r'height="([\d.]+)" rx="([\d.]+)" fill="([^"]+)"')
+
+
+class TestBarGeometry(unittest.TestCase):
+    """Cột biểu đồ: tỉ lệ đúng, cột 0 vẫn có chỗ đứng, không tràn lề."""
+
+    def _card(self, counts):
+        days = [(DT - timedelta(days=len(counts) - 1 - i), c)
+                for i, c in enumerate(counts)]
+        contrib = {"total": sum(counts), "days": days,
+                   "streak_current": 1, "streak_longest": 2}
+        return activity_card(get_palette("sky"), contrib, DT, i18n.get("vi"))
+
+    def _bars(self, counts):
+        svg = self._card(counts)
+        bars = []
+        for x, y, w, h, rx, fill in RE_BAR.findall(svg):
+            # Bỏ qua nền thẻ và các ô thống kê: cột nằm trong vùng biểu đồ.
+            if 22 <= float(x) <= 620 and 140 <= int(y) + float(h) <= 210:
+                bars.append((float(x), int(y), float(h), fill))
+        return sorted(bars)
+
+    def test_one_bar_per_day(self):
+        self.assertEqual(len(self._bars([0] * 13 + [5])), 14)
+
+    def test_taller_count_draws_taller_bar(self):
+        bars = self._bars([0] * 13 + [500])
+        self.assertGreater(bars[-1][2], 60)
+
+    def test_zero_day_keeps_a_stub(self):
+        bars = self._bars([0] * 14)
+        self.assertTrue(all(abs(h - 4) < 0.6 for _, _, h, _ in bars))
+
+    def test_bars_stay_inside_the_card(self):
+        for x, _, _, _ in self._bars([1] * 14):
+            self.assertGreaterEqual(x, 22 - 0.1)
+            self.assertLessEqual(x + 26, 618 + 0.1)
+
+    def test_bars_are_evenly_spaced(self):
+        # Toạ độ được in một chữ số thập phân nên khe có thể lệch 0.1px.
+        xs = [x for x, _, _, _ in self._bars([1] * 14)]
+        gaps = [b - a for a, b in zip(xs, xs[1:])]
+        self.assertLess(max(gaps) - min(gaps), 0.25, gaps)
+
+    def test_empty_history_still_draws(self):
+        """14 ngày trắng vẫn phải ra ảnh, không phải workflow đỏ."""
+        svg = self._card([0] * 14)
+        self.assertIsNotNone(svg)
+        self.assertTrue(svg.rstrip().endswith("</svg>"))
 
 if __name__ == "__main__":
     unittest.main()
