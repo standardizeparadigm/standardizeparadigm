@@ -79,6 +79,7 @@ chịu.
 | Ảnh thiếu `viewBox` | `width="48%"` bị hiểu là pixel: ảnh tràn khung trên điện thoại |
 | Hoạt ảnh lặp nhanh hơn 1 giây/chu kỳ | nháy nhanh là vấn đề an toàn thị giác, không phải thẩm mỹ |
 | SMIL lặp dưới 1 giây | sửa CSS không chạm tới hoạt ảnh SMIL nên nó đi đường riêng |
+| Ví dụ Python không biên dịch được | người copy mất mười phút vì một dấu hai chấm thiếu |
 | Không dùng emoji | máy thiếu font emoji hiện ô vuông, máy có thì ảnh bị đẩy cao hơn |
 
 ## `helpers.py`
