@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 """Test bộ kiểm tra sức khỏe repo (các hàm nhận diện lỗi)."""
 
+import os
+import shutil
+import tempfile
 import unittest
 
 from helpers import SCRIPTS  # noqa: F401
@@ -122,4 +125,59 @@ class TestAssetRefs(unittest.TestCase):
     def test_anchor_only_ignored(self):
         self._write("README.md", '[top](#top) <a href="#stats">s</a>\n')
         check_repo.check_asset_refs()
+        self.assertEqual(check_repo.errors, [])
+
+
+class TestFileHygiene(unittest.TestCase):
+    """BOM / CRLF / ký tự điều khiển / UTF-8 hỏng / khoảng trắng thừa."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="hygiene-")
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _write(self, name, data):
+        path = os.path.join(self.tmp, name)
+        with open(path, "wb") as handle:
+            handle.write(data)
+        return path
+
+    def test_clean_file_passes(self):
+        self._write("ok.md", "# Tiêu đề\n\nNội dung tiếng Việt.\n".encode("utf-8"))
+        check_repo.check_file_hygiene(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+        self.assertEqual(check_repo.warnings, [])
+
+    def test_bom_is_an_error(self):
+        self._write("bom.md", check_repo.codecs.BOM_UTF8 + b"# x\n")
+        check_repo.check_file_hygiene(self.tmp)
+        self.assertTrue(any("BOM" in e for e in check_repo.errors))
+
+    def test_crlf_is_an_error(self):
+        self._write("crlf.py", b"print(1)\r\nprint(2)\r\n")
+        check_repo.check_file_hygiene(self.tmp)
+        self.assertTrue(any("CRLF" in e for e in check_repo.errors))
+
+    def test_control_character_is_an_error(self):
+        self._write("ctrl.md", "a\u0007b\n".encode("utf-8"))
+        check_repo.check_file_hygiene(self.tmp)
+        self.assertTrue(any("U+0007" in e for e in check_repo.errors))
+
+    def test_invalid_utf8_is_an_error(self):
+        self._write("bin.md", b"abc \xff\xfe def\n")
+        check_repo.check_file_hygiene(self.tmp)
+        self.assertTrue(any("UTF-8" in e for e in check_repo.errors))
+
+    def test_trailing_space_is_only_a_warning(self):
+        self._write("space.md", "# x   \n".encode("utf-8"))
+        check_repo.check_file_hygiene(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+        self.assertTrue(any("khoảng trắng thừa" in w for w in check_repo.warnings))
+
+    def test_other_suffixes_are_ignored(self):
+        self._write("image.png", b"\x89PNG\r\n\x1a\n\xff")
+        check_repo.check_file_hygiene(self.tmp)
         self.assertEqual(check_repo.errors, [])
