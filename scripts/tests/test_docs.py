@@ -313,5 +313,36 @@ class TestNoBrokenCharacters(unittest.TestCase):
             text = read(path)
             self.assertNotIn("\u0300", text, rel(path))
 
+
+
+class TestHeadingsUnique(unittest.TestCase):
+    """Hai tiêu đề trùng nhau làm mục lục và liên kết neo chỉ tới cái đầu."""
+
+    def test_no_duplicate_headings_in_a_file(self):
+        for path in all_docs():
+            seen = {}
+            for number, line in prose_lines(read(path)):
+                if not RE_HEADING.match(line):
+                    continue
+                text = line.lstrip("#").strip().lower()
+                self.assertNotIn(text, seen,
+                                 "%s:%d trùng tiêu đề với dòng %d"
+                                 % (rel(path), number, seen.get(text, 0)))
+                seen[text] = number
+
+    def test_heading_text_is_not_empty(self):
+        for path in all_docs():
+            for line in read(path).splitlines():
+                if line.startswith("#"):
+                    self.assertTrue(line.lstrip("#").strip(), rel(path))
+
+    def test_no_heading_ends_with_a_colon(self):
+        # Tiêu đề kết thúc bằng ":" là dấu hiệu nội dung bị cắt giữa chừng.
+        for path in all_docs():
+            for number, line in prose_lines(read(path)):
+                if RE_HEADING.match(line):
+                    self.assertFalse(line.rstrip().endswith(":"),
+                                     "%s:%d" % (rel(path), number))
+
 if __name__ == "__main__":
     unittest.main()
