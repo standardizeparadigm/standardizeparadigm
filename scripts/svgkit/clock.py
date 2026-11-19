@@ -39,9 +39,20 @@ def _sun_moon(pal, hour, x, y):
                             x + 10 * math.cos(angle), y + 10 * math.sin(angle)))
         parts.append('</g>')
         return "".join(parts)
-    return ('<path d="M%s %sa4.6 4.6 0 106.4 6.4 5.6 5.6 0 01-%s -%s" '
-            'fill="%s"/>'
-            % (x, y - 5, 0, 0, pal.accent3))
+    # Trăng khuyết: một hình tròn bị "cắn" bởi một hình tròn khác, cắt bằng
+    # mask. Bản cũ dùng cung tròn có bán kính truyền vào là 0 nên mọi trình
+    # vẽ đều ra một cục méo; cách này đúng ở mọi bộ dựng, kể cả trình xem
+    # ảnh không hiểu CSS.
+    side = 22.0
+    return ('<mask id="moonBite" maskUnits="userSpaceOnUse" '
+            'x="%.1f" y="%.1f" width="%.0f" height="%.0f">'
+            '<rect x="%.1f" y="%.1f" width="%.0f" height="%.0f" fill="#FFFFFF"/>'
+            '<circle cx="%.1f" cy="%.1f" r="5.0" fill="#000000"/></mask>'
+            '<circle cx="%.1f" cy="%.1f" r="6.4" fill="%s" mask="url(#moonBite)"/>'
+            % (x - side / 2, y - side / 2, side, side,
+               x - side / 2, y - side / 2, side, side,
+               x + 4.6, y - 2.4,
+               x, y, pal.accent3))
 
 
 def _dial(pal, cx, cy, radius):
@@ -287,6 +298,16 @@ def clock_card(pal, dt, t, width=640, height=258):
     parts.append('    <circle cx="%.1f" cy="216" r="5" fill="%s" '
                  'filter="url(#glow)" class="pulse"/>'
                  % (px + bar_w * done / 100.0, pal.accent3))
+    # Quầng lan ra từ đầu thanh: một nhịp thở chậm cho biết "chỗ này đang
+    # tiến", khác hẳn chấm sáng đứng yên của một ảnh tĩnh.
+    parts.append('    <circle cx="%.1f" cy="216" r="6" fill="none" stroke="%s" '
+                 'stroke-width="1.4" opacity="0">'
+                 % (px + bar_w * done / 100.0, pal.accent3))
+    parts.append('      <animate attributeName="r" values="6;17" dur="2.9s" '
+                 'begin=".6s" repeatCount="indefinite"/>')
+    parts.append('      <animate attributeName="opacity" values=".65;0" '
+                 'dur="2.9s" begin=".6s" repeatCount="indefinite"/>')
+    parts.append('    </circle>')
     parts.append('  </g>')
 
     parts.append('  <g class="fadeUp" style="animation-delay:.5s">')

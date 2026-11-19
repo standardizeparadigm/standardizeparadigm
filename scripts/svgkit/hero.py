@@ -96,7 +96,7 @@ def _orbit(pal, cx=148, cy=140):
     parts.append('    <circle cx="%d" cy="%d" r="25" fill="url(#coreGrad)" '
                  'filter="url(#glow)"/>' % (cx, cy))
     parts.append('    <text x="%d" y="%d" text-anchor="middle" class="fSans" '
-                 'style="font:800 18px %s;fill:%s;letter-spacing:.5px">SP</text>'
+                 'style="font-weight:800;font-size:18px;font-family:%s;fill:%s;letter-spacing:.5px">SP</text>'
                  % (cx, cy + 6, pal.font, pal.bg_top))
     for ang, radius, color, speed in ((0, 56, pal.accent3, 15),
                                       (128, 72, pal.accent, 22),
@@ -176,7 +176,7 @@ def _chips(pal):
             '<rect x="%d" y="%d" width="52" height="26" rx="9" fill="%s" '
             'fill-opacity=".7" stroke="%s" stroke-opacity=".5"/>'
             '<text x="%d" y="%d" text-anchor="middle" class="fMono" '
-            'style="font:700 11px %s;fill:%s;letter-spacing:.6px">%s</text>'
+            'style="font-weight:700;font-size:11px;font-family:%s;fill:%s;letter-spacing:.6px">%s</text>'
             '</g>' % (delay, x, y, pal.panel, pal.stroke, x + 26, y + 17,
                       pal.mono, pal.accent3, label))
     return parts
@@ -194,12 +194,15 @@ def hero(pal, dt, t, width=1000, height=280):
 
     parts.append('  <g clip-path="url(#cardBody)">')
     parts += _grid(width, height, pal)
+    # Ba quầng sáng tô bằng gradient toả, không thêm blur: gradient đã mờ
+    # dần về 0 nên blur không đổi hình, chỉ tốn một lượt lọc toàn ảnh — và
+    # làm resvg panic khi một ellipse lấn hẳn ra ngoài khung.
     parts.append('    <ellipse cx="150" cy="40" rx="250" ry="150" fill="url(#halo)" '
-                 'filter="url(#soft)" class="driftA"/>')
+                 'class="driftA"/>')
     parts.append('    <ellipse cx="860" cy="250" rx="290" ry="150" '
-                 'fill="url(#halo2)" filter="url(#soft)" class="driftB"/>')
+                 'fill="url(#halo2)" class="driftB"/>')
     parts.append('    <ellipse cx="600" cy="300" rx="320" ry="130" fill="url(#halo)" '
-                 'filter="url(#soft)" opacity=".55" class="driftC"/>')
+                 'opacity=".55" class="driftC"/>')
     parts.append('    <rect x="0" y="0" width="%d" height="1.5" '
                  'fill="url(#accentGrad)" opacity="0" class="scan"/>' % width)
     # Vệt thứ hai mảnh hơn, chậm hơn và lệch pha: hai làn sáng không bao

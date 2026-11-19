@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from helpers import SCRIPTS, assert_valid_svg  # noqa: F401
 
 from svgkit import clock_card, i18n
-from svgkit.clock import _day_arc, _greeting_key
+from svgkit.clock import _day_arc, _greeting_key, _sun_moon
 from svgkit.palette import get_palette
 
 DT = datetime(2026, 11, 19, 15, 4, 5)
@@ -304,6 +304,166 @@ class TestDayArc(unittest.TestCase):
 
     def test_tip_dot_pulses(self):
         self.assertIn('attributeName="r"', self._arc(9))
+
+
+
+class TestSunMoon(unittest.TestCase):
+    """Mặt trời ban ngày, trăng khuyết ban đêm — cả hai đều là hình vẽ tay."""
+
+    def test_daytime_draws_a_sun(self):
+        svg = _sun_moon(get_palette("sky"), 9, 100, 100)
+        self.assertIn("<circle", svg)
+        self.assertEqual(svg.count("<path"), 8)      # 8 tia
+
+    def test_night_draws_a_moon_with_a_mask(self):
+        svg = _sun_moon(get_palette("sky"), 21, 100, 100)
+        self.assertIn('<mask id="moonBite"', svg)
+        self.assertIn('mask="url(#moonBite)"', svg)
+
+    def test_moon_bite_is_black_on_white(self):
+        svg = _sun_moon(get_palette("sky"), 21, 100, 100)
+        self.assertIn('fill="#000000"', svg)
+        self.assertIn('fill="#FFFFFF"', svg)
+
+    def test_moon_has_no_degenerate_arc(self):
+        # Bản cũ có 'a4.6 4.6 0 106.4 6.4 5.6 5.6 0 01-0 -0': bán kính 0.
+        svg = _sun_moon(get_palette("sky"), 21, 100, 100)
+        self.assertNotIn("-0 -0", svg)
+        self.assertNotIn("a4.6", svg)
+
+    def test_six_am_is_already_sun(self):
+        self.assertIn("<path", _sun_moon(get_palette("sky"), 6, 0, 0))
+
+    def test_six_pm_is_already_moon(self):
+        self.assertIn("moonBite", _sun_moon(get_palette("sky"), 18, 0, 0))
+
+    def test_icon_is_positioned_at_the_given_point(self):
+        svg = _sun_moon(get_palette("sky"), 12, 300, 170)
+        self.assertIn('cx="300"', svg)
+        self.assertIn('cy="170"', svg)
+
+    def test_icon_uses_the_palette_not_a_fixed_colour(self):
+        for theme in ("sky", "sunset", "mono"):
+            svg = _sun_moon(get_palette(theme), 21, 10, 10)
+            self.assertIn(get_palette(theme).accent3, svg, theme)
+
+
+
+class TestHands(unittest.TestCase):
+    """Ba kim: giờ, phút, giây. Góc phải đúng, và phải quay liên tục."""
+
+    def _hands(self, hour, minute, second):
+        from svgkit.clock import _hands
+        return "\n".join(_hands(get_palette("sky"), 100, 100, hour, minute, second))
+
+    def test_three_hands(self):
+        svg = self._hands(10, 10, 10)
+        self.assertEqual(svg.count("secHand"), 1)
+        self.assertEqual(svg.count("minHand"), 1)
+        self.assertEqual(svg.count("hourHand"), 1)
+
+    def test_hands_rotate_around_the_centre(self):
+        svg = self._hands(10, 10, 30)
+        self.assertIn("--cx", svg)
+        self.assertIn("--cy", svg)
+
+    def test_hand_lengths_differ(self):
+        # Kim giờ cao 40px, kim phút 56px, kim giây dài 72px (40 -> 112).
+        self.assertIn('height="40"', self._hands(3, 0, 0))
+        self.assertIn('height="56"', self._hands(3, 0, 0))
+        self.assertIn('d="M100 112V40"', self._hands(3, 0, 0))
+
+    def test_second_hand_is_the_thinnest(self):
+        svg = self._hands(3, 0, 0)
+        self.assertIn('stroke-width="2"', svg)      # kim giây
+        self.assertIn('width="4"', svg)             # kim phút
+        self.assertIn('width="6"', svg)             # kim giờ
+
+    def test_hands_start_from_a_negative_delay(self):
+        # Âm để kim ở đúng vị trí ngay khung hình đầu, không quay một vòng
+        # từ 12 giờ rồi mới tới giờ thật.
+        svg = self._hands(3, 30, 0)
+        self.assertIn("animation-delay:-12600.000s", svg)   # 3h30
+        self.assertIn("animation-delay:-1800.000s", svg)    # 30 phút
+
+    def test_midnight_and_noon_look_identical(self):
+        # Kim 12 giờ không phân biệt sáng/tối — đúng như đồng hồ thật.
+        self.assertEqual(self._hands(0, 0, 0), self._hands(12, 0, 0))
+
+    def test_hands_use_palette_colours(self):
+        pal = get_palette("sky")
+        svg = self._hands(9, 30, 15)
+        self.assertIn(pal.accent3, svg)
+
+
+class TestDial(unittest.TestCase):
+    """Mặt số: 60 vạch phút, 12 vạch giờ, vạch giờ dài hơn."""
+
+    def setUp(self):
+        from svgkit.clock import _dial
+        self.svg = "\n".join(_dial(get_palette("sky"), 100, 100, 60))
+
+    def test_sixty_ticks(self):
+        self.assertEqual(len(re.findall(r"<path|<line", self.svg)), 60)
+
+    def test_every_tick_is_on_the_dial(self):
+        xs = [float(v) for v in re.findall(r'x2="(-?\d+(?:\.\d+)?)"', self.svg)]
+        if xs:
+            self.assertTrue(min(xs) > 15 and max(xs) < 185, (min(xs), max(xs)))
+
+    def test_ticks_are_inside_the_card(self):
+        self.assertNotIn("NaN", self.svg)
+
+
+
+class TestWeekdayNames(unittest.TestCase):
+    """Thứ trong tuần: tiếng Việt và tiếng Anh phải khớp thứ thật."""
+
+    def test_vietnamese_weekday(self):
+        # 19/11/2026 là thứ Năm.
+        svg = clock_card(get_palette("sky"),
+                         datetime(2026, 11, 19, 15, 4), i18n.get("vi"))
+        self.assertIn("Thứ Năm", svg)
+
+    def test_english_weekday(self):
+        svg = clock_card(get_palette("sky"),
+                         datetime(2026, 11, 19, 15, 4), i18n.get("en"))
+        self.assertIn("Thursday", svg)
+
+    def test_sunday_maps_to_chu_nhat(self):
+        svg = clock_card(get_palette("sky"),
+                         datetime(2026, 11, 22, 8, 0), i18n.get("vi"))
+        self.assertIn("Chủ Nhật", svg)
+
+    def test_date_is_zero_padded(self):
+        svg = clock_card(get_palette("sky"),
+                         datetime(2026, 1, 5, 8, 0), i18n.get("vi"))
+        self.assertIn("05/01", svg)
+
+
+
+class TestProgressHalo(unittest.TestCase):
+    """Quầng lan từ đầu thanh tiến độ — dấu hiệu "chỗ này đang tiến"."""
+
+    def setUp(self):
+        self.svg = clock_card(get_palette("sky"),
+                              datetime(2026, 11, 19, 15, 4, 5), i18n.get("vi"))
+
+    def test_halo_exists(self):
+        self.assertIn('values="6;17"', self.svg)
+
+    def test_halo_fades_out(self):
+        self.assertIn('values=".65;0"', self.svg)
+
+    def test_halo_sits_at_the_bar_tip(self):
+        # Cùng toạ độ với chấm sáng ở đầu thanh, không lệch một pixel.
+        tips = re.findall(r'<circle cx="([\d.]+)" cy="216"', self.svg)
+        self.assertGreaterEqual(len(tips), 2)
+        self.assertEqual(len(set(tips)), 1, tips)
+
+    def test_halo_is_smil_not_css(self):
+        # SMIL chạy được cả trong trình xem không hiểu CSS.
+        self.assertIn('<animate attributeName="r"', self.svg)
 
 if __name__ == "__main__":
     unittest.main()

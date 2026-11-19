@@ -123,6 +123,89 @@ class TestUnknownFlags(unittest.TestCase):
         for argv in (["--theme", "sky"], ["--lang", "en"]):
             self.assertNotIn("không có", self._run(argv))
 
+
+
+class TestAtFlag(unittest.TestCase):
+    """`--at`: vẽ như thể đang là một thời điểm khác."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp(prefix="at-")
+        self.addCleanup(shutil.rmtree, self.tmp, True)
+
+    def test_parses_three_shapes(self):
+        for text in ("2026-11-19T23:50", "2026-11-19 23:50",
+                     "2026-11-19T23:50:07"):
+            moment = generate_cards.parse_moment(text)
+            self.assertIsNotNone(moment, text)
+            self.assertEqual((moment.hour, moment.minute), (23, 50))
+
+    def test_hour_only(self):
+        self.assertEqual(generate_cards.parse_moment("2026-11-19T07").hour, 7)
+
+    def test_bad_input_is_none(self):
+        for text in ("", "hôm qua", "2026-13-40", "19/11/2026"):
+            self.assertIsNone(generate_cards.parse_moment(text), text)
+
+    def test_clock_uses_the_given_moment(self):
+        code = generate_cards.main(["--clock", "--at", "2026-11-19T23:50",
+                                    "--out", self.tmp, "--quiet"])
+        self.assertEqual(code, 0)
+        with open(os.path.join(self.tmp, "live-clock.svg"), encoding="utf-8") as f:
+            svg = f.read()
+        self.assertIn("23:50", svg)
+        minidom.parseString(svg)
+
+    def test_bad_moment_exits_two(self):
+        self.assertEqual(generate_cards.main(["--clock", "--at", "hôm qua",
+                                              "--quiet"]), 2)
+
+    def test_moment_does_not_leak_into_the_next_run(self):
+        generate_cards.main(["--clock", "--at", "2026-11-19T07:05",
+                             "--out", self.tmp, "--quiet"])
+        generate_cards.main(["--clock", "--at", "2026-11-19T21:05",
+                             "--out", self.tmp, "--quiet"])
+        with open(os.path.join(self.tmp, "live-clock.svg"), encoding="utf-8") as f:
+            svg = f.read()
+        self.assertIn("21:05", svg)
+        self.assertNotIn("07:05", svg)
+
+
+
+class TestCheckFlagDetails(unittest.TestCase):
+    """`--check` không chỉ bắt XML hỏng mà còn bắt ảnh phình."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp(prefix="check-")
+        self.addCleanup(shutil.rmtree, self.tmp, True)
+        self.out = self.tmp
+
+    def _write(self, name, body):
+        with open(os.path.join(self.out, name), "w", encoding="utf-8") as handle:
+            handle.write(body)
+
+    def test_valid_files_return_zero(self):
+        self._write("a.svg", '<svg xmlns="http://www.w3.org/2000/svg"/>')
+        self.assertEqual(generate_cards.main(["--check", "--out", self.out]), 0)
+
+    def test_total_size_is_printed(self):
+        self._write("a.svg", '<svg xmlns="http://www.w3.org/2000/svg"/>')
+        buffer = io.StringIO()
+        with contextlib.redirect_stdout(buffer):
+            generate_cards.main(["--check", "--out", self.out])
+        self.assertIn("tổng", buffer.getvalue())
+
+    def test_oversized_file_fails(self):
+        # 41 KB toàn khoảng trắng trong một comment: đường dẫn nhanh nhất để
+        # vượt ngưỡng mà không cần vẽ gì.
+        body = "<svg xmlns=\"http://www.w3.org/2000/svg\"><!--%s--></svg>" % (
+            "x" * (41 * 1024))
+        self._write("big.svg", body)
+        self.assertEqual(generate_cards.main(["--check", "--out", self.out]), 1)
+
+    def test_broken_xml_fails(self):
+        self._write("bad.svg", "<svg><unclosed>")
+        self.assertEqual(generate_cards.main(["--check", "--out", self.out]), 1)
+
 if __name__ == "__main__":
     unittest.main()
 

@@ -62,6 +62,12 @@ def read(path):
 
 # --------------------------------------------------------------- 1. SVG
 def check_svg():
+    """Mọi file `.svg` phải parse được XML, có thẻ `<svg>` và có `<title>`.
+
+    `<title>` là thứ trình đọc màn hình đọc thay cho "graphic"; ảnh trang trí
+    thuần tuý được miễn nếu tự khai `role="presentation"` — đó là cách đúng
+    để nói "đừng đọc ảnh này", chứ không phải bỏ trống.
+    """
     import xml.dom.minidom as md
     for path in sorted(glob.glob(os.path.join(ROOT, "**", "*.svg"),
                                 recursive=True)):
@@ -86,6 +92,27 @@ def check_svg():
                 err("SVG thiếu <title> (ảnh không có tên đọc lên): %s" % rel(path))
 
 
+# ------------------------------------------------- 1b. Ảnh phải co giãn được
+def check_svg_viewbox(root=None):
+    """Mỗi ảnh phải khai báo `viewBox`.
+
+    README đặt ảnh theo phần trăm (`width="48%"`). Không có `viewBox` thì
+    `width` bị hiểu là pixel và ảnh giữ nguyên kích thước gốc: nửa màn hình
+    trên laptop, tràn ra ngoài trên điện thoại. `viewBox` là thứ biến một
+    ảnh vẽ cứng thành một ảnh co giãn.
+    """
+    root = root or ROOT
+    for base, dirs, files in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.lower().endswith(".svg"):
+                continue
+            path = os.path.join(base, name)
+            head = read(path)[:600]
+            if "viewBox=" not in head:
+                err("%s thiếu 'viewBox' (không co giãn theo khung)" % rel(path))
+
+
 # --------------------------------------------------------------- 2. chữ
 RE_BAD_CHARS = [
     ("\ufffd", "ký tự thay thế U+FFFD (dữ liệu bị hỏng khi lưu file)"),
@@ -101,6 +128,11 @@ RE_MOJIBAKE = re.compile("(\u00c3[\u0080-\u00bf]|\u00e2\u20ac|\u00c4\u2018|"
 
 
 def check_text_encoding(path, text):
+    """Bắt ký tự lạ trong một file đã đọc: Hán, Hàn, mojibake, ký tự thay thế.
+
+    Tách khỏi `check_markdown` để dùng lại được cho mọi file văn bản, không
+    chỉ Markdown.
+    """
     for token, why in RE_BAD_CHARS:
         if token in text:
             line = text[:text.index(token)].count("\n") + 1
@@ -192,7 +224,7 @@ def looks_like_orphan_escape(token):
     return all(ch.isprintable() and ord(ch) > 0x9f for ch in text)
 
 
-def check_url(url, where):
+def verify_url(url, where):
     if url.startswith(("#", "mailto:", "tel:")):
         return
     if " " in url:
@@ -224,6 +256,11 @@ def check_url(url, where):
 
 
 def check_markdown(path):
+    """Kiểm một file Markdown: ký tự lạ, link, ảnh nhúng, tiêu đề, bảng.
+
+    Gọi từ vòng `os.walk` trong `main()` vì `glob` không đi vào thư mục ẩn
+    như `.github/` — nơi có mẫu issue và CONTRIBUTING.
+    """
     text = read(path)
     checked["md"] += 1
     check_text_encoding(path, text)
@@ -233,7 +270,7 @@ def check_markdown(path):
             continue
         line = text[:m.start()].count("\n") + 1
         where = "%s:%d" % (rel(path), line)
-        check_url(url, where)
+        verify_url(url, where)
         # ảnh/đường dẫn tương đối phải tồn tại
         if not url.startswith(("http", "#", "mailto:", "tel:", "data:")):
             target = url.split("#")[0].split("?")[0]
@@ -259,6 +296,11 @@ def check_markdown(path):
 
 # --------------------------------------------------------------- 4. YAML
 def check_workflows():
+    """Đọc từng workflow bằng PyYAML (nếu có) và kiểm cấu trúc cơ bản.
+
+    Không có PyYAML thì chỉ kiểm ở mức văn bản — vẫn bắt được cron sai và
+    action thiếu phiên bản, hai thứ hay hỏng nhất.
+    """
     paths = sorted(glob.glob(os.path.join(ROOT, ".github", "workflows", "*.yml"))
                    + glob.glob(os.path.join(ROOT, ".github", "workflows", "*.yaml")))
     try:
@@ -501,7 +543,7 @@ README_BUDGET = 360            # dòng: đủ để giới thiệu, không đủ
 
 
 def check_readme_length(root=None, limit=README_BUDGET):
-    """README phải ngắn.
+    """README không được dài quá ngân sách dòng đã đặt.
 
     Trang cá nhân là thứ người lạ mở 20 giây rồi đóng. README dài quá 360
     dòng là dấu hiệu nội dung đã tràn ra khỏi phần giới thiệu và nên
@@ -511,7 +553,9 @@ def check_readme_length(root=None, limit=README_BUDGET):
     path = os.path.join(root, "README.md")
     if not os.path.exists(path):
         return
-    lines = len(read(path).split("\n"))
+    # splitlines: `split("\n")` đếm thêm một dòng rỗng do newline cuối,
+    # khiến README đúng 360 dòng bị báo là 361.
+    lines = len(read(path).splitlines())
     if lines > limit:
         err("README.md dài %d dòng, vượt ngân sách %d — chuyển bớt vào docs/"
             % (lines, limit))
@@ -597,6 +641,352 @@ def check_test_claims(root=None):
                     elif total >= claimed + 100:
                         err("%s:%d ghi 'hơn %d unit test', con số thật đã là %d "
                             "— hãy nâng lên" % (rel(path), number, claimed, total))
+
+
+# -------------------------------- 4bj. lớp CSS dùng trong ảnh phải có khai báo
+RE_CLASS_ATTR = re.compile(r'\bclass="([^"]+)"')
+RE_CLASS_RULE = re.compile(r"\.([A-Za-z][\w-]*)")
+
+
+def check_class_references(root=None):
+    """Mọi lớp dùng trong ảnh phải có luật CSS trong chính ảnh đó.
+
+    `class="pulse-typo"` không làm SVG hỏng — nó chỉ đơn giản là không chuyển
+    động. Không có gì báo, và mắt người khó phân biệt "ảnh tĩnh" với "ảnh
+    thiếu hoạt ảnh" nếu nhìn trong một giây.
+    """
+    root = root or ROOT
+    for path in sorted(glob.glob(os.path.join(root, "assets", "*.svg"))):
+        text = read(path)
+        # Chỉ soi trong khối <style>: dấu chấm trong phần thân là toạ độ.
+        style = RE_STYLE.findall(text)
+        defined = set(RE_CLASS_RULE.findall("\n".join(style)))
+        for attribute in RE_CLASS_ATTR.findall(text):
+            names = attribute.split()
+            # `smilOnly` đánh dấu phần tử chỉ được SMIL điều khiển (CSS tắt
+            # hẳn), nên lớp đi kèm không cần luật CSS.
+            if "smilOnly" in names:
+                continue
+            for name in names:
+                if name in ("fSans", "fMono"):
+                    continue
+                if name not in defined:
+                    err("%s: lớp %r không có luật CSS — hoạt ảnh sẽ im lặng "
+                        "không chạy" % (rel(path), name))
+
+
+RE_STYLE = re.compile(r"<style[^>]*>(.*?)</style>", re.S)
+
+# ------------------------ 4bm. Keyframe khai báo và keyframe được dùng
+RE_KEYFRAMES_DEF = re.compile(r"@keyframes\s+([A-Za-z][\w-]*)")
+# `animation: none` và các từ khoá chung không phải tên keyframe.
+NON_KEYFRAME_WORDS = {"none", "inherit", "initial", "unset", "revert",
+                      "ease", "ease-in", "ease-out", "ease-in-out", "linear",
+                      "alternate", "reverse", "infinite", "both", "forwards",
+                      "backwards", "running", "paused", "normal", "steps"}
+RE_ANIMATION_USE = re.compile(r"animation(?:-name)?\s*:\s*([A-Za-z][\w-]*)")
+
+
+def check_keyframes(root=None):
+    """Keyframe phải có đôi: khai báo thì phải dùng, dùng thì phải khai báo.
+
+    `animation: pulsee 2s` không báo lỗi; phần tử chỉ đứng im. Ngược lại, một
+    `@keyframes` không ai dùng là vài trăm byte chết trong mỗi ảnh — nhân lên
+    tám ảnh thì thành vài KB.
+    """
+    root = root or ROOT
+    for path in sorted(glob.glob(os.path.join(root, "assets", "*.svg"))):
+        text = read(path)
+        style = "\n".join(RE_STYLE.findall(text))
+        defined = set(RE_KEYFRAMES_DEF.findall(style))
+        used = set(RE_ANIMATION_USE.findall(style)) - NON_KEYFRAME_WORDS
+        for name in sorted(used - defined):
+            err("%s: animation dùng %r nhưng không có @keyframes tương ứng"
+                % (rel(path), name))
+        for name in sorted(defined - used):
+            err("%s: @keyframes %r không được dùng ở đâu" % (rel(path), name))
+
+
+# ------------------------------ 4bl. url(#id) phải trỏ tới một định nghĩa
+PAINT_TAGS = ("linearGradient", "radialGradient", "filter", "clipPath",
+              "mask", "pattern", "symbol", "marker")
+RE_URL_REF = re.compile(r"url\(#([^)]+)\)")
+
+
+def check_url_targets(root=None):
+    """Mỗi `url(#x)` phải trỏ tới gradient / filter / clipPath / mask / pattern.
+
+    `filter="url(#gloww)"` không làm ảnh hỏng: trình duyệt bỏ qua thuộc tính
+    và vẽ nét sắc lẹm thay vì nét phát sáng. Không có thông báo nào — chỉ có
+    một chỗ trông hơi khác với ý định.
+    """
+    root = root or ROOT
+    for path in sorted(glob.glob(os.path.join(root, "assets", "*.svg"))):
+        text = read(path)
+        kinds = {}
+        for tag in PAINT_TAGS:
+            for ident in re.findall(r'<%s\b[^>]*\bid="([^"]+)"' % tag, text):
+                kinds[ident] = tag
+        for ident in sorted(set(RE_URL_REF.findall(text))):
+            if ident not in kinds:
+                err("%s: url(#%s) không trỏ tới định nghĩa nào (chỉ nhận %s)"
+                    % (rel(path), ident, ", ".join(PAINT_TAGS)))
+
+
+# ---------------------------------- 4bk. Không có NaN / None trong thuộc tính
+RE_BAD_NUMBER = re.compile(
+    # NaN / None trong giá trị thuộc tính, hoặc số mũ kiểu 1.5e-07 ngay sau
+    # một lệnh path / dấu cách / dấu phẩy (mã màu #1E90FF không bị bắt).
+    r'(="[^"]*(?:NaN|None)[^"]*"|'
+    r'(?:[\s,MLHVCSQTAZmlhvcsqtaz])-?\d+(?:\.\d+)?[eE][+-]?\d+)')
+
+
+def check_bad_numbers(root=None):
+    """Toạ độ trong ảnh không được là NaN, None hay số mũ.
+
+    Một phép chia cho 0 hay một `None` lọt vào f-string sẽ tạo `d="MNaN 12"`:
+    SVG hợp lệ về cú pháp XML, trình duyệt bỏ qua cả phần tử, và ảnh chỉ mất
+    một nét — không có lỗi nào để lần theo.
+    """
+    root = root or ROOT
+    for path in sorted(glob.glob(os.path.join(root, "assets", "*.svg"))):
+        for number, line in enumerate(read(path).split("\n"), 1):
+            # Bỏ chú thích (dấu dữ liệu hex cũng giống số mũ) và mã màu
+            # (#0EA5E9 cũng vậy) trước khi soi, để không bắt oan.
+            cleaned = re.sub(r"<!--.*?-->", "", line)
+            cleaned = re.sub(r"#[0-9A-Fa-f]{3,8}", "#hex", cleaned)
+            for match in RE_BAD_NUMBER.findall(cleaned):
+                err("%s:%d có số không hợp lệ trong thuộc tính: %s"
+                    % (rel(path), number, match.strip()))
+
+
+# ---------------------------- 4bj2. Không còn nhãn "lớp 7" ở đâu
+RE_GRADE_CLAIM = re.compile(r"(?:lớp|lop|grade|class)[\s-]*7\b", re.I)
+GRADE_EXEMPT = {"scripts/check_repo.py", "scripts/tests/test_check_repo.py"}
+
+
+def check_no_grade_claim(root=None):
+    """Không file nào được nhắc "lớp 7" / "grade 7".
+
+    Nhãn này từng nằm trên ảnh bìa, trong README, badge shields và cả câu
+    giới thiệu — bốn chỗ, bốn kiểu viết. Đổi ý một lần là phải sửa cả bốn,
+    nên nó cần một luật thay vì trí nhớ.
+    """
+    root = root or ROOT
+    for base, dirs, files in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.lower().endswith((".md", ".py", ".yml", ".yaml", ".svg")):
+                continue
+            path = os.path.join(base, name)
+            if rel(path) in GRADE_EXEMPT:
+                continue
+            for number, line in enumerate(read(path).split("\n"), 1):
+                found = RE_GRADE_CLAIM.search(line)
+                if found:
+                    err("%s:%d còn nhắc tới lớp học (%r)"
+                        % (rel(path), number, found.group(0)))
+
+
+# ------------------------------------------- 4bi. id trùng trong một ảnh
+RE_SVG_ID = re.compile(r'\bid="([^"]+)"')
+
+
+def check_duplicate_ids(root=None):
+    """Một file SVG không được có hai phần tử cùng `id`.
+
+    Trình duyệt không báo gì: `url(#halo)` chỉ trỏ tới phần tử ĐẦU TIÊN, còn
+    phần tử thứ hai lặng lẽ mất hiệu ứng. Lỗi chỉ hiện ra khi ai đó soi ảnh
+    bằng trình vẽ khắt khe hơn, hoặc khi màu hiển thị khác dự kiến.
+    """
+    root = root or ROOT
+    for path in sorted(glob.glob(os.path.join(root, "assets", "*.svg"))):
+        seen = set()
+        for ident in RE_SVG_ID.findall(read(path)):
+            if ident in seen:
+                err("%s: id %r xuất hiện hai lần" % (rel(path), ident))
+            seen.add(ident)
+
+
+# -------------------------------------------- 4bh. Không dùng 'font' viết tắt
+RE_FONT_SHORTHAND = re.compile(r"\bfont:\s*\d")
+
+
+def check_font_shorthand(root=None):
+    """CSS trong ảnh không được dùng thuộc tính viết tắt `font:`.
+
+    `font: 800 54px Arial` là cú pháp hợp lệ, nhưng một số trình vẽ SVG
+    (resvg, vài bản librsvg, trình xem ảnh desktop) bỏ qua cả khai báo —
+    chữ rơi về 16px mặc định. Cùng một file vì thế hiện hai kiểu khác
+    nhau: trình duyệt đẹp, mọi nơi khác vỡ bố cục.
+    """
+    root = root or ROOT
+    for path in sorted(glob.glob(os.path.join(root, "assets", "*.svg"))):
+        for number, line in enumerate(read(path).split("\n"), 1):
+            if RE_FONT_SHORTHAND.search(line):
+                err("%s:%d dùng 'font:' viết tắt — hãy viết "
+                    "font-weight/font-size/font-family" % (rel(path), number))
+
+
+# ------------------------------------------------- 4bc. Ví dụ Python phải chạy
+RE_FENCE = re.compile(r"^(\s*)```(\w*)\s*$(.*?)^\1```\s*$", re.M | re.S)
+
+
+def check_python_fences(root=None):
+    """Khối ```python trong tài liệu phải biên dịch được.
+
+    Ví dụ trong tài liệu là thứ người mới copy nguyên si. Một dấu hai chấm
+    thiếu hay thụt lề lệch ở đó không làm test nào đỏ, nhưng làm người copy
+    mất mười phút đầu tiên — đúng mười phút mà ví dụ sinh ra để tiết kiệm.
+    Khối có `>>>` là phiên làm việc, không phải module, nên được bỏ qua.
+    """
+    root = root or ROOT
+    for base, dirs, files in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.lower().endswith(".md"):
+                continue
+            path = os.path.join(base, name)
+            text = read(path)
+            for match in RE_FENCE.finditer(text):
+                if match.group(2) not in ("python", "py"):
+                    continue
+                code = match.group(3)
+                if code.startswith("\n"):
+                    code = code[1:]
+                if ">>>" in code:
+                    continue
+                line = text.count("\n", 0, match.start()) + 2
+                try:
+                    compile(code, str(path), "exec")
+                except SyntaxError as exc:
+                    err("%s:%d ví dụ Python không biên dịch được: %s"
+                        % (rel(path), line + (exc.lineno or 1) - 1, exc.msg))
+
+
+# ------------------------------------------------ 4bb. Mỗi file test có mục riêng
+def check_test_file_docs(root=None):
+    """Mỗi `scripts/tests/test_*.py` phải được kể tên trong docs/TESTING.md.
+
+    Không phải chuyện hình thức: danh sách file test trong tài liệu là bản đồ
+    duy nhất để người mới biết "test cái này nằm ở đâu". Một file test không
+    có tên trong đó thì lần sau muốn thêm ca cho nó, người ta sẽ tạo thêm một
+    file thứ hai — rồi hai chỗ cùng test một thứ.
+    """
+    root = root or ROOT
+    folder = os.path.join(root, "scripts", "tests")
+    doc = os.path.join(root, "docs", "TESTING.md")
+    if not os.path.isdir(folder) or not os.path.exists(doc):
+        return
+    text = read(doc)
+    for name in sorted(os.listdir(folder)):
+        if not name.startswith("test_") or not name.endswith(".py"):
+            continue
+        if name not in text:
+            err("docs/TESTING.md không nhắc tới %s (file test không có mục "
+                "riêng trong bản đồ)" % name)
+
+
+# ------------------------------------------------- 4be. Nhịp hoạt ảnh an toàn
+RE_CSS_BLOCK = re.compile(r"\{([^{}]*)\}")
+RE_ANIM_DECL = re.compile(r"animation(?:-duration)?\s*:\s*([^;}]*)")
+RE_SECONDS = re.compile(r"(\d*\.?\d+)s\b")
+ANIM_FLOOR = 1.0
+
+
+def check_animation_pace(root=None, floor=ANIM_FLOOR):
+    """Hoạt ảnh lặp vô hạn không được nhanh hơn một chu kỳ mỗi giây.
+
+    WCAG 2.3.1 đặt ngưỡng an toàn ở ba lần nháy mỗi giây; một chu kỳ mỗi
+    giây là biên rộng gấp ba, đủ để không ai phải nheo mắt. Chu kỳ dài (kim
+    đồng hồ quay một vòng mỗi giờ) thì không sao — luật chỉ chặn phía nhanh.
+
+    Đọc theo từng khối khai báo chứ không theo từng dòng: `animation-duration`
+    và `animation-iteration-count: infinite` viết tách hai dòng vẫn là một
+    hoạt ảnh lặp, và cách viết tách dòng là cách dễ lọt lưới nhất.
+    """
+    root = root or ROOT
+    for base, dirs, files in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.lower().endswith(".svg"):
+                continue
+            path = os.path.join(base, name)
+            text = read(path)
+            for match in RE_CSS_BLOCK.finditer(text):
+                body = match.group(1)
+                if "infinite" not in body:
+                    continue
+                line = text.count("\n", 0, match.start()) + 1
+                for decl in RE_ANIM_DECL.findall(body):
+                    for raw in RE_SECONDS.findall(decl):
+                        if float(raw) < floor:
+                            err("%s:%d hoạt ảnh lặp %ss quá nhanh "
+                                "(tối thiểu %gs)" % (rel(path), line,
+                                                     raw, floor))
+
+
+# -------------------------------------------------- 4bd. Nhịp hoạt ảnh SMIL
+RE_SMIL_DUR = re.compile(r'dur="(\d*\.?\d+)(m?s)"')
+RE_SMIL_LOOP = re.compile(r'repeatCount="indefinite"')
+
+
+def check_smil_pace(root=None, floor=ANIM_FLOOR):
+    """Cùng ngưỡng với CSS, áp cho hoạt ảnh SMIL (`<animate>`).
+
+    SMIL được dùng ở những chỗ cần chạy cả khi trình xem không hiểu CSS, nên
+    nó có đường đi riêng và cũng cần luật riêng — sửa CSS không chạm tới nó.
+    `dur` tính bằng mili giây được quy đổi trước khi so.
+    """
+    root = root or ROOT
+    for base, dirs, files in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.lower().endswith(".svg"):
+                continue
+            path = os.path.join(base, name)
+            for number, line in enumerate(read(path).split("\n"), 1):
+                if not RE_SMIL_LOOP.search(line):
+                    continue
+                for raw, unit in RE_SMIL_DUR.findall(line):
+                    seconds = float(raw) / (1000.0 if unit == "ms" else 1.0)
+                    if seconds < floor:
+                        err("%s:%d SMIL lặp %s%s quá nhanh (tối thiểu %gs)"
+                            % (rel(path), number, raw, unit, floor))
+
+
+# ---------------------------------------------------- 4bf. Không dùng emoji
+# Khoảng mã của emoji (pictograph) và ký hiệu một-màu. Dấu tick `✓` và dấu
+# chéo `✗` cố tình nằm ngoài: chúng là ký tự đánh dấu trong output terminal,
+# rộng một ô, không phải hình vẽ.
+RE_EMOJI = re.compile("[\u2300-\u23ff\U0001F000-\U0001FAFF"
+                      "\u2600-\u27bf\u2b00-\u2bff\ufe0f]")
+EMOJI_ALLOWED = {"\u2713", "\u2717"}
+EMOJI_SUFFIXES = (".md", ".py", ".yml", ".yaml", ".svg", ".json", ".txt")
+
+
+def check_no_emoji(root=None):
+    """Repo không dùng emoji — kể cả trong tiêu đề, bảng và thông báo.
+
+    Emoji phụ thuộc font của máy đọc: máy không có font màu hiện ô vuông,
+    máy có thì hiện hình to gấp đôi chữ, nên cùng một README cao thấp khác
+    nhau. Trình đọc màn hình còn đọc tên chúng thành lời ("mầm cây", "bắt
+    tay") giữa câu. Chữ thuần thì mọi nơi giống nhau.
+    """
+    root = root or ROOT
+    for base, dirs, files in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.lower().endswith(EMOJI_SUFFIXES):
+                continue
+            path = os.path.join(base, name)
+            for number, line in enumerate(read(path).split("\n"), 1):
+                found = [ch for ch in RE_EMOJI.findall(line)
+                         if ch not in EMOJI_ALLOWED]
+                if found:
+                    err("%s:%d có emoji %s — dùng chữ thuần"
+                        % (rel(path), number,
+                           " ".join("U+%04X" % ord(ch) for ch in found)))
 
 
 # ------------------------------------------------- 4bg. Tài liệu mở bằng tiêu đề
@@ -883,6 +1273,100 @@ def check_cron_resolution(root=None):
                     % (rel(path), expression))
 
 
+# ------------------------ 4b6a. Danh sách workflow trên ảnh phải là thật
+def status_workflows(root=None):
+    """[(file.yml, tên_ngắn), ...] đọc từ svgkit/status.py."""
+    path = os.path.join(root or ROOT, "scripts", "svgkit", "status.py")
+    if not os.path.exists(path):
+        return []
+    block = read(path).split("WORKFLOWS = [", 1)[-1].split("]", 1)[0]
+    return re.findall(r'\(\s*"([^"]+)"\s*,\s*"([^"]+)"\s*\)', block)
+
+
+def check_status_workflow_list(root=None):
+    """Dải trạng thái chỉ được kể tên workflow có thật.
+
+    `status.WORKFLOWS` là danh sách viết tay. Xoá hay đổi tên một workflow mà
+    quên sửa danh sách thì dải sẽ hiện một viên "CHỜ MERGE" mãi mãi — API trả
+    404, ảnh vẫn đẹp, chỉ sai.
+    """
+    root = root or ROOT
+    folder = os.path.join(root, ".github", "workflows")
+    if not os.path.isdir(folder):
+        return
+    real = {name for name in os.listdir(folder)
+            if name.endswith((".yml", ".yaml"))}
+    for filename, short in status_workflows(root):
+        if filename not in real:
+            err("dải trạng thái liệt kê %r (%s) nhưng file đó không tồn tại"
+                % (short, filename))
+
+
+# ----------------------------------- 4b6b. Hai workflow không chạy cùng phút
+def _cron_minutes(field):
+    """Tập phút (0-59) mà trường cron phút sẽ nổ. None nếu không hiểu."""
+    if not field:
+        return None
+    minutes = set()
+    for part in field.split(","):
+        if not part:
+            return None
+        step = 1
+        span = part
+        if "/" in part:
+            span, _, step_text = part.partition("/")
+            if not step_text.isdigit() or int(step_text) < 1:
+                return None
+            step = int(step_text)
+        if span in ("*", ""):
+            span = "0-59"
+        if "-" in span:
+            low, _, high = span.partition("-")
+            if not (low.isdigit() and high.isdigit()):
+                return None
+            low, high = int(low), int(high)
+        elif span.isdigit():
+            low = high = int(span)
+        else:
+            return None
+        if not 0 <= low <= high <= 59:
+            return None
+        minutes.update(range(low, high + 1, step))
+    return minutes or None
+
+
+def check_cron_minute_collisions(root=None):
+    """Hai workflow lịch không nên nổ đúng cùng một phút.
+
+    Không sai về cú pháp, nhưng cùng phút nghĩa là cùng tranh một lượt
+    runner và cùng push lên một nhánh: job sau phải `git pull --rebase` rồi
+    đẩy lại, và lần nào cũng có một bên chờ. Lệch phút là sửa miễn phí.
+    """
+    root = root or ROOT
+    folder = os.path.join(root, ".github", "workflows")
+    if not os.path.isdir(folder):
+        return
+    grid = {}
+    for name in sorted(os.listdir(folder)):
+        if not name.lower().endswith((".yml", ".yaml")):
+            continue
+        for expression in RE_CRON.findall(read(os.path.join(folder, name))):
+            fields = expression.split()
+            if len(fields) != 5:
+                continue
+            minutes = _cron_minutes(fields[0])
+            if minutes:
+                grid.setdefault(name, set()).update(minutes)
+    names = sorted(grid)
+    for index, left in enumerate(names):
+        for right in names[index + 1:]:
+            shared = sorted(grid[left] & grid[right])
+            if shared:
+                warn("%s và %s cùng chạy ở phút %s — lệch phút sẽ tránh "
+                     "hai job giành một lượt runner"
+                     % (left, right, ", ".join(str(m) for m in shared)))
+
+
 # ------------------------------------------- 4b7. Badge workflow của shields
 SHIELDS_WORKFLOW = ("img.shields.io/github/actions/workflow",
                     "img.shields.io/github/workflow/status")
@@ -907,6 +1391,38 @@ def check_shields_workflow_badges(root=None):
                 if marker in text:
                     err("%s dùng badge workflow của shields (%s) — hãy dùng "
                         "assets/status.svg" % (rel(path), marker))
+
+
+# ------------------------------------------- 4b5b. pip cũng phải ghim phiên bản
+RE_PIP_INSTALL = re.compile(r"pip\s+install[^\n|]*")
+RE_PINNED_PKG = re.compile(r"[A-Za-z0-9_.-]+==\d")
+
+
+def check_pip_pins(root=None):
+    """Lệnh `pip install` trong workflow phải ghim phiên bản.
+
+    Mọi action đã ghim ở một tag; để pip thì mỗi ngày cài một bản khác. Một
+    bản PyYAML đổi cách đọc cũng đủ để bộ test workflow chuyển từ "chạy" sang
+    "skip" mà không ai biết — bộ test vẫn xanh, chỉ là nó không còn kiểm gì.
+    """
+    root = root or ROOT
+    folder = os.path.join(root, ".github", "workflows")
+    if not os.path.isdir(folder):
+        return
+    for name in sorted(os.listdir(folder)):
+        if not name.lower().endswith((".yml", ".yaml")):
+            continue
+        path = os.path.join(folder, name)
+        for number, line in enumerate(read(path).split("\n"), 1):
+            stripped = line.strip()
+            if stripped.startswith("#") or "echo " in line:
+                continue
+            for command in RE_PIP_INSTALL.findall(line):
+                if command.strip() == "pip install":
+                    continue
+                if not RE_PINNED_PKG.search(command):
+                    err("%s:%d 'pip install' không ghim phiên bản — hãy "
+                        "thêm ==x.y.z" % (rel(path), number))
 
 
 # --------------------------------------------- 4b6. Workflow phải chạy tay được
@@ -1094,6 +1610,22 @@ def check_python():
 
 
 # --------------------------------------------------------------- main
+
+def list_rules():
+    """In tên và câu đầu tiên trong docstring của từng luật.
+
+    Danh sách này sinh ra từ chính module, nên không bao giờ cũ: luật mới
+    thêm vào là nó hiện ra, luật bị xoá là nó biến mất. `docs/TESTING.md`
+    mới là chỗ giải thích *vì sao*; đây là chỗ trả lời "repo tự kiểm gì".
+    """
+    names = sorted(name for name in globals()
+                   if name.startswith("check_") and callable(globals()[name]))
+    for name in names:
+        doc = (globals()[name].__doc__ or "").strip().split("\n")[0]
+        print("  %-26s %s" % (name, doc))
+    return names
+
+
 def main(argv=None):
     # Dọn trạng thái cũ: khi hàm này được gọi từ trong test (hoặc gọi hai lần
     # trong một tiến trình), lỗi của lượt trước còn nằm trong danh sách và
@@ -1104,6 +1636,11 @@ def main(argv=None):
     if "--help" in argv or "-h" in argv:
         print("Dùng: python3 scripts/check_repo.py [--fix]")
         print("  --fix   chuẩn hoá BOM/CRLF/khoảng trắng thay vì chỉ báo lỗi")
+        print("  --rules in danh sách luật kèm một dòng giải thích")
+        return 0
+    if "--rules" in argv:
+        names = list_rules()
+        print("\n%d luật." % len(names))
         return 0
     if "--fix" in argv:
         fixed = fix_text_files()
@@ -1124,8 +1661,11 @@ def main(argv=None):
     check_stale_places()
     check_todo_markers()
     check_workflow_dispatch()
+    check_pip_pins()
     check_shields_workflow_badges()
     check_cron_resolution()
+    check_cron_minute_collisions()
+    check_status_workflow_list()
     check_action_pins()
     check_heading_levels()
     check_job_timeouts()
@@ -1134,8 +1674,21 @@ def main(argv=None):
     check_svg_artifacts()
     check_markdown_tables()
     check_svg_safety()
+    check_font_shorthand()
+    check_no_grade_claim()
+    check_no_emoji()
+    check_duplicate_ids()
+    check_class_references()
+    check_bad_numbers()
+    check_url_targets()
+    check_keyframes()
+    check_animation_pace()
+    check_smil_pace()
     check_doc_titles()
+    check_python_fences()
+    check_test_file_docs()
     check_svg_budget()
+    check_svg_viewbox()
     check_python()
     check_module_docstrings()
     # Mọi file Markdown trong repo (README, docs, CONTRIBUTING, mẫu issue...).
@@ -1166,7 +1719,7 @@ def main(argv=None):
             print("   ✗ " + e)
         print("\n KẾT LUẬN: CÓ LỖI")
         return 1
-    print("\n KẾT LUẬN: MỌI THỨ ỔN ✅")
+    print("\n KẾT LUẬN: MỌI THỨ ỔN")
     return 0
 
 

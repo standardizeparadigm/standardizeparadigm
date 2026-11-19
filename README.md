@@ -1,11 +1,11 @@
 <a name="top"></a>
 
 <div align="center">
-  <img src="./assets/hero.svg" width="100%" alt="Standardize Paradigm — học sinh lớp 7, lập trình viên tự học" />
+  <img src="./assets/hero.svg" width="100%" alt="Standardize Paradigm — lập trình viên tự học" />
 </div>
 
 <div align="center">
-  <img src="https://img.shields.io/badge/Grade-7-38BDF8?style=for-the-badge&labelColor=0D1117&logo=googlescholar&logoColor=white" alt="Lớp 7" />
+  <img src="https://img.shields.io/badge/Self--taught-38BDF8?style=for-the-badge&labelColor=0D1117&logo=bookstack&logoColor=white" alt="Tự học" />
   <img src="https://img.shields.io/badge/Based%20in-Vi%E1%BB%87t%20Nam-7DD3FC?style=for-the-badge&labelColor=0D1117&logo=googlemaps&logoColor=white" alt="Việt Nam" />
   <img src="https://img.shields.io/badge/Ward-Kon%20Tum-0284C7?style=for-the-badge&labelColor=0D1117&logo=homeassistant&logoColor=white" alt="Phường Kon Tum" />
   <img src="https://img.shields.io/badge/Build-LTS%20v6-0EA5E9?style=for-the-badge&labelColor=0D1117&logo=checkmarx&logoColor=white" alt="LTS v6" />
@@ -32,25 +32,25 @@
 
 ## 01 — Về mình
 
-Xin chào 👋 Mình là **Standardize Paradigm**, học sinh **lớp 7** ở phường Kon Tum, tỉnh Quảng Ngãi. Mình học code vì **nó vui thật sự**: bắt đầu từ một dòng `print("Hello World")`, rồi mò dần sang web, game và chatbot. Học được một thứ là lại thấy mười thứ khác muốn thử 🚀
+Xin chào. Mình là **Standardize Paradigm**, một người **tự học code** ở phường Kon Tum, tỉnh Quảng Ngãi. Mình học code vì **nó vui thật sự**: bắt đầu từ một dòng `print("Hello World")`, rồi mò dần sang web, game và chatbot. Học được một thứ là lại thấy mười thứ khác muốn thử
 
 ```yaml
-role:       Học sinh lớp 7 · Lập trình viên tự học
+role:       Lập trình viên tự học · xây dựng mỗi ngày
 location:   Phường Kon Tum, Quảng Ngãi, Việt Nam (UTC+7)
 learning:   [Python, JavaScript, Web, "mọi thứ trông thú vị"]
 superpower: học nhanh + không sợ code lỗi
 motto:      "Cứ thử đi, sai thì học được nhiều hơn"
 ```
 
-- 🌱 &nbsp;**Đang học:** Python, JavaScript, HTML/CSS và tự làm web nho nhỏ
-- 🛠️ &nbsp;**Đang xây:** game mini, tool tiện tay, vài project "để cho vui"
-- 🎯 &nbsp;**Mục tiêu năm nay:** 3 project tử tế + code sạch hơn + 1 pull request open-source
-- 💬 &nbsp;**Hỏi mình về:** Python, HTML/CSS, cách bắt đầu code khi còn đi học
+- **Đang học:** Python, JavaScript, HTML/CSS và tự làm web nho nhỏ
+- **Đang xây:** game mini, tool tiện tay, vài project "để cho vui"
+- **Mục tiêu năm nay:** 3 project tử tế + code sạch hơn + 1 pull request open-source
+- **Hỏi mình về:** Python, HTML/CSS, cách bắt đầu code khi còn đi học
 
 > [!NOTE]
-> Mình còn nhỏ, code còn nhiều chỗ chưa tối ưu — thấy gì cần sửa thì mở issue chỉ mình nhé. Mình rất thích được góp ý 🙌
+> Mình còn nhỏ, code còn nhiều chỗ chưa tối ưu — thấy gì cần sửa thì mở issue chỉ mình nhé. Mình rất thích được góp ý
 
-<div align="right"><a href="#top">🔝 &nbsp;Về đầu trang</a></div>
+<div align="right"><a href="#top">Về đầu trang</a></div>
 
 <div align="center">
   <img src="./assets/divider.svg" width="100%" alt="" />
@@ -70,43 +70,36 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 
 <table>
   <tr>
-    <td width="52"><b>🎨</b></td>
     <td><b>GitHub Profile 3D Contrib</b><br /><sub><code>.github/workflows/profile-3d.yml</code></sub></td>
     <td width="300">Biểu đồ contribution khối 3D, 10 giao diện màu. Có cổng thông minh: chỉ vẽ lại khi có push mới hoặc đã quá 24 giờ.</td>
-    <td width="180"><b>Mỗi 30 phút</b> · <code>*/30 * * * *</code></td>
+    <td width="180"><b>Mỗi 10 phút</b> · <code>8-59/10 * * * *</code></td>
   </tr>
   <tr>
-    <td><b>📊</b></td>
     <td><b>Profile Cards (LTS)</b><br /><sub><code>profile-cards.yml</code> + <code>scripts/generate_cards.py</code></sub></td>
     <td>Vẽ <code>stats.svg</code>, <code>top-langs.svg</code>, <code>hero.svg</code>, <code>activity.svg</code> bằng dữ liệu thật; chế độ <code>--smart</code> chỉ commit khi số liệu thật sự đổi.</td>
-    <td><b>Mỗi 3 giờ</b> · <code>15 */3 * * *</code></td>
+    <td><b>Mỗi giờ</b> · <code>13 * * * *</code></td>
   </tr>
   <tr>
-    <td><b>⏱️</b></td>
     <td><b>Live Clock — cập nhật theo phút</b><br /><sub><code>live-clock.yml</code></sub></td>
     <td>Đồng hồ Việt Nam + tiến độ ngày, tay kim chạy mượt bằng CSS nên <b>không bao giờ đứng</b>. Vẽ lại mỗi 5 phút — chu kỳ ngắn nhất GitHub cho phép với cron.</td>
     <td><b>Mỗi 5 phút</b> · <code>*/5 * * * *</code></td>
   </tr>
   <tr>
-    <td><b>🌱</b></td>
     <td><b>README Garden</b><br /><sub><code>readme-tend.yml</code></sub></td>
     <td>Cập nhật con dấu “lần cập nhật gần nhất” ở cuối trang và kiểm tra các thư mục ảnh còn đủ file.</td>
-    <td><b>Mỗi 3 giờ</b> · <code>45 */3 * * *</code></td>
+    <td><b>Mỗi 2 giờ</b> · <code>23 */2 * * *</code></td>
   </tr>
   <tr>
-    <td><b>🩺</b></td>
     <td><b>Repo Health</b><br /><sub><code>health.yml</code> + <code>scripts/check_repo.py</code></sub></td>
-    <td>hơn 500 unit test + kiểm tra SVG, ký tự hỏng, link chết, action thiếu phiên bản, và thử vẽ lại cả 6 bảng màu × 2 ngôn ngữ.</td>
-    <td><b>Mỗi push / PR</b> + 06:00 (giờ VN)</td>
+    <td>hơn 800 unit test + kiểm tra SVG, ký tự hỏng, link chết, action thiếu phiên bản, và thử vẽ lại cả 6 bảng màu × 2 ngôn ngữ.</td>
+    <td><b>Mỗi push / PR</b> + 06:03 (giờ VN)</td>
   </tr>
   <tr>
-    <td><b>📊</b></td>
     <td><b>Workflow Status</b><br /><sub><code>status.yml</code> → <code>assets/status.svg</code></sub></td>
     <td>Đọc Actions API rồi vẽ dải trạng thái ngay trong repo. Thay cho badge shields.io — thứ không thấy được workflow còn nằm ở nhánh khác.</td>
-    <td><b>Mỗi 10 phút</b> · <code>2-59/10 * * * *</code></td>
+    <td><b>Mỗi 5 phút</b> · <code>2-59/5 * * * *</code></td>
   </tr>
   <tr>
-    <td><b>👋</b></td>
     <td><b>Welcome New Contributors</b><br /><sub><code>welcome.yml</code></sub></td>
     <td>Tự chào mừng khi có issue hoặc pull request mới (bỏ qua bot, không spam trùng).</td>
     <td><b>Khi có issue/PR</b></td>
@@ -116,7 +109,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 > [!TIP]
 > Chạy lại ngay không cần chờ: tab **Actions** → chọn workflow → **Run workflow** → xong là ảnh mới lên trang chủ.
 
-<div align="right"><a href="#top">🔝 &nbsp;Về đầu trang</a></div>
+<div align="right"><a href="#top">Về đầu trang</a></div>
 
 <div align="center">
   <img src="./assets/divider.svg" width="100%" alt="" />
@@ -138,12 +131,12 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 
 | Kỹ năng | Tiến độ | Mục tiêu gần nhất |
 | :-- | :-- | :-- |
-| 🐍 &nbsp;**Python** | `████████░░` &nbsp;`80%` | Hoàn thiện 1 game Pygame |
-| 🌐 &nbsp;**HTML / CSS** | `███████░░░` &nbsp;`70%` | Tự thiết kế portfolio |
-| 🔧 &nbsp;**Git / GitHub** | `██████░░░░` &nbsp;`60%` | Làm quen pull request |
-| ⚡ &nbsp;**JavaScript** | `█████░░░░░` &nbsp;`50%` | Web có tương tác thật |
-| 🎮 &nbsp;**Pygame** | `████░░░░░░` &nbsp;`45%` | Thêm âm thanh + điểm cao |
-| 🤖 &nbsp;**AI / Chatbot** | `███░░░░░░░` &nbsp;`30%` | Viết chatbot đầu tiên |
+| **Python** | `████████░░` &nbsp;`80%` | Hoàn thiện 1 game Pygame |
+| **HTML / CSS** | `███████░░░` &nbsp;`70%` | Tự thiết kế portfolio |
+| **Git / GitHub** | `██████░░░░` &nbsp;`60%` | Làm quen pull request |
+| **JavaScript** | `█████░░░░░` &nbsp;`50%` | Web có tương tác thật |
+| **Pygame** | `████░░░░░░` &nbsp;`45%` | Thêm âm thanh + điểm cao |
+| **AI / Chatbot** | `███░░░░░░░` &nbsp;`30%` | Viết chatbot đầu tiên |
 
 </div>
 
@@ -152,11 +145,11 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 - [x] Học xong Python cơ bản
 - [x] Đẩy project đầu tiên lên GitHub
 - [x] Biết dùng commit / branch cho tử tế
-- [ ] Làm xong 1 game mini hoàn chỉnh 🎮
-- [ ] Tự viết trang portfolio bằng HTML/CSS/JS 🌐
-- [ ] Góp 1 pull request vào project open-source 🤝
+- [ ] Làm xong 1 game mini hoàn chỉnh
+- [ ] Tự viết trang portfolio bằng HTML/CSS/JS
+- [ ] Góp 1 pull request vào project open-source
 
-<div align="right"><a href="#top">🔝 &nbsp;Về đầu trang</a></div>
+<div align="right"><a href="#top">Về đầu trang</a></div>
 
 <div align="center">
   <img src="./assets/divider.svg" width="100%" alt="" />
@@ -172,9 +165,9 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
   <img src="./assets/activity.svg" width="48%" alt="Hoạt động 14 ngày gần nhất" /> <img src="./assets/live-clock.svg" width="48%" alt="Đồng hồ Việt Nam, tay kim chạy liên tục" />
 </div>
 
-<sub>⏱️ Cả hai thẻ tự vẽ lại bằng GitHub Actions; kim đồng hồ quay và <b>số phút tự nhảy mỗi phút</b> bằng CSS. GitHub cache ảnh một lúc — chậm vài phút là cache, không phải lỗi.</sub>
+<sub>Cả hai thẻ tự vẽ lại bằng GitHub Actions; kim đồng hồ quay và <b>số phút tự nhảy mỗi phút</b> bằng CSS. GitHub cache ảnh một lúc — chậm vài phút là cache, không phải lỗi.</sub>
 
-<div align="right"><a href="#top">🔝 &nbsp;Về đầu trang</a></div>
+<div align="right"><a href="#top">Về đầu trang</a></div>
 
 <div align="center">
   <img src="./assets/divider.svg" width="100%" alt="" />
@@ -189,26 +182,26 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 </div>
 
 <details>
-<summary><b>🎨 &nbsp;10 giao diện có sẵn trong <code>profile-3d-contrib/</code></b></summary>
+<summary><b>10 giao diện có sẵn trong <code>profile-3d-contrib/</code></b></summary>
 
 <br />
 
-| # | Giao diện | File | Mô tả |
-| :--: | :-- | :-- | :-- |
-| 1 | 🌈 | `profile-night-rainbow.svg` | Đêm đen + cầu vồng đổi màu mượt |
-| 2 | 🟢 | `profile-green.svg` | Xanh cây cổ điển |
-| 3 | ⚡ | `profile-green-animate.svg` | Xanh cây có hoạt ảnh |
-| 4 | 🌙 | `profile-night-green.svg` | Đêm đen + xanh cây |
-| 5 | 🎄 | `profile-season.svg` | Bốn mùa |
-| 6 | 🎄⚡ | `profile-season-animate.svg` | Bốn mùa + hoạt ảnh |
-| 7 | 🏖️ | `profile-south-season.svg` | Mùa miền Nam |
-| 8 | 🏖️⚡ | `profile-south-season-animate.svg` | Mùa miền Nam + hoạt ảnh |
-| 9 | 🧱 | `profile-gitblock.svg` | Khối Git tối giản |
-| 10 | 🌃 | `profile-night-view.svg` | Nhìn từ trên cao vào thành phố đêm |
+| # | File | Mô tả |
+| :--: | :-- | :-- |
+| 1 | `profile-night-rainbow.svg` | Đêm đen + cầu vồng đổi màu mượt |
+| 2 | `profile-green.svg` | Xanh cây cổ điển |
+| 3 | `profile-green-animate.svg` | Xanh cây có hoạt ảnh |
+| 4 | `profile-night-green.svg` | Đêm đen + xanh cây |
+| 5 | `profile-season.svg` | Bốn mùa |
+| 6 | `profile-season-animate.svg` | Bốn mùa + hoạt ảnh |
+| 7 | `profile-south-season.svg` | Mùa miền Nam |
+| 8 | `profile-south-season-animate.svg` | Mùa miền Nam + hoạt ảnh |
+| 9 | `profile-gitblock.svg` | Khối Git tối giản |
+| 10 | `profile-night-view.svg` | Nhìn từ trên cao vào thành phố đêm |
 
 </details>
 
-<div align="right"><a href="#top">🔝 &nbsp;Về đầu trang</a></div>
+<div align="right"><a href="#top">Về đầu trang</a></div>
 
 <div align="center">
   <img src="./assets/divider.svg" width="100%" alt="" />
@@ -233,23 +226,23 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 </div>
 
 > [!NOTE]
-> **LoCheoIO — Lọ Chéo: Hũ Dưa Đại Chiến.** Game arcade muối dưa chạy 100% trong trình duyệt, gói gọn trong một file HTML, offline-first, không CDN không server. Chiếc lọ gốm chỉ chịu đi đường chéo ⚡
+> **LoCheoIO — Lọ Chéo: Hũ Dưa Đại Chiến.** Game arcade muối dưa chạy 100% trong trình duyệt, gói gọn trong một file HTML, offline-first, không CDN không server. Chiếc lọ gốm chỉ chịu đi đường chéo
 
 <details>
-<summary><b>📚 &nbsp;Nhật ký học tập gần đây</b></summary>
+<summary><b>Nhật ký học tập gần đây</b></summary>
 
 <br />
 
 | Thời gian | Học được |
 | :-- | :-- |
 | Tháng này | Hàm, vòng lặp lồng nhau, chia code thành file nhỏ |
-| Tháng trước | Flexbox — cuối cùng cũng căn giữa được cái `div` 😂 |
+| Tháng trước | Flexbox — cuối cùng cũng căn giữa được cái `div` |
 | 3 tháng trước | Git: commit, branch, và cách sửa khi push sai |
 | 6 tháng trước | Python cơ bản: biến, `if/else`, list, dict |
 
 </details>
 
-<div align="right"><a href="#top">🔝 &nbsp;Về đầu trang</a></div>
+<div align="right"><a href="#top">Về đầu trang</a></div>
 
 <div align="center">
   <img src="./assets/divider.svg" width="100%" alt="" />
@@ -263,30 +256,30 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 
 | Chặng | Học gì | Học được gì cụ thể | Trạng thái |
 | :--: | :-- | :-- | :--: |
-| `01` | 🧩 **Scratch** | Kéo thả logic, vòng lặp đầu tiên | ✅ xong |
-| `02` | 🐍 **Python** | Biến, `if/else`, list, dict, hàm | ✅ xong |
-| `03` | 🌐 **HTML + CSS** | Layout, Flexbox, responsive | 🔄 đang học |
-| `04` | 🎮 **Pygame** | Sprite, va chạm, tính điểm | 🔄 đang học |
-| `05` | ⚡ **JavaScript** | DOM, event, web tương tác | 🔄 đang học |
-| `06` | ⚛️ **React** | Component, state, props | ⏳ sắp tới |
-| `07` | 🚀 **Full-stack** | Ghép tất cả thành 1 sản phẩm thật | 🎯 2027 |
+| `01` | **Scratch** | Kéo thả logic, vòng lặp đầu tiên | xong |
+| `02` | **Python** | Biến, `if/else`, list, dict, hàm | xong |
+| `03` | **HTML + CSS** | Layout, Flexbox, responsive | đang học |
+| `04` | **Pygame** | Sprite, va chạm, tính điểm | đang học |
+| `05` | **JavaScript** | DOM, event, web tương tác | đang học |
+| `06` | **React** | Component, state, props | sắp tới |
+| `07` | **Full-stack** | Ghép tất cả thành 1 sản phẩm thật | 2027 |
 
 </div>
 
 <details>
-<summary><b>🏆 &nbsp;Thành tựu nhỏ nhưng ý nghĩa</b></summary>
+<summary><b>Thành tựu nhỏ nhưng ý nghĩa</b></summary>
 
 <br />
 
-- 🐞 Fix được bug đầu tiên sau 3 tiếng mò mẫm — và vẫn nhớ bài học đó
-- 📦 Đẩy project đầu tiên lên GitHub với commit rõ ràng
-- 🌿 Tự làm quen với branch và pull request
-- 📚 Đọc tài liệu tiếng Anh dù phải tra từ điển từng câu
-- 🤝 Muốn tìm bạn cùng tuổi làm project chung, học lẫn nhau
+- Fix được bug đầu tiên sau 3 tiếng mò mẫm — và vẫn nhớ bài học đó
+- Đẩy project đầu tiên lên GitHub với commit rõ ràng
+- Tự làm quen với branch và pull request
+- Đọc tài liệu tiếng Anh dù phải tra từ điển từng câu
+- Muốn tìm bạn cùng tuổi làm project chung, học lẫn nhau
 
 </details>
 
-<div align="right"><a href="#top">🔝 &nbsp;Về đầu trang</a></div>
+<div align="right"><a href="#top">Về đầu trang</a></div>
 
 <div align="center">
   <img src="./assets/divider.svg" width="100%" alt="" />
@@ -313,7 +306,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 
   <br />
 
-  <sub>Mình rất thích nói chuyện về code — cứ nhắn nhé 💙</sub>
+  <sub>Mình rất thích nói chuyện về code — cứ nhắn nhé</sub>
 
 </div>
 
@@ -321,7 +314,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 
 <div align="center">
 
-  ### ⭐ &nbsp;Thấy project nào hay thì cho mình 1 star nhé — động lực của mình đó!
+  ### Thấy project nào hay thì cho mình 1 star nhé — động lực của mình đó!
 
   <img src="https://img.shields.io/badge/Made%20with-%F0%9F%92%99%20v%C3%A0%20Python-0D1117?style=for-the-badge&labelColor=0EA5E9" alt="Made with" />
   <img src="https://img.shields.io/badge/Still-Learning-0D1117?style=for-the-badge&labelColor=7DD3FC" alt="Still learning" />
@@ -329,7 +322,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 
   <br />
 
-  <sub>🌱 Trang được nuôi dưỡng tự động — lần cập nhật gần nhất: <!-- TENDED_AT: 19/11/2026 18:48 --></sub>
+  <sub>Trang được nuôi dưỡng tự động — lần cập nhật gần nhất: <!-- TENDED_AT: 19/11/2026 15:01 --></sub>
 
 </div>
 

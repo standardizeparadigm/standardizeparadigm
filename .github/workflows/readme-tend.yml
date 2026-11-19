@@ -10,11 +10,11 @@
 #  không giành nhau push cùng một giây). Con dấu thời gian
 #  vì thế không bao giờ cũ quá 3 giờ, mà chỉ tốn 8 lượt chạy mỗi ngày.
 # =====================================================================
-name: 🌱 README Garden
+name: README Garden
 
 on:
   schedule:
-    - cron: "45 */3 * * *"     # mỗi 3 giờ, lệch 45 phút so với thẻ thống kê
+    - cron: "23 */2 * * *"     # mỗi 2 giờ ở phút :23, sau status (:22) một phút
   workflow_dispatch:
   push:
     branches: [main]

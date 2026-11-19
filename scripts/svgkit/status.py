@@ -39,7 +39,11 @@ WORKFLOWS = [
     ("status.yml", "STATUS"),
 ]
 
-PILL_W = 150
+# 162 chứ không phải 150: nhãn trạng thái dài nhất ("ĐANG CHẠY", 9 ký tự
+# đậm 10px) rộng ~56px tính từ x+30, còn nhãn tuổi dài nhất ("12 ngày
+# trước") rộng ~56px neo vào mép phải. 150 để lại đúng 6px khe — đủ để hai
+# nhãn chạm nhau khi phông dự phòng rộng hơn phông dự kiến.
+PILL_W = 162
 GAP = 8
 MARGIN = 18
 STRIP_H = 74
@@ -86,19 +90,23 @@ def _pill(pal, x, name, state, t, delay, age=None):
     parts.append('    <circle cx="%d" cy="29" r="4.4" fill="%s"%s/>'
                  % (x + 17, color,
                     ' filter="url(#glow)"' if state in ("passing", "running") else ""))
-    parts.append('    <text x="%d" y="25" class="fMono" style="font:600 7.5px %s;'
+    parts.append('    <text x="%d" y="25" class="fMono" style="font-weight:600;font-size:7.5px;font-family:%s;'
                  'fill:%s;letter-spacing:.9px">%s</text>'
                  % (x + 30, pal.mono, pal.dim, esc(name)))
-    parts.append('    <text x="%d" y="39" class="fSans" style="font:800 10px %s;'
+    parts.append('    <text x="%d" y="39" class="fSans" style="font-weight:800;font-size:10px;font-family:%s;'
                  'fill:%s;letter-spacing:.4px">%s</text>'
                  % (x + 30, pal.font, color, esc(label)))
     age_label = human_age(age, t)
     if age_label:
+        # Một dấu ĐẠT xanh từ 25 ngày trước không nói lên điều gì về hôm nay.
+        # Quá một ngày thì nhãn tuổi đổi sang màu cảnh báo để mắt dừng lại.
+        stale = age is not None and age >= 60 * 24
+        age_color = STATE_STYLE["running"][0] if stale else pal.dim
         # Nhãn "cách đây bao lâu" ở góc phải: một dải trạng thái cũ 6 tiếng
         # trông y hệt một dải vừa vẽ, nên phải nói tuổi của nó ra.
         parts.append('    <text x="%d" y="39" text-anchor="end" class="fMono" '
-                     'style="font:600 6.8px %s;fill:%s;letter-spacing:.2px">%s</text>'
-                     % (x + PILL_W - 9, pal.mono, pal.dim, esc(age_label)))
+                     'style="font-weight:600;font-size:6.8px;font-family:%s;fill:%s;letter-spacing:.2px">%s</text>'
+                     % (x + PILL_W - 9, pal.mono, age_color, esc(age_label)))
     parts.append("  </g>")
     return parts
 

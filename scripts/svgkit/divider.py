@@ -111,10 +111,15 @@ def footer(pal, t, width=1000, height=200):
                      desc=t("desc.footer"), halo=False, radius=22)
     parts.append(smil_reduce_style())
     parts.append('  <g clip-path="url(#cardBody)">')
+    # Không có filter="url(#soft)": hai ellipse này đã tô bằng gradient
+    # toả mờ dần về 0, nên thêm một lớp Gaussian 34px không làm nó mềm hơn
+    # — chỉ tốn một lượt lọc trên toàn ảnh. Bỏ đi còn tránh được một lỗi
+    # của resvg: nó panic khi tính vùng lọc cho ellipse tô gradient nằm
+    # lấn ra ngoài khung.
     parts.append('    <ellipse cx="140" cy="-20" rx="260" ry="130" '
-                 'fill="url(#halo)" filter="url(#soft)"/>')
+                 'fill="url(#halo)"/>')
     parts.append('    <ellipse cx="880" cy="40" rx="240" ry="130" '
-                 'fill="url(#halo2)" filter="url(#soft)"/>')
+                 'fill="url(#halo2)"/>')
     parts.append('    <g transform="translate(-%d 0)"><g class="wave">'
                  '<path d="%s" fill="url(#barGrad)" opacity=".16"/></g></g>'
                  % (period, fill))

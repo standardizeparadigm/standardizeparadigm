@@ -1,4 +1,4 @@
-# 🔐 Báo lỗi bảo mật
+# Báo lỗi bảo mật
 
 Trang này là một trang cá nhân tĩnh: HTML/SVG + GitHub Actions. Không có server,
 không có cơ sở dữ liệu, không có tài khoản người dùng.
@@ -14,4 +14,4 @@ không có cơ sở dữ liệu, không có tài khoản người dùng.
 1. Mở **Security → Report a vulnerability** (báo riêng tư), hoặc
 2. Nếu không nhạy cảm: mở issue bình thường.
 
-Mình sẽ trả lời trong vài ngày. Cảm ơn bạn đã dành thời gian 🛡️
+Mình sẽ trả lời trong vài ngày. Cảm ơn bạn đã dành thời gian

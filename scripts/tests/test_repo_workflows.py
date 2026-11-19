@@ -149,5 +149,109 @@ class TestNewLawsOnRealRepo(unittest.TestCase):
         check_repo.check_doc_titles()
         self.assertEqual(check_repo.errors, [])
 
+
+
+class TestScheduleGrid(unittest.TestCase):
+    """Lịch chạy thật: mỗi job một phút, không chen nhau."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+
+    def _minutes(self):
+        grid = {}
+        for name in workflow_files():
+            for cron in re.findall(r'cron:\s*"([^"]+)"', read(name)):
+                field = cron.split()[0]
+                minutes = check_repo._cron_minutes(field)
+                if minutes:
+                    grid.setdefault(name, set()).update(minutes)
+        return grid
+
+    def test_five_jobs_have_a_schedule(self):
+        # live-clock, profile-3d, profile-cards, readme-tend, status, health
+        self.assertGreaterEqual(len(self._minutes()), 6)
+
+    def test_no_two_jobs_share_a_minute(self):
+        grid = self._minutes()
+        names = sorted(grid)
+        for i, left in enumerate(names):
+            for right in names[i + 1:]:
+                self.assertEqual(grid[left] & grid[right], set(),
+                                 "%s và %s cùng phút" % (left, right))
+
+    def test_the_clock_owns_the_five_minute_grid(self):
+        grid = self._minutes()
+        clock = grid.get("live-clock.yml", set())
+        self.assertEqual(clock, set(range(0, 60, 5)))
+
+    def test_every_schedule_is_within_github_limits(self):
+        for name in workflow_files():
+            for cron in re.findall(r'cron:\s*"([^"]+)"', read(name)):
+                step = check_repo._minute_step(cron.split()[0])
+                if step is not None:
+                    self.assertGreaterEqual(step, 5, "%s: %s" % (name, cron))
+
+
+class TestWorkflowStyle(unittest.TestCase):
+    def test_every_file_ends_with_one_newline(self):
+        for name in workflow_files():
+            text = read(name)
+            self.assertTrue(text.endswith("\n"), name)
+            self.assertFalse(text.endswith("\n\n"), name)
+
+    def test_every_file_has_a_comment_header(self):
+        for name in workflow_files():
+            lines = [l for l in read(name).splitlines() if l.strip()]
+            self.assertTrue(lines[0].startswith("#"), name)
+
+    def test_no_hardcoded_token(self):
+        for name in workflow_files():
+            text = read(name)
+            self.assertNotIn("ghp_", text, name)
+            self.assertNotIn("github_pat_", text, name)
+
+    def test_no_secrets_in_plain_text(self):
+        for name in workflow_files():
+            for line in read(name).splitlines():
+                if "secrets." in line:
+                    self.assertIn("${{", line, name)
+
+
+
+class TestUpdateCadence(unittest.TestCase):
+    """Nhịp cập nhật: đủ dày để ảnh không cũ, đủ thưa để không phí."""
+
+    def _cron(self, name):
+        return re.findall(r'cron:\s*"([^"]+)"', read(name))
+
+    def test_clock_runs_every_five_minutes(self):
+        self.assertEqual(self._cron("live-clock.yml"), ["*/5 * * * *"])
+
+    def test_status_runs_every_five_minutes(self):
+        self.assertEqual(self._cron("status.yml"), ["2-59/5 * * * *"])
+
+    def test_3d_checks_every_ten_minutes(self):
+        self.assertEqual(self._cron("profile-3d.yml"), ["8-59/10 * * * *"])
+
+    def test_cards_run_hourly(self):
+        self.assertEqual(self._cron("profile-cards.yml"), ["13 * * * *"])
+
+    def test_readme_stamp_runs_every_two_hours(self):
+        self.assertEqual(self._cron("readme-tend.yml"), ["23 */2 * * *"])
+
+    def test_no_job_runs_faster_than_github_allows(self):
+        for name in workflow_files():
+            for cron in self._cron(name):
+                step = check_repo._minute_step(cron.split()[0])
+                if step is not None:
+                    self.assertGreaterEqual(step, 5, "%s %s" % (name, cron))
+
+    def test_every_scheduled_job_is_also_dispatchable(self):
+        for name in workflow_files():
+            text = read(name)
+            if "cron:" in text:
+                self.assertIn("workflow_dispatch", text, name)
+
 if __name__ == "__main__":
     unittest.main()

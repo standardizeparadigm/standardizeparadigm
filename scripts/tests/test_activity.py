@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Test thẻ hoạt động contribution."""
 
+import re
 import unittest
 from datetime import date, datetime, timedelta, timezone
 
@@ -65,8 +66,15 @@ class TestStreaksFunction(unittest.TestCase):
     def test_trailing_days_make_the_current_streak(self):
         self.assertEqual(_streaks(series([0, 2, 5, 1]))[0], 3)
 
-    def test_zero_today_breaks_the_current_streak(self):
-        self.assertEqual(_streaks(series([1, 1, 0]))[0], 0)
+    def test_zero_today_keeps_yesterday_streak_alive(self):
+        # Hôm nay chưa code chưa phải là mất chuỗi: GitHub giữ chuỗi hết ngày.
+        self.assertEqual(_streaks(series([1, 1, 0]))[0], 2)
+
+    def test_zero_yesterday_breaks_the_current_streak(self):
+        self.assertEqual(_streaks(series([1, 1, 0, 0]))[0], 0)
+
+    def test_streak_of_only_today_is_one(self):
+        self.assertEqual(_streaks(series([0, 0, 4]))[0], 1)
 
     def test_longest_survives_a_gap(self):
         self.assertEqual(_streaks(series([1, 1, 1, 0, 1]))[1], 3)
@@ -108,6 +116,121 @@ class TestStreakRendering(unittest.TestCase):
                             {"total": None, "days": series([1])},
                             DT, i18n.get("vi"))
         self.assertIn('class="bigValue">-<', svg)
+
+
+
+RE_BAR = re.compile(r'<rect x="([\d.]+)" y="(-?\d+)" width="([\d.]+)" '
+                    r'height="([\d.]+)" rx="([\d.]+)" fill="([^"]+)"')
+
+
+class TestBarGeometry(unittest.TestCase):
+    """Cột biểu đồ: tỉ lệ đúng, cột 0 vẫn có chỗ đứng, không tràn lề."""
+
+    def _card(self, counts):
+        days = [(DT - timedelta(days=len(counts) - 1 - i), c)
+                for i, c in enumerate(counts)]
+        contrib = {"total": sum(counts), "days": days,
+                   "streak_current": 1, "streak_longest": 2}
+        return activity_card(get_palette("sky"), contrib, DT, i18n.get("vi"))
+
+    def _bars(self, counts):
+        svg = self._card(counts)
+        bars = []
+        for x, y, w, h, rx, fill in RE_BAR.findall(svg):
+            # Bỏ qua nền thẻ và các ô thống kê: cột nằm trong vùng biểu đồ.
+            if 22 <= float(x) <= 620 and 140 <= int(y) + float(h) <= 210:
+                bars.append((float(x), int(y), float(h), fill))
+        return sorted(bars)
+
+    def test_one_bar_per_day(self):
+        self.assertEqual(len(self._bars([0] * 13 + [5])), 14)
+
+    def test_taller_count_draws_taller_bar(self):
+        bars = self._bars([0] * 13 + [500])
+        self.assertGreater(bars[-1][2], 60)
+
+    def test_zero_day_keeps_a_stub(self):
+        bars = self._bars([0] * 14)
+        self.assertTrue(all(abs(h - 4) < 0.6 for _, _, h, _ in bars))
+
+    def test_bars_stay_inside_the_card(self):
+        for x, _, _, _ in self._bars([1] * 14):
+            self.assertGreaterEqual(x, 22 - 0.1)
+            self.assertLessEqual(x + 26, 618 + 0.1)
+
+    def test_bars_are_evenly_spaced(self):
+        # Toạ độ được in một chữ số thập phân nên khe có thể lệch 0.1px.
+        xs = [x for x, _, _, _ in self._bars([1] * 14)]
+        gaps = [b - a for a, b in zip(xs, xs[1:])]
+        self.assertLess(max(gaps) - min(gaps), 0.25, gaps)
+
+    def test_empty_history_still_draws(self):
+        """14 ngày trắng vẫn phải ra ảnh, không phải workflow đỏ."""
+        svg = self._card([0] * 14)
+        self.assertIsNotNone(svg)
+        self.assertTrue(svg.rstrip().endswith("</svg>"))
+
+
+
+class TestStatBlocks(unittest.TestCase):
+    """Ba ô đầu: tổng năm, chuỗi hiện tại, chuỗi dài nhất."""
+
+    def _card(self, **changes):
+        base = {"total": 1240, "days": [(DT - timedelta(days=i), 10)
+                                        for i in range(13, -1, -1)],
+                "streak_current": 6, "streak_longest": 21}
+        base.update(changes)
+        return activity_card(get_palette("sky"), base, DT, i18n.get("vi"))
+
+    def test_three_blocks(self):
+        svg = self._card()
+        self.assertEqual(svg.count('class="bigValue"'), 3)
+
+    def test_total_is_abbreviated(self):
+        self.assertIn("1.2k", self._card(total=1240))
+
+    def test_streaks_carry_the_day_word(self):
+        svg = self._card(streak_current=6, streak_longest=21)
+        self.assertIn("6 ngày", svg)
+        self.assertIn("21 ngày", svg)
+
+    def test_zero_streak_still_renders(self):
+        svg = self._card(streak_current=0, streak_longest=0)
+        self.assertIn("0 ngày", svg)
+
+    def test_blocks_do_not_overlap(self):
+        svg = self._card()
+        xs = sorted(int(x) for x in re.findall(r'<rect x="(\d+)" y="52" '
+                                               r'width="180" height="52"', svg))
+        if xs:
+            gaps = [b - a for a, b in zip(xs, xs[1:])]
+            self.assertTrue(all(gap >= 180 for gap in gaps), gaps)
+
+
+class TestAverageLine(unittest.TestCase):
+    """Đường trung bình chỉ có nghĩa khi nó nằm giữa đáy và đỉnh."""
+
+    def _card(self, counts):
+        days = [(DT - timedelta(days=len(counts) - 1 - i), c)
+                for i, c in enumerate(counts)]
+        contrib = {"total": sum(counts), "days": days,
+                   "streak_current": 0, "streak_longest": 0}
+        return activity_card(get_palette("sky"), contrib, DT, i18n.get("vi"))
+
+    def test_average_line_appears_when_flat_is_not_the_peak(self):
+        svg = self._card([0] * 7 + [100, 0, 0, 0, 0, 0, 0])
+        self.assertIn("dashFlow", svg)
+
+    def test_no_average_line_when_every_day_is_equal(self):
+        svg = self._card([5] * 14)
+        self.assertNotIn("dashFlow", svg)
+
+    def test_no_average_line_when_all_zero(self):
+        self.assertNotIn("dashFlow", self._card([0] * 14))
+
+    def test_average_label_shows_the_rounded_number(self):
+        svg = self._card([0] * 12 + [10, 20])
+        self.assertIn(i18n.get("vi")("act.avg", n="2"), svg)
 
 if __name__ == "__main__":
     unittest.main()

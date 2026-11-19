@@ -7,7 +7,7 @@
 #    - Dùng pull_request_target để bình luận được trên PR từ fork
 #      (job này KHÔNG checkout code của PR nên không có rủi ro bảo mật)
 # =====================================================================
-name: 👋 Welcome new contributors
+name: Welcome new contributors
 
 on:
   issues:
@@ -67,22 +67,22 @@ jobs:
 
             const lines = isPr
               ? [
-                  `Chào mừng @${actor} — cảm ơn bạn đã gửi pull request! 🚀`,
+                  `Chào mừng @${actor} — cảm ơn bạn đã gửi pull request!`,
                   "",
                   "Mình sẽ xem và phản hồi sớm nhất có thể. Nếu đây là PR đầu tiên của bạn, " +
                     "đọc [CONTRIBUTING](../blob/main/.github/CONTRIBUTING.md) để biết quy ước commit nhé.",
                   "",
-                  "Chúc bạn một ngày vui vẻ! 💙",
+                  "Chúc bạn một ngày vui vẻ!",
                 ]
               : [
-                  `Chào mừng @${actor} đến với **Standardize Paradigm**! 🎉`,
+                  `Chào mừng @${actor} đến với **Standardize Paradigm**!`,
                   "",
                   "Cảm ơn bạn đã mở issue. Mình sẽ đọc và trả lời sớm nhất có thể.",
                   "",
                   "Nếu chỉ muốn để lại lời nhắn, bạn có thể dùng mẫu " +
                     "[Lời nhắn](../issues/new?template=guestbook.md) nhé.",
                   "",
-                  "Chúc bạn một ngày vui vẻ! 💙",
+                  "Chúc bạn một ngày vui vẻ!",
                 ];
 
             await github.rest.issues.createComment({

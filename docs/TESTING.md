@@ -1,4 +1,4 @@
-# 🧪 Kiểm thử
+# Kiểm thử
 
 Bộ test chạy bằng `unittest` của Python — không cần `pytest`, không cần mạng, không cần token. Toàn bộ dữ liệu GitHub trong test là dữ liệu giả dựng sẵn.
 
@@ -6,9 +6,14 @@ Bộ test chạy bằng `unittest` của Python — không cần `pytest`, khôn
 python3 -m unittest discover -s scripts/tests -t scripts        # chạy hết
 python3 -m unittest discover -s scripts/tests -t scripts -v     # in tên từng test
 python3 -m unittest tests.test_clock -v                          # chỉ một file
+python3 -m unittest tests.test_status.TestPillGeometry -v        # chỉ một lớp
+python3 -m unittest tests.test_clock.TestSunMoon.test_six_pm_is_already_moon
 ```
 
-Hiện có **571 test** trên 17 file, chạy xong trong chưa tới 1,5 giây.
+Thứ tự tham số quan trọng: `-t scripts` để `sys.path` có `scripts/`, nhờ vậy
+test import được `svgkit.*` mà không cần cài gì.
+
+Hiện có **875 test** trên 17 file, chạy xong trong vài giây.
 
 Con số này được kiểm tự động: `test_docs.py` đếm lại toàn bộ bộ test và so
 với chữ trong file bạn đang đọc, nên nó không thể lệch âm thầm.
@@ -44,6 +49,7 @@ trong `health.yml`:
 ```
 python3 scripts/check_repo.py          # chỉ báo lỗi
 python3 scripts/check_repo.py --fix    # tự sửa lỗi vô hình rồi báo lỗi còn lại
+python3 scripts/check_repo.py --rules  # liệt kê mọi luật, mỗi luật một dòng
 ```
 
 `test_repo_workflows.py` chạy lại các luật đó **trên repo thật**, nên sai quy
@@ -70,6 +76,14 @@ chịu.
 | Rác Python trong ảnh | chữ `None` hay `NaN` in giữa thẻ khi khoá thiếu |
 | Bảng Markdown lệch cột | bảng "gãy" trên GitHub, không có lỗi cú pháp |
 | Ảnh gọi ra ngoài | ảnh README gọi một URL có thể chết bất cứ lúc nào |
+| Câu ghi cấp học | trang cá nhân ghi thông tin không còn đúng về người viết |
+| Ảnh thiếu `viewBox` | `width="48%"` bị hiểu là pixel: ảnh tràn khung trên điện thoại |
+| Hoạt ảnh lặp nhanh hơn 1 giây/chu kỳ | nháy nhanh là vấn đề an toàn thị giác, không phải thẩm mỹ |
+| SMIL lặp dưới 1 giây | sửa CSS không chạm tới hoạt ảnh SMIL nên nó đi đường riêng |
+| Ví dụ Python không biên dịch được | người copy mất mười phút vì một dấu hai chấm thiếu |
+| File test không có tên trong tài liệu | người mới tạo thêm file thứ hai cùng test một thứ |
+| `pip install` không ghim | mỗi ngày cài một bản PyYAML khác, test chuyển sang skip mà không ai biết |
+| Không dùng emoji | máy thiếu font emoji hiện ô vuông, máy có thì ảnh bị đẩy cao hơn |
 
 ## `helpers.py`
 
@@ -95,7 +109,7 @@ i18n:
 - Khoá lạ trả về chính tên khoá (để thấy được trong ảnh) chứ không ném `KeyError`.
 - `{pct}` được thay đúng; `weekday(0..6)` trả đúng tên.
 
-## `test_primitives.py` (26 test)
+## `test_primitives.py` (74 test)
 
 Phần lớn test nằm ở đây vì `primitives` là nền của mọi thẻ:
 
@@ -156,7 +170,7 @@ Divider/footer:
 - Mã màu `#1A2B3C` **không** bị nhầm là escape hỏng.
 - Tham chiếu `./assets/khong-co.svg` → báo lỗi; `#anchor` thì bỏ qua.
 
-## `test_cli.py` (39 test)
+## `test_cli.py` (44 test)
 
 File lớn nhất, vì CLI là nơi mọi thứ gặp nhau:
 
@@ -169,6 +183,67 @@ File lớn nhất, vì CLI là nơi mọi thứ gặp nhau:
 - `--quiet`: stdout rỗng.
 - `--check`: 7/7 hợp lệ; file hỏng → mã thoát 1; thư mục rỗng → mã thoát 1.
 - Chạy như **tiến trình con** (`subprocess`) để bắt lỗi thứ tự khai báo hàm.
+
+## `test_api_time.py`
+
+`api.to_vn()` chỉ là phép cộng bảy tiếng, nhưng sai ở đây thì *mọi* thẻ in
+sai giờ, và triệu chứng ("ảnh lệch bảy tiếng") không chỉ thẳng vào hàm này:
+
+- Giờ UTC cộng bảy tiếng ra đúng giờ Việt Nam, kể cả qua nửa đêm và nửa năm.
+- Datetime đã có múi giờ được quy về UTC trước khi cộng, không cộng chồng.
+- `now_vn()` trả datetime **naive** — toàn bộ svgkit giả định vậy; trả kèm
+  `tzinfo` là mọi phép so sánh phía sau đổ.
+- Ngày cuối tháng, năm nhuận, và mốc `00:00` đều có ca riêng.
+
+## `test_docs.py`
+
+Quy ước **hình thức** của tài liệu, không phải nội dung:
+
+- Đúng một `H1` mỗi file, và tiêu đề không nhảy cấp (không `##` rồi `####`).
+- Mỗi tiêu đề có dòng trống phía trước — thiếu nó thì GitHub gộp tiêu đề vào
+  đoạn văn trên.
+- File kết thúc bằng đúng một newline; thiếu thì diff cuối file luôn bẩn.
+- Tiêu đề trong một file không trùng nhau (anchor GitHub sẽ thành `-1`).
+- Link nội bộ trỏ tới file và anchor có thật.
+- Không còn ký tự hỏng trong tài liệu.
+
+## `test_repo_assets.py`
+
+Test của từng renderer chứng minh *hàm vẽ* đúng; file này chứng minh *file
+đang nằm trong repo* đúng — hai chuyện khác nhau, vì một ảnh có thể được sinh
+từ phiên bản cũ của renderer và không ai vẽ lại:
+
+- Mọi ảnh trong `assets/` parse được và có `viewBox`.
+- Số liệu trong `stats.svg` khớp `assets/data.json`.
+- Đồng hồ trong file có đủ 12 khung giờ (mỗi khung một khối CSS).
+- Vẽ lại cùng dữ liệu bằng mọi bảng màu và mọi ngôn ngữ: 6 × 2 lượt, không
+  lượt nào lỗi.
+- Dấu `<!-- data:hex -->` ở dòng áp chót khớp nội dung file — sửa tay một
+  chữ là dấu lệch.
+
+## `test_repo_workflows.py`
+
+`test_check_repo.py` kiểm thử *hàm* bằng thư mục tạm; file này chạy chính các
+luật đó **trên repo thật**:
+
+- Bảy workflow: có `workflow_dispatch`, `concurrency`, `timeout-minutes`,
+  `permissions` tối thiểu, action ghim phiên bản.
+- Danh sách `workflow_run.workflows` trong `status.yml` khớp tên thật của
+  từng workflow (lệch một chữ là lượt chạy đó không kích hoạt dải trạng thái).
+- Lịch chạy: không hai job nào cùng phút; không job nào dày hơn 5 phút.
+- Nhịp chạy trong workflow khớp bảng trong `docs/WORKFLOWS.md` và README.
+
+## `test_workflow_states.py`
+
+`api.workflow_states()` đọc trạng thái từng workflow từ Actions API. Test
+thay `api.api_status()` bằng hàm giả nên không gọi mạng, nhưng vẫn đi qua
+đủ mọi nhánh:
+
+- Mã 200 + `conclusion` khác nhau → nhãn khác nhau: thành công, lỗi, đang
+  chạy, bị huỷ, chờ merge.
+- Mã 404 (workflow chưa từng chạy) → "chờ merge", không phải "lỗi".
+- Tuổi tính theo phút: `just now`, `5m`, `2h`, `3d` — và không bao giờ âm.
+- Mỗi dòng trả về đủ bốn trường mà `status.py` cần để vẽ.
 
 ## `test_workflow_gate.py`
 

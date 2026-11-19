@@ -131,17 +131,41 @@ def lang_color(name, index=0):
 
 
 # --------------------------------------------------------------- xếp hạng
+# Ngưỡng điểm của từng hạng, cao xuống thấp. Điểm = sao×3 + repo×4 +
+# follower×5 + fork×2 + commit×0.06 — mọi số đều đọc được từ API công khai.
+GRADES = [(900, "S"), (600, "A+"), (380, "A"), (220, "B+"),
+          (120, "B"), (50, "C+"), (0, "C")]
+
+
+def score(stats):
+    """Điểm thô, chưa xếp hạng."""
+    return (stats.get("stars", 0) * 3
+            + stats.get("repos", 0) * 4
+            + stats.get("followers", 0) * 5
+            + (stats.get("commits") or 0) * 0.06
+            + stats.get("forks", 0) * 2)
+
+
+def grade_progress(stats):
+    """(hạng, phần trăm đã đi tới hạng kế, hạng kế hoặc None).
+
+    Vòng cung trên thẻ phải nói một điều có thật. Bản cũ trả về một hằng số
+    theo hạng (B+ luôn 74%), nên ai thêm 20 sao vẫn thấy đúng 74% và con số
+    thành lời nói suông. Giờ nó là vị trí thật trong khoảng giữa hai hạng:
+    279 điểm nằm giữa 220 (B+) và 380 (A) -> 37% tới A.
+    """
+    value = score(stats)
+    for i, (need, letter) in enumerate(GRADES):
+        if value >= need:
+            if i == 0:
+                return letter, 1.0, None
+            top = GRADES[i - 1][0]
+            span = float(top - need) or 1.0
+            return letter, max(0.0, min(1.0, (value - need) / span)), GRADES[i - 1][1]
+    return "C", 0.0, "C+"
+
+
 def grade(stats):
     """Chấm hạng từ số liệu thật (không phải điểm thành tích)."""
-    score = (stats.get("stars", 0) * 3
-             + stats.get("repos", 0) * 4
-             + stats.get("followers", 0) * 5
-             + (stats.get("commits") or 0) * 0.06
-             + stats.get("forks", 0) * 2)
-    table = [(900, "S", 0.98), (600, "A+", 0.92), (380, "A", 0.84),
-             (220, "B+", 0.74), (120, "B", 0.62), (50, "C+", 0.48),
-             (0, "C", 0.34)]
-    for need, letter, pct in table:
-        if score >= need:
-            return letter, pct
-    return "C", 0.34
+    letter, percent, _ = grade_progress(stats)
+    return letter, percent

@@ -1,4 +1,4 @@
-# 🎞️ Kiểm kê hoạt ảnh
+# Kiểm kê hoạt ảnh
 
 Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đều viết bằng **CSS keyframes** hoặc **SMIL** ngay trong file SVG — không JavaScript, không thư viện, không request nào thêm.
 
@@ -57,7 +57,9 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 
 ## Stats — vòng rank
 
-- Vòng nền mờ + vòng tiến độ có `stroke-dasharray`/`stroke-dashoffset` chạy từ 0% tới đúng phần trăm (74% với rank B+).
+- Vòng nền mờ + vòng tiến độ có `stroke-dasharray`/`stroke-dashoffset` chạy từ 0%
+  tới đúng phần trăm còn cách hạng kế (B+ 279 điểm → 36% tới A). Con số này
+  đổi mỗi lần số liệu đổi, không phải hằng số của hạng.
 - Sáu ô số liệu và nhãn dùng `fadeUp` (0.72s) với độ trễ tăng dần 60ms mỗi ô.
 - Một vệt sáng mảnh (`sheen`, 6.5s) quét ngang giữa thẻ mỗi chu kỳ.
 
@@ -72,6 +74,47 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 - Ba kim: `secHand` 60s, `minHand` 3600s, `hourHand` 43200s — mỗi kim quay đúng một vòng theo chu kỳ thật của nó.
 - Trước khi vẽ, nhóm kim được xoay sẵn tới góc hiện tại, rồi hoạt ảnh nhận `animation-delay` âm đúng số giây đã trôi — nên kim khớp giờ ngay giây đầu tiên, không bị "nhảy" khi ảnh mới được commit.
 - Chấm ở tâm nhấp nháy (`pulse`), thanh tiến độ ngày chạy tới phần trăm đã trôi.
+
+## Live clock — mặt trời và trăng khuyết
+
+- Icon ở góc pill lời chào đổi theo giờ: mặt trời từ 06:00 tới 17:59, trăng
+  khuyết từ 18:00. Không dùng emoji — emoji đổi hình theo hệ điều hành.
+- Trăng được vẽ bằng **mask**: một hình tròn bị "cắn" bởi một hình tròn khác
+  lệch sang phải. Hai lần thử trước đây dùng cung tròn (`a`) đều hỏng: cung
+  có bán kính 0 ra một cục méo, và cung ghép từ hai đường `Q` trông như mũi
+  tên ở mọi kích thước. Mask là cách duy nhất đọc ra hình trăng ở mọi trình
+  vẽ, kể cả trình không hiểu CSS.
+
+## Nhịp chậm nhất được phép
+
+Mọi hoạt ảnh lặp trong repo phải chậm hơn **một chu kỳ mỗi giây**. Ngưỡng
+này không phải khẩu vị: WCAG 2.3.1 đặt mốc an toàn ở ba lần nháy mỗi giây,
+và một chu kỳ mỗi giây là biên rộng gấp ba.
+
+Hai luật giữ điều đó, vì hai đường đi khác nhau:
+
+- `check_animation_pace` đọc **khối khai báo CSS** (không đọc từng dòng, để
+  bắt được kiểu viết `animation-duration` một dòng, `iteration-count` dòng
+  khác).
+- `check_smil_pace` đọc thuộc tính `dur` của `<animate>`; `600ms` được quy
+  đổi trước khi so, vì đọc "600" thành 600 giây là bỏ lọt đúng ca nguy hiểm.
+
+Luật chỉ chặn phía **nhanh**. Kim đồng hồ quay một vòng mỗi giờ (3600s) là
+chuyển động chậm có chủ đích, không phải nháy — nó vẫn qua.
+
+## Top languages — vệt sáng thứ hai
+
+- Thanh xếp chồng đã có `sheen` 5.5 giây. Thêm một vệt mảnh 64px chạy chậm
+  hơn (`barSweep`, 4.6 giây) với độ trễ 0.9 giây: hai vệt không bao giờ trùng
+  nhau nên thanh không rơi vào nhịp đều đặn.
+- Vệt được cắt bằng `clip-path="url(#barClip)"` — không cắt thì nó chạy ra
+  ngoài thanh và trông như vết bẩn trên thẻ.
+
+## Stats — icon nhích theo nhịp riêng
+
+- Sáu icon trong sáu ô cùng dùng `bob` (lên xuống 1.6px trong 4.8 giây) nhưng
+  lệch nhau 0.6 giây mỗi ô. Cùng nhịp thì cả thẻ rung; lệch nhịp thì thẻ thở.
+- Biên độ chỉ 1.6px: đủ để mắt thấy ảnh sống, không đủ để mắt bỏ con số.
 
 ## Activity — 14 ngày
 
@@ -137,6 +180,8 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 | `spinDot` (vòng cung "đang chạy") | 1.6s | CSS |
 | `dashFlow` (nét đứt tự chạy) | 2.6s | CSS |
 | `wave` / `wave2` | 14s / 19s | CSS |
+| `barSweep` (vệt sáng trong thanh xếp chồng) | 4.6s | CSS |
+| `bob` (icon nhích 1.6px) | 4.8s | CSS |
 | kim giây / phút / giờ | 60s / 3600s / 43200s | CSS |
 | vành đồng hồ | 18s | CSS |
 | bụi sáng hero | 7–13s | SMIL |
@@ -185,6 +230,9 @@ Dải này kể chuyện bằng **màu và chuyển động cùng lúc**, nên n
   "chưa có gì để nói" thì cũng không nên động đậy.
 - **Chân dải**: chấm `pulse` cạnh dấu thời gian, cùng kiểu với chân các thẻ
   khác, để mắt biết dải này vừa được vẽ lại.
+- **Nhãn tuổi quá một ngày**: chữ "25 ngày trước" đổi từ xám sang hổ phách.
+  Màu hổ phách trong dải vốn đã mang nghĩa "cần để ý", nên mắt dừng lại đúng
+  chỗ một dấu ĐẠT xanh đã cũ không còn nói gì về hôm nay.
 
 Tất cả các lớp trên đều nằm trong danh sách tắt của `prefers-reduced-motion`,
 nên ai bật "giảm chuyển động" sẽ thấy một dải tĩnh nhưng vẫn đủ màu và chữ.

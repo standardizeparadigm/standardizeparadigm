@@ -29,8 +29,13 @@ def human(number):
 
 
 def num(value):
-    """Số thực gọn gàng cho thuộc tính SVG."""
-    return ("%.1f" % value).rstrip("0").rstrip(".")
+    """Số thực gọn gàng cho thuộc tính SVG.
+
+    "-0" là giá trị hợp lệ nhưng vô nghĩa và làm diff ồn ào: -0.04 làm tròn
+    thành "-0" trong khi mắt đọc là 0. Kẹp về "0" luôn.
+    """
+    text = ("%.1f" % value).rstrip("0").rstrip(".")
+    return "0" if text in ("-0", "") else text
 
 
 # --------------------------------------------------------------- icon
@@ -82,28 +87,28 @@ def icon(name, x, y, color, scale=0.78, width=1.9):
 
 # --------------------------------------------------------------- CSS
 CSS = """
-  .fSans { font-family: @FONT@; }
-  .fMono { font-family: @MONO@; }
-  .cardTitle   { font: 800 14px @FONT@; fill: @TITLE@; letter-spacing: 2.2px; }
-  .cardSub     { font: 600 9.5px @MONO@; fill: @DIM@; letter-spacing: .8px; }
-  .tileValue   { font: 800 19px @FONT@; fill: @TITLE@; }
-  .tileLabel   { font: 600 9.5px @FONT@; fill: @LABEL@; letter-spacing: .7px; }
-  .legendName  { font: 700 11.5px @FONT@; fill: @TEXT@; }
-  .legendValue { font: 800 11.5px @MONO@; fill: @ACCENT3@; }
-  .footNote    { font: 500 9px @FONT@; fill: @DIM@; letter-spacing: .3px; }
-  .bigValue    { font: 800 22px @FONT@; fill: @TITLE@; }
-  .midLabel    { font: 700 8.5px @FONT@; fill: @LABEL@; letter-spacing: 1.3px; }
-  .heroTitle   { font: 800 46px @FONT@; letter-spacing: -1.2px; }
-  .heroSub     { font: 600 14.5px @FONT@; fill: @LABEL@; letter-spacing: .2px; }
-  .heroPill    { font: 700 10.5px @FONT@; fill: @ACCENT3@; letter-spacing: .5px; }
-  .heroType    { font: 600 13px @MONO@; fill: @ACCENT3@; }
-  .heroHint    { font: 500 10px @MONO@; fill: @DIM@; letter-spacing: .6px; }
-  .clockTime   { font: 800 54px @FONT@; letter-spacing: -1.5px; }
-  .clockDate   { font: 600 13px @FONT@; fill: @TEXT@; }
-  .clockLabel  { font: 700 9px @FONT@; fill: @DIM@; letter-spacing: 1.6px; }
-  .clockBig    { font: 700 11px @FONT@; fill: @TEXT@; }
-  .footTitle   { font: 800 24px @FONT@; fill: @TITLE@; letter-spacing: .4px; }
-  .footSub     { font: 600 11px @MONO@; fill: @ACCENT3@; letter-spacing: 1px; }
+  .fSans       { font-family: @FONT@; }
+  .fMono       { font-family: @MONO@; }
+  .cardTitle   { font-weight: 800; font-size: 14px; font-family: @FONT@; fill: @TITLE@; letter-spacing: 2.2px; }
+  .cardSub     { font-weight: 600; font-size: 9.5px; font-family: @MONO@; fill: @DIM@; letter-spacing: .8px; }
+  .tileValue   { font-weight: 800; font-size: 19px; font-family: @FONT@; fill: @TITLE@; }
+  .tileLabel   { font-weight: 600; font-size: 9.5px; font-family: @FONT@; fill: @LABEL@; letter-spacing: .7px; }
+  .legendName  { font-weight: 700; font-size: 11.5px; font-family: @FONT@; fill: @TEXT@; }
+  .legendValue { font-weight: 800; font-size: 11.5px; font-family: @MONO@; fill: @ACCENT3@; }
+  .footNote    { font-weight: 500; font-size: 9px; font-family: @FONT@; fill: @DIM@; letter-spacing: .3px; }
+  .bigValue    { font-weight: 800; font-size: 22px; font-family: @FONT@; fill: @TITLE@; }
+  .midLabel    { font-weight: 700; font-size: 8.5px; font-family: @FONT@; fill: @LABEL@; letter-spacing: 1.3px; }
+  .heroTitle   { font-weight: 800; font-size: 46px; font-family: @FONT@; letter-spacing: -1.2px; }
+  .heroSub     { font-weight: 600; font-size: 14.5px; font-family: @FONT@; fill: @LABEL@; letter-spacing: .2px; }
+  .heroPill    { font-weight: 700; font-size: 10.5px; font-family: @FONT@; fill: @ACCENT3@; letter-spacing: .5px; }
+  .heroType    { font-weight: 600; font-size: 13px; font-family: @MONO@; fill: @ACCENT3@; }
+  .heroHint    { font-weight: 500; font-size: 10px; font-family: @MONO@; fill: @DIM@; letter-spacing: .6px; }
+  .clockTime   { font-weight: 800; font-size: 54px; font-family: @FONT@; letter-spacing: -1.5px; }
+  .clockDate   { font-weight: 600; font-size: 13px; font-family: @FONT@; fill: @TEXT@; }
+  .clockLabel  { font-weight: 700; font-size: 9px; font-family: @FONT@; fill: @DIM@; letter-spacing: 1.6px; }
+  .clockBig    { font-weight: 700; font-size: 11px; font-family: @FONT@; fill: @TEXT@; }
+  .footTitle   { font-weight: 800; font-size: 24px; font-family: @FONT@; fill: @TITLE@; letter-spacing: .4px; }
+  .footSub     { font-weight: 600; font-size: 11px; font-family: @MONO@; fill: @ACCENT3@; letter-spacing: 1px; }
 
   .pulse      { animation: pulse 2.6s ease-in-out infinite; }
   .pulseSlow  { animation: pulse 4.4s ease-in-out infinite; }
@@ -136,6 +141,10 @@ CSS = """
                 transform-box: view-box; transform-origin: var(--cx) var(--cy); }
   /* Nét đứt chạy dọc theo chính nó: dùng cho đường trung bình, đường dóng */
   .dashFlow   { animation: dashFlow 2.6s linear infinite; }
+  /* Vệt sáng chạy ngang trong thanh xếp chồng (thẻ ngôn ngữ) */
+  .barSweep   { animation: barSweep 4.6s ease-in-out infinite; }
+  /* Icon nhích lên xuống 1.6px: đủ để mắt thấy sống, không đủ để phân tâm */
+  .bob        { animation: bob 4.8s ease-in-out infinite; }
   .wave       { animation: wave 14s linear infinite; }
   .wave2      { animation: wave 19s linear infinite reverse; }
 
@@ -155,13 +164,19 @@ CSS = """
                          88% { opacity: .55 } 100% { transform: translateY(300px); opacity: 0 } }
   @keyframes dashFlow  { to { stroke-dashoffset: -10 } }
   @keyframes wave      { to { transform: translateX(-500px) } }
+  @keyframes barSweep  { 0% { transform: translateX(0); opacity: 0 }
+                         12% { opacity: .5 }
+                         88% { opacity: .5 }
+                         100% { transform: translateX(760px); opacity: 0 } }
+  @keyframes bob       { 0%,100% { transform: translateY(0) }
+                         50% { transform: translateY(-1.6px) } }
 
   /* Ai bật "giảm chuyển động" trong hệ điều hành thì thấy ảnh tĩnh,
      vẫn đẹp và vẫn đủ thông tin — không phải hy sinh nội dung. */
   @media (prefers-reduced-motion: reduce) {
     .pulse, .pulseSlow, .blink, .spinSlow, .spinRev, .driftA, .driftB,
     .driftC, .floatY, .twinkle, .fadeUp, .growIn, .sheen, .scan, .spinDot,
-    .dashFlow,
+    .dashFlow, .barSweep, .bob,
     .liveHour text, .liveMin text,
     .secHand, .minHand, .hourHand, .wave, .wave2 { animation: none !important; }
   }

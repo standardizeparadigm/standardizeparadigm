@@ -10,7 +10,7 @@ import xml.dom.minidom as minidom
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from svgkit import i18n  # noqa: E402
+from svgkit import status, i18n  # noqa: E402
 from svgkit.palette import get_palette  # noqa: E402
 from svgkit.status import (GAP, MARGIN, PILL_W, STATE_STYLE, STRIP_H,  # noqa: E402
                            WORKFLOWS, human_age, status_strip, width_for)
@@ -250,6 +250,173 @@ class TestSummaryCounter(unittest.TestCase):
     def test_unknown_states_are_not_ok(self):
         rows = [("A", "unknown"), ("B", "none")]
         self.assertIn("0/2 workflow ổn", self._strip(rows))
+
+
+
+class TestPillGeometry(unittest.TestCase):
+    """Hai nhãn trong một viên thuốc không được chạm nhau."""
+
+    # Ước lượng rộng: phông mono 6.8px ~4.15px/ký tự + letter-spacing .2;
+    # phông đậm 10px ~6.1px/ký tự + .4. Cố tình ước RỘNG hơn thực tế một
+    # chút — thà thừa khe còn hơn chạm nhau trên máy không có phông đẹp.
+    def _age_width(self, text):
+        return len(text) * 4.35
+
+    def _value_width(self, text):
+        return len(text) * 6.5
+
+    def test_worst_case_labels_do_not_overlap(self):
+        t = i18n.get("vi")
+        value_room = 30
+        for state in ("passing", "failing", "running", "none", "unknown"):
+            label = t(status.STATE_STYLE[state][1])
+            for minutes in (0, 59, 60, 900, 60 * 24 * 12):
+                age = status.human_age(minutes, t)
+                left_end = value_room + self._value_width(label)
+                right_start = status.PILL_W - 9 - self._age_width(age)
+                self.assertLess(left_end, right_start,
+                                "%s + %s" % (label, age))
+
+    def test_pill_is_wide_enough_for_the_longest_name(self):
+        # Tên ngắn nhất trong repo là 13 ký tự ("README GARDEN").
+        name_end = 30 + 13 * 5.4
+        self.assertLess(name_end, status.PILL_W - 9)
+
+    def test_width_for_grows_linearly(self):
+        self.assertEqual(status.width_for(1), status.MARGIN * 2 + status.PILL_W)
+        self.assertEqual(status.width_for(3) - status.width_for(2),
+                         status.PILL_W + status.GAP)
+
+    def test_svg_width_matches_width_for(self):
+        rows = [("A", "passing"), ("B", "failing"), ("C", "passing")]
+        svg = status.status_strip(get_palette("sky"), rows, DT, i18n.get("vi"))
+        self.assertIn('width="%d"' % status.width_for(3), svg)
+
+
+
+class TestStateStyles(unittest.TestCase):
+    """Sáu trạng thái, sáu màu, sáu nhãn — không trạng thái nào vô hình."""
+
+    STATES = ("passing", "failing", "running", "none", "missing", "unknown")
+
+    def test_every_state_has_a_colour_and_a_key(self):
+        for state in self.STATES:
+            self.assertIn(state, status.STATE_STYLE)
+            colour, key = status.STATE_STYLE[state]
+            self.assertRegex(colour, r"^#[0-9A-Fa-f]{6}$")
+            self.assertTrue(key.startswith("status."))
+
+    def test_labels_are_distinct(self):
+        t = i18n.get()
+        labels = [t(status.STATE_STYLE[state][1]) for state in self.STATES]
+        self.assertEqual(len(set(labels)), len(labels))
+
+    def test_unknown_state_falls_back_instead_of_crashing(self):
+        rows = [("X", "exploded"), ("Y", "passing")]
+        svg = status.status_strip(get_palette("sky"), rows, DT, i18n.get())
+        self.assertIn(i18n.get()("status.unknown"), svg)
+
+    def test_running_state_carries_the_spinning_arc(self):
+        rows = [("X", "running")]
+        svg = status.status_strip(get_palette("sky"), rows, DT, i18n.get())
+        self.assertIn('class="spinDot"', svg)
+
+    def test_passing_state_pulses_instead_of_spinning(self):
+        rows = [("X", "passing")]
+        svg = status.status_strip(get_palette("sky"), rows, DT, i18n.get())
+        self.assertNotIn('class="spinDot"', svg)
+        self.assertIn("pulseSlow", svg)
+
+
+class TestSummaryLine(unittest.TestCase):
+    def test_all_passing_counts_seven(self):
+        rows = [("A%d" % i, "passing") for i in range(7)]
+        svg = status.status_strip(get_palette("sky"), rows, DT, i18n.get())
+        self.assertIn("7/7", svg)
+
+    def test_failures_are_not_counted_as_ok(self):
+        rows = [("A", "passing"), ("B", "failing"), ("C", "none")]
+        svg = status.status_strip(get_palette("sky"), rows, DT, i18n.get())
+        self.assertIn("1/3", svg)
+
+    def test_missing_counts_as_not_ok(self):
+        rows = [("A", "missing"), ("B", "passing")]
+        svg = status.status_strip(get_palette("sky"), rows, DT, i18n.get())
+        self.assertIn("1/2", svg)
+
+    def test_footer_mentions_the_draw_time(self):
+        # Mốc có múi giờ UTC -> dải phải in theo giờ Việt Nam (+7).
+        svg = status.status_strip(get_palette("sky"), [("A", "passing")],
+                                  datetime.datetime(
+                                      2026, 11, 19, 15, 4,
+                                      tzinfo=datetime.timezone.utc),
+                                  i18n.get())
+        self.assertIn("19/11", svg)
+        self.assertIn("22:04", svg)   # 15:04 UTC -> 22:04 giờ Việt Nam
+
+
+
+class TestAgeTint(unittest.TestCase):
+    """Tuổi của lần chạy phải tự tố cáo khi đã quá cũ."""
+
+    AMBER = status.STATE_STYLE["running"][0]
+
+    def _svg(self, minutes):
+        rows = [("A", "passing", minutes)]
+        return status.status_strip(get_palette("sky"), rows, DT, i18n.get("vi"))
+
+    def test_fresh_age_is_dim(self):
+        svg = self._svg(12)
+        self.assertIn("12 phút trước", svg)
+        self.assertNotIn(self.AMBER, svg)
+
+    def test_day_old_age_is_amber(self):
+        svg = self._svg(60 * 24 * 3)
+        self.assertIn("3 ngày trước", svg)
+        self.assertIn(self.AMBER, svg)
+
+    def test_just_under_a_day_stays_dim(self):
+        svg = self._svg(60 * 24 - 1)
+        self.assertIn("23 giờ trước", svg)
+        self.assertNotIn(self.AMBER, svg)
+
+    def test_missing_age_draws_no_label(self):
+        rows = [("A", "passing", None)]
+        svg = status.status_strip(get_palette("sky"), rows, DT, i18n.get("vi"))
+        self.assertNotIn("trước", svg)
+
+
+
+class TestHumanAge(unittest.TestCase):
+    """Ba mốc: phút, giờ, ngày — và mốc chuyển phải đúng chỗ."""
+
+    def setUp(self):
+        self.t = i18n.get("vi")
+
+    def test_zero_minutes(self):
+        self.assertEqual(status.human_age(0, self.t), "0 phút trước")
+
+    def test_fifty_nine_minutes_is_still_minutes(self):
+        self.assertEqual(status.human_age(59, self.t), "59 phút trước")
+
+    def test_sixty_minutes_becomes_one_hour(self):
+        self.assertEqual(status.human_age(60, self.t), "1 giờ trước")
+
+    def test_last_minute_before_a_day_is_still_hours(self):
+        self.assertEqual(status.human_age(60 * 24 - 1, self.t), "23 giờ trước")
+
+    def test_a_full_day_becomes_one_day(self):
+        self.assertEqual(status.human_age(60 * 24, self.t), "1 ngày trước")
+
+    def test_none_gives_no_label(self):
+        self.assertIsNone(status.human_age(None, self.t))
+
+    def test_english_wording_is_short(self):
+        # Bản tiếng Anh dùng dạng rút gọn "5m ago" để vừa viên thuốc 162px.
+        self.assertEqual(status.human_age(5, i18n.get("en")), "5m ago")
+        self.assertEqual(status.human_age(90, i18n.get("en")), "1h ago")
+        self.assertEqual(status.human_age(60 * 24 * 3, i18n.get("en")),
+                         "3d ago")
 
 if __name__ == "__main__":
     unittest.main()

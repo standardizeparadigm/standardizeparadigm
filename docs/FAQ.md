@@ -1,4 +1,4 @@
-# ❓ Hỏi nhanh đáp gọn
+# Hỏi nhanh đáp gọn
 
 Những câu hay gặp khi xem (hoặc fork) trang này.
 
@@ -30,9 +30,11 @@ GitHub Actions **không hỗ trợ** cron mỗi phút; chu kỳ ngắn nhất l�
 
 Nên trang này làm hai lớp:
 
-- **Lớp ảnh**: đồng hồ kiểm tra mỗi 5 phút, biểu đồ 3D mỗi 30 phút (có cổng 24h), thẻ số liệu và README mỗi 3 giờ, dải trạng thái mỗi 10 phút — lệch 2 phút so với
-  đồng hồ để hai workflow không cùng `git push` một lúc. Chỗ nào có `--smart` thì
-  chỉ commit khi số liệu thật sự đổi.
+- **Lớp ảnh**: đồng hồ 5 phút một lần, dải trạng thái 10 phút, biểu đồ 3D 30
+  phút (có cổng 24h), thẻ số liệu và README 3 giờ một lần. Mỗi job giữ một phút
+  riêng (:00, :02, :07, :13, :23) nên không hai job nào cùng `git push` một
+  lúc — bảng phút đầy đủ ở [WORKFLOWS.md](./WORKFLOWS.md). Chỗ nào có `--smart`
+  thì chỉ commit khi số liệu thật sự đổi.
 - **Lớp hoạt ảnh**: CSS/SMIL trong file SVG làm ảnh **luôn chuyển động** giữa hai lần cập nhật. Kim đồng hồ quay liên tục, không cần workflow nào cả.
 - **Lớp chữ số**: con số giờ:phút không phải một chuỗi tĩnh mà là 24 ô giờ +
   60 ô phút chồng lên nhau, mỗi ô chỉ hiện trong đúng phút của nó. Nên **số
@@ -41,6 +43,17 @@ Nên trang này làm hai lớp:
 
 Nói cách khác: thứ duy nhất cần workflow là phần *ngày tháng* và *vòng cung
 tiến độ ngày*; phần "mấy giờ rồi" thì trình duyệt tự lo.
+
+## Muốn xem đồng hồ lúc nửa đêm mà không phải chờ?
+
+```bash
+python3 scripts/generate_cards.py --clock --at 2026-11-19T23:50 --out /tmp/thu
+```
+
+`--at` nhận `2026-11-19T23:50`, `2026-11-19 23:50` hoặc `2026-11-19T23`, hiểu
+theo giờ Việt Nam. Lệch múi giờ, cung tiến độ ngày, lời chào, icon mặt trăng —
+tất cả vẽ theo đúng thời điểm đó. Dùng để chụp ảnh tài liệu, hoặc để kiểm tra
+một khung giờ hiếm khi ai nhìn tới.
 
 ## Nhãn `9 giờ trước` trên dải trạng thái nghĩa là gì?
 
@@ -51,6 +64,20 @@ tiến độ ngày*; phần "mấy giờ rồi" thì trình duyệt tự lo.
   mặc định. Trạng thái khi đó là `CHỜ MERGE`; tuổi lớn chính là dấu hiệu.
 - Không có nhãn — API không trả mốc thời gian. Thà thiếu nhãn còn hơn in một
   con số sai; `api.age_minutes()` trả `None` thay vì `0` trong trường hợp đó.
+
+## Ảnh đẹp trong Chrome nhưng vỡ trong app GitHub?
+
+Vì SVG không phải một chuẩn được hiểu giống nhau ở mọi nơi. Trình duyệt hiểu
+`font: 800 54px Arial`; resvg và vài bản librsvg bỏ qua **cả khai báo** và
+kéo chữ về 16px — số giờ teo lại, nhãn trên dải trạng thái chèn lên nhau.
+
+Ba quy ước giữ cho ảnh đọc được ở mọi trình:
+
+- **Không dùng `font:` viết tắt.** Viết `font-weight`, `font-size`,
+  `font-family`. `check_repo.py` báo lỗi nếu quên.
+- **Hoạt ảnh phải có trạng thái tĩnh đẹp sẵn.** Nhiều trình xem chỉ vẽ khung
+  hình đầu tiên — nếu khung đó là `opacity: 0` thì người xem thấy ảnh trống.
+- **`prefers-reduced-motion` tắt mọi chuyển động**, nhưng nội dung vẫn đủ.
 
 ## Dải trạng thái cần thêm quyền gì?
 
@@ -192,3 +219,31 @@ bằng token của chính nó, nên không có khái niệm "không tìm thấy"
 run` trên một workflow chỉ có ở nhánh phụ sẽ trả HTTP 404.
 
 Merge trước, chạy sau.
+
+## Sao không dùng emoji cho đẹp?
+
+Vì emoji là thứ **duy nhất** trên trang phụ thuộc font của máy người đọc.
+Máy có font màu thì hiện hình cao gấp đôi chữ; máy không có thì hiện ô vuông.
+Cùng một README vì thế cao thấp khác nhau, bảng lệch hàng, và trình đọc màn
+hình đọc tên biểu tượng thành lời ngay giữa câu.
+
+Chữ thuần thì mọi nơi giống mọi nơi. Luật `check_no_emoji` giữ điều đó.
+
+## Sao mỗi lần chỉ sửa một chút mà nhiều commit thế?
+
+Vì mỗi commit phải **đứng một mình**: gate `check_repo.py` xanh, cả bộ test
+xanh, và nếu phải revert đúng một commit thì phần còn lại vẫn chạy. Gộp năm
+thay đổi vào một commit làm ba việc khó hơn hẳn — đọc lại, tìm thủ phạm khi
+đỏ, và bỏ đúng phần sai.
+
+Ngoài ra lịch sử git ở đây là **tài liệu**: mỗi commit nói *vì sao*, không chỉ
+nói *cái gì*.
+
+## Vì sao ảnh dùng `viewBox` mà không đặt `width`/`height` cố định?
+
+Vì README đặt ảnh theo phần trăm (`width="48%"`). Thiếu `viewBox` thì trình
+duyệt hiểu `width="48%"` là phần trăm của **kích thước gốc**, không phải của
+khung — ảnh giữ nguyên pixel và tràn ra ngoài trên điện thoại.
+
+`viewBox` là thứ biến ảnh vẽ cứng thành ảnh co giãn. Luật `check_svg_viewbox`
+bắt buộc mọi file trong `assets/` có nó.

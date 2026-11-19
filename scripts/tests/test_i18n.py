@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """Test bộ chữ hai ngôn ngữ."""
 
+import os
+import re
 import unittest
 
 from helpers import SCRIPTS  # noqa: F401
@@ -50,10 +52,10 @@ class TestTranslator(unittest.TestCase):
 
     def test_formatting(self):
         t = i18n.get()
-        self.assertIn("42%", t("stats.progress", pct=42))
+        self.assertIn("42%", t("stats.to_next", pct=42, next="A"))
 
     def test_missing_format_arg_does_not_crash(self):
-        self.assertIn("{pct}", i18n.get()("stats.progress"))
+        self.assertIn("{pct}", i18n.get()("stats.to_next"))
 
     def test_weekday_names(self):
         self.assertEqual(i18n.get("vi").weekday(3), "Thứ Năm")
@@ -101,6 +103,86 @@ class TestStringHygiene(unittest.TestCase):
             for letter in vietnamese:
                 self.assertNotIn(letter, lowered, "en/%s" % key)
 
+
+
+class TestKeyHygiene(unittest.TestCase):
+    """Tên khoá và cách dùng placeholder."""
+
+    def test_keys_are_namespaced(self):
+        for key in i18n.STRINGS["vi"]:
+            self.assertIn(".", key, key)
+
+    def test_placeholders_are_lowercase_names(self):
+        for key, text in i18n.STRINGS["vi"].items():
+            for name in re.findall(r"\{(\w+)\}", text):
+                self.assertTrue(name.islower(), "%s: {%s}" % (key, name))
+
+    def test_no_placeholder_is_repeated(self):
+        for key, text in i18n.STRINGS["vi"].items():
+            names = re.findall(r"\{(\w+)\}", text)
+            self.assertEqual(len(names), len(set(names)), key)
+
+    def test_no_percent_formatting_left(self):
+        # %s / %d sẽ làm Translator.format ném KeyError khó hiểu.
+        for key, text in i18n.STRINGS["vi"].items():
+            self.assertNotRegex(text, r"%[sdrf]", key)
+
+    def test_extra_arguments_are_ignored(self):
+        # Gọi thừa tham số không được làm sập ảnh.
+        self.assertIsInstance(i18n.get()("hero.title", unused=1), str)
+
+
+
+class TestNoDeadStrings(unittest.TestCase):
+    """Khoá dịch không ai dùng là bản dịch chết — vẫn phải dịch, vẫn sai."""
+
+    def _corpus(self):
+        root = SCRIPTS
+        text = []
+        for base, dirs, files in os.walk(root):
+            dirs[:] = [d for d in dirs if d != "__pycache__" and d != "tests"]
+            for name in sorted(files):
+                if name.endswith((".py", ".md")) and name != "i18n.py":
+                    with open(os.path.join(base, name), encoding="utf-8") as f:
+                        text.append(f.read())
+        return "\n".join(text)
+
+    def test_every_key_is_referenced_somewhere(self):
+        corpus = self._corpus()
+        dead = sorted(key for key in i18n.STRINGS["vi"]
+                      if ('"%s"' % key) not in corpus)
+        self.assertEqual(dead, [])
+
+class TestNormalize(unittest.TestCase):
+    """Mã ngôn ngữ người thật gõ: hoa, có vùng, có tên đầy đủ."""
+
+    def test_plain_codes_pass_through(self):
+        for tag in ("vi", "en", " vi ", "VI", "En"):
+            self.assertIn(i18n.normalize(tag), i18n.STRINGS)
+
+    def test_region_is_dropped(self):
+        self.assertEqual(i18n.normalize("vi-VN"), "vi")
+        self.assertEqual(i18n.normalize("en_GB"), "en")
+        self.assertEqual(i18n.normalize("en-US"), "en")
+
+    def test_full_names_are_understood(self):
+        self.assertEqual(i18n.normalize("Vietnamese"), "vi")
+        self.assertEqual(i18n.normalize("english"), "en")
+        self.assertEqual(i18n.normalize("vn"), "vi")
+
+    def test_empty_falls_back_to_default(self):
+        self.assertEqual(i18n.normalize(""), i18n.DEFAULT_LANG)
+        self.assertEqual(i18n.normalize(None), i18n.DEFAULT_LANG)
+
+    def test_unknown_is_kept_for_the_error_message(self):
+        self.assertEqual(i18n.normalize(" Klingon "), "klingon")
+
+    def test_translator_uses_it(self):
+        self.assertEqual(i18n.get("VI").lang, "vi")
+        self.assertEqual(i18n.get("en-GB").lang, "en")
+        self.assertEqual(i18n.get("klingon").lang, i18n.DEFAULT_LANG)
+
+
 if __name__ == "__main__":
     unittest.main()
 
@@ -141,7 +223,7 @@ class TestFallbacks(unittest.TestCase):
     def test_placeholder_substitution(self):
         from svgkit import i18n
 
-        text = i18n.get("vi")("stats.progress", pct=74)
+        text = i18n.get("vi")("stats.to_next", pct=74, next="A")
         self.assertIn("74", text)
         self.assertNotIn("{pct}", text)
 

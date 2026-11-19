@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Test hai thẻ dữ liệu và thẻ chờ."""
 
+import re
 import unittest
 from datetime import datetime, timezone
 
@@ -200,6 +201,139 @@ class TestIconCoverage(unittest.TestCase):
             self.assertTrue(body.startswith("<"), name)
             self.assertFalse(
                 any(0x1F300 <= ord(ch) <= 0x1FAFF for ch in body), name)
+
+
+class TestStatsTiles(unittest.TestCase):
+    """Sáu ô số liệu: 2 cột × 3 hàng, đều nhau, không tràn khung."""
+
+    def setUp(self):
+        self.svg = stats_card(get_palette(), DATA, DT, i18n.get())
+
+    def _tiles(self):
+        return [(int(x), int(y)) for x, y in
+                re.findall(r'<rect x="(\d+)" y="(\d+)" width="180" height="50"', self.svg)]
+
+    def test_six_tiles(self):
+        self.assertEqual(len(self._tiles()), 6)
+
+    def test_two_columns_three_rows(self):
+        tiles = self._tiles()
+        self.assertEqual(len({x for x, _ in tiles}), 2)
+        self.assertEqual(len({y for _, y in tiles}), 3)
+
+    def test_tiles_stay_inside_the_card(self):
+        for x, y in self._tiles():
+            self.assertLessEqual(x + 180, 640 - 22)
+            self.assertLessEqual(y + 50, 258)
+
+    def test_columns_do_not_overlap(self):
+        xs = sorted({x for x, _ in self._tiles()})
+        self.assertGreaterEqual(xs[1] - xs[0], 180)
+
+    def test_every_tile_has_an_icon(self):
+        self.assertEqual(self.svg.count('class="tileValue"'), 6)
+        self.assertEqual(self.svg.count('class="tileLabel"'), 6)
+
+
+class TestRankLabel(unittest.TestCase):
+    """Nhãn dưới vòng rank phải khớp tiến độ, không phải hằng số."""
+
+    def test_low_profile_has_a_next_rank(self):
+        svg = stats_card(get_palette(), {"followers": 3}, DT, i18n.get())
+        self.assertIn("TỚI HẠNG", svg)
+        self.assertNotIn(i18n.get()("stats.max"), svg)
+
+    def test_top_profile_says_top_rank(self):
+        svg = stats_card(get_palette(), {"followers": 400}, DT, i18n.get())
+        self.assertIn(i18n.get()("stats.max"), svg)
+
+    def test_percentage_moves_with_the_numbers(self):
+        small = stats_card(get_palette(), {"followers": 45}, DT, i18n.get())
+        bigger = stats_card(get_palette(), {"followers": 47}, DT, i18n.get())
+        self.assertNotEqual(small, bigger)
+
+
+
+class TestLangColours(unittest.TestCase):
+    """Màu từng ngôn ngữ: đúng bảng màu chính thức, và ổn định giữa các lần."""
+
+    def test_known_language_uses_its_brand_colour(self):
+        from svgkit.palette import LANG_COLORS
+        svg = langs_card(get_palette(), DATA, DT, i18n.get())
+        self.assertIn(LANG_COLORS["Python"], svg)
+
+    def test_unknown_language_falls_back_to_the_ramp(self):
+        svg = langs_card(get_palette(), {"langs": {"Klingon": 10, "Elvish": 5}},
+                         DT, i18n.get())
+        assert_valid_svg(self, svg, "langs-unknown")
+
+    def test_same_data_gives_identical_output(self):
+        first = langs_card(get_palette(), DATA, DT, i18n.get())
+        second = langs_card(get_palette(), DATA, DT, i18n.get())
+        self.assertEqual(first, second)
+
+    def test_ties_are_broken_the_same_way_every_time(self):
+        data = {"langs": {"Rust": 100, "Go": 100, "Zig": 100}}
+        first = langs_card(get_palette(), data, DT, i18n.get())
+        second = langs_card(get_palette(), data, DT, i18n.get())
+        self.assertEqual(first, second)
+
+    def test_single_language_fills_the_bar(self):
+        svg = langs_card(get_palette(), {"langs": {"Python": 1000}}, DT,
+                         i18n.get())
+        self.assertIn("100.0%", svg)
+
+
+class TestLangsLegend(unittest.TestCase):
+    def test_legend_lists_every_language(self):
+        svg = langs_card(get_palette(), DATA, DT, i18n.get())
+        for name in DATA["langs"]:
+            self.assertIn(name, svg)
+
+    def test_eighth_place_is_the_limit(self):
+        many = {"langs": {"L%d" % i: 100 - i for i in range(12)}}
+        svg = langs_card(get_palette(), many, DT, i18n.get())
+        self.assertIn("L7", svg)
+        self.assertNotIn("L8", svg)
+
+    def test_percentages_never_exceed_a_hundred(self):
+        svg = langs_card(get_palette(), DATA, DT, i18n.get())
+        values = [float(v) for v in re.findall(r">(\d+\.\d)%<", svg)]
+        self.assertTrue(values)
+        self.assertLessEqual(sum(values), 100.5)
+
+
+
+class TestNewEffects(unittest.TestCase):
+    """Hai hiệu ứng thêm ở đợt này: vệt sáng trong thanh và icon nhích."""
+
+    def test_lang_bar_has_a_second_sweep(self):
+        svg = langs_card(get_palette(), DATA, DT, i18n.get())
+        self.assertIn('class="barSweep"', svg)
+
+    def test_sweep_is_clipped_to_the_bar(self):
+        # Không cắt thì vệt sáng chạy ra ngoài thanh và trông như vết bẩn.
+        svg = langs_card(get_palette(), DATA, DT, i18n.get())
+        line = [l for l in svg.split("\n")
+                if 'class="barSweep"' in l][0]
+        self.assertIn('clip-path="url(#barClip)"', line)
+
+    def test_sweep_delays_are_not_zero(self):
+        svg = langs_card(get_palette(), DATA, DT, i18n.get())
+        self.assertIn("animation-delay:.9s", svg)
+
+    def test_icons_bob_with_staggered_delays(self):
+        svg = stats_card(get_palette(), DATA, DT, i18n.get())
+        self.assertEqual(svg.count('class="bob"'), 6)
+        delays = re.findall(r'class="bob" style="animation-delay:(-?[\d.]+)s"', svg)
+        self.assertEqual(len(set(delays)), 6, delays)
+
+    def test_bob_wraps_the_icon_not_the_number(self):
+        svg = stats_card(get_palette(), DATA, DT, i18n.get())
+        # Mỗi nhóm bob phải đóng ngay sau phần tử icon, trước class tileValue.
+        for chunk in svg.split('class="bob"')[1:]:
+            self.assertLess(chunk.index("</g>"), chunk.index("tileValue"))
+
 if __name__ == "__main__":
     unittest.main()
 

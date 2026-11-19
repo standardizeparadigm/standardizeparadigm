@@ -1,19 +1,21 @@
-# ⚙️ Các workflow tự động
+# Các workflow tự động
 
 Tài liệu mô tả các GitHub Actions đang chạy trong repo `standardizeparadigm/standardizeparadigm`.
 
 **Nguyên tắc chung:** mọi hình đều do workflow vẽ và **commit ngay vào repo** — không gọi server bên thứ ba, không bao giờ bị rate-limit hay lỗi 503. Tất cả action đều ghim phiên bản (`@vN`) và có `permissions` tối thiểu.
+Lệnh `pip install` trong workflow cũng ghim (`pyyaml==6.0.2`) — một gói
+cài bản mới mỗi ngày là cùng một lỗ hổng với action `@main`.
 
 ## Bảng lịch chạy
 
 | Workflow | Lịch (UTC) | Giờ Việt Nam | Việc làm |
 | :-- | :-- | :-- | :-- |
 | `live-clock.yml` | `*/5 * * * *` | mỗi 5 phút | `assets/live-clock.svg` |
-| `profile-3d.yml` | `*/30 * * * *` + cổng 24h | mỗi 30 phút kiểm tra | `profile-3d-contrib/*.svg` khi có push mới |
-| `profile-cards.yml` | `15 */3 * * *` | 8 lần/ngày | `stats`, `top-langs`, `hero`, `activity` (chỉ ghi khi đổi) |
-| `readme-tend.yml` | `45 */3 * * *` | 8 lần/ngày | con dấu `TENDED_AT` |
-| `status.yml` | `2-59/10 * * * *` + `workflow_run` | phút 2,12,22,32,42,52 | `assets/status.svg` |
-| `health.yml` | push/PR + `0 23 * * *` | 06:00 hằng ngày | test + kiểm tra repo |
+| `profile-3d.yml` | `8-59/10 * * * *` + cổng 24h | mỗi 10 phút kiểm tra | `profile-3d-contrib/*.svg` khi có push mới |
+| `profile-cards.yml` | `13 * * * *` | 24 lần/ngày | `stats`, `top-langs`, `hero`, `activity` (chỉ ghi khi đổi) |
+| `readme-tend.yml` | `23 */2 * * *` | 12 lần/ngày | con dấu `TENDED_AT` |
+| `status.yml` | `2-59/5 * * * *` + `workflow_run` | phút 2,7,12 … 57 | `assets/status.svg` |
+| `health.yml` | push/PR + `3 23 * * *` | 06:03 hằng ngày | test + kiểm tra repo |
 | `welcome.yml` | theo sự kiện | — | chào issue/PR mới |
 
 ### Chọn nhịp thế nào
@@ -27,9 +29,25 @@ Một câu hỏi duy nhất quyết định nhịp: **ảnh này đổi nhanh đ
 | Star, fork, ngôn ngữ | vài ngày một lần | 3 giờ |
 | Trạng thái workflow | mỗi khi có lượt chạy xong | 10 phút + `workflow_run` |
 
-Hai workflow ghi file cùng lúc sẽ giành nhau `git push`, nên các nhịp được
-**lệch phút**: thẻ số liệu ở phút 15, README ở phút 45. Cơ chế push có sẵn
-vòng thử lại 3 lần, nhưng phòng tránh từ đầu vẫn rẻ hơn.
+Hai workflow ghi file cùng lúc sẽ giành nhau `git push`, nên mỗi job được
+một phút riêng trong giờ — không job nào chạm phút của job khác:
+
+| Phút | Job | Vì sao đúng phút đó |
+| :-- | :-- | :-- |
+| :00 :05 :10 … :55 | `live-clock` | nhịp 5 phút, sàn của GitHub |
+| :02 :07 :12 … :57 | `status` | chen giữa hai lượt đồng hồ, không bao giờ trùng |
+| :08 :18 :28 :38 :48 :58 | `profile-3d` | mỗi 10 phút, né lưới 5 phút và lưới của `status` |
+| :13 (mỗi giờ) | `profile-cards` | chen giữa :10 và :15 của đồng hồ |
+| :23 (mỗi 2 giờ) | `readme-tend` | ngay sau `status` (:22) |
+| 23:03 UTC | `health` | 06:03 giờ Việt Nam, sau lượt đồng hồ :00 |
+
+Nhịp ngắn nhất có thể mà vẫn lịch sự: đồng hồ 5 phút, dải trạng thái 5 phút,
+biểu đồ 3D 10 phút, thẻ số liệu 1 giờ, con dấu README 2 giờ. Ba job nặng
+(`cards`, `3d`, `tend`) đều có cổng riêng nên phần lớn lượt chạy kết thúc
+trong vài giây mà không commit gì.
+
+`check_repo.py` cảnh báo nếu sau này ai thêm lịch mà chạm phút của job khác.
+Cơ chế push có sẵn vòng thử lại 3 lần, nhưng phòng tránh từ đầu vẫn rẻ hơn.
 
 > GitHub Actions **không hỗ trợ cron mỗi phút** — chu kỳ ngắn nhất là `*/5`. Vì vậy phần "chạy liên tục" được lo bằng hoạt ảnh ngay trong SVG (CSS/SMIL), còn workflow chỉ vẽ lại để ảnh không bị lệch số liệu.
 
@@ -40,7 +58,7 @@ vòng thử lại 3 lần, nhưng phòng tránh từ đầu vẫn rẻ hơn.
 Biểu đồ contribution dạng khối 3D, lưu vào `profile-3d-contrib/`.
 
 - **File ảnh:** `profile-3d-contrib/profile-night-rainbow.svg` (và 9 giao diện khác)
-- **Chạy:** `*/30 * * * *` (mỗi 30 phút) · `workflow_dispatch` · khi sửa chính file workflow
+- **Chạy:** `8-59/10 * * * *` (mỗi 10 phút, phút :08 :18 :28 :38 :48 :58) · `workflow_dispatch` · khi sửa chính file workflow
   hoặc `scripts/fetch_contributions.py`.
 - **Cổng thông minh:** mỗi lượt, một bước shell so *lần ảnh 3D thật sự đổi* (`git log -1 -- profile-3d-contrib`) với *PushEvent* trên GitHub. Có push mới, hoặc đã quá 24 giờ → vẽ lại; còn lại → thoát trong vài giây để không đốt hàng giờ runner mỗi ngày.
 - Vì sao không so theo "lần chạy gần nhất": một lượt bị cổng bỏ qua **vẫn tính là chạy thành công**, nên mốc 24 giờ sẽ không bao giờ tới và ảnh sẽ đứng im mãi. So theo `git log` là đo đúng thứ cần đo.
@@ -60,7 +78,7 @@ Vẽ bằng Python thuần, không cần thư viện ngoài:
 | `assets/footer.svg` | dải sóng cuối trang |
 | `assets/status.svg` | dải trạng thái 7 workflow (do `status.yml` vẽ) |
 
-- **Chạy:** `15 */3 * * *` (mỗi 3 giờ) · `workflow_dispatch` · khi `scripts/**` thay đổi.
+- **Chạy:** `13 * * * *` (mỗi giờ, phút :13) · `workflow_dispatch` · khi `scripts/**` thay đổi.
 - **`--smart`:** mỗi ảnh mang một dấu `<!-- data:… -->` là vân tay của dữ liệu đã dùng. Lượt sau, nếu vân tay không đổi thì **không ghi file, không commit** — trang vẫn được kiểm tra 8 lần/ngày mà lịch sử git không đầy commit rỗng. Ảnh thiết kế (`hero`, `divider`, `footer`) gộp theo khoá giờ `%Y-%m-%dT%H`, nên chúng chỉ vẽ lại khi sang giờ mới — với nhịp 8 lượt/ngày thì thực tế là mỗi lượt.
 - **Dữ liệu:** `GITHUB_TOKEN` có sẵn của repo → quota riêng, không chia sẻ với hàng nghìn repo khác. Thẻ `activity` dùng GraphQL; thiếu dữ liệu thì giữ ảnh cũ chứ không làm đỏ workflow.
 - **Chế độ `--strict`:** API lỗi là workflow báo đỏ ngay, không âm thầm giữ ảnh cũ.
@@ -88,6 +106,8 @@ Vẽ lại `assets/live-clock.svg`: đồng hồ Việt Nam (UTC+7), lời chào
   Vì vậy cron 5 phút **không** làm con số đứng yên — nó chỉ làm phần thứ/ngày
   và vòng cung tiến độ ngày được vẽ lại.
 - **Vòng cung ngoài cùng** = hôm nay đã trôi bao nhiêu: một vòng mỗi 24 giờ.
+- Muốn xem ảnh ở một khung giờ khác (đêm, sáng sớm) mà không phải chờ:
+  `python3 scripts/generate_cards.py --clock --at 2026-11-19T23:50 --out /tmp/thu`.
 
 ## 4. README Garden — `readme-tend.yml`
 
@@ -107,7 +127,7 @@ trắng thì thêm `--fix` để nó tự sửa — cờ này chỉ đụng th�
 
 "Bác sĩ" của repo, chạy mỗi lần push/PR và 06:00 mỗi ngày:
 
-- Chạy **hơn 500 unit test** (`python3 -m unittest discover -s scripts/tests -t scripts`)
+- Chạy **hơn 800 unit test** (`python3 -m unittest discover -s scripts/tests -t scripts`)
 - Thử vẽ lại toàn bộ SVG với **6 bảng màu × 2 ngôn ngữ** rồi parse XML từng file
 - Chữ có lỗi encoding (ký tự hỏng, chữ Hán/Hàn lạc vào, mojibake)
 - URL có `%`-escape sai hoặc giải mã ra UTF-8 không hợp lệ
@@ -219,7 +239,7 @@ Ba lớp bảo hiểm khi vẫn trùng giờ:
 - [README.md](../README.md) — trang cá nhân
 - [scripts/generate_cards.py](../scripts/generate_cards.py) — sinh toàn bộ SVG
 - [scripts/svgkit/](../scripts/svgkit) — thư viện vẽ (palette, i18n, primitives…)
-- [scripts/tests/](../scripts/tests) — hơn 500 unit test
+- [scripts/tests/](../scripts/tests) — hơn 800 unit test
 - [scripts/check_repo.py](../scripts/check_repo.py) — kiểm tra sức khỏe repo
 - [docs/ANIMATIONS.md](./ANIMATIONS.md) — từng hoạt ảnh trong mỗi tấm ảnh
 - [docs/THEMES.md](./THEMES.md) — 6 bảng màu và cách thêm bảng màu mới

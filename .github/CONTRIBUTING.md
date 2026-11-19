@@ -1,8 +1,8 @@
-# 🤝 Đóng góp cho Standardize Paradigm
+# Đóng góp cho Standardize Paradigm
 
-Cảm ơn bạn đã quan tâm đến trang cá nhân này! Mình là học sinh lớp 7 tự học code — mọi đóng góp, dù nhỏ, đều rất đáng giá.
+Cảm ơn bạn đã quan tâm đến trang cá nhân này! Mình tự học code — mọi đóng góp, dù nhỏ, đều rất đáng giá.
 
-## 🚀 Cách bắt đầu
+## Cách bắt đầu
 
 1. **Fork** repo này về tài khoản của bạn.
 2. **Clone** repo đã fork:
@@ -22,7 +22,7 @@ Cảm ơn bạn đã quan tâm đến trang cá nhân này! Mình là học sinh
    ```
 5. Mở **Pull Request** trên GitHub và mô tả thay đổi.
 
-## 📝 Quy ước commit
+## Quy ước commit
 
 Dùng tiền tố tiếng Anh theo kiểu conventional commits (phần mô tả viết tiếng Việt cũng được):
 
@@ -34,13 +34,13 @@ Dùng tiền tố tiếng Anh theo kiểu conventional commits (phần mô tả 
 | `style:` | Định dạng, khoảng trắng, mã màu | `style: chỉnh màu badge` |
 | `chore:` | Việc vặt, bảo trì | `chore: cập nhật con dấu cập nhật` |
 
-## 🧪 Trước khi mở Pull Request
+## Trước khi mở Pull Request
 
 Chạy bộ kiểm tra ngay trên máy bạn (không cần cài gì):
 
 ```bash
 python3 scripts/check_repo.py                          # sức khỏe repo
-python3 -m unittest discover -s scripts/tests -t scripts   # hơn 500 unit test
+python3 -m unittest discover -s scripts/tests -t scripts   # hơn 800 unit test
 ```
 
 Chúng chỉ ra ký tự lỗi encoding, SVG hỏng, link chết, workflow sai — đúng những gì CI của repo kiểm tra.
@@ -53,7 +53,19 @@ Chúng chỉ ra ký tự lỗi encoding, SVG hỏng, link chết, workflow sai �
 `scripts/generate_cards.py` + `scripts/svgkit/` sinh ra; chạm tay vào SVG là
 lượt workflow kế tiếp sẽ ghi đè.
 
-## 🧩 Thêm một workflow mới
+**Đừng dùng `font:` viết tắt trong CSS của ảnh.** Trình duyệt hiểu, nhưng
+resvg, vài bản librsvg và trình xem ảnh desktop bỏ qua cả khai báo — chữ rơi
+về 16px và đè lên nhau. Viết `font-weight` + `font-size` + `font-family`;
+`check_repo.py` báo lỗi nếu quên.
+
+Muốn xem một khung giờ hiếm khi ai nhìn tới (đồng hồ ban đêm, lời chào 23:50),
+khỏi phải chờ:
+
+```bash
+python3 scripts/generate_cards.py --clock --at 2026-11-19T23:50 --out /tmp/thu
+```
+
+## Thêm một workflow mới
 
 Ba chỗ, đừng bỏ chỗ nào:
 
@@ -65,16 +77,16 @@ Ba chỗ, đừng bỏ chỗ nào:
 Nhớ thêm `workflow_dispatch` nếu muốn chạy tay — nút đó chỉ hiện khi file đã có
 trên nhánh mặc định.
 
-## 🐛 Báo lỗi & yêu cầu tính năng
+## Báo lỗi & yêu cầu tính năng
 
 - Mở issue theo mẫu có sẵn trong `.github/ISSUE_TEMPLATE/`.
 - Mô tả rõ, kèm ảnh chụp màn hình nếu là lỗi giao diện.
 
-## 📜 Quy tắc nhỏ
+## Quy tắc nhỏ
 
 - Không spam, không phân biệt đối xử.
 - Nếu bạn là bạn cùng tuổi và muốn làm project chung, hãy nhắn mình qua issue hoặc Discord — mình rất mong được làm quen!
 
-## 📄 Giấy phép
+## Giấy phép
 
 Dự án này dùng giấy phép MIT — xem file `LICENSE`.

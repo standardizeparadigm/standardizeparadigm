@@ -17,23 +17,23 @@ class TestUrlChecks(unittest.TestCase):
         check_repo.warnings = []
 
     def test_good_url_passes(self):
-        check_repo.check_url("https://example.com/a%20b", "test")
+        check_repo.verify_url("https://example.com/a%20b", "test")
         self.assertEqual(check_repo.errors, [])
 
     def test_broken_percent_escape(self):
-        check_repo.check_url("https://example.com/vi%C3ean", "test")
+        check_repo.verify_url("https://example.com/vi%C3ean", "test")
         self.assertTrue(check_repo.errors)
 
     def test_bad_escape_pair(self):
-        check_repo.check_url("https://example.com/%E2%8", "test")
+        check_repo.verify_url("https://example.com/%E2%8", "test")
         self.assertTrue(check_repo.errors)
 
     def test_space_in_url(self):
-        check_repo.check_url("https://example.com/a b", "test")
+        check_repo.verify_url("https://example.com/a b", "test")
         self.assertTrue(check_repo.errors)
 
     def test_anchor_ignored(self):
-        check_repo.check_url("#about", "test")
+        check_repo.verify_url("#about", "test")
         self.assertEqual(check_repo.errors, [])
 
 
@@ -53,7 +53,7 @@ class TestOrphanEscapes(unittest.TestCase):
 
 class TestMojibake(unittest.TestCase):
     def test_vietnamese_is_clean(self):
-        samples = ["ĐÃ trôi", "Học sinh lớp 7", "Thứ Năm", "CẬP NHẬT",
+        samples = ["ĐÃ trôi", "Học sinh cấp hai", "Thứ Năm", "CẬP NHẬT",
                    "cầu vồng", "TỰ HỌC"]
         for text in samples:
             self.assertIsNone(check_repo.RE_MOJIBAKE.search(text), text)
@@ -1117,6 +1117,841 @@ class TestExitCode(unittest.TestCase):
         self.assertIn("SVG", text)
         self.assertIn("workflow", text)
         self.assertIn("script Python", text)
+
+
+class TestFontShorthand(unittest.TestCase):
+    """`font:` viết tắt: trình duyệt hiểu, nhiều trình vẽ khác thì không."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="font-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _svg(self, body):
+        with open(os.path.join(self.tmp, "assets", "a.svg"), "w",
+                  encoding="utf-8") as handle:
+            handle.write(body)
+
+    def test_longhand_passes(self):
+        self._svg("<style>.a { font-weight: 800; font-size: 54px; "
+                  "font-family: Arial; }</style>")
+        check_repo.check_font_shorthand(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_shorthand_in_style_block_is_flagged(self):
+        self._svg("<style>.a { font: 800 54px Arial; }</style>")
+        check_repo.check_font_shorthand(self.tmp)
+        self.assertTrue(any("viết tắt" in e for e in check_repo.errors))
+
+    def test_shorthand_in_inline_style_is_flagged(self):
+        self._svg('<text style="font:600 7.5px monospace">x</text>')
+        check_repo.check_font_shorthand(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_word_font_family_is_not_confused(self):
+        self._svg('<text style="font-family:Arial;font-weight:700">x</text>')
+        check_repo.check_font_shorthand(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+
+
+class TestCronMinutes(unittest.TestCase):
+    """Dịch trường phút của cron thành tập phút — và cảnh báo khi trùng."""
+
+    def test_star_is_every_minute(self):
+        self.assertEqual(check_repo._cron_minutes("*"), set(range(60)))
+
+    def test_step_from_zero(self):
+        self.assertEqual(check_repo._cron_minutes("*/5"),
+                         {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55})
+
+    def test_offset_range(self):
+        self.assertEqual(check_repo._cron_minutes("7-59/30"), {7, 37})
+
+    def test_list_and_single(self):
+        self.assertEqual(check_repo._cron_minutes("2,12,22"), {2, 12, 22})
+        self.assertEqual(check_repo._cron_minutes("13"), {13})
+
+    def test_nonsense_returns_none(self):
+        for bad in ("", "abc", "60", "9-3", "*/0", "1/x"):
+            self.assertIsNone(check_repo._cron_minutes(bad), bad)
+
+
+class TestCronCollisions(unittest.TestCase):
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="cron-")
+        self.wf = os.path.join(self.tmp, ".github", "workflows")
+        os.makedirs(self.wf)
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _add(self, name, cron):
+        with open(os.path.join(self.wf, name), "w", encoding="utf-8") as handle:
+            handle.write('name: %s\non:\n  schedule:\n    - cron: "%s"\n'
+                         % (name, cron))
+
+    def test_shared_minute_is_reported(self):
+        self._add("a.yml", "0 */3 * * *")
+        self._add("b.yml", "0 */6 * * *")
+        check_repo.check_cron_minute_collisions(self.tmp)
+        self.assertTrue(any("cùng chạy" in w for w in check_repo.warnings))
+
+    def test_disjoint_minutes_are_quiet(self):
+        self._add("a.yml", "13 */3 * * *")
+        self._add("b.yml", "*/5 * * * *")
+        check_repo.check_cron_minute_collisions(self.tmp)
+        self.assertEqual(check_repo.warnings, [])
+
+    def test_real_repo_has_no_collision(self):
+        check_repo.check_cron_minute_collisions()
+        self.assertEqual([w for w in check_repo.warnings if "cùng chạy" in w], [])
+
+
+
+class TestDuplicateIds(unittest.TestCase):
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="ids-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _svg(self, body):
+        with open(os.path.join(self.tmp, "assets", "a.svg"), "w",
+                  encoding="utf-8") as handle:
+            handle.write(body)
+
+    def test_unique_ids_pass(self):
+        self._svg('<defs><linearGradient id="a"/><linearGradient id="b"/></defs>')
+        check_repo.check_duplicate_ids(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_double_id_is_reported_once(self):
+        self._svg('<circle id="halo"/><ellipse id="halo"/>')
+        check_repo.check_duplicate_ids(self.tmp)
+        self.assertEqual(len(check_repo.errors), 1)
+        self.assertIn("'halo'", check_repo.errors[0])
+
+
+class TestClassReferences(unittest.TestCase):
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="cls-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _svg(self, body):
+        with open(os.path.join(self.tmp, "assets", "a.svg"), "w",
+                  encoding="utf-8") as handle:
+            handle.write(body)
+
+    def test_defined_class_passes(self):
+        self._svg('<style>.pulse { animation: p 1s }</style>'
+                  '<circle class="pulse"/>')
+        check_repo.check_class_references(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_descendant_selector_counts(self):
+        self._svg('<style>.liveHour text { opacity: 0 }</style>'
+                  '<g class="liveHour"><text>x</text></g>')
+        check_repo.check_class_references(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_unknown_class_is_reported(self):
+        self._svg('<style>.pulse { animation: p 1s }</style>'
+                  '<circle class="pulse pulse-typo"/>')
+        check_repo.check_class_references(self.tmp)
+        self.assertTrue(any("pulse-typo" in e for e in check_repo.errors))
+
+    def test_smil_only_class_is_exempt(self):
+        self._svg('<style>.smilOnly { display: none }</style>'
+                  '<circle class="dust smilOnly"/>')
+        check_repo.check_class_references(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_real_assets_pass(self):
+        check_repo.check_class_references()
+        self.assertEqual(check_repo.errors, [])
+
+
+
+class TestBadNumbers(unittest.TestCase):
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="num-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _svg(self, body):
+        with open(os.path.join(self.tmp, "assets", "a.svg"), "w",
+                  encoding="utf-8") as handle:
+            handle.write(body)
+
+    def test_clean_numbers_pass(self):
+        self._svg('<path d="M12.5 0.5A4 4 0 0 1 20 8"/>')
+        check_repo.check_bad_numbers(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_nan_is_reported(self):
+        self._svg('<path d="MNaN 12"/>')
+        check_repo.check_bad_numbers(self.tmp)
+        self.assertTrue(any("NaN" in e for e in check_repo.errors))
+
+    def test_none_is_reported(self):
+        self._svg('<rect x="None" y="4" width="2" height="2"/>')
+        check_repo.check_bad_numbers(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_scientific_notation_is_reported(self):
+        # Trong toạ độ path, nơi số mũ hay xuất hiện nhất.
+        self._svg('<path d="M1.5e-07 4L8 8"/>')
+        check_repo.check_bad_numbers(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_word_in_free_text_is_not_flagged(self):
+        # Chữ "None" trong <desc> là văn xuôi, không phải toạ độ.
+        self._svg('<text x="4" y="4">None of the above</text>')
+        check_repo.check_bad_numbers(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+
+
+class TestUrlTargets(unittest.TestCase):
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="url-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _svg(self, body):
+        with open(os.path.join(self.tmp, "assets", "a.svg"), "w",
+                  encoding="utf-8") as handle:
+            handle.write(body)
+
+    def test_paint_targets_pass(self):
+        self._svg('<defs><linearGradient id="g"/><filter id="f"/>'
+                  '<clipPath id="c"/><mask id="m"/></defs>'
+                  '<rect fill="url(#g)" filter="url(#f)" clip-path="url(#c)" '
+                  'mask="url(#m)"/>')
+        check_repo.check_url_targets(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_unknown_target_is_reported(self):
+        self._svg('<rect filter="url(#gloww)"/>')
+        check_repo.check_url_targets(self.tmp)
+        self.assertTrue(any("gloww" in e for e in check_repo.errors))
+
+    def test_target_that_is_not_a_definition_is_reported(self):
+        self._svg('<circle id="halo"/><rect fill="url(#halo)"/>')
+        check_repo.check_url_targets(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_real_assets_pass(self):
+        check_repo.check_url_targets()
+        self.assertEqual(check_repo.errors, [])
+
+
+
+class TestKeyframes(unittest.TestCase):
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="kf-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _svg(self, style):
+        with open(os.path.join(self.tmp, "assets", "a.svg"), "w",
+                  encoding="utf-8") as handle:
+            handle.write("<svg><style>%s</style></svg>" % style)
+
+    def test_matched_pair_passes(self):
+        self._svg(".a { animation: pulse 2s infinite }"
+                  "@keyframes pulse { to { opacity: 0 } }")
+        check_repo.check_keyframes(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_animation_name_form_counts(self):
+        self._svg(".a { animation-name: spin; animation-duration: 3s }"
+                  "@keyframes spin { to { transform: rotate(360deg) } }")
+        check_repo.check_keyframes(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_missing_keyframes_is_reported(self):
+        self._svg(".a { animation: pulsee 2s }")
+        check_repo.check_keyframes(self.tmp)
+        self.assertTrue(any("pulsee" in e for e in check_repo.errors))
+
+    def test_unused_keyframes_is_reported(self):
+        self._svg("@keyframes ghost { to { opacity: 0 } }")
+        check_repo.check_keyframes(self.tmp)
+        self.assertTrue(any("ghost" in e for e in check_repo.errors))
+
+    def test_animation_none_is_not_a_name(self):
+        self._svg(".a { animation: none }")
+        check_repo.check_keyframes(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+
+
+class TestBudgets(unittest.TestCase):
+    """Ngân sách dung lượng ảnh và độ dài README — hai giới hạn có thật."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="budget-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _asset(self, name, size):
+        with open(os.path.join(self.tmp, "assets", name), "w",
+                  encoding="utf-8") as handle:
+            handle.write("x" * size)
+
+    def _readme(self, lines):
+        with open(os.path.join(self.tmp, "README.md"), "w",
+                  encoding="utf-8") as handle:
+            handle.write("\n".join(["dòng"] * lines) + "\n")
+
+    def test_asset_exactly_at_the_limit_passes(self):
+        self._asset("a.svg", 40 * 1024)
+        check_repo.check_svg_budget(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_asset_one_byte_over_fails(self):
+        self._asset("a.svg", 40 * 1024 + 1)
+        check_repo.check_svg_budget(self.tmp)
+        self.assertTrue(any("vượt ngân sách" in e for e in check_repo.errors))
+
+    def test_readme_at_the_limit_passes(self):
+        self._readme(360)
+        check_repo.check_readme_length(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_readme_one_line_over_fails(self):
+        self._readme(361)
+        check_repo.check_readme_length(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_real_readme_is_within_budget(self):
+        check_repo.check_readme_length()
+        self.assertEqual(check_repo.errors, [])
+
+    def test_real_assets_are_within_budget(self):
+        check_repo.check_svg_budget()
+        self.assertEqual(check_repo.errors, [])
+
+
+
+class TestStatusWorkflowList(unittest.TestCase):
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="statuslist-")
+        os.makedirs(os.path.join(self.tmp, ".github", "workflows"))
+        os.makedirs(os.path.join(self.tmp, "scripts", "svgkit"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _status(self, entries):
+        rows = "\n".join('    ("%s", "%s"),' % (f, n) for f, n in entries)
+        with open(os.path.join(self.tmp, "scripts", "svgkit", "status.py"),
+                  "w", encoding="utf-8") as handle:
+            handle.write("WORKFLOWS = [\n%s\n]\n" % rows)
+
+    def _file(self, name):
+        with open(os.path.join(self.tmp, ".github", "workflows", name), "w",
+                  encoding="utf-8") as handle:
+            handle.write("name: x\n")
+
+    def test_all_real_passes(self):
+        self._status([("a.yml", "A")])
+        self._file("a.yml")
+        check_repo.check_status_workflow_list(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_missing_file_is_reported(self):
+        self._status([("ghost.yml", "GHOST")])
+        check_repo.check_status_workflow_list(self.tmp)
+        self.assertTrue(any("ghost.yml" in e for e in check_repo.errors))
+
+    def test_parser_reads_the_pairs(self):
+        self._status([("a.yml", "A"), ("b.yml", "B")])
+        self.assertEqual(check_repo.status_workflows(self.tmp),
+                         [("a.yml", "A"), ("b.yml", "B")])
+
+    def test_real_repo_is_consistent(self):
+        check_repo.check_status_workflow_list()
+        self.assertEqual(check_repo.errors, [])
+
+
+
+class TestBadNumbersIgnoresComments(unittest.TestCase):
+    """Chú thích và mã màu không phải toạ độ."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="cmt-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _svg(self, body):
+        with open(os.path.join(self.tmp, "assets", "a.svg"), "w",
+                  encoding="utf-8") as handle:
+            handle.write(body)
+
+    def test_hex_data_mark_is_not_a_number(self):
+        # 'a698e1461f3e' trông như lệnh cung 'a' kèm số mũ.
+        self._svg('<svg><!-- data:a698e1461f3e --></svg>')
+        check_repo.check_bad_numbers(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_comment_with_real_nan_is_still_ignored(self):
+        self._svg('<svg><!-- ghi chú: d="MNaN 0" --></svg>')
+        check_repo.check_bad_numbers(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_attribute_message_survives(self):
+        self._svg('<path d="MNaN 12"/>')
+        check_repo.check_bad_numbers(self.tmp)
+        self.assertTrue(any("NaN" in e for e in check_repo.errors))
+
+
+
+class TestNoGradeClaim(unittest.TestCase):
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="grade-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _file(self, name, body):
+        with open(os.path.join(self.tmp, name), "w", encoding="utf-8") as handle:
+            handle.write(body)
+
+    def test_vietnamese_variant_is_flagged(self):
+        self._file("README.md", "Mình là học sinh lớp 7.")
+        check_repo.check_no_grade_claim(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_uppercase_variant_is_flagged(self):
+        self._file("a.svg", "<text>LỚP 7</text>")
+        check_repo.check_no_grade_claim(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_english_variant_is_flagged(self):
+        for body in ("Grade 7 student", "GRADE-7", "grade7"):
+            check_repo.errors = []
+            self._file("b.md", body)
+            check_repo.check_no_grade_claim(self.tmp)
+            self.assertTrue(check_repo.errors, body)
+
+    def test_other_numbers_are_fine(self):
+        self._file("c.md", "Cấp 2, lớp 8, 7 ngôn ngữ, UTC+7")
+        check_repo.check_no_grade_claim(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_real_repo_is_clean(self):
+        check_repo.check_no_grade_claim()
+        self.assertEqual(check_repo.errors, [])
+
+class TestNoEmoji(unittest.TestCase):
+    """Luật không emoji: chữ thuần ở mọi nơi, trừ dấu tick của terminal."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.tmp)
+
+    def _file(self, name, text):
+        path = os.path.join(self.tmp, name)
+        os.makedirs(os.path.dirname(path) or self.tmp, exist_ok=True)
+        with open(path, "w", encoding="utf-8") as handle:
+            handle.write(text)
+
+    def _run(self):
+        check_repo.errors = []
+        check_repo.check_no_emoji(root=self.tmp)
+        return list(check_repo.errors)
+
+    def test_clean_files_pass(self):
+        self._file("README.md", "# Chào\n\nChữ thuần, không hình.\n")
+        self._file("scripts/x.py", "print('ok')\n")
+        self.assertEqual(self._run(), [])
+
+    def test_emoji_in_markdown_is_reported(self):
+        self._file("README.md", "# Chào " + chr(0x1F331) + "\n")
+        errors = self._run()
+        self.assertEqual(len(errors), 1)
+        self.assertIn("README.md:1", errors[0])
+        self.assertIn("U+1F331", errors[0])
+
+    def test_emoji_in_workflow_is_reported(self):
+        self._file(".github/workflows/a.yml", "name: " + chr(0x1F4CA) + " Dash\n")
+        self.assertEqual(len(self._run()), 1)
+
+    def test_tick_and_cross_are_allowed(self):
+        self._file("x.py", "print(' ' + chr(0x2713) + ' ' + chr(0x2717))\n")
+        self.assertEqual(self._run(), [])
+
+    def test_variation_selector_counts(self):
+        self._file("a.svg", "<text>" + chr(0x23F1) + chr(0xFE0F) + "</text>\n")
+        self.assertEqual(len(self._run()), 1)
+
+    def test_empty_tree_passes(self):
+        self.assertEqual(self._run(), [])
+
+
+class TestSvgViewBox(unittest.TestCase):
+    """Ảnh không có `viewBox` thì không co giãn được."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.tmp)
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def _svg(self, name, body):
+        with open(os.path.join(self.tmp, "assets", name), "w",
+                  encoding="utf-8") as handle:
+            handle.write(body)
+
+    def _run(self):
+        check_repo.errors = []
+        check_repo.check_svg_viewbox(root=self.tmp)
+        return list(check_repo.errors)
+
+    def test_missing_viewbox_is_reported(self):
+        self._svg("a.svg", '<svg xmlns="http://www.w3.org/2000/svg"'
+                           ' width="10" height="10"></svg>')
+        errors = self._run()
+        self.assertEqual(len(errors), 1)
+        self.assertIn("viewBox", errors[0])
+
+    def test_present_viewbox_passes(self):
+        self._svg("a.svg", '<svg viewBox="0 0 10 10"></svg>')
+        self.assertEqual(self._run(), [])
+
+    def test_viewbox_far_from_the_head_is_reported(self):
+        # Luật chỉ đọc 600 ký tự đầu — viewBox nằm sâu bên trong là dấu hiệu
+        # nó bị chèn vào một thẻ con chứ không phải thẻ <svg> gốc.
+        self._svg("a.svg", "<svg>" + "x" * 700 + ' viewBox="0 0 1 1"></svg>')
+        self.assertEqual(len(self._run()), 1)
+
+    def test_non_svg_files_are_ignored(self):
+        with open(os.path.join(self.tmp, "assets", "note.txt"), "w") as handle:
+            handle.write("no viewBox here")
+        self.assertEqual(self._run(), [])
+
+
+class TestAnimationPace(unittest.TestCase):
+    """Hoạt ảnh lặp quá nhanh là vấn đề sức khỏe, không phải thẩm mỹ."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.tmp)
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def _svg(self, css):
+        with open(os.path.join(self.tmp, "assets", "a.svg"), "w",
+                  encoding="utf-8") as handle:
+            handle.write('<svg viewBox="0 0 10 10"><style>%s</style></svg>'
+                         % css)
+
+    def _run(self):
+        check_repo.errors = []
+        check_repo.check_animation_pace(root=self.tmp)
+        return list(check_repo.errors)
+
+    def test_fast_loop_is_reported(self):
+        self._svg(".a { animation: blink .2s linear infinite; }")
+        errors = self._run()
+        self.assertEqual(len(errors), 1)
+        self.assertIn(".2s", errors[0])
+
+    def test_slow_loop_is_fine(self):
+        self._svg(".a { animation: drift 26s ease-in-out infinite; }")
+        self.assertEqual(self._run(), [])
+
+    def test_hour_long_loop_is_fine(self):
+        self._svg(".a { animation: hand 3600s linear infinite; }")
+        self.assertEqual(self._run(), [])
+
+    def test_one_shot_transition_is_not_checked(self):
+        self._svg(".a { animation: fadeUp .3s ease-out both; }")
+        self.assertEqual(self._run(), [])
+
+    def test_split_declarations_are_checked(self):
+        # Cach viet tach dong la cach de lot luoi nhat: chu ky o mot khai
+        # bao, "infinite" o khai bao khac, trong cung mot khoi.
+        self._svg(".a { animation-duration: .4s;\n  animation-iteration-count:"
+                  " infinite; }")
+        errors = self._run()
+        self.assertEqual(len(errors), 1)
+        self.assertIn(".4s", errors[0])
+
+    def test_fraction_without_leading_zero(self):
+        self._svg(".a { animation: blink .25s steps(1) infinite; }")
+        self.assertEqual(len(self._run()), 1)
+
+
+class TestSmilPace(unittest.TestCase):
+    """SMIL lặp vô hạn cũng phải chậm hơn một chu kỳ mỗi giây."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.tmp)
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def _svg(self, body):
+        with open(os.path.join(self.tmp, "assets", "a.svg"), "w",
+                  encoding="utf-8") as handle:
+            handle.write('<svg viewBox="0 0 10 10">%s</svg>' % body)
+
+    def _run(self):
+        check_repo.errors = []
+        check_repo.check_smil_pace(root=self.tmp)
+        return list(check_repo.errors)
+
+    def test_fast_smil_loop_is_reported(self):
+        self._svg('<animate attributeName="r" dur="0.4s"'
+                  ' repeatCount="indefinite" />')
+        self.assertEqual(len(self._run()), 1)
+
+    def test_milliseconds_are_converted(self):
+        self._svg('<animate attributeName="r" dur="600ms"'
+                  ' repeatCount="indefinite" />')
+        errors = self._run()
+        self.assertEqual(len(errors), 1)
+        self.assertIn("600ms", errors[0])
+
+    def test_slow_smil_loop_is_fine(self):
+        self._svg('<animate attributeName="r" dur="2.9s"'
+                  ' repeatCount="indefinite" />')
+        self.assertEqual(self._run(), [])
+
+    def test_one_shot_smil_is_not_checked(self):
+        self._svg('<animate attributeName="opacity" dur="0.3s" />')
+        self.assertEqual(self._run(), [])
+
+
+class TestPythonFences(unittest.TestCase):
+    """Ví dụ Python trong tài liệu phải biên dịch được."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.tmp)
+
+    def _doc(self, body, name="guide.md"):
+        with open(os.path.join(self.tmp, name), "w", encoding="utf-8") as fh:
+            fh.write(body)
+
+    def _run(self):
+        check_repo.errors = []
+        check_repo.check_python_fences(root=self.tmp)
+        return list(check_repo.errors)
+
+    def test_broken_example_is_reported(self):
+        self._doc("# t\n\n```python\ndef f(:\n    pass\n```\n")
+        errors = self._run()
+        self.assertEqual(len(errors), 1)
+        self.assertIn("guide.md:4", errors[0])
+
+    def test_good_example_passes(self):
+        self._doc("```python\nfor i in range(3):\n    print(i)\n```\n")
+        self.assertEqual(self._run(), [])
+
+    def test_short_alias_is_checked(self):
+        self._doc("```py\nfor i in range(3)\n    print(i)\n```\n")
+        self.assertEqual(len(self._run()), 1)
+
+    def test_interactive_session_is_skipped(self):
+        self._doc("```python\n>>> f(:\n```\n")
+        self.assertEqual(self._run(), [])
+
+    def test_other_languages_are_skipped(self):
+        self._doc("```bash\nfor f in *; do echo $f; done\n```\n")
+        self.assertEqual(self._run(), [])
+
+    def test_indented_fence_is_recognised(self):
+        self._doc("  ```python\n  def f(:\n  ```\n")
+        self.assertEqual(len(self._run()), 1)
+
+
+class TestTestFileDocs(unittest.TestCase):
+    """Mỗi file test phải có tên trong docs/TESTING.md."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.tmp)
+        os.makedirs(os.path.join(self.tmp, "scripts", "tests"))
+        os.makedirs(os.path.join(self.tmp, "docs"))
+        self._doc("# Kiểm thử\n")
+
+    def _test_file(self, name):
+        with open(os.path.join(self.tmp, "scripts", "tests", name), "w",
+                  encoding="utf-8") as handle:
+            handle.write("import unittest\n")
+
+    def _doc(self, text):
+        with open(os.path.join(self.tmp, "docs", "TESTING.md"), "w",
+                  encoding="utf-8") as handle:
+            handle.write(text)
+
+    def _run(self):
+        check_repo.errors = []
+        check_repo.check_test_file_docs(root=self.tmp)
+        return list(check_repo.errors)
+
+    def test_unnamed_test_file_is_reported(self):
+        self._test_file("test_new.py")
+        errors = self._run()
+        self.assertEqual(len(errors), 1)
+        self.assertIn("test_new.py", errors[0])
+
+    def test_named_test_file_passes(self):
+        self._test_file("test_new.py")
+        self._doc("# Kiểm thử\n\n## `test_new.py`\n")
+        self.assertEqual(self._run(), [])
+
+    def test_helper_file_is_not_required(self):
+        self._test_file("helpers.py")
+        self.assertEqual(self._run(), [])
+
+    def test_missing_doc_is_ignored(self):
+        os.remove(os.path.join(self.tmp, "docs", "TESTING.md"))
+        self._test_file("test_new.py")
+        self.assertEqual(self._run(), [])
+
+
+class TestPipPins(unittest.TestCase):
+    """Lệnh pip trong workflow phải ghim phiên bản như action."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.tmp)
+        os.makedirs(os.path.join(self.tmp, ".github", "workflows"))
+
+    def _wf(self, text):
+        with open(os.path.join(self.tmp, ".github", "workflows", "a.yml"),
+                  "w", encoding="utf-8") as handle:
+            handle.write(text)
+
+    def _run(self):
+        check_repo.errors = []
+        check_repo.check_pip_pins(root=self.tmp)
+        return list(check_repo.errors)
+
+    def test_unpinned_is_reported(self):
+        self._wf("run: python3 -m pip install pyyaml\n")
+        errors = self._run()
+        self.assertEqual(len(errors), 1)
+        self.assertIn("a.yml:1", errors[0])
+
+    def test_pinned_passes(self):
+        self._wf('run: python3 -m pip install "pyyaml==6.0.2"\n')
+        self.assertEqual(self._run(), [])
+
+    def test_requirements_file_is_reported(self):
+        self._wf("run: pip install -r requirements.txt\n")
+        self.assertEqual(len(self._run()), 1)
+
+    def test_comment_mention_is_ignored(self):
+        self._wf("# pip install pyyaml  (vi du)\n")
+        self.assertEqual(self._run(), [])
+
+    def test_echo_mention_is_ignored(self):
+        self._wf("run: echo 'pip install pyyaml'\n")
+        self.assertEqual(self._run(), [])
+
+    def test_optional_pip_without_package_passes(self):
+        self._wf("run: pip install --upgrade pip\n")
+        # `--upgrade pip` khong phai ten goi kem phien ban, nhung cung khong
+        # phai mot goi that su duoc ghim — luat chi doi `==x.y.z` khi co ten.
+        self.assertEqual(len(self._run()), 1)
+
+
+class TestListRules(unittest.TestCase):
+    """`--rules` phải kể được mọi luật, và không kể thứ không phải luật."""
+
+    def test_returns_every_check_function(self):
+        names = check_repo.list_rules()
+        self.assertGreaterEqual(len(names), 30)
+        self.assertIn("check_no_emoji", names)
+        self.assertIn("check_svg_budget", names)
+
+    def test_names_are_sorted(self):
+        names = check_repo.list_rules()
+        self.assertEqual(names, sorted(names))
+
+    def test_no_helper_is_listed(self):
+        names = check_repo.list_rules()
+        self.assertNotIn("check_url", names)  # hàm phụ, không phải luật
+
+    def test_cli_flag_prints_count(self):
+        import io
+        import contextlib
+        buffer = io.StringIO()
+        with contextlib.redirect_stdout(buffer):
+            code = check_repo.main(["--rules"])
+        self.assertEqual(code, 0)
+        self.assertIn("luật.", buffer.getvalue())
+
+
+class TestEveryRuleExplainsItself(unittest.TestCase):
+    """Luật nào cũng phải trả lời được "bắt cái gì" trong một dòng."""
+
+    def test_every_rule_has_a_first_line(self):
+        missing = []
+        for name in check_repo.list_rules():
+            doc = (getattr(check_repo, name).__doc__ or "").strip()
+            if len(doc.split("\n")[0]) < 20:
+                missing.append(name)
+        self.assertEqual(missing, [], "luật chưa có dòng giải thích: %s"
+                         % ", ".join(missing))
+
+    def test_rules_are_actually_called(self):
+        # Luật không được gọi từ main() là luật chết: nó đúng, nhưng không ai
+        # chạy nó, nên nó không bắt được gì.
+        import inspect
+        body = inspect.getsource(check_repo.main)
+        dead = [name for name in check_repo.list_rules()
+                if "    %s()" % name not in body
+                and "check_markdown(" not in body]
+        known_helpers = {"check_markdown"}
+        dead = [name for name in dead if name not in known_helpers]
+        self.assertEqual(dead, [], "luật không được gọi trong main(): %s"
+                         % ", ".join(dead))
+
+
 if __name__ == "__main__":
     unittest.main()
 

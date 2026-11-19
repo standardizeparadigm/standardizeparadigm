@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 """Test ảnh bìa."""
 
+import re
 import unittest
 from datetime import datetime
 
 from helpers import SCRIPTS, assert_valid_svg  # noqa: F401
 
 from svgkit import hero, i18n
-from svgkit.palette import get_palette
+from svgkit.primitives import esc
+from svgkit.palette import get_palette, theme_names
 
 DT = datetime(2026, 11, 19, 15, 4, 5)
 
@@ -21,7 +23,7 @@ class TestHero(unittest.TestCase):
 
     def test_has_title_and_subtitle(self):
         self.assertIn("Standardize Paradigm", self.svg)
-        self.assertIn("Học sinh lớp 7", self.svg)
+        self.assertIn("Lập trình viên tự học", self.svg)
 
     def test_has_typing_animation(self):
         self.assertIn("typeClip0", self.svg)
@@ -32,7 +34,7 @@ class TestHero(unittest.TestCase):
 
     def test_english_variant(self):
         svg = hero(get_palette(), DT, i18n.get("en"))
-        self.assertIn("Grade 7 student", svg)
+        self.assertIn("Self-taught developer", svg)
         self.assertNotIn("Học sinh", svg)
 
     def test_theme_changes_colors(self):
@@ -45,7 +47,7 @@ class TestHero(unittest.TestCase):
 
     def test_no_emoji_dependency(self):
         # icon phải là path/circle, không phải emoji trong <text>
-        self.assertNotIn("✨", self.svg)
+        self.assertNotIn(chr(0x2728), self.svg)
 
 
 class TestTwoScanLines(unittest.TestCase):
@@ -103,6 +105,90 @@ class TestLocationPill(unittest.TestCase):
 
     def test_pill_is_filled_not_hollow(self):
         self.assertIn('fill-opacity=".5" stroke=', self.svg)
+
+
+
+class TestHeroBackground(unittest.TestCase):
+    """Nền hero: lưới, sao, bụi — tất cả phải tất định."""
+
+    def setUp(self):
+        self.svg = hero(get_palette("sky"), DT, i18n.get())
+
+    def test_grid_lines_are_evenly_spaced(self):
+        # Lưới là các path dọc/ngang đều nhau; lệch một nét là mắt thấy.
+        vertical = re.findall(r'<path d="M(\d+) 0V280"', self.svg)
+        if vertical:
+            gaps = {int(b) - int(a) for a, b in zip(vertical, vertical[1:])}
+            self.assertEqual(len(gaps), 1, gaps)
+
+    def test_stars_are_deterministic(self):
+        again = hero(get_palette("sky"), DT, i18n.get())
+        self.assertEqual(self.svg, again)
+
+    def test_particles_count_is_stable(self):
+        self.assertEqual(self.svg.count('class="twinkle"'),
+                         hero(get_palette("sky"), DT, i18n.get()).count('class="twinkle"'))
+
+    def test_two_themes_differ(self):
+        other = hero(get_palette("sunset"), DT, i18n.get())
+        self.assertNotEqual(self.svg, other)
+
+    def test_two_languages_differ(self):
+        other = hero(get_palette("sky"), DT, i18n.get("en"))
+        self.assertNotEqual(self.svg, other)
+
+    def test_typing_line_comes_from_i18n(self):
+        # Dấu ngoặc kép trong dòng lệnh được escape thành &quot; khi vào XML.
+        en = hero(get_palette("sky"), DT, i18n.get("en"))
+        expected = esc(i18n.get("en")("hero.type1"))
+        self.assertIn(expected, en)
+
+
+
+class TestHeroContent(unittest.TestCase):
+    def setUp(self):
+        self.svg = hero(get_palette("sky"), DT, i18n.get("vi"))
+
+    def test_name_is_the_biggest_text(self):
+        self.assertIn("heroTitle", self.svg)
+        self.assertIn("Standardize Paradigm", self.svg)
+
+    def test_four_pills_plus_location(self):
+        # TỰ HỌC, UTC+7, MÃ NGUỒN MỞ, (ghim) KON TUM, đang code.
+        self.assertEqual(self.svg.count('class="heroPill"'), 5)
+
+    def test_location_pill_says_kon_tum(self):
+        self.assertIn("KON TUM", self.svg)
+
+    def test_no_other_place_name_leaks_in(self):
+        # Ghép chuỗi để chính file test không chứa địa danh cũ — luật
+        # check_stale_places quét mọi file, kể cả file kiểm thử.
+        town = "Long " + "Xuy" + "\u00ea" + "n"
+        province = "An " + "Giang"
+        for stale in (town.upper(), province.upper(), town, province):
+            self.assertNotIn(stale, self.svg)
+
+    def test_gradient_ids_are_defined(self):
+        ids = set(re.findall(r'id="([^"]+)"', self.svg))
+        for ref in set(re.findall(r"url\(#([^)]+)\)", self.svg)):
+            self.assertIn(ref, ids)
+
+    def test_sheen_highlight_uses_a_clip_path(self):
+        self.assertIn("sheenClip", self.svg)
+
+
+class TestHeroWidths(unittest.TestCase):
+    def test_default_width_is_a_thousand(self):
+        self.assertIn('width="1000"', hero(get_palette("sky"), DT, i18n.get()))
+
+    def test_narrow_hero_still_valid(self):
+        svg = hero(get_palette("sky"), DT, i18n.get(), width=640)
+        assert_valid_svg(self, svg, "hero-640")
+
+    def test_every_theme_renders(self):
+        for name in theme_names():
+            assert_valid_svg(self, hero(get_palette(name), DT, i18n.get()),
+                             "hero-" + name)
 
 if __name__ == "__main__":
     unittest.main()

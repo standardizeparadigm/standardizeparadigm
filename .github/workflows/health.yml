@@ -7,7 +7,7 @@
 #
 #  Lịch: mỗi push / pull request + 06:00 mỗi ngày (giờ Việt Nam).
 # =====================================================================
-name: 🩺 Repo Health
+name: Repo Health
 
 on:
   push:
@@ -21,7 +21,7 @@ on:
       - "profile-3d-contrib/**"
   pull_request:
   schedule:
-    - cron: "0 23 * * *"        # 06:00 giờ Việt Nam
+    - cron: "3 23 * * *"        # 06:03 giờ Việt Nam — sau lượt đồng hồ :00
   workflow_dispatch:
 
 concurrency:
@@ -42,7 +42,7 @@ jobs:
       - name: Chuẩn bị Python + PyYAML (không bắt buộc)
         run: |
           python3 --version
-          python3 -m pip install --quiet --disable-pip-version-check pyyaml \
+          python3 -m pip install --quiet --disable-pip-version-check "pyyaml==6.0.2" \
             || echo "(không cài được pyyaml — sẽ kiểm tra YAML ở mức văn bản)"
 
       - name: Kiểm tra sức khỏe repo

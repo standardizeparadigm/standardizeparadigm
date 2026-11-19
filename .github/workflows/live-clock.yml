@@ -8,7 +8,7 @@
 #  Không gọi API nào -> chạy rất nhanh (vài giây), không tốn quota.
 #  Muốn thưa hơn thì đổi "*/5" thành "*/15" hoặc "0 * * * *".
 # =====================================================================
-name: ⏱️ Live Clock
+name: Live Clock
 
 on:
   schedule:

@@ -22,7 +22,8 @@ STRINGS = {
         "stats.following": "FOLLOWING",
         "stats.commits": "COMMITS",
         "stats.rank": "RANK",
-        "stats.progress": "{pct}% TIẾN ĐỘ",
+        "stats.to_next": "{pct}% TỚI HẠNG {next}",
+        "stats.max": "HẠNG CAO NHẤT",
         "stats.foot": "Dữ liệu thật từ GitHub API · ảnh nằm trong repo nên không bao giờ rate-limit",
         # --- thẻ ngôn ngữ
         "langs.title": "MOST USED LANGUAGES",
@@ -58,10 +59,10 @@ STRINGS = {
         "wait.empty1": "Chưa có dữ liệu",
         "wait.empty2": "Thẻ này sẽ tự điền sau khi workflow chạy lần đầu",
         # --- hero
-        "hero.sub": "Học sinh lớp 7 · Lập trình viên tự học · Kon Tum, Quảng Ngãi",
-        "hero.pill1": "LỚP 7",
+        "hero.sub": "Lập trình viên tự học · Kon Tum, Quảng Ngãi",
+        "hero.pill1": "TỰ HỌC",
         "hero.pill2": "UTC+7",
-        "hero.pill3": "TỰ HỌC",
+        "hero.pill3": "MÃ NGUỒN MỞ",
         "hero.pill4": "KON TUM",
         "hero.status": "đang code",
         "hero.type1": "print(\"Hello World\")",
@@ -108,7 +109,8 @@ STRINGS = {
         "stats.following": "FOLLOWING",
         "stats.commits": "COMMITS",
         "stats.rank": "RANK",
-        "stats.progress": "{pct}% PROGRESS",
+        "stats.to_next": "{pct}% TO RANK {next}",
+        "stats.max": "TOP RANK",
         "stats.foot": "Real data from the GitHub API · images live in the repo, so no rate limits",
         "langs.title": "MOST USED LANGUAGES",
         "langs.sub": "BY REAL CODE BYTES",
@@ -139,10 +141,10 @@ STRINGS = {
         "wait.line2": "Actions → Profile Cards (LTS) → Run workflow",
         "wait.empty1": "No data yet",
         "wait.empty2": "This card fills itself the first time the workflow runs",
-        "hero.sub": "Grade 7 student · self-taught developer · Kon Tum, Quang Ngai",
-        "hero.pill1": "GRADE 7",
+        "hero.sub": "Self-taught developer · Kon Tum, Quang Ngai",
+        "hero.pill1": "SELF-TAUGHT",
         "hero.pill2": "UTC+7",
-        "hero.pill3": "SELF-TAUGHT",
+        "hero.pill3": "OPEN SOURCE",
         "hero.pill4": "KON TUM",
         "hero.status": "coding now",
         "hero.type1": "print(\"Hello World\")",
@@ -189,10 +191,33 @@ WEEKDAYS = {
 }
 
 
+ALIASES = {
+    "vn": "vi", "vietnamese": "vi", "tieng-viet": "vi",
+    "us": "en", "uk": "en", "english": "en",
+}
+
+
+def normalize(lang):
+    """`VI`, `vi-VN`, `Vietnamese` ... đều về `vi`.
+
+    Dấu gạch và phần vùng bị bỏ (`en-GB` → `en`) vì bảng chữ chỉ khác nhau ở
+    ngôn ngữ, không khác ở vùng. Mã lạ được trả nguyên (đã bỏ khoảng trắng và
+    hạ chữ) để thông báo lỗi nói đúng thứ người dùng gõ.
+    """
+    tag = (lang or "").strip().lower().replace("_", "-")
+    if not tag:
+        return DEFAULT_LANG
+    head = tag.split("-")[0]
+    if head in STRINGS:
+        return head
+    return ALIASES.get(tag, ALIASES.get(head, tag))
+
+
 class Translator:
     """Tra cứu chuỗi theo khóa, tự điền tham số, thiếu khóa thì trả khóa."""
 
     def __init__(self, lang=DEFAULT_LANG):
+        lang = normalize(lang)
         self.lang = lang if lang in STRINGS else DEFAULT_LANG
         self.table = STRINGS[DEFAULT_LANG].copy()
         self.table.update(STRINGS[self.lang])

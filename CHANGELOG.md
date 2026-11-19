@@ -1,7 +1,98 @@
-# 📝 Nhật ký thay đổi
+# Nhật ký thay đổi
 
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
+
+## 2026-11-19 — Sáu luật mới, và trang không còn một ký tự emoji
+
+Đợt này có hai việc lớn, cả hai đều là "dọn những thứ không ai báo".
+
+**Sáu luật mới trong `check_repo.py`:**
+
+| Luật | Bắt cái gì |
+| :-- | :-- |
+| `check_no_emoji` | emoji trong `.md`, `.py`, `.yml`, `.svg`, `.json` |
+| `check_svg_viewbox` | ảnh không co giãn được vì thiếu `viewBox` |
+| `check_animation_pace` | hoạt ảnh CSS lặp nhanh hơn 1 giây/chu kỳ |
+| `check_smil_pace` | cùng ngưỡng đó cho `<animate>` (SMIL) |
+| `check_python_fences` | ví dụ `python` trong tài liệu không biên dịch được |
+| `check_test_file_docs` | file test không có tên trong `docs/TESTING.md` |
+| `check_pip_pins` | `pip install` trong workflow không ghim phiên bản |
+
+**Toàn bộ emoji đã ra khỏi repo** — README, CHANGELOG, CONTRIBUTING, SECURITY,
+mẫu issue, tên workflow, lời chào tự động và tiêu đề tài liệu. Không phải vì
+emoji xấu, mà vì nó là thứ duy nhất trên trang phụ thuộc font của máy người
+đọc: cùng một file cao thấp khác nhau tuỳ máy, và trình đọc màn hình đọc tên
+biểu tượng thành lời giữa câu.
+
+**Mã ngôn ngữ được chuẩn hoá**: `--lang VI`, `vi-VN`, `en_GB`, `Vietnamese`
+đều hiểu đúng thay vì rơi về mặc định kèm cảnh báo sai.
+
+## 2026-11-19 — Rà soát toàn bộ: 799 test, không lỗi nào còn mở
+
+Đợt này không thêm tính năng lớn nào; phần lớn thời gian dành cho việc tìm
+những chỗ **hỏng mà không ai báo**:
+
+| Chỗ hỏng | Vì sao không ai thấy |
+| :-- | :-- |
+| `font:` viết tắt trong CSS | trình duyệt vẫn đẹp, chỉ resvg/app GitHub mới vỡ |
+| trăng khuyết vẽ bằng cung bán kính 0 | chỉ hiện sau 18h, ban ngày không có |
+| activity sập khi 14 ngày trắng | chỉ xảy ra với người vừa nghỉ dài |
+| chuỗi ngày đứt lúc 00:05 | chỉ đúng vào lúc không ai mở trang |
+| `class="pulse-typo"` | ảnh vẫn hợp lệ, chỉ đứng im |
+| `url(#gloww)` | trình duyệt bỏ thuộc tính, nét vẫn vẽ ra |
+| `d="MNaN 12"` | XML hợp lệ, trình duyệt bỏ cả phần tử |
+
+Năm luật mới trong `check_repo.py` canh đúng những kiểu đó, và test của
+chúng chạy trên cả 8 ảnh thật lẫn 24 ảnh sinh từ 3 theme × 2 ngôn ngữ.
+
+## 2026-11-19 — Nhãn tuổi đổi màu, và `--check` bắt ảnh phình
+
+- Dải trạng thái: tuổi quá một ngày chuyển sang hổ phách, để một dấu ĐẠT từ
+  25 ngày trước không trông y hệt lượt chạy sáng nay.
+- `generate_cards.py --check` in tổng dung lượng và trả mã 1 nếu có ảnh vượt
+  40 KB — trước đây một file 120 KB vẫn được báo là "hợp lệ".
+- `README_BUDGET` đếm dòng bằng `splitlines`, nên README đúng 360 dòng không
+  còn bị báo là 361.
+
+## 2026-11-19 — Bốn luật mới bắt những lỗi không ai báo
+
+- **`id` trùng trong một ảnh**: `url(#halo)` chỉ trỏ tới phần tử đầu tiên,
+  bản sao thứ hai lặng lẽ mất hiệu ứng.
+- **Lớp CSS không tồn tại**: `class="pulse-typo"` không làm ảnh hỏng, chỉ
+  đứng im — và mắt người không phân biệt được với "ảnh tĩnh".
+- **`url(#x)` trỏ hụt**: `filter="url(#gloww)"` khiến trình duyệt bỏ qua
+  thuộc tính và vẽ nét sắc thay vì nét phát sáng.
+- **Keyframe lẻ**: khai báo mà không dùng là byte chết; dùng mà không khai
+  báo là hoạt ảnh câm.
+- **Số không hợp lệ**: `d="MNaN 12"` là XML hợp lệ, trình duyệt bỏ cả phần
+  tử, ảnh chỉ mất một nét.
+
+## 2026-11-19 — Mỗi workflow một phút riêng
+
+`:13` cho thẻ số liệu, `:23` cho README, `:07`/`:37` cho biểu đồ 3D — không
+job nào chạm phút của job khác nên không phải rebase rồi đẩy lại. `check_repo.py`
+cảnh báo nếu sau này có lịch mới rơi vào phút đã có người giữ.
+
+## 2026-11-19 — Chữ trong ảnh hiện đúng ở mọi trình vẽ, không chỉ trình duyệt
+
+- CSS trong ảnh dùng `font: 800 54px Arial` — cú pháp hợp lệ, trình duyệt hiểu
+  đủ. Nhưng resvg, một số bản librsvg và trình xem ảnh desktop **bỏ qua cả
+  khai báo**, nên chữ rơi về 16px: số giờ teo lại, nhãn tuổi trên dải trạng
+  thái chèn lên nhãn trạng thái.
+- Đổi toàn bộ 28 chỗ sang `font-weight` / `font-size` / `font-family`. Ảnh
+  giống nhau ở mọi nơi đọc nó, không chỉ trong Chrome.
+- Luật mới: cấm `font:` viết tắt trong `assets/*.svg`, để không ai vô tình
+  quay lại cú pháp chỉ-một-trình-duyệt-hiểu.
+
+## 2026-11-19 — Sửa: trăng khuyết vẽ bằng cung tròn bán kính 0
+
+- Icon ban đêm dùng `a4.6 4.6 0 106.4 6.4 5.6 5.6 0 01-0 -0`: bán kính truyền
+  vào là hằng số 0, nên mọi trình vẽ đều ra một cục méo ở cạnh pill lời chào.
+- Giờ là một hình tròn bị "cắn" bởi hình tròn khác, cắt bằng `mask` — đúng ở
+  mọi bộ dựng, kể cả trình xem không hiểu CSS.
+- Lỗi này chỉ hiện sau 18h, nên ban ngày nó nằm im. Tám test mới khoá cả hai
+  nhánh mặt trời / trăng.
 
 ## 2026-11-19 — Sửa: `main()` không dọn lỗi của lượt trước
 

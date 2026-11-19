@@ -137,7 +137,9 @@ def activity_card(pal, contrib, dt, t, width=640, height=258):
                      % (cx, color, weekdays[wd_index]))
 
     # Nhãn ngày cao nhất: biết ngay "kỷ lục 2 tuần" là bao nhiêu.
-    peak_index = counts.index(peak)
+    # `peak` có thể là 1 do phép chia an toàn, khi cả 14 ngày đều 0 — lúc đó
+    # counts.index(1) ném ValueError và cả workflow vẽ ảnh chết theo.
+    peak_index = counts.index(peak) if peak in counts else -1
     if peak > 0 and peak_index != len(days) - 1:
         peak_cx = 22 + peak_index * slot + slot / 2.0
         peak_y = baseline - (4 + (baseline - top - 4)) - 8

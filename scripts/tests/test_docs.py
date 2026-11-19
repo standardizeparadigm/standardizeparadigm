@@ -210,5 +210,139 @@ class TestDocsStructure(unittest.TestCase):
                      if line.strip()]
             self.assertFalse(lines[-1].startswith("|"), name)
 
+
+
+RE_LINK = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
+
+
+class TestInternalLinks(unittest.TestCase):
+    """Liên kết nội bộ trong tài liệu phải trỏ tới file có thật."""
+
+    def _targets(self, path):
+        for number, line in prose_lines(read(path)):
+            for target in RE_LINK.findall(line):
+                if target.startswith(("http://", "https://", "#", "mailto:")):
+                    continue
+                yield number, target.split("#")[0]
+
+    def test_every_relative_link_resolves(self):
+        for path in all_docs():
+            for number, target in self._targets(path):
+                if not target:
+                    continue
+                resolved = os.path.normpath(
+                    os.path.join(os.path.dirname(path), target))
+                self.assertTrue(os.path.exists(resolved),
+                                "%s:%d trỏ tới %r không tồn tại"
+                                % (rel(path), number, target))
+
+    def test_anchors_point_at_existing_headings(self):
+        for path in all_docs():
+            anchors = {self._slug(h) for h in
+                       re.findall(r"^#{1,6} (.+)$", read(path), re.M)}
+            for number, line in prose_lines(read(path)):
+                for target in RE_LINK.findall(line):
+                    if "#" not in target or target.startswith("http"):
+                        continue
+                    file_part, _, anchor = target.partition("#")
+                    base = path if not file_part else os.path.normpath(
+                        os.path.join(os.path.dirname(path), file_part))
+                    if not os.path.exists(base) or not anchor:
+                        continue
+                    base_anchors = {self._slug(h) for h in re.findall(
+                        r"^#{1,6} (.+)$", read(base), re.M)}
+                    self.assertIn(anchor, base_anchors,
+                                  "%s:%d mục #%s không có trong %s"
+                                  % (rel(path), number, anchor, rel(base)))
+
+    @staticmethod
+    def _slug(heading):
+        text = heading.strip().lower()
+        text = re.sub(r"[^\w\s-]", "", text)
+        return re.sub(r"\s+", "-", text).strip("-")
+
+
+
+# Trình soạn thảo và công cụ dán web hay để lại những ký tự này. Chữ Việt bị
+# đọc sai bảng mã vẫn đoán ra được, nhưng grep thì không, và bản dịch thì hỏng.
+BROKEN_MARKS = {
+    "\ufffd": "ký tự thay thế U+FFFD",
+    "\u00a0": "dấu cách không ngắt (NBSP)",
+    "\u200b": "dấu cách rộng bằng 0 (ZWSP)",
+    "\ufeff": "BOM giữa file",
+}
+# Chuỗi "Ã" một mình là chữ Việt hợp lệ (ĐÃ, Ã); chỉ bắt khi đi kèm một ký
+# tự Latin-1 bổ sung — dấu hiệu của UTF-8 bị đọc thành Latin-1.
+RE_MOJIBAKE = re.compile("[\u00c3\u00c2][\u0080-\u00bf\u2018-\u203a]")
+
+EXEMPT = {"scripts/check_repo.py", "scripts/tests/test_check_repo.py"}
+
+
+class TestNoBrokenCharacters(unittest.TestCase):
+    """Không một file nào được mang ký tự hỏng."""
+
+    def _files(self):
+        for base, dirs, files in os.walk(ROOT):
+            dirs[:] = sorted(d for d in dirs
+                             if d not in {".git", "node_modules", "__pycache__",
+                                          "assets", ".venv"})
+            for name in sorted(files):
+                if not name.endswith((".md", ".py", ".yml", ".yaml", ".svg")):
+                    continue
+                path = os.path.join(base, name)
+                if rel(path) in EXEMPT:
+                    continue
+                yield path
+
+    def test_no_replacement_or_invisible_space(self):
+        for path in self._files():
+            text = read(path)
+            for mark, label in BROKEN_MARKS.items():
+                self.assertNotIn(mark, text, "%s có %s" % (rel(path), label))
+
+    def test_no_latin1_mojibake(self):
+        for path in self._files():
+            for number, line in enumerate(read(path).splitlines(), 1):
+                self.assertIsNone(RE_MOJIBAKE.search(line),
+                                  "%s:%d nghi chữ hỏng: %r"
+                                  % (rel(path), number, line.strip()[:60]))
+
+    def test_vietnamese_words_are_precomposed(self):
+        # Dấu mũ rời (NFD) hiển thị đúng nhưng tìm kiếm không ra.
+        for path in self._files():
+            text = read(path)
+            self.assertNotIn("\u0300", text, rel(path))
+
+
+
+class TestHeadingsUnique(unittest.TestCase):
+    """Hai tiêu đề trùng nhau làm mục lục và liên kết neo chỉ tới cái đầu."""
+
+    def test_no_duplicate_headings_in_a_file(self):
+        for path in all_docs():
+            seen = {}
+            for number, line in prose_lines(read(path)):
+                if not RE_HEADING.match(line):
+                    continue
+                text = line.lstrip("#").strip().lower()
+                self.assertNotIn(text, seen,
+                                 "%s:%d trùng tiêu đề với dòng %d"
+                                 % (rel(path), number, seen.get(text, 0)))
+                seen[text] = number
+
+    def test_heading_text_is_not_empty(self):
+        for path in all_docs():
+            for line in read(path).splitlines():
+                if line.startswith("#"):
+                    self.assertTrue(line.lstrip("#").strip(), rel(path))
+
+    def test_no_heading_ends_with_a_colon(self):
+        # Tiêu đề kết thúc bằng ":" là dấu hiệu nội dung bị cắt giữa chừng.
+        for path in all_docs():
+            for number, line in prose_lines(read(path)):
+                if RE_HEADING.match(line):
+                    self.assertFalse(line.rstrip().endswith(":"),
+                                     "%s:%d" % (rel(path), number))
+
 if __name__ == "__main__":
     unittest.main()
