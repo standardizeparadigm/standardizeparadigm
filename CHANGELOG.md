@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Sửa lỗi `--check` chọn nhầm thư mục
+
+- `--check` từng bỏ qua `--out` vì biến toàn cục `OUT_DIR` luôn khác rỗng — kiểm tra nhầm thư mục `assets/`.
+- Test chạy CLI như tiến trình con đã bắt được lỗi này; trước đó test import module nên không thấy.
+
 ## 2026-11-19 — Ba cờ CLI mới
 
 - `--version`, `--list-langs` và `--check` (parse mọi SVG trong thư mục ra rồi báo cáo).
