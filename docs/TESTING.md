@@ -79,3 +79,11 @@ Phần lớn test nằm ở đây vì `primitives` là nền của mọi thẻ:
 - Dữ liệu rỗng vẫn ra thẻ hợp lệ (fallback `Python`).
 - A11y: `<title>` khớp `aria-label`, có `<desc>` (trừ divider).
 
+## `test_clock.py`
+
+- 15:04 hiện đúng `15:04` và `Thứ Năm · 19/11/2026`.
+- Góc kim tính từ giờ/phút/giây: kiểm tra bằng cách so `transform="rotate(...)"`.
+- `animation-delay` âm đúng số giây đã trôi — kim không nhảy sau khi commit.
+- Tiến độ ngày: 12:00 → 50%, 00:00 → 0%, 23:59 → ~100%.
+- Đủ 60 vạch phút; vành có vệt sáng quét 18 giây/vòng; kim giây có đối trọng.
+
