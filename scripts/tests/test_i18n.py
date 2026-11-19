@@ -111,7 +111,6 @@ class TestKeysUsedByCode(unittest.TestCase):
         import os
         import re
 
-        from helpers import SCRIPTS
         from svgkit import i18n
 
         pattern = re.compile(r"""(?<!desc=)\bt\(\s*["']([a-zA-Z0-9_.]+)["']""")
