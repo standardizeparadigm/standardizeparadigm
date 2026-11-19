@@ -5,6 +5,8 @@ import contextlib
 import io
 import os
 import shutil
+import subprocess
+import sys
 import tempfile
 import unittest
 import xml.dom.minidom as minidom
@@ -220,3 +222,30 @@ class TestCheckFlag(unittest.TestCase):
             with contextlib.redirect_stderr(io.StringIO()):
                 code = generate_cards.main(["--check", "--out", tmp])
             self.assertEqual(code, 1)
+
+
+class TestAsScript(unittest.TestCase):
+    """Chạy như script thật, không import — bắt lỗi thứ tự khai báo hàm."""
+
+    def _run(self, *args):
+        return subprocess.run(
+            [sys.executable, os.path.join(SCRIPTS, "generate_cards.py")] + list(args),
+            capture_output=True, text=True)
+
+    def test_version(self):
+        result = self._run("--version")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("generate_cards.py", result.stdout)
+
+    def test_check_on_demo_dir(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self._run("--demo", "--all", "--out", tmp)
+            result = self._run("--check", "--out", tmp)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("7/7", result.stdout)
+
+    def test_demo_all_as_script(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            result = self._run("--demo", "--all", "--out", tmp)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(len([f for f in os.listdir(tmp) if f.endswith(".svg")]), 7)
