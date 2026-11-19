@@ -52,3 +52,14 @@ Nhờ vậy `cards.py` test được bằng dữ liệu giả, và `api.py` thay
 
 Chỉ `generate_cards.py` chạm vào đĩa. Đó là lý do toàn bộ phần vẽ test được mà không cần thư mục tạm.
 
+## Token màu
+
+`Palette.as_tokens()` sinh bảng thay thế:
+
+```
+@BGTOP@ @BGBOT@ @PANEL@ @STROKE@ @TITLE@ @TEXT@ @LABEL@ @DIM@
+@ACCENT@ @ACCENT2@ @ACCENT3@ @DEEP@ @FONT@ @MONO@
+```
+
+`css_block(pal)` và `defs_block(pal)` thay toàn bộ `@…@` trong `CSS`/`DEFS` bằng màu thật. Vì vậy **không có mã màu nào hard-code** trong phần vẽ — đổi theme là đổi cả 7 ảnh.
+
