@@ -53,7 +53,7 @@ class TestOrphanEscapes(unittest.TestCase):
 
 class TestMojibake(unittest.TestCase):
     def test_vietnamese_is_clean(self):
-        samples = ["ĐÃ trôi", "Học sinh lớp 7", "Thứ Năm", "CẬP NHẬT",
+        samples = ["ĐÃ trôi", "Học sinh cấp hai", "Thứ Năm", "CẬP NHẬT",
                    "cầu vồng", "TỰ HỌC"]
         for text in samples:
             self.assertIsNone(check_repo.RE_MOJIBAKE.search(text), text)

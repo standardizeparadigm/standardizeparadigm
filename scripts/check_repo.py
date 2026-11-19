@@ -718,6 +718,34 @@ def check_bad_numbers(root=None):
                     % (rel(path), number, match.strip()))
 
 
+# ---------------------------- 4bj2. Không còn nhãn "lớp 7" ở đâu
+RE_GRADE_CLAIM = re.compile(r"(?:lớp|lop|grade|class)[\s-]*7\b", re.I)
+GRADE_EXEMPT = {"scripts/check_repo.py", "scripts/tests/test_check_repo.py"}
+
+
+def check_no_grade_claim(root=None):
+    """Không file nào được nhắc "lớp 7" / "grade 7".
+
+    Nhãn này từng nằm trên ảnh bìa, trong README, badge shields và cả câu
+    giới thiệu — bốn chỗ, bốn kiểu viết. Đổi ý một lần là phải sửa cả bốn,
+    nên nó cần một luật thay vì trí nhớ.
+    """
+    root = root or ROOT
+    for base, dirs, files in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.lower().endswith((".md", ".py", ".yml", ".yaml", ".svg")):
+                continue
+            path = os.path.join(base, name)
+            if rel(path) in GRADE_EXEMPT:
+                continue
+            for number, line in enumerate(read(path).split("\n"), 1):
+                found = RE_GRADE_CLAIM.search(line)
+                if found:
+                    err("%s:%d còn nhắc tới lớp học (%r)"
+                        % (rel(path), number, found.group(0)))
+
+
 # ------------------------------------------- 4bi. id trùng trong một ảnh
 RE_SVG_ID = re.compile(r'\bid="([^"]+)"')
 
@@ -1390,6 +1418,7 @@ def main(argv=None):
     check_markdown_tables()
     check_svg_safety()
     check_font_shorthand()
+    check_no_grade_claim()
     check_duplicate_ids()
     check_class_references()
     check_bad_numbers()
