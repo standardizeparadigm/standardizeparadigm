@@ -182,22 +182,22 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 </div>
 
 <details>
-<summary><b>🎨 &nbsp;10 giao diện có sẵn trong <code>profile-3d-contrib/</code></b></summary>
+<summary><b>10 giao diện có sẵn trong <code>profile-3d-contrib/</code></b></summary>
 
 <br />
 
-| # | Giao diện | File | Mô tả |
-| :--: | :-- | :-- | :-- |
-| 1 | 🌈 | `profile-night-rainbow.svg` | Đêm đen + cầu vồng đổi màu mượt |
-| 2 | 🟢 | `profile-green.svg` | Xanh cây cổ điển |
-| 3 | ⚡ | `profile-green-animate.svg` | Xanh cây có hoạt ảnh |
-| 4 | 🌙 | `profile-night-green.svg` | Đêm đen + xanh cây |
-| 5 | 🎄 | `profile-season.svg` | Bốn mùa |
-| 6 | 🎄⚡ | `profile-season-animate.svg` | Bốn mùa + hoạt ảnh |
-| 7 | 🏖️ | `profile-south-season.svg` | Mùa miền Nam |
-| 8 | 🏖️⚡ | `profile-south-season-animate.svg` | Mùa miền Nam + hoạt ảnh |
-| 9 | 🧱 | `profile-gitblock.svg` | Khối Git tối giản |
-| 10 | 🌃 | `profile-night-view.svg` | Nhìn từ trên cao vào thành phố đêm |
+| # | File | Mô tả |
+| :--: | :-- | :-- |
+| 1 | `profile-night-rainbow.svg` | Đêm đen + cầu vồng đổi màu mượt |
+| 2 | `profile-green.svg` | Xanh cây cổ điển |
+| 3 | `profile-green-animate.svg` | Xanh cây có hoạt ảnh |
+| 4 | `profile-night-green.svg` | Đêm đen + xanh cây |
+| 5 | `profile-season.svg` | Bốn mùa |
+| 6 | `profile-season-animate.svg` | Bốn mùa + hoạt ảnh |
+| 7 | `profile-south-season.svg` | Mùa miền Nam |
+| 8 | `profile-south-season-animate.svg` | Mùa miền Nam + hoạt ảnh |
+| 9 | `profile-gitblock.svg` | Khối Git tối giản |
+| 10 | `profile-night-view.svg` | Nhìn từ trên cao vào thành phố đêm |
 
 </details>
 
@@ -229,7 +229,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 > **LoCheoIO — Lọ Chéo: Hũ Dưa Đại Chiến.** Game arcade muối dưa chạy 100% trong trình duyệt, gói gọn trong một file HTML, offline-first, không CDN không server. Chiếc lọ gốm chỉ chịu đi đường chéo ⚡
 
 <details>
-<summary><b>📚 &nbsp;Nhật ký học tập gần đây</b></summary>
+<summary><b>Nhật ký học tập gần đây</b></summary>
 
 <br />
 
@@ -267,7 +267,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 </div>
 
 <details>
-<summary><b>🏆 &nbsp;Thành tựu nhỏ nhưng ý nghĩa</b></summary>
+<summary><b>Thành tựu nhỏ nhưng ý nghĩa</b></summary>
 
 <br />
 
