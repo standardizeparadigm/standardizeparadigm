@@ -12,6 +12,7 @@ Mỗi file một việc:
     cards.py       thẻ thống kê, thẻ ngôn ngữ
     clock.py       đồng hồ Việt Nam
     activity.py    thẻ hoạt động contribution
+    status.py      dải trạng thái các workflow
     api.py         GitHub REST + GraphQL
 
 Dùng:
@@ -28,9 +29,10 @@ from .divider import divider, footer  # noqa: F401
 from .hero import hero  # noqa: F401
 from .palette import (DEFAULT_THEME, Palette, THEMES, get_palette, grade,  # noqa: F401
                       lang_color, theme_names)
+from .status import status_strip  # noqa: F401
 
 __all__ = [
     "api", "i18n", "activity_card", "langs_card", "stats_card", "waiting_card",
-    "clock_card", "divider", "footer", "hero", "get_palette", "grade",
+    "clock_card", "divider", "footer", "hero", "status_strip", "get_palette", "grade",
     "lang_color", "theme_names", "Palette", "THEMES", "DEFAULT_THEME",
 ]
