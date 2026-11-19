@@ -114,6 +114,12 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
 - Dải trạng thái dùng 5 màu cố định theo nghĩa, không lấy từ `Palette`. "Đỏ =
   lỗi" phải đúng ở cả 6 bảng màu; màu trạng thái không phải màu trang trí.
 
+## 2026-11-19 — Ba chú thích đã lỗi thời
+
+- `generate_cards.py` còn ghi "vẽ lại mỗi 10 phút", `docs/WORKFLOWS.md` còn ghi
+  `*/5` cho 3D. Sửa cả ba chỗ cho khớp nhịp mới — chú thích sai còn tệ hơn
+  không có chú thích.
+
 ## 2026-11-19 — Cổng 3D: sửa lỗi mốc 24 giờ không bao giờ tới
 
 - Cổng so "lần chạy thành công gần nhất", nhưng lượt bị cổng bỏ qua **vẫn** là lượt thành công → mốc 24 giờ không bao giờ đạt được, ảnh chỉ đổi khi có push.
