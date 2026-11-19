@@ -20,7 +20,7 @@ class TestEscaping(unittest.TestCase):
         self.assertEqual(primitives.esc('say "hi"'), "say &quot;hi&quot;")
 
     def test_vietnamese_untouched(self):
-        text = "Học sinh lớp 7 · Long Xuyên"
+        text = "Học sinh lớp 7 · Kon Tum"
         self.assertEqual(primitives.esc(text), text)
 
     def test_non_string_input(self):
