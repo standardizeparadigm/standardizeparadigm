@@ -248,6 +248,36 @@ def check_assets(directory):
     return 1 if bad else 0
 
 
+def _suggest(value, options):
+    """Gợi ý gần đúng nhất — gõ sai một chữ thì không nên im lặng."""
+    import difflib
+    close = difflib.get_close_matches(str(value or "").lower(),
+                                      [o.lower() for o in options], n=1)
+    return close[0] if close else None
+
+
+def _pick_theme(name):
+    """Theme theo tên; tên lạ thì cảnh báo rồi dùng mặc định."""
+    palette = get_palette(name)
+    if (name or "").strip().lower() not in THEMES:
+        hint = _suggest(name, list(THEMES))
+        say("  ! theme %r không có — dùng %r%s"
+            % (name, palette.name,
+               (" (ý bạn là %r?)" % hint) if hint else ""))
+    return palette
+
+
+def _pick_language(lang):
+    """Ngôn ngữ theo mã; mã lạ thì cảnh báo rồi dùng mặc định."""
+    translator = i18n.get(lang)
+    if (lang or "").strip() not in i18n.STRINGS:
+        hint = _suggest(lang, list(i18n.STRINGS))
+        say("  ! ngôn ngữ %r không có — dùng %r%s"
+            % (lang, translator.lang,
+               (" (ý bạn là %r?)" % hint) if hint else ""))
+    return translator
+
+
 def main(argv=None):
     global OUT_DIR, USER, SMART, DRY_RUN, QUIET
     args = parse_args(argv)
@@ -282,8 +312,8 @@ def main(argv=None):
                 or args.status)
     want_all = args.all or not selected
 
-    palette = get_palette(args.theme)
-    translator = i18n.get(args.lang)
+    palette = _pick_theme(args.theme)
+    translator = _pick_language(args.lang)
     dt = api.now_vn()
 
     say("== generate_cards.py %s · theme=%s · lang=%s · %s (UTC+7) =="
