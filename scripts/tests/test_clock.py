@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from helpers import SCRIPTS, assert_valid_svg  # noqa: F401
 
 from svgkit import clock_card, i18n
-from svgkit.clock import _greeting_key
+from svgkit.clock import _day_arc, _greeting_key
 from svgkit.palette import get_palette
 
 DT = datetime(2026, 11, 19, 15, 4, 5)
@@ -271,6 +271,39 @@ class TestFooterFitsCard(unittest.TestCase):
     def test_footer_text_reaches_the_card(self):
         svg = clock_card(get_palette("sky"), DT, i18n.get("vi"))
         self.assertIn(i18n.get("vi")("clock.foot"), svg)
+
+
+
+class TestDayArc(unittest.TestCase):
+    """Vòng cung tiến độ ngày: một vòng 24 giờ."""
+
+    def _arc(self, hour, minute=0, second=0):
+        return "".join(_day_arc(get_palette("sky"), 122, 140, 74, hour, minute, second))
+
+    def test_midnight_draws_no_arc(self):
+        self.assertNotIn("<path", self._arc(0))
+
+    def test_six_hours_is_a_quarter(self):
+        # 6h = 90°: điểm cuối nằm ngang bên phải tâm (122 + 95, 140).
+        self.assertIn("217.00 140.00", self._arc(6))
+
+    def test_noon_lands_at_the_bottom(self):
+        self.assertIn("122.00 235.00", self._arc(12))
+
+    def test_eighteen_hours_lands_on_the_left(self):
+        self.assertIn("27.00 140.00", self._arc(18))
+
+    def test_after_noon_uses_large_arc_flag(self):
+        self.assertIn(" 0 1 ", self._arc(12))
+
+    def test_morning_uses_small_arc_flag(self):
+        self.assertIn(" 0 0 ", self._arc(6))
+
+    def test_ring_sits_outside_the_ticks(self):
+        self.assertIn('r="95"', self._arc(6))
+
+    def test_tip_dot_pulses(self):
+        self.assertIn('attributeName="r"', self._arc(9))
 
 if __name__ == "__main__":
     unittest.main()
