@@ -488,6 +488,45 @@ class TestReadmeLength(unittest.TestCase):
     def test_default_budget(self):
         self.assertEqual(check_repo.README_BUDGET, 360)
 
+
+
+class TestConflictMarkers(unittest.TestCase):
+    """Dấu merge còn sót."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="conflict-")
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _put(self, text, name="a.md"):
+        with open(os.path.join(self.tmp, name), "w", encoding="utf-8") as handle:
+            handle.write(text)
+
+    def test_clean_file_passes(self):
+        self._put("không có gì\n")
+        check_repo.check_conflict_markers(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_marker_is_flagged(self):
+        self._put("a\n<<<<<<< HEAD\nb\n=======\nc\n>>>>>>> main\n")
+        check_repo.check_conflict_markers(self.tmp)
+        self.assertEqual(len(check_repo.errors), 1)
+
+    def test_one_error_per_file(self):
+        self._put("<<<<<<< x\n=======\n>>>>>>>\n")
+        check_repo.check_conflict_markers(self.tmp)
+        self.assertEqual(len(check_repo.errors), 1)
+
+    def test_longer_run_of_equals_is_not_a_marker(self):
+        # đường kẻ Markdown 16 dấu = không phải dấu merge (8 ký tự thứ 8
+        # không phải khoảng trắng), nên không được báo lỗi
+        self._put("================\n")
+        check_repo.check_conflict_markers(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
 if __name__ == "__main__":
     unittest.main()
 
