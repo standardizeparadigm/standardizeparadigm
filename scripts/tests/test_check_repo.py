@@ -1412,6 +1412,58 @@ class TestKeyframes(unittest.TestCase):
         check_repo.check_keyframes(self.tmp)
         self.assertEqual(check_repo.errors, [])
 
+
+
+class TestBudgets(unittest.TestCase):
+    """Ngân sách dung lượng ảnh và độ dài README — hai giới hạn có thật."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="budget-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _asset(self, name, size):
+        with open(os.path.join(self.tmp, "assets", name), "w",
+                  encoding="utf-8") as handle:
+            handle.write("x" * size)
+
+    def _readme(self, lines):
+        with open(os.path.join(self.tmp, "README.md"), "w",
+                  encoding="utf-8") as handle:
+            handle.write("\n".join(["dòng"] * lines) + "\n")
+
+    def test_asset_exactly_at_the_limit_passes(self):
+        self._asset("a.svg", 40 * 1024)
+        check_repo.check_svg_budget(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_asset_one_byte_over_fails(self):
+        self._asset("a.svg", 40 * 1024 + 1)
+        check_repo.check_svg_budget(self.tmp)
+        self.assertTrue(any("vượt ngân sách" in e for e in check_repo.errors))
+
+    def test_readme_at_the_limit_passes(self):
+        self._readme(360)
+        check_repo.check_readme_length(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_readme_one_line_over_fails(self):
+        self._readme(361)
+        check_repo.check_readme_length(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_real_readme_is_within_budget(self):
+        check_repo.check_readme_length()
+        self.assertEqual(check_repo.errors, [])
+
+    def test_real_assets_are_within_budget(self):
+        check_repo.check_svg_budget()
+        self.assertEqual(check_repo.errors, [])
+
 if __name__ == "__main__":
     unittest.main()
 
