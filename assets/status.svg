@@ -1,6 +1,6 @@
-<svg width="1134" height="74" viewBox="0 0 1134 74" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TRẠNG THÁI WORKFLOW" preserveAspectRatio="xMidYMid meet">
+<svg width="1218" height="74" viewBox="0 0 1218 74" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TRẠNG THÁI WORKFLOW" preserveAspectRatio="xMidYMid meet">
   <title>TRẠNG THÁI WORKFLOW</title>
-  <desc>Trạng thái lần chạy gần nhất của từng workflow · cập nhật 19/11 · 19:03</desc>
+  <desc>Trạng thái lần chạy gần nhất của từng workflow · cập nhật 19/11 · 19:06</desc>
   <style>
 
   .fSans       { font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; }
@@ -157,81 +157,81 @@
     </filter>
   </defs>
 
-  <clipPath id="cardBody"><rect x="0" y="0" width="1134" height="74" rx="14"/></clipPath>
+  <clipPath id="cardBody"><rect x="0" y="0" width="1218" height="74" rx="14"/></clipPath>
   <g clip-path="url(#cardBody)">
-    <rect x="0" y="0" width="1134" height="74" fill="url(#bg)"/>
+    <rect x="0" y="0" width="1218" height="74" fill="url(#bg)"/>
   </g>
-  <rect x="0.7" y="0.7" width="1132.6" height="72.6" rx="13.3" fill="none" stroke="url(#edge)" stroke-width="1.3"/>
+  <rect x="0.7" y="0.7" width="1216.6" height="72.6" rx="13.3" fill="none" stroke="url(#edge)" stroke-width="1.3"/>
   <g clip-path="url(#cardBody)">
     <rect x="-160" y="0" width="150" height="56" fill="url(#sheenGrad)" class="sheen" style="animation-duration:9s"/>
   </g>
   <g class="fadeUp" style="animation-delay:0.00s">
-    <rect x="18" y="9" width="150" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
-    <rect x="18" y="9" width="150" height="20" rx="10" fill="url(#gloss)" opacity=".5"/>
+    <rect x="18" y="9" width="162" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
+    <rect x="18" y="9" width="162" height="20" rx="10" fill="url(#gloss)" opacity=".5"/>
     <circle cx="35" cy="29" r="9" fill="none" stroke="#34D399" stroke-opacity=".35" class="pulseSlow"/>
     <circle cx="35" cy="29" r="4.4" fill="#34D399" filter="url(#glow)"/>
     <text x="48" y="25" class="fMono" style="font-weight:600;font-size:7.5px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">3D CONTRIB</text>
     <text x="48" y="39" class="fSans" style="font-weight:800;font-size:10px;font-family:'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#34D399;letter-spacing:.4px">ĐẠT</text>
-    <text x="159" y="39" text-anchor="end" class="fMono" style="font-weight:600;font-size:6.8px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">15 phút trước</text>
+    <text x="171" y="39" text-anchor="end" class="fMono" style="font-weight:600;font-size:6.8px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">18 phút trước</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.06s">
-    <rect x="176" y="9" width="150" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
-    <rect x="176" y="9" width="150" height="20" rx="10" fill="url(#gloss)" opacity=".5"/>
-    <circle cx="193" cy="29" r="9" fill="none" stroke="#34D399" stroke-opacity=".35" class="pulseSlow"/>
-    <circle cx="193" cy="29" r="4.4" fill="#34D399" filter="url(#glow)"/>
-    <text x="206" y="25" class="fMono" style="font-weight:600;font-size:7.5px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">STATS CARDS</text>
-    <text x="206" y="39" class="fSans" style="font-weight:800;font-size:10px;font-family:'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#34D399;letter-spacing:.4px">ĐẠT</text>
-    <text x="317" y="39" text-anchor="end" class="fMono" style="font-weight:600;font-size:6.8px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">14 phút trước</text>
+    <rect x="188" y="9" width="162" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
+    <rect x="188" y="9" width="162" height="20" rx="10" fill="url(#gloss)" opacity=".5"/>
+    <circle cx="205" cy="29" r="9" fill="none" stroke="#34D399" stroke-opacity=".35" class="pulseSlow"/>
+    <circle cx="205" cy="29" r="4.4" fill="#34D399" filter="url(#glow)"/>
+    <text x="218" y="25" class="fMono" style="font-weight:600;font-size:7.5px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">STATS CARDS</text>
+    <text x="218" y="39" class="fSans" style="font-weight:800;font-size:10px;font-family:'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#34D399;letter-spacing:.4px">ĐẠT</text>
+    <text x="341" y="39" text-anchor="end" class="fMono" style="font-weight:600;font-size:6.8px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">18 phút trước</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.12s">
-    <rect x="334" y="9" width="150" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
-    <rect x="334" y="9" width="150" height="20" rx="10" fill="url(#gloss)" opacity=".5"/>
-    <circle cx="351" cy="29" r="9" fill="none" stroke="#34D399" stroke-opacity=".35" class="pulseSlow"/>
-    <circle cx="351" cy="29" r="4.4" fill="#34D399" filter="url(#glow)"/>
-    <text x="364" y="25" class="fMono" style="font-weight:600;font-size:7.5px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">LIVE CLOCK</text>
-    <text x="364" y="39" class="fSans" style="font-weight:800;font-size:10px;font-family:'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#34D399;letter-spacing:.4px">ĐẠT</text>
-    <text x="475" y="39" text-anchor="end" class="fMono" style="font-weight:600;font-size:6.8px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">15 phút trước</text>
+    <rect x="358" y="9" width="162" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
+    <rect x="358" y="9" width="162" height="20" rx="10" fill="url(#gloss)" opacity=".5"/>
+    <circle cx="375" cy="29" r="9" fill="none" stroke="#34D399" stroke-opacity=".35" class="pulseSlow"/>
+    <circle cx="375" cy="29" r="4.4" fill="#34D399" filter="url(#glow)"/>
+    <text x="388" y="25" class="fMono" style="font-weight:600;font-size:7.5px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">LIVE CLOCK</text>
+    <text x="388" y="39" class="fSans" style="font-weight:800;font-size:10px;font-family:'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#34D399;letter-spacing:.4px">ĐẠT</text>
+    <text x="511" y="39" text-anchor="end" class="fMono" style="font-weight:600;font-size:6.8px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">18 phút trước</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.18s">
-    <rect x="492" y="9" width="150" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
-    <rect x="492" y="9" width="150" height="20" rx="10" fill="url(#gloss)" opacity=".5"/>
-    <circle cx="509" cy="29" r="9" fill="none" stroke="#34D399" stroke-opacity=".35" class="pulseSlow"/>
-    <circle cx="509" cy="29" r="4.4" fill="#34D399" filter="url(#glow)"/>
-    <text x="522" y="25" class="fMono" style="font-weight:600;font-size:7.5px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">README GARDEN</text>
-    <text x="522" y="39" class="fSans" style="font-weight:800;font-size:10px;font-family:'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#34D399;letter-spacing:.4px">ĐẠT</text>
-    <text x="633" y="39" text-anchor="end" class="fMono" style="font-weight:600;font-size:6.8px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">15 phút trước</text>
+    <rect x="528" y="9" width="162" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
+    <rect x="528" y="9" width="162" height="20" rx="10" fill="url(#gloss)" opacity=".5"/>
+    <circle cx="545" cy="29" r="9" fill="none" stroke="#34D399" stroke-opacity=".35" class="pulseSlow"/>
+    <circle cx="545" cy="29" r="4.4" fill="#34D399" filter="url(#glow)"/>
+    <text x="558" y="25" class="fMono" style="font-weight:600;font-size:7.5px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">README GARDEN</text>
+    <text x="558" y="39" class="fSans" style="font-weight:800;font-size:10px;font-family:'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#34D399;letter-spacing:.4px">ĐẠT</text>
+    <text x="681" y="39" text-anchor="end" class="fMono" style="font-weight:600;font-size:6.8px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">18 phút trước</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.24s">
-    <rect x="650" y="9" width="150" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
-    <rect x="650" y="9" width="150" height="20" rx="10" fill="url(#gloss)" opacity=".5"/>
-    <circle cx="667" cy="29" r="9" fill="none" stroke="#34D399" stroke-opacity=".35" class="pulseSlow"/>
-    <circle cx="667" cy="29" r="4.4" fill="#34D399" filter="url(#glow)"/>
-    <text x="680" y="25" class="fMono" style="font-weight:600;font-size:7.5px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">HEALTH</text>
-    <text x="680" y="39" class="fSans" style="font-weight:800;font-size:10px;font-family:'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#34D399;letter-spacing:.4px">ĐẠT</text>
-    <text x="791" y="39" text-anchor="end" class="fMono" style="font-weight:600;font-size:6.8px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">15 phút trước</text>
+    <rect x="698" y="9" width="162" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
+    <rect x="698" y="9" width="162" height="20" rx="10" fill="url(#gloss)" opacity=".5"/>
+    <circle cx="715" cy="29" r="9" fill="none" stroke="#34D399" stroke-opacity=".35" class="pulseSlow"/>
+    <circle cx="715" cy="29" r="4.4" fill="#34D399" filter="url(#glow)"/>
+    <text x="728" y="25" class="fMono" style="font-weight:600;font-size:7.5px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">HEALTH</text>
+    <text x="728" y="39" class="fSans" style="font-weight:800;font-size:10px;font-family:'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#34D399;letter-spacing:.4px">ĐẠT</text>
+    <text x="851" y="39" text-anchor="end" class="fMono" style="font-weight:600;font-size:6.8px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">18 phút trước</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.30s">
-    <rect x="808" y="9" width="150" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
-    <rect x="808" y="9" width="150" height="20" rx="10" fill="url(#gloss)" opacity=".5"/>
-    <circle cx="825" cy="29" r="9" fill="none" stroke="#34D399" stroke-opacity=".35" class="pulseSlow"/>
-    <circle cx="825" cy="29" r="4.4" fill="#34D399" filter="url(#glow)"/>
-    <text x="838" y="25" class="fMono" style="font-weight:600;font-size:7.5px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">WELCOME</text>
-    <text x="838" y="39" class="fSans" style="font-weight:800;font-size:10px;font-family:'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#34D399;letter-spacing:.4px">ĐẠT</text>
-    <text x="949" y="39" text-anchor="end" class="fMono" style="font-weight:600;font-size:6.8px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">25 ngày trước</text>
+    <rect x="868" y="9" width="162" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
+    <rect x="868" y="9" width="162" height="20" rx="10" fill="url(#gloss)" opacity=".5"/>
+    <circle cx="885" cy="29" r="9" fill="none" stroke="#34D399" stroke-opacity=".35" class="pulseSlow"/>
+    <circle cx="885" cy="29" r="4.4" fill="#34D399" filter="url(#glow)"/>
+    <text x="898" y="25" class="fMono" style="font-weight:600;font-size:7.5px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">WELCOME</text>
+    <text x="898" y="39" class="fSans" style="font-weight:800;font-size:10px;font-family:'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#34D399;letter-spacing:.4px">ĐẠT</text>
+    <text x="1021" y="39" text-anchor="end" class="fMono" style="font-weight:600;font-size:6.8px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">25 ngày trước</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.36s">
-    <rect x="966" y="9" width="150" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
-    <rect x="966" y="9" width="150" height="20" rx="10" fill="url(#gloss)" opacity=".5"/>
-    <circle cx="983" cy="29" r="9" fill="none" stroke="#34D399" stroke-opacity=".35" class="pulseSlow"/>
-    <circle cx="983" cy="29" r="4.4" fill="#34D399" filter="url(#glow)"/>
-    <text x="996" y="25" class="fMono" style="font-weight:600;font-size:7.5px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">STATUS</text>
-    <text x="996" y="39" class="fSans" style="font-weight:800;font-size:10px;font-family:'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#34D399;letter-spacing:.4px">ĐẠT</text>
-    <text x="1107" y="39" text-anchor="end" class="fMono" style="font-weight:600;font-size:6.8px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">14 phút trước</text>
+    <rect x="1038" y="9" width="162" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
+    <rect x="1038" y="9" width="162" height="20" rx="10" fill="url(#gloss)" opacity=".5"/>
+    <circle cx="1055" cy="29" r="9" fill="none" stroke="#34D399" stroke-opacity=".35" class="pulseSlow"/>
+    <circle cx="1055" cy="29" r="4.4" fill="#34D399" filter="url(#glow)"/>
+    <text x="1068" y="25" class="fMono" style="font-weight:600;font-size:7.5px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">STATUS</text>
+    <text x="1068" y="39" class="fSans" style="font-weight:800;font-size:10px;font-family:'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#34D399;letter-spacing:.4px">ĐẠT</text>
+    <text x="1191" y="39" text-anchor="end" class="fMono" style="font-weight:600;font-size:6.8px;font-family:'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">17 phút trước</text>
   </g>
   <g class="fadeUp" style="animation-delay:.5s">
     <circle cx="22" cy="62" r="3" fill="#38BDF8" class="pulse"/>
-    <text x="32" y="65" class="footNote">Workflow tự vẽ và commit dải này · cập nhật 19/11 · 19:03</text>
-    <text x="1116" y="65" text-anchor="end" class="footNote" style="fill:#0EA5E9">7/7 workflow ổn</text>
+    <text x="32" y="65" class="footNote">Workflow tự vẽ và commit dải này · cập nhật 19/11 · 19:06</text>
+    <text x="1200" y="65" text-anchor="end" class="footNote" style="fill:#0EA5E9">7/7 workflow ổn</text>
   </g>
-<!-- data:2a170a039741 -->
+<!-- data:0724f4a11702 -->
 </svg>
