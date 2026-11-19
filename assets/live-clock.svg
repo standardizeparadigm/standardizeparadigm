@@ -161,6 +161,7 @@
     <rect x="0" y="0" width="640" height="258" fill="url(#bg)"/>
     <ellipse cx="115" cy="0" rx="260" ry="140" fill="url(#halo)" opacity=".55"/>
     <ellipse cx="588" cy="258" rx="240" ry="120" fill="url(#halo2)" opacity=".45"/>
+    <rect x="-150" y="0.4" width="130" height="1.6" fill="url(#sheenGrad)" opacity=".55" class="sheen" style="animation-duration:8s"/>
   </g>
   <rect x="0.7" y="0.7" width="638.6" height="256.6" rx="17.3" fill="none" stroke="url(#edge)" stroke-width="1.3"/>
   <clipPath id="cardClip3"><rect x="0" y="0" width="640" height="258" rx="18"/></clipPath>
@@ -260,17 +261,17 @@
     <path d="M107.86 73.49L107.24 70.55" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M114.89 72.37L114.58 69.39" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
   </g>
-  <g transform="rotate(116.000 122 140)">
-    <g class="hourHand" style="--cx:122px;--cy:140px;animation-delay:-13967.588s">
+  <g transform="rotate(131.500 122 140)">
+    <g class="hourHand" style="--cx:122px;--cy:140px;animation-delay:-15799.891s">
       <rect x="119" y="107" width="6" height="40" rx="3" fill="#E8F4FF"/>
     </g>
   </g>
-  <g transform="rotate(316.759 122 140)">
-    <g class="minHand" style="--cx:122px;--cy:140px;animation-delay:-3167.588s">
+  <g transform="rotate(139.989 122 140)">
+    <g class="minHand" style="--cx:122px;--cy:140px;animation-delay:-1399.891s">
       <rect x="120" y="93" width="4" height="56" rx="2" fill="#7DD3FC" fill-opacity=".78"/>
     </g>
   </g>
-  <g class="secHand" style="--cx:122px;--cy:140px;animation-delay:-47.588s">
+  <g class="secHand" style="--cx:122px;--cy:140px;animation-delay:-19.891s">
     <path d="M122 152V80" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" filter="url(#glow)"/>
     <circle cx="122" cy="80" r="4.5" fill="#7DD3FC"/>
     <circle cx="122" cy="152" r="2.6" fill="#38BDF8" fill-opacity=".8"/>
@@ -278,8 +279,9 @@
   <circle cx="122" cy="140" r="6" fill="#0A1421" stroke="#38BDF8" stroke-width="2.4"/>
   <circle cx="122" cy="140" r="2" fill="#FFFFFF"/>
   <g class="fadeUp" style="animation-delay:.2s">
-    <text x="244" y="74" class="clockLabel">GIỜ VIỆT NAM · UTC+7</text>
-    <text x="244" y="124" class="clockTime" fill="url(#titleGrad)">15:52</text>
+    <text x="244" y="74" class="clockLabel">GIỜ VIỆT NAM</text>
+    <text x="616" y="74" text-anchor="end" class="cardSub">cập nhật 16:23</text>
+    <text x="244" y="124" class="clockTime" fill="url(#titleGrad)">16:23</text>
     <text x="244" y="148" class="clockDate">Thứ Năm · 19/11/2026</text>
   </g>
   <g class="fadeUp" style="animation-delay:.3s">
@@ -290,16 +292,16 @@
   </g>
   <g class="fadeUp" style="animation-delay:.4s">
     <text x="244" y="206" class="footNote" style="letter-spacing:1.1px">NGÀY HÔM NAY ĐÃ TRÔI</text>
-    <text x="616" y="206" text-anchor="end" class="legendValue">66%</text>
+    <text x="616" y="206" text-anchor="end" class="legendValue">68%</text>
     <rect x="244" y="212" width="372" height="8" rx="4" fill="#0B1B2B" fill-opacity=".6"/>
-    <rect x="244" y="212" width="245.9" height="8" rx="4" fill="url(#barGrad)">
-      <animate attributeName="width" from="0" to="245.9" dur="1.3s" begin=".3s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+    <rect x="244" y="212" width="253.9" height="8" rx="4" fill="url(#barGrad)">
+      <animate attributeName="width" from="0" to="253.9" dur="1.3s" begin=".3s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
       <animate attributeName="opacity" values=".75;1;.75" dur="3.4s" repeatCount="indefinite"/>
     </rect>
-    <circle cx="489.9" cy="216" r="5" fill="#7DD3FC" filter="url(#glow)" class="pulse"/>
+    <circle cx="497.9" cy="216" r="5" fill="#7DD3FC" filter="url(#glow)" class="pulse"/>
   </g>
   <g class="fadeUp" style="animation-delay:.5s">
     <circle cx="244" cy="242" r="3" fill="#38BDF8" class="pulse"/>
-    <text x="254" y="245" class="footNote">Cập nhật lúc 15:52 · tự làm mới mỗi 5 phút bởi GitHub Actions</text>
+    <text x="254" y="245" class="footNote">Kim tự quay bằng CSS giữa hai lần cập nhật · workflow vẽ lại mỗi 5 phút</text>
   </g>
 </svg>

@@ -161,6 +161,7 @@
     <rect x="0" y="0" width="640" height="258" fill="url(#bg)"/>
     <ellipse cx="115" cy="0" rx="260" ry="140" fill="url(#halo)" opacity=".55"/>
     <ellipse cx="588" cy="258" rx="240" ry="120" fill="url(#halo2)" opacity=".45"/>
+    <rect x="-150" y="0.4" width="130" height="1.6" fill="url(#sheenGrad)" opacity=".55" class="sheen" style="animation-duration:8s"/>
   </g>
   <rect x="0.7" y="0.7" width="638.6" height="256.6" rx="17.3" fill="none" stroke="url(#edge)" stroke-width="1.3"/>
   <g class="fadeUp">
@@ -213,6 +214,7 @@
     <rect x="22" y="110" width="262" height="3" rx="1.5" fill="#0B1B2B" fill-opacity=".55"/>
     <rect x="22" y="110" width="234.0" height="3" rx="1.5" fill="#3178C6" opacity=".95" class="growIn" style="animation-delay:0.24s;transform-origin:22px 111px">
     </rect>
+    <circle cx="256.0" cy="111" r="2.4" fill="#3178C6" class="pulse" style="animation-delay:0.50s"/>
   </g>
   <g class="fadeUp" style="animation-delay:0.24s">
     <circle cx="335" cy="100" r="5" fill="#563D7C"/>
@@ -221,6 +223,7 @@
     <rect x="330" y="110" width="262" height="3" rx="1.5" fill="#0B1B2B" fill-opacity=".55"/>
     <rect x="330" y="110" width="7.4" height="3" rx="1.5" fill="#563D7C" opacity=".95" class="growIn" style="animation-delay:0.30s;transform-origin:330px 111px">
     </rect>
+    <circle cx="337.4" cy="111" r="2.4" fill="#563D7C" class="pulse" style="animation-delay:0.70s"/>
   </g>
   <g class="fadeUp" style="animation-delay:0.30s">
     <circle cx="27" cy="132" r="5" fill="#89E051"/>
@@ -229,6 +232,7 @@
     <rect x="22" y="142" width="262" height="3" rx="1.5" fill="#0B1B2B" fill-opacity=".55"/>
     <rect x="22" y="142" width="6.7" height="3" rx="1.5" fill="#89E051" opacity=".95" class="growIn" style="animation-delay:0.36s;transform-origin:22px 143px">
     </rect>
+    <circle cx="28.7" cy="143" r="2.4" fill="#89E051" class="pulse" style="animation-delay:0.90s"/>
   </g>
   <g class="fadeUp" style="animation-delay:0.36s">
     <circle cx="335" cy="132" r="5" fill="#F1E05A"/>
@@ -237,6 +241,7 @@
     <rect x="330" y="142" width="262" height="3" rx="1.5" fill="#0B1B2B" fill-opacity=".55"/>
     <rect x="330" y="142" width="6.4" height="3" rx="1.5" fill="#F1E05A" opacity=".95" class="growIn" style="animation-delay:0.42s;transform-origin:330px 143px">
     </rect>
+    <circle cx="336.4" cy="143" r="2.4" fill="#F1E05A" class="pulse" style="animation-delay:1.10s"/>
   </g>
   <g class="fadeUp" style="animation-delay:0.42s">
     <circle cx="27" cy="164" r="5" fill="#C1F12E"/>
@@ -245,6 +250,7 @@
     <rect x="22" y="174" width="262" height="3" rx="1.5" fill="#0B1B2B" fill-opacity=".55"/>
     <rect x="22" y="174" width="3.8" height="3" rx="1.5" fill="#C1F12E" opacity=".95" class="growIn" style="animation-delay:0.48s;transform-origin:22px 175px">
     </rect>
+    <circle cx="25.8" cy="175" r="2.4" fill="#C1F12E" class="pulse" style="animation-delay:1.30s"/>
   </g>
   <g class="fadeUp" style="animation-delay:0.48s">
     <circle cx="335" cy="164" r="5" fill="#3572A5"/>
@@ -253,6 +259,7 @@
     <rect x="330" y="174" width="262" height="3" rx="1.5" fill="#0B1B2B" fill-opacity=".55"/>
     <rect x="330" y="174" width="2.1" height="3" rx="1.5" fill="#3572A5" opacity=".95" class="growIn" style="animation-delay:0.54s;transform-origin:330px 175px">
     </rect>
+    <circle cx="332.1" cy="175" r="2.4" fill="#3572A5" class="pulse" style="animation-delay:1.50s"/>
   </g>
   <g class="fadeUp" style="animation-delay:0.54s">
     <circle cx="27" cy="196" r="5" fill="#E34C26"/>
@@ -261,10 +268,11 @@
     <rect x="22" y="206" width="262" height="3" rx="1.5" fill="#0B1B2B" fill-opacity=".55"/>
     <rect x="22" y="206" width="1.5" height="3" rx="1.5" fill="#E34C26" opacity=".95" class="growIn" style="animation-delay:0.60s;transform-origin:22px 207px">
     </rect>
+    <circle cx="23.5" cy="207" r="2.4" fill="#E34C26" class="pulse" style="animation-delay:1.70s"/>
   </g>
   <g class="fadeUp" style="animation-delay:.62s">
     <circle cx="26" cy="242" r="3" fill="#38BDF8" class="pulse"/>
-    <text x="36" y="245" class="footNote">Tính theo số byte code thật trong các repo công khai · cập nhật 19/11 · 15:52</text>
+    <text x="36" y="245" class="footNote">Tính theo số byte code thật trong các repo công khai · cập nhật 19/11 · 16:23</text>
   </g>
 <!-- data:928a1a75b184 -->
 </svg>

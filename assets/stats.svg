@@ -161,6 +161,7 @@
     <rect x="0" y="0" width="640" height="258" fill="url(#bg)"/>
     <ellipse cx="115" cy="0" rx="260" ry="140" fill="url(#halo)" opacity=".55"/>
     <ellipse cx="588" cy="258" rx="240" ry="120" fill="url(#halo2)" opacity=".45"/>
+    <rect x="-150" y="0.4" width="130" height="1.6" fill="url(#sheenGrad)" opacity=".55" class="sheen" style="animation-duration:8s"/>
   </g>
   <rect x="0.7" y="0.7" width="638.6" height="256.6" rx="17.3" fill="none" stroke="url(#edge)" stroke-width="1.3"/>
   <clipPath id="cardClip"><rect x="0" y="0" width="640" height="258" rx="18"/></clipPath>
@@ -168,7 +169,7 @@
   <g class="fadeUp">
     <rect x="22" y="22" width="4" height="18" rx="2" fill="url(#accentGrad)"/>
     <text x="36" y="37" class="cardTitle">GITHUB STATS</text>
-    <text x="618" y="36" text-anchor="end" class="cardSub">CẬP NHẬT 19/11 · 15:52</text>
+    <text x="618" y="36" text-anchor="end" class="cardSub">CẬP NHẬT 19/11 · 16:23</text>
   </g>
   <g clip-path="url(#cardBody)">
     <rect x="0" y="-40" width="640" height="30" fill="url(#sheenGrad)" opacity=".26" class="scan" style="animation-duration:9s"/>

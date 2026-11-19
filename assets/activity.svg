@@ -161,12 +161,13 @@
     <rect x="0" y="0" width="640" height="258" fill="url(#bg)"/>
     <ellipse cx="115" cy="0" rx="260" ry="140" fill="url(#halo)" opacity=".55"/>
     <ellipse cx="588" cy="258" rx="240" ry="120" fill="url(#halo2)" opacity=".45"/>
+    <rect x="-150" y="0.4" width="130" height="1.6" fill="url(#sheenGrad)" opacity=".55" class="sheen" style="animation-duration:8s"/>
   </g>
   <rect x="0.7" y="0.7" width="638.6" height="256.6" rx="17.3" fill="none" stroke="url(#edge)" stroke-width="1.3"/>
   <g class="fadeUp">
     <rect x="22" y="22" width="4" height="18" rx="2" fill="url(#accentGrad)"/>
     <text x="36" y="37" class="cardTitle">CONTRIBUTION ACTIVITY</text>
-    <text x="618" y="36" text-anchor="end" class="cardSub">365 NGÀY · 19/11 · 15:52</text>
+    <text x="618" y="36" text-anchor="end" class="cardSub">365 NGÀY · 19/11 · 16:23</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.10s">
     <rect x="22" y="58" width="184" height="52" rx="12" fill="#0B1B2B" stroke="#17334F" stroke-opacity=".8"/>
@@ -177,18 +178,18 @@
   <g class="fadeUp" style="animation-delay:0.18s">
     <rect x="222" y="58" width="184" height="52" rx="12" fill="#0B1B2B" stroke="#17334F" stroke-opacity=".8"/>
 <g transform="translate(234 71) scale(0.8)" fill="none" stroke="#7DD3FC" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2c2.6 3.1 1.1 4.9 2.6 6.6 1-.6 1.4-1.7 1.3-3 2 2.1 3.1 4.2 3.1 6.5A7 7 0 015 13.3c0-2.6 1.5-4.7 3.4-6.4 .2 1.4.7 2.3 1.6 2.8 1-2-1.5-4.2 2-6.5z"/></g>
-    <text x="266" y="86" class="bigValue">0 ngày</text>
+    <text x="266" y="86" class="bigValue">8 ngày</text>
     <text x="266" y="101" class="midLabel">CHUỖI HIỆN TẠI</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.26s">
     <rect x="422" y="58" width="184" height="52" rx="12" fill="#0B1B2B" stroke="#17334F" stroke-opacity=".8"/>
 <g transform="translate(434 71) scale(0.8)" fill="none" stroke="#7DD3FC" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4.5h8v4.2a4 4 0 01-8 0z"/><path d="M8 5.6H5.3v1.5A3.2 3.2 0 008.5 10.3"/><path d="M16 5.6h2.7v1.5a3.2 3.2 0 01-3.2 3.2"/><path d="M12 12.7v3.6"/><path d="M8.4 19.6h7.2"/><path d="M10 16.3h4l.6 3.3H9.4z"/></g>
-    <text x="466" y="86" class="bigValue">7 ngày</text>
+    <text x="466" y="86" class="bigValue">8 ngày</text>
     <text x="466" y="101" class="midLabel">CHUỖI DÀI NHẤT</text>
   </g>
   <g class="fadeUp" style="animation-delay:.32s">
     <text x="22" y="128" class="footNote" style="letter-spacing:1.2px">14 NGÀY GẦN NHẤT</text>
-    <text x="618" y="128" text-anchor="end" class="footNote">HÔM NAY +0</text>
+    <text x="618" y="128" text-anchor="end" class="footNote">HÔM NAY +1</text>
   </g>
     <path d="M22 144H618" stroke="#8CA4BD" stroke-opacity=".10" stroke-width="1"/>
     <path d="M22 165H618" stroke="#8CA4BD" stroke-opacity=".10" stroke-width="1"/>
@@ -278,9 +279,12 @@
   </g>
   <text x="554.1" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T4</text>
   <g class="fadeUp" style="animation-delay:0.46s">
-    <rect x="583.7" y="204" width="26.0" height="4.0" rx="6.0" fill="#17334F" opacity=".7" filter="url(#glowSoft)">
+    <rect x="583.7" y="203" width="26.0" height="4.1" rx="6.0" fill="url(#barGradV)" opacity="1" filter="url(#glowSoft)">
+      <animate attributeName="height" from="0" to="4.1" dur=".9s" begin="0.58s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+      <animate attributeName="y" from="208" to="203.9" dur=".9s" begin="0.58s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
     </rect>
-    <circle cx="596.7" cy="194.0" r="3.4" fill="#7DD3FC" class="pulse"/>
+    <circle cx="596.7" cy="193.9" r="11" fill="none" stroke="#7DD3FC" stroke-opacity=".45" class="pulseSlow"/>
+    <circle cx="596.7" cy="193.9" r="3.4" fill="#7DD3FC" filter="url(#glow)" class="pulse"/>
   </g>
   <text x="596.7" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#7DD3FC;letter-spacing:.3px">T5</text>
   <g class="fadeUp" style="animation-delay:.55s">
@@ -288,7 +292,7 @@
   </g>
   <g class="fadeUp" style="animation-delay:.7s">
     <circle cx="26" cy="242" r="3" fill="#38BDF8" class="pulse"/>
-    <text x="36" y="245" class="footNote">Đếm từ lịch contribution thật của GitHub · cập nhật 19/11 · 15:52</text>
+    <text x="36" y="245" class="footNote">Đếm từ lịch contribution thật của GitHub · cập nhật 19/11 · 16:23</text>
   </g>
-<!-- data:b24c8da78a09 -->
+<!-- data:5fecbdb6dfa7 -->
 </svg>

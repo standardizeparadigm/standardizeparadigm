@@ -40,5 +40,5 @@
   <circle cx="850" cy="13" r="2" fill="#38BDF8" opacity=".55">
     <animate attributeName="opacity" values=".75;.15;.75" dur="5.5s" repeatCount="indefinite"/>
   </circle>
-<!-- data:14168bef51b1 -->
+<!-- data:1a9766cc806a -->
 </svg>
