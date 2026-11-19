@@ -8,7 +8,7 @@ python3 -m unittest discover -s scripts/tests -t scripts -v     # in tên từng
 python3 -m unittest tests.test_clock -v                          # chỉ một file
 ```
 
-Hiện có **364 test** trên 16 file, chạy xong trong chưa tới 1,5 giây.
+Hiện có **377 test** trên 17 file, chạy xong trong chưa tới 1,5 giây.
 
 Con số này được kiểm tự động: `test_docs.py` đếm lại toàn bộ bộ test và so
 với chữ trong file bạn đang đọc, nên nó không thể lệch âm thầm.
@@ -33,6 +33,7 @@ với chữ trong file bạn đang đọc, nên nó không thể lệch âm th�
 | `test_workflow_gate.py` | cổng thông minh của `profile-3d.yml` |
 | `test_repo_workflows.py` | chạy chính các luật workflow trên repo thật |
 | `test_docs.py` | quy ước Markdown, đếm test, mục lục tài liệu |
+| `test_repo_assets.py` | ảnh đã commit: XML, viewBox, ngân sách, dấu dữ liệu, giảm chuyển động |
 
 ## `helpers.py`
 

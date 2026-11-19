@@ -14,14 +14,15 @@
     </linearGradient>
     <filter id="dGlow"><feGaussianBlur stdDeviation="2.4"/></filter>
   </defs>
+  <style>@media (prefers-reduced-motion: reduce) { .smilOnly { display: none } }</style>
   <rect x="0" y="12" width="1000" height="1.6" fill="url(#ln)"/>
-  <rect x="-120" y="11.4" width="120" height="2.8" fill="url(#sparkLine)" filter="url(#dGlow)">
+  <rect class="smilOnly" x="-120" y="11.4" width="120" height="2.8" fill="url(#sparkLine)" filter="url(#dGlow)">
     <animate attributeName="x" values="-120;1020" dur="7s" repeatCount="indefinite"/>
   </rect>
-  <rect x="-120" y="12.2" width="60" height="1.6" fill="url(#sparkLine)" opacity=".45" filter="url(#dGlow)">
+  <rect class="smilOnly" x="-120" y="12.2" width="60" height="1.6" fill="url(#sparkLine)" opacity=".45" filter="url(#dGlow)">
     <animate attributeName="x" values="1020;-120" dur="13s" repeatCount="indefinite"/>
   </rect>
-  <g transform="translate(500.0 13)">
+  <g class="smilOnly" transform="translate(500.0 13)">
     <rect x="-4.5" y="-4.5" width="9" height="9" rx="2" transform="rotate(45)" fill="#7DD3FC" opacity=".9">
       <animateTransform attributeName="transform" type="rotate" values="45;225;45" dur="12s" repeatCount="indefinite"/>
     </rect>
@@ -30,14 +31,14 @@
       <animate attributeName="stroke-opacity" values=".3;0;.3" dur="4.5s" repeatCount="indefinite"/>
     </circle>
   </g>
-  <circle cy="13" r="2.6" fill="#7DD3FC" filter="url(#dGlow)">
+  <circle class="smilOnly" cy="13" r="2.6" fill="#7DD3FC" filter="url(#dGlow)">
     <animate attributeName="cx" values="-12;1012" dur="9s" repeatCount="indefinite"/>
     <animate attributeName="opacity" values="0;1;1;0" dur="9s" repeatCount="indefinite"/>
   </circle>
-  <circle cx="150" cy="13" r="2" fill="#38BDF8" opacity=".55">
+  <circle class="smilOnly" cx="150" cy="13" r="2" fill="#38BDF8" opacity=".55">
     <animate attributeName="opacity" values=".15;.75;.15" dur="5.5s" repeatCount="indefinite"/>
   </circle>
-  <circle cx="850" cy="13" r="2" fill="#38BDF8" opacity=".55">
+  <circle class="smilOnly" cx="850" cy="13" r="2" fill="#38BDF8" opacity=".55">
     <animate attributeName="opacity" values=".75;.15;.75" dur="5.5s" repeatCount="indefinite"/>
   </circle>
 <!-- data:1a9766cc806a -->
