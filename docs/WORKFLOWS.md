@@ -16,6 +16,21 @@ Tài liệu mô tả các GitHub Actions đang chạy trong repo `standardizepar
 | `health.yml` | push/PR + `0 23 * * *` | 06:00 hằng ngày | test + kiểm tra repo |
 | `welcome.yml` | theo sự kiện | — | chào issue/PR mới |
 
+### Chọn nhịp thế nào
+
+Một câu hỏi duy nhất quyết định nhịp: **ảnh này đổi nhanh đến đâu?**
+
+| Loại dữ liệu | Đổi khi nào | Nhịp hợp lý |
+| :-- | :-- | :-- |
+| Giờ, lời chào, tiến độ ngày | mỗi phút | `*/5` (sàn của GitHub) |
+| Số contribution, biểu đồ 3D | khi bạn push hoặc sang ngày mới | 30 phút + cổng 24h |
+| Star, fork, ngôn ngữ | vài ngày một lần | 3 giờ |
+| Trạng thái workflow | mỗi khi có lượt chạy xong | 15 phút + `workflow_run` |
+
+Hai workflow ghi file cùng lúc sẽ giành nhau `git push`, nên các nhịp được
+**lệch phút**: thẻ số liệu ở phút 15, README ở phút 45. Cơ chế push có sẵn
+vòng thử lại 3 lần, nhưng phòng tránh từ đầu vẫn rẻ hơn.
+
 > GitHub Actions **không hỗ trợ cron mỗi phút** — chu kỳ ngắn nhất là `*/5`. Vì vậy phần "chạy liên tục" được lo bằng hoạt ảnh ngay trong SVG (CSS/SMIL), còn workflow chỉ vẽ lại để ảnh không bị lệch số liệu.
 
 ---
