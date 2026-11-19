@@ -599,6 +599,30 @@ def check_test_claims(root=None):
                             "— hãy nâng lên" % (rel(path), number, claimed, total))
 
 
+# ------------------------------------------------- 4bg. Tài liệu mở bằng tiêu đề
+def check_doc_titles(root=None):
+    """Mỗi tài liệu phải mở bằng một tiêu đề cấp 1.
+
+    GitHub lấy dòng đầu làm mô tả khi chia sẻ link; không có tiêu đề thì nó
+    lấy dòng đầu tiên bất kỳ — thường là một câu giữa đoạn. README được
+    miễn vì nó mở bằng khối `<div>` căn giữa.
+    """
+    root = root or ROOT
+    folder = os.path.join(root, "docs")
+    if not os.path.isdir(folder):
+        return
+    for name in sorted(os.listdir(folder)):
+        if not name.lower().endswith(".md"):
+            continue
+        path = os.path.join(folder, name)
+        for line in read(path).split("\n"):
+            if not line.strip():
+                continue
+            if not line.startswith("# "):
+                err("docs/%s phải mở bằng một tiêu đề '# '" % name)
+            break
+
+
 # --------------------------------------------------- 4bf. Ảnh không gọi ra ngoài
 SVG_NAMESPACE = "http://www.w3.org/2000/svg"
 RE_URL_IN_SVG = re.compile(r"https?://[^\"'\s)]+")
@@ -1105,6 +1129,7 @@ def main(argv=None):
     check_svg_artifacts()
     check_markdown_tables()
     check_svg_safety()
+    check_doc_titles()
     check_svg_budget()
     check_python()
     check_module_docstrings()
