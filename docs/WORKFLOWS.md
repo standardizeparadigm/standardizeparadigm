@@ -12,7 +12,7 @@ Tài liệu mô tả các GitHub Actions đang chạy trong repo `standardizepar
 | `profile-3d.yml` | `*/30 * * * *` + cổng 24h | mỗi 30 phút kiểm tra | `profile-3d-contrib/*.svg` khi có push mới |
 | `profile-cards.yml` | `15 */3 * * *` | 8 lần/ngày | `stats`, `top-langs`, `hero`, `activity` (chỉ ghi khi đổi) |
 | `readme-tend.yml` | `45 */3 * * *` | 8 lần/ngày | con dấu `TENDED_AT` |
-| `status.yml` | `*/15 * * * *` + `workflow_run` | mỗi 15 phút | `assets/status.svg` |
+| `status.yml` | `*/10 * * * *` + `workflow_run` | mỗi 10 phút | `assets/status.svg` |
 | `health.yml` | push/PR + `0 23 * * *` | 06:00 hằng ngày | test + kiểm tra repo |
 | `welcome.yml` | theo sự kiện | — | chào issue/PR mới |
 
