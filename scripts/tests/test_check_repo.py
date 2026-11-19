@@ -1806,6 +1806,52 @@ class TestPythonFences(unittest.TestCase):
         self.assertEqual(len(self._run()), 1)
 
 
+class TestTestFileDocs(unittest.TestCase):
+    """Mỗi file test phải có tên trong docs/TESTING.md."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.tmp)
+        os.makedirs(os.path.join(self.tmp, "scripts", "tests"))
+        os.makedirs(os.path.join(self.tmp, "docs"))
+        self._doc("# Kiểm thử\n")
+
+    def _test_file(self, name):
+        with open(os.path.join(self.tmp, "scripts", "tests", name), "w",
+                  encoding="utf-8") as handle:
+            handle.write("import unittest\n")
+
+    def _doc(self, text):
+        with open(os.path.join(self.tmp, "docs", "TESTING.md"), "w",
+                  encoding="utf-8") as handle:
+            handle.write(text)
+
+    def _run(self):
+        check_repo.errors = []
+        check_repo.check_test_file_docs(root=self.tmp)
+        return list(check_repo.errors)
+
+    def test_unnamed_test_file_is_reported(self):
+        self._test_file("test_new.py")
+        errors = self._run()
+        self.assertEqual(len(errors), 1)
+        self.assertIn("test_new.py", errors[0])
+
+    def test_named_test_file_passes(self):
+        self._test_file("test_new.py")
+        self._doc("# Kiểm thử\n\n## `test_new.py`\n")
+        self.assertEqual(self._run(), [])
+
+    def test_helper_file_is_not_required(self):
+        self._test_file("helpers.py")
+        self.assertEqual(self._run(), [])
+
+    def test_missing_doc_is_ignored(self):
+        os.remove(os.path.join(self.tmp, "docs", "TESTING.md"))
+        self._test_file("test_new.py")
+        self.assertEqual(self._run(), [])
+
+
 if __name__ == "__main__":
     unittest.main()
 
