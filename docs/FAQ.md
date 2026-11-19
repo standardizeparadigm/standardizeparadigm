@@ -17,7 +17,7 @@ GitHub Actions **không hỗ trợ** cron mỗi phút; chu kỳ ngắn nhất l�
 
 Nên trang này làm hai lớp:
 
-- **Lớp ảnh**: workflow kiểm tra mỗi 5 phút (đồng hồ, 3D) hoặc 10 phút (thẻ số liệu, có `--smart` để không commit rỗng).
+- **Lớp ảnh**: đồng hồ kiểm tra mỗi 5 phút, biểu đồ 3D mỗi 30 phút (có cổng 24h), thẻ số liệu và README mỗi 3 giờ, dải trạng thái mỗi 15 phút. Chỗ nào có `--smart` thì chỉ commit khi số liệu thật sự đổi.
 - **Lớp hoạt ảnh**: CSS/SMIL trong file SVG làm ảnh **luôn chuyển động** giữa hai lần cập nhật. Kim đồng hồ quay liên tục, không cần workflow nào cả.
 
 ## Tốn bao nhiêu phút runner mỗi ngày?
