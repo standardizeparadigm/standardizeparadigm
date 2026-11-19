@@ -258,6 +258,8 @@ def check_assets(directory):
         sys.stderr.write("Không tìm thấy SVG nào trong %s\n" % directory)
         return 1
     bad = 0
+    heavy = []
+    total = 0
     for name in files:
         path = os.path.join(directory, name)
         try:
@@ -266,9 +268,18 @@ def check_assets(directory):
             bad += 1
             print("  ✗ %-20s %s" % (name, error))
         else:
-            print("  ✓ %-20s %6d bytes" % (name, os.path.getsize(path)))
-    print("%d/%d SVG hợp lệ" % (len(files) - bad, len(files)))
-    return 1 if bad else 0
+            size = os.path.getsize(path)
+            total += size
+            print("  ✓ %-20s %6d bytes" % (name, size))
+            # Cùng ngưỡng với check_repo.SVG_BUDGET: mỗi ảnh phải nhẹ hơn
+            # 40 KB để trang còn tải nhanh trên mạng di động.
+            if size > 40 * 1024:
+                heavy.append((name, size))
+    print("%d/%d SVG hợp lệ · tổng %d KB" % (len(files) - bad, len(files),
+                                             total // 1024))
+    for name, size in sorted(heavy, key=lambda item: -item[1]):
+        print("  ! %s nặng %d KB, vượt ngưỡng 40 KB" % (name, size // 1024))
+    return 1 if bad or heavy else 0
 
 
 def _suggest(value, options):
