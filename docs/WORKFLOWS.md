@@ -9,9 +9,10 @@ Tài liệu mô tả các GitHub Actions đang chạy trong repo `standardizepar
 | Workflow | Lịch (UTC) | Giờ Việt Nam | Việc làm |
 | :-- | :-- | :-- | :-- |
 | `live-clock.yml` | `*/5 * * * *` | mỗi 5 phút | `assets/live-clock.svg` |
-| `profile-3d.yml` | `*/5 * * * *` + cổng | mỗi 5 phút kiểm tra | `profile-3d-contrib/*.svg` khi có push mới |
-| `profile-cards.yml` | `*/10 * * * *` | mỗi 10 phút | `stats`, `top-langs`, `hero`, `activity` (chỉ ghi khi đổi) |
-| `readme-tend.yml` | `0 */3 * * *` | mỗi 3 giờ | con dấu `TENDED_AT` |
+| `profile-3d.yml` | `*/30 * * * *` + cổng 24h | mỗi 30 phút kiểm tra | `profile-3d-contrib/*.svg` khi có push mới |
+| `profile-cards.yml` | `15 */3 * * *` | 8 lần/ngày | `stats`, `top-langs`, `hero`, `activity` (chỉ ghi khi đổi) |
+| `readme-tend.yml` | `45 */3 * * *` | 8 lần/ngày | con dấu `TENDED_AT` |
+| `status.yml` | `*/15 * * * *` + `workflow_run` | mỗi 15 phút | `assets/status.svg` |
 | `health.yml` | push/PR + `0 23 * * *` | 06:00 hằng ngày | test + kiểm tra repo |
 | `welcome.yml` | theo sự kiện | — | chào issue/PR mới |
 
