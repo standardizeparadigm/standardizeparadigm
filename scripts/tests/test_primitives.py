@@ -6,7 +6,7 @@ import unittest
 from helpers import SCRIPTS, assert_valid_svg  # noqa: F401
 
 from svgkit import primitives
-from svgkit.primitives import human
+from svgkit.primitives import human, num
 from svgkit.palette import get_palette
 
 
@@ -163,6 +163,30 @@ class TestHumanNumbers(unittest.TestCase):
 
     def test_just_under_a_million(self):
         self.assertEqual(human(999_999), "1000k")
+
+
+
+class TestNum(unittest.TestCase):
+    """`num()` đi vào toạ độ SVG — sai một số là lệch cả hình."""
+
+    def test_integer_has_no_decimal_point(self):
+        self.assertEqual(num(12), "12")
+
+    def test_one_decimal_is_kept(self):
+        self.assertEqual(num(12.5), "12.5")
+
+    def test_trailing_zero_is_dropped(self):
+        self.assertEqual(num(12.0), "12")
+
+    def test_rounds_to_one_decimal(self):
+        self.assertEqual(num(12.34), "12.3")
+
+    def test_negative_keeps_the_sign(self):
+        self.assertEqual(num(-3.5), "-3.5")
+
+    def test_never_returns_a_bare_dot(self):
+        for value in (0, 0.0, -0.04, 1000000):
+            self.assertNotIn(".", num(value).rstrip("."), num(value))
 
 if __name__ == "__main__":
     unittest.main()
