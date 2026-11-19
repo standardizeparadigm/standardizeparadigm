@@ -22,7 +22,7 @@ Hiện có **190 test** trên 12 file, chạy xong trong chưa tới 1 giây.
 | `test_clock.py` | 10 | góc kim, thứ/ngày, tiến độ ngày, vành |
 | `test_activity.py` | 13 | 14 cột, chuỗi ngày, đường trung bình, nhãn cao nhất |
 | `test_divider.py` | 9 | tia sáng, sóng, bong bóng |
-| `test_check_repo.py` | 16 | bắt mojibake, URL hỏng, tham chiếu ảnh chết |
+| `test_check_repo.py` | 23 | bắt mojibake, URL hỏng, tham chiếu ảnh chết, BOM/CRLF/ký tự lạ |
 | `test_cli.py` | 39 | cờ CLI, `--smart`, `--dry-run`, chạy như script con |
 | `test_workflow_gate.py` | 5 | cổng thông minh của `profile-3d.yml` |
 
