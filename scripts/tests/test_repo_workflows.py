@@ -217,5 +217,41 @@ class TestWorkflowStyle(unittest.TestCase):
                 if "secrets." in line:
                     self.assertIn("${{", line, name)
 
+
+
+class TestUpdateCadence(unittest.TestCase):
+    """Nhịp cập nhật: đủ dày để ảnh không cũ, đủ thưa để không phí."""
+
+    def _cron(self, name):
+        return re.findall(r'cron:\s*"([^"]+)"', read(name))
+
+    def test_clock_runs_every_five_minutes(self):
+        self.assertEqual(self._cron("live-clock.yml"), ["*/5 * * * *"])
+
+    def test_status_runs_every_five_minutes(self):
+        self.assertEqual(self._cron("status.yml"), ["2-59/5 * * * *"])
+
+    def test_3d_checks_every_ten_minutes(self):
+        self.assertEqual(self._cron("profile-3d.yml"), ["8-59/10 * * * *"])
+
+    def test_cards_run_hourly(self):
+        self.assertEqual(self._cron("profile-cards.yml"), ["13 * * * *"])
+
+    def test_readme_stamp_runs_every_two_hours(self):
+        self.assertEqual(self._cron("readme-tend.yml"), ["23 */2 * * *"])
+
+    def test_no_job_runs_faster_than_github_allows(self):
+        for name in workflow_files():
+            for cron in self._cron(name):
+                step = check_repo._minute_step(cron.split()[0])
+                if step is not None:
+                    self.assertGreaterEqual(step, 5, "%s %s" % (name, cron))
+
+    def test_every_scheduled_job_is_also_dispatchable(self):
+        for name in workflow_files():
+            text = read(name)
+            if "cron:" in text:
+                self.assertIn("workflow_dispatch", text, name)
+
 if __name__ == "__main__":
     unittest.main()
