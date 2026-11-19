@@ -599,6 +599,41 @@ def check_test_claims(root=None):
                             "— hãy nâng lên" % (rel(path), number, claimed, total))
 
 
+# --------------------------------------------------- 4be. Bảng Markdown thẳng cột
+RE_TABLE_DIVIDER = re.compile(r"^\|?[\s:|-]+\|[\s:|-]*$")
+
+
+def check_markdown_tables(root=None):
+    """Mọi dòng trong một bảng phải cùng số cột.
+
+    Một dòng thiếu dấu `|` làm cả bảng lệch: ô cuối trôi sang cột khác và
+    trên GitHub trông như bảng bị "gãy". Markdown không coi đó là lỗi cú
+    pháp, nên không có gì báo.
+    """
+    root = root or ROOT
+    for base, dirs, files in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.lower().endswith(".md"):
+                continue
+            path = os.path.join(base, name)
+            lines = read(path).split("\n")
+            index = 0
+            while index + 1 < len(lines):
+                head, divider = lines[index], lines[index + 1]
+                if not head.startswith("|") or not RE_TABLE_DIVIDER.match(divider):
+                    index += 1
+                    continue
+                columns = head.count("|")
+                row = index + 2
+                while row < len(lines) and lines[row].startswith("|"):
+                    if lines[row].count("|") != columns:
+                        err("%s:%d bảng có %d cột nhưng dòng này có %d"
+                            % (rel(path), row + 1, columns, lines[row].count("|")))
+                    row += 1
+                index = row
+
+
 # ------------------------------------------------- 4bd. Dấu vết của dữ liệu hỏng
 PY_ARTIFACTS = ("None", "NaN", "Traceback", "KeyError")
 
@@ -1042,6 +1077,7 @@ def main(argv=None):
     check_svg_text_classes()
     check_svg_duplicate_ids()
     check_svg_artifacts()
+    check_markdown_tables()
     check_svg_budget()
     check_python()
     check_module_docstrings()
