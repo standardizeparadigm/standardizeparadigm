@@ -24,7 +24,8 @@ Hiện có **190 test** trên 12 file, chạy xong trong chưa tới 1 giây.
 | `test_divider.py` | 9 | tia sáng, sóng, bong bóng |
 | `test_check_repo.py` | 23 | bắt mojibake, URL hỏng, tham chiếu ảnh chết, BOM/CRLF/ký tự lạ |
 | `test_cli.py` | 39 | cờ CLI, `--smart`, `--dry-run`, chạy như script con |
-| `test_workflow_gate.py` | 5 | cổng thông minh của `profile-3d.yml` |
+| `test_status.py` | 19 | bố cục dải trạng thái, màu/nhãn từng trạng thái, a11y |
+| `test_workflow_gate.py` | 7 | cổng thông minh của `profile-3d.yml` |
 
 ## `helpers.py`
 
