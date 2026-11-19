@@ -599,6 +599,26 @@ def check_test_claims(root=None):
                             "— hãy nâng lên" % (rel(path), number, claimed, total))
 
 
+# -------------------------------------------- 4bh. Không dùng 'font' viết tắt
+RE_FONT_SHORTHAND = re.compile(r"\bfont:\s*\d")
+
+
+def check_font_shorthand(root=None):
+    """CSS trong ảnh không được dùng thuộc tính viết tắt `font:`.
+
+    `font: 800 54px Arial` là cú pháp hợp lệ, nhưng một số trình vẽ SVG
+    (resvg, vài bản librsvg, trình xem ảnh desktop) bỏ qua cả khai báo —
+    chữ rơi về 16px mặc định. Cùng một file vì thế hiện hai kiểu khác
+    nhau: trình duyệt đẹp, mọi nơi khác vỡ bố cục.
+    """
+    root = root or ROOT
+    for path in sorted(glob.glob(os.path.join(root, "assets", "*.svg"))):
+        for number, line in enumerate(read(path).split("\n"), 1):
+            if RE_FONT_SHORTHAND.search(line):
+                err("%s:%d dùng 'font:' viết tắt — hãy viết "
+                    "font-weight/font-size/font-family" % (rel(path), number))
+
+
 # ------------------------------------------------- 4bg. Tài liệu mở bằng tiêu đề
 def check_doc_titles(root=None):
     """Mỗi tài liệu phải mở bằng một tiêu đề cấp 1.
@@ -1134,6 +1154,7 @@ def main(argv=None):
     check_svg_artifacts()
     check_markdown_tables()
     check_svg_safety()
+    check_font_shorthand()
     check_doc_titles()
     check_svg_budget()
     check_python()
