@@ -32,7 +32,7 @@ giữ ngưỡng đó cho bảng màu thêm sau:
 | `title` | tên thẻ, số lớn | ≥ 4.5 | 16.4 |
 | `text` | chữ nội dung | ≥ 4.5 | 12.2 |
 | `label` | nhãn in hoa | ≥ 4.5 | 6.8 |
-| `dim` | chú thích nhỏ | ≥ 3.0 | 3.3 |
+| `dim` | chú thích nhỏ | ≥ 3.0 | 3.2 |
 | `accent` | nét, viền, vòng cung | ≥ 3.0 | — |
 
 Lý do có ngưỡng riêng cho `dim`: nó cố tình mờ để không tranh với số liệu,
