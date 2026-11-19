@@ -129,8 +129,9 @@ thường bỏ qua — vì đó là những lỗi đã xảy ra thật ở đây
 | Markdown | link nội bộ chết, ảnh không tồn tại |
 | Workflow | thiếu `permissions`/`concurrency`/`timeout-minutes`, `git push` không có cổng bot |
 | Tài liệu ↔ YAML | bảng lịch chạy sai cron, workflow không có dòng nào trong bảng |
-| Ảnh | `assets/*.svg` không được nhúng ở đâu (ảnh chết) |
-| Python | mọi file biên dịch được |
+| Ảnh | `assets/*.svg` không được nhúng ở đâu (ảnh chết), ảnh nặng quá 40 KB |
+| Tài liệu | bài trong `docs/` không được dẫn tới, câu "hơn N unit test" đã sai |
+| Python | mọi file biên dịch được và mở đầu bằng docstring |
 
 ## Bảo mật
 
