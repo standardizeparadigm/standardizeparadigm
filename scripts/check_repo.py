@@ -599,6 +599,37 @@ def check_test_claims(root=None):
                             "— hãy nâng lên" % (rel(path), number, claimed, total))
 
 
+# -------------------------------------------- 4bb. Mọi job phải có hạn giờ
+RE_JOB = re.compile(r"^  ([A-Za-z0-9_-]+):\s*$", re.M)
+RE_TIMEOUT = re.compile(r"^\s{4}timeout-minutes:\s*\d+\s*$", re.M)
+
+
+def check_job_timeouts(root=None):
+    """Mỗi job phải khai báo `timeout-minutes`.
+
+    Mặc định của GitHub là **360 phút**. Một bước treo (chờ mạng, chờ khoá)
+    sẽ giữ runner suốt 6 tiếng trước khi bị cắt — và không ai nhận được
+    thông báo nào. 5 phút là đủ cho mọi job của repo này.
+    """
+    root = root or ROOT
+    folder = os.path.join(root, ".github", "workflows")
+    if not os.path.isdir(folder):
+        return
+    for name in sorted(os.listdir(folder)):
+        if not name.lower().endswith((".yml", ".yaml")):
+            continue
+        path = os.path.join(root, ".github", "workflows", name)
+        text = read(path)
+        if "\njobs:" not in text:
+            continue
+        block = text.split("\njobs:", 1)[1]
+        # Khoá job nằm ở đúng hai dấu cách; bước bên trong thì sâu hơn.
+        jobs = RE_JOB.findall(block)
+        if jobs and len(RE_TIMEOUT.findall(block)) < len(jobs):
+            err("%s: %d job nhưng chỉ %d 'timeout-minutes' — mặc định là 360 phút"
+                % (rel(path), len(jobs), len(RE_TIMEOUT.findall(block))))
+
+
 # ------------------------------------------------- 4ba. Cấp tiêu đề Markdown
 RE_HEADING = re.compile(r"^(#{1,6})\s+\S", re.M)
 
@@ -945,6 +976,7 @@ def main(argv=None):
     check_cron_resolution()
     check_action_pins()
     check_heading_levels()
+    check_job_timeouts()
     check_svg_budget()
     check_python()
     check_module_docstrings()
