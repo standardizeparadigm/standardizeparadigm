@@ -35,6 +35,20 @@ class TestCli(unittest.TestCase):
             path = os.path.join(self.out, name)
             minidom.parse(path)               # không được lỗi XML
 
+    def test_status_only(self):
+        self.assertEqual(self.run_cli("--demo", "--status"), 0)
+        self.assertEqual(os.listdir(self.out), ["status.svg"])
+
+    def test_status_demo_has_all_five_states(self):
+        self.run_cli("--demo", "--status")
+        with open(os.path.join(self.out, "status.svg"), encoding="utf-8") as handle:
+            svg = handle.read()
+        self.assertIn("ĐẠT", svg)          # passing
+        self.assertIn("LỖI", svg)          # failing
+        self.assertIn("ĐANG CHẠY", svg)    # running
+        self.assertIn("CHƯA CHẠY", svg)    # none
+        minidom.parseString(svg)
+
     def test_clock_only(self):
         self.assertEqual(self.run_cli("--demo", "--clock"), 0)
         self.assertEqual(os.listdir(self.out), ["live-clock.svg"])
