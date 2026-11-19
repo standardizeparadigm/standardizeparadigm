@@ -307,6 +307,41 @@ def check_workflows():
                 err("%s: action thiếu phiên bản: %s" % (rel(path), ref))
 
 
+# ------------------------------------- 3b. Quy ước an toàn cho workflow
+def check_workflow_hygiene(root=None):
+    """Ba thứ tối thiểu để một workflow tự commit không gây hoạ.
+
+    1. `permissions:` — không khai là mặc định rộng, dễ fail ở bước push.
+    2. `concurrency:` — hai lượt chồng nhau cùng push là cách nhanh nhất
+       để sinh conflict.
+    3. `timeout-minutes` cho **mỗi job** — thiếu thì một job treo sẽ chạy
+       tới 6 tiếng (mặc định của GitHub).
+    4. Workflow có `git push` phải có cổng chặn bot, nếu không nó sẽ
+       kích hoạt chính nó qua sự kiện push.
+    """
+    root = root or ROOT
+    folder = os.path.join(root, ".github", "workflows")
+    if not os.path.isdir(folder):
+        return
+    for name in sorted(os.listdir(folder)):
+        if not name.lower().endswith((".yml", ".yaml")):
+            continue
+        path = os.path.join(folder, name)
+        text = read(path)
+        where = rel(path)
+        if "permissions:" not in text:
+            err("%s: thiếu 'permissions:'" % where)
+        if "cron:" in text and "concurrency:" not in text:
+            err("%s: có lịch chạy nhưng thiếu 'concurrency:'" % where)
+        runners = len(re.findall(r"^\s+runs-on:", text, flags=re.M))
+        timeouts = len(re.findall(r"^\s+timeout-minutes:", text, flags=re.M))
+        if runners and timeouts < runners:
+            err("%s: %d job nhưng chỉ %d 'timeout-minutes'"
+                % (where, runners, timeouts))
+        if "git push" in text and "github-actions[bot]" not in text:
+            err("%s: có 'git push' mà thiếu cổng chặn bot (vòng lặp vô hạn)" % where)
+
+
 # ---------------------------------------- 4a. Tài liệu phải khớp lịch chạy
 CRON_FIELD_OK = re.compile(r"^[0-9*/,\-]+$")
 
@@ -425,6 +460,7 @@ def main():
     check_svg()
     check_file_hygiene()
     check_workflow_docs()
+    check_workflow_hygiene()
     check_workflows()
     check_asset_refs()
     check_python()
