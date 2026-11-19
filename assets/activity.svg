@@ -57,6 +57,10 @@
                 transform-box: view-box; transform-origin: var(--cx) var(--cy); }
   /* Nét đứt chạy dọc theo chính nó: dùng cho đường trung bình, đường dóng */
   .dashFlow   { animation: dashFlow 2.6s linear infinite; }
+  /* Vệt sáng chạy ngang trong thanh xếp chồng (thẻ ngôn ngữ) */
+  .barSweep   { animation: barSweep 4.6s ease-in-out infinite; }
+  /* Icon nhích lên xuống 1.6px: đủ để mắt thấy sống, không đủ để phân tâm */
+  .bob        { animation: bob 4.8s ease-in-out infinite; }
   .wave       { animation: wave 14s linear infinite; }
   .wave2      { animation: wave 19s linear infinite reverse; }
 
@@ -76,13 +80,19 @@
                          88% { opacity: .55 } 100% { transform: translateY(300px); opacity: 0 } }
   @keyframes dashFlow  { to { stroke-dashoffset: -10 } }
   @keyframes wave      { to { transform: translateX(-500px) } }
+  @keyframes barSweep  { 0% { transform: translateX(0); opacity: 0 }
+                         12% { opacity: .5 }
+                         88% { opacity: .5 }
+                         100% { transform: translateX(760px); opacity: 0 } }
+  @keyframes bob       { 0%,100% { transform: translateY(0) }
+                         50% { transform: translateY(-1.6px) } }
 
   /* Ai bật "giảm chuyển động" trong hệ điều hành thì thấy ảnh tĩnh,
      vẫn đẹp và vẫn đủ thông tin — không phải hy sinh nội dung. */
   @media (prefers-reduced-motion: reduce) {
     .pulse, .pulseSlow, .blink, .spinSlow, .spinRev, .driftA, .driftB,
     .driftC, .floatY, .twinkle, .fadeUp, .growIn, .sheen, .scan, .spinDot,
-    .dashFlow,
+    .dashFlow, .barSweep, .bob,
     .liveHour text, .liveMin text,
     .secHand, .minHand, .hourHand, .wave, .wave2 { animation: none !important; }
   }
@@ -168,12 +178,12 @@
   <g class="fadeUp">
     <rect x="22" y="22" width="4" height="18" rx="2" fill="url(#accentGrad)"/>
     <text x="36" y="37" class="cardTitle">CONTRIBUTION ACTIVITY</text>
-    <text x="618" y="36" text-anchor="end" class="cardSub">365 NGÀY · 19/11 · 19:03</text>
+    <text x="618" y="36" text-anchor="end" class="cardSub">365 NGÀY · 19/11 · 19:54</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.10s">
     <rect x="22" y="58" width="184" height="52" rx="12" fill="#0B1B2B" stroke="#17334F" stroke-opacity=".8"/>
 <g transform="translate(34 71) scale(0.8)" fill="none" stroke="#7DD3FC" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2v4.4"/><path d="M12 16.4v4.4"/><path d="M3.2 12h4.4"/><path d="M16.4 12h4.4"/><circle cx="12" cy="12" r="2.2"/></g>
-    <text x="66" y="86" class="bigValue">3.4k</text>
+    <text x="66" y="86" class="bigValue">3.6k</text>
     <text x="66" y="101" class="midLabel">CẢ NĂM</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.18s">
@@ -190,15 +200,15 @@
   </g>
   <g class="fadeUp" style="animation-delay:.32s">
     <text x="22" y="128" class="footNote" style="letter-spacing:1.2px">14 NGÀY GẦN NHẤT</text>
-    <text x="618" y="128" text-anchor="end" class="footNote">HÔM NAY +595</text>
+    <text x="618" y="128" text-anchor="end" class="footNote">HÔM NAY +809</text>
   </g>
     <path d="M22 144H618" stroke="#8CA4BD" stroke-opacity=".10" stroke-width="1"/>
     <path d="M22 165H618" stroke="#8CA4BD" stroke-opacity=".10" stroke-width="1"/>
     <path d="M22 186H618" stroke="#8CA4BD" stroke-opacity=".10" stroke-width="1"/>
     <path d="M22 208H618" stroke="#8CA4BD" stroke-opacity=".10" stroke-width="1"/>
   <g class="fadeUp" style="animation-delay:.3s">
-    <path d="M22 195.4H618" stroke="#7DD3FC" stroke-opacity=".38" stroke-width="1" stroke-dasharray="4 6" class="dashFlow"/>
-    <text x="24" y="190.4" class="footNote" style="fill:#7DD3FC">TB 239</text>
+    <path d="M22 194.6H618" stroke="#7DD3FC" stroke-opacity=".38" stroke-width="1" stroke-dasharray="4 6" class="dashFlow"/>
+    <text x="24" y="189.6" class="footNote" style="fill:#7DD3FC">TB 254</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.10s">
     <rect x="30.3" y="204" width="26.0" height="4.0" rx="6.0" fill="#17334F" opacity=".7">
@@ -280,12 +290,12 @@
   </g>
   <text x="554.1" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T4</text>
   <g class="fadeUp" style="animation-delay:0.46s">
-    <rect x="583.7" y="172" width="26.0" height="35.5" rx="6.0" fill="url(#barGradV)" opacity="1" filter="url(#glowSoft)">
-      <animate attributeName="height" from="0" to="35.5" dur=".9s" begin="0.58s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
-      <animate attributeName="y" from="208" to="172.5" dur=".9s" begin="0.58s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+    <rect x="583.7" y="161" width="26.0" height="46.8" rx="6.0" fill="url(#barGradV)" opacity="1" filter="url(#glowSoft)">
+      <animate attributeName="height" from="0" to="46.8" dur=".9s" begin="0.58s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+      <animate attributeName="y" from="208" to="161.2" dur=".9s" begin="0.58s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
     </rect>
-    <circle cx="596.7" cy="162.5" r="11" fill="none" stroke="#7DD3FC" stroke-opacity=".45" class="pulseSlow"/>
-    <circle cx="596.7" cy="162.5" r="3.4" fill="#7DD3FC" filter="url(#glow)" class="pulse"/>
+    <circle cx="596.7" cy="151.2" r="11" fill="none" stroke="#7DD3FC" stroke-opacity=".45" class="pulseSlow"/>
+    <circle cx="596.7" cy="151.2" r="3.4" fill="#7DD3FC" filter="url(#glow)" class="pulse"/>
   </g>
   <text x="596.7" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#7DD3FC;letter-spacing:.3px">T5</text>
   <g class="fadeUp" style="animation-delay:.55s">
@@ -293,7 +303,7 @@
   </g>
   <g class="fadeUp" style="animation-delay:.7s">
     <circle cx="26" cy="242" r="3" fill="#38BDF8" class="pulse"/>
-    <text x="36" y="245" class="footNote">Đếm từ lịch contribution thật của GitHub · cập nhật 19/11 · 19:03</text>
+    <text x="36" y="245" class="footNote">Đếm từ lịch contribution thật của GitHub · cập nhật 19/11 · 19:54</text>
   </g>
-<!-- data:d3d8d04afbd9 -->
+<!-- data:a407da9f2dc7 -->
 </svg>
