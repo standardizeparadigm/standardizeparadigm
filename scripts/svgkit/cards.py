@@ -226,7 +226,10 @@ def langs_card(pal, data, dt, t, width=640, height=258):
                      '%.1f%%</text>' % (cx + 262, y, pct))
         parts.append('    <rect x="%d" y="%d" width="262" height="3" rx="1.5" '
                      'fill="%s" fill-opacity=".55"/>' % (cx, y + 6, pal.panel))
-        bar_len = 262 * pct / 100.0
+        # Sàn 8px: 0.6% chỉ dài 1.6px, đọc ra như một chấm lỗi. Con số bên
+        # phải vẫn giữ đúng tỉ lệ, nên thanh chỉ cần đủ dài để thấy nó là
+        # thanh — không cần đủ dài để đo.
+        bar_len = max(8.0, 262 * pct / 100.0)
         parts.append('    <rect x="%d" y="%d" width="%.1f" height="3" rx="1.5" '
                      'fill="%s" opacity=".95" class="growIn" '
                      'style="animation-delay:%.2fs;transform-origin:%dpx %dpx">'
