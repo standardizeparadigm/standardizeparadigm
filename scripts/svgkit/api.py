@@ -279,8 +279,13 @@ def _streaks(days):
             longest = max(longest, run)
         else:
             run = 0
-    # chuỗi hiện tại: đếm ngược từ hôm nay
-    for _, count in reversed(days):
+    # Chuỗi hiện tại: đếm ngược từ hôm nay, nhưng hôm nay chưa có
+    # contribution thì chuỗi CHƯA đứt — GitHub giữ chuỗi tới hết ngày, ai cũng
+    # còn nguyên ngày để giữ nó. Bỏ ô hôm nay đi rồi đếm tiếp từ hôm qua.
+    tail = list(days)
+    if tail and tail[-1][1] == 0:
+        tail = tail[:-1]
+    for _, count in reversed(tail):
         if count > 0:
             current += 1
         else:
