@@ -1,4 +1,4 @@
-# 🎨 Sáu bảng màu
+# Sáu bảng màu
 
 Mọi hình trong `assets/` vẽ từ cùng một bộ token màu. Đổi một token là đổi cả trang.
 
