@@ -133,6 +133,8 @@ nằm cùng repo, cùng CDN với các ảnh khác, không bao giờ "not found"
 - **Chạy:** phút 2, 12, 22, 32, 42, 52 (lệch 2 phút so với đồng hồ), và ngay
   khi có workflow khác vừa xong (`workflow_run`).
 - **Không đọc được API** → giữ nguyên ảnh cũ, không ghi thẻ rỗng.
+- **Chân dải** có hai thông tin: dấu `cập nhật HH:MM` (dải này vẽ lúc nào) và
+  `4/7 workflow ổn` (tình hình chung). "Đang chạy" được tính là ổn.
 - Thêm workflow mới: thêm một dòng vào `WORKFLOWS` trong `scripts/svgkit/status.py`
   — dải tự giãn bề rộng.
 
