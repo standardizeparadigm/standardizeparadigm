@@ -151,6 +151,9 @@ def clock_card(pal, dt, t, width=640, height=258):
     parts.append('  <g class="fadeUp" style="animation-delay:.2s">')
     parts.append('    <text x="%d" y="74" class="clockLabel">%s</text>'
                  % (px, esc(t("clock.label"))))
+    # Mốc thời gian đã vẽ, để không ai nhầm ảnh tĩnh là "giờ hiện tại".
+    parts.append('    <text x="%d" y="74" text-anchor="end" class="cardSub">%s</text>'
+                 % (px + bar_w, esc(t("clock.updated", hhmm=dt.strftime("%H:%M")))))
     parts.append('    <text x="%d" y="124" class="clockTime" fill="url(#titleGrad)">'
                  '%s</text>' % (px, dt.strftime("%H:%M")))
     parts.append('    <text x="%d" y="148" class="clockDate">%s · %s</text>'
@@ -197,7 +200,7 @@ def clock_card(pal, dt, t, width=640, height=258):
     parts.append('    <circle cx="%d" cy="242" r="3" fill="%s" class="pulse"/>'
                  % (px, pal.accent))
     parts.append('    <text x="%d" y="245" class="footNote">%s</text>'
-                 % (px + 10, esc(t("clock.foot", hhmm=dt.strftime("%H:%M")))))
+                 % (px + 10, esc(t("clock.foot"))))
     parts.append('  </g>')
     parts.append("</svg>")
     return "\n".join(parts)

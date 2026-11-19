@@ -91,6 +91,35 @@ class TestVietnamTime(unittest.TestCase):
         self.assertIn("20/11/2026", svg)
 
 
+class TestSnapshotStamp(unittest.TestCase):
+    """Thẻ phải tự nói ảnh này vẽ lúc mấy giờ, để không ai nhầm là "giờ hiện tại"."""
+
+    def test_stamp_shows_draw_time(self):
+        svg = clock_card(get_palette(), DT, i18n.get("vi"))
+        self.assertIn("cập nhật 15:04", svg)
+
+    def test_stamp_is_right_aligned_in_digital_block(self):
+        svg = clock_card(get_palette(), DT, i18n.get("vi"))
+        self.assertIn('x="616" y="74" text-anchor="end"', svg)
+
+    def test_footer_no_longer_repeats_the_time(self):
+        svg = clock_card(get_palette(), DT, i18n.get("vi"))
+        self.assertEqual(svg.count("15:04"), 2)      # một ở đồng hồ, một ở tem
+
+    def test_english_stamp(self):
+        svg = clock_card(get_palette(), DT, i18n.get("en"))
+        self.assertIn("updated 15:04", svg)
+
+
+class TestLabelNotRepeated(unittest.TestCase):
+    """UTC+7 chỉ nói một lần (ở dòng phụ trên đầu thẻ), không lặp trong nhãn."""
+
+    def test_label_is_short(self):
+        svg = clock_card(get_palette(), DT, i18n.get("vi"))
+        self.assertIn(">GIỜ VIỆT NAM</text>", svg)
+        self.assertNotIn("GIỜ VIỆT NAM · UTC+7", svg)
+
+
 if __name__ == "__main__":
     unittest.main()
 

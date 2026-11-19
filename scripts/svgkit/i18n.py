@@ -31,9 +31,9 @@ STRINGS = {
         # --- đồng hồ
         "clock.title": "LIVE CLOCK",
         "clock.sub": "UTC+7 · LÀM MỚI MỖI 5 PHÚT",
-        "clock.label": "GIỜ VIỆT NAM · UTC+7",
+        "clock.label": "GIỜ VIỆT NAM",
         "clock.day": "NGÀY HÔM NAY ĐÃ TRÔI",
-        "clock.foot": "Cập nhật lúc {hhmm} · tự làm mới mỗi 5 phút bởi GitHub Actions",
+        "clock.foot": "Kim tự quay bằng CSS giữa hai lần cập nhật · workflow vẽ lại mỗi 5 phút",
         "clock.greet.morning": "Chào buổi sáng",
         "clock.greet.noon": "Chào buổi trưa",
         "clock.greet.afternoon": "Chào buổi chiều",
@@ -90,6 +90,7 @@ STRINGS = {
         "status.unknown": "KHÔNG RÕ",
         "status.foot": "Workflow tự vẽ và commit dải này · cập nhật {stamp}",
         "status.missing": "CHỜ MERGE",
+        "clock.updated": "cập nhật {hhmm}",
     },
     "en": {
         "stats.title": "GITHUB STATS",
@@ -108,9 +109,9 @@ STRINGS = {
         "langs.foot": "Measured by real code bytes across public repos · updated {stamp}",
         "clock.title": "LIVE CLOCK",
         "clock.sub": "UTC+7 · REFRESHED EVERY 5 MIN",
-        "clock.label": "VIETNAM TIME · UTC+7",
+        "clock.label": "VIETNAM TIME",
         "clock.day": "OF TODAY ALREADY GONE",
-        "clock.foot": "Updated at {hhmm} · auto-refreshed every 5 minutes by GitHub Actions",
+        "clock.foot": "Hands keep moving with CSS between refreshes · workflow repaints every 5 minutes",
         "clock.greet.morning": "Good morning",
         "clock.greet.noon": "Good noon",
         "clock.greet.afternoon": "Good afternoon",
@@ -163,6 +164,7 @@ STRINGS = {
         "status.unknown": "UNKNOWN",
         "status.foot": "Workflow tự vẽ và commit dải này · cập nhật {stamp}",
         "status.missing": "CHỜ MERGE",
+        "clock.updated": "updated {hhmm}",
     },
 }
 
