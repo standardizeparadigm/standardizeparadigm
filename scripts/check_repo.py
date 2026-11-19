@@ -903,6 +903,67 @@ def check_cron_resolution(root=None):
                     % (rel(path), expression))
 
 
+# ----------------------------------- 4b6b. Hai workflow không chạy cùng phút
+def _cron_minutes(field):
+    """Tập phút (0-59) mà trường cron phút sẽ nổ. None nếu không hiểu."""
+    minutes = set()
+    for part in field.split(","):
+        step = 1
+        span = part
+        if "/" in part:
+            span, _, step_text = part.partition("/")
+            if not step_text.isdigit() or int(step_text) < 1:
+                return None
+            step = int(step_text)
+        if span in ("*", ""):
+            span = "0-59"
+        if "-" in span:
+            low, _, high = span.partition("-")
+            if not (low.isdigit() and high.isdigit()):
+                return None
+            low, high = int(low), int(high)
+        elif span.isdigit():
+            low = high = int(span)
+        else:
+            return None
+        if not 0 <= low <= high <= 59:
+            return None
+        minutes.update(range(low, high + 1, step))
+    return minutes or None
+
+
+def check_cron_minute_collisions(root=None):
+    """Hai workflow lịch không nên nổ đúng cùng một phút.
+
+    Không sai về cú pháp, nhưng cùng phút nghĩa là cùng tranh một lượt
+    runner và cùng push lên một nhánh: job sau phải `git pull --rebase` rồi
+    đẩy lại, và lần nào cũng có một bên chờ. Lệch phút là sửa miễn phí.
+    """
+    root = root or ROOT
+    folder = os.path.join(root, ".github", "workflows")
+    if not os.path.isdir(folder):
+        return
+    grid = {}
+    for name in sorted(os.listdir(folder)):
+        if not name.lower().endswith((".yml", ".yaml")):
+            continue
+        for expression in RE_CRON.findall(read(os.path.join(folder, name))):
+            fields = expression.split()
+            if len(fields) != 5:
+                continue
+            minutes = _cron_minutes(fields[0])
+            if minutes:
+                grid.setdefault(name, set()).update(minutes)
+    names = sorted(grid)
+    for index, left in enumerate(names):
+        for right in names[index + 1:]:
+            shared = sorted(grid[left] & grid[right])
+            if shared:
+                warn("%s và %s cùng chạy ở phút %s — lệch phút sẽ tránh "
+                     "hai job giành một lượt runner"
+                     % (left, right, ", ".join(str(m) for m in shared)))
+
+
 # ------------------------------------------- 4b7. Badge workflow của shields
 SHIELDS_WORKFLOW = ("img.shields.io/github/actions/workflow",
                     "img.shields.io/github/workflow/status")
@@ -1146,6 +1207,7 @@ def main(argv=None):
     check_workflow_dispatch()
     check_shields_workflow_badges()
     check_cron_resolution()
+    check_cron_minute_collisions()
     check_action_pins()
     check_heading_levels()
     check_job_timeouts()
