@@ -15,6 +15,8 @@ DT = datetime(2026, 11, 19, 15, 4, 5)
 
 RE_NOW_HOUR = re.compile(r'class="clockTime nowSlot" x="308"[^>]*>(\d+)<')
 RE_NOW_MIN = re.compile(r'class="clockTime nowSlot" x="324"[^>]*>(\d+)<')
+RE_HOUR_SLOT = re.compile(r'class="clockTime[^"]*" x="308"[^>]*>(\d+)<')
+RE_MIN_SLOT = re.compile(r'class="clockTime[^"]*" x="324"[^>]*>(\d+)<')
 
 
 def now_slots(svg):
@@ -156,6 +158,37 @@ class TestHoursLeft(unittest.TestCase):
     def test_english_label(self):
         self.assertIn("16h 00m left", self._card(8, 0, "en"))
 
+
+
+
+class TestLiveTimeSlots(unittest.TestCase):
+    """Ô số nhảy theo phút — phần làm đồng hồ "sống" mà không cần workflow."""
+
+    def setUp(self):
+        self.svg = clock_card(get_palette(), DT, i18n.get("vi"))
+
+    def test_twenty_four_hour_slots(self):
+        self.assertEqual(len(RE_HOUR_SLOT.findall(self.svg)), 24)
+
+    def test_sixty_minute_slots(self):
+        self.assertEqual(len(RE_MIN_SLOT.findall(self.svg)), 60)
+
+    def test_exactly_one_slot_is_visible_by_default(self):
+        self.assertEqual(self.svg.count("clockTime nowSlot"), 2)
+
+    def test_only_the_snapshot_slot_is_marked(self):
+        self.assertEqual(now_slots(self.svg), ("15", "04"))
+
+    def test_colon_is_its_own_node(self):
+        self.assertIn('x="316" y="124" text-anchor="middle"', self.svg)
+
+    def test_minute_values_run_from_00_to_59(self):
+        values = RE_MIN_SLOT.findall(self.svg)
+        self.assertEqual(values, ["%02d" % v for v in range(60)])
+
+    def test_hour_values_run_from_00_to_23(self):
+        values = RE_HOUR_SLOT.findall(self.svg)
+        self.assertEqual(values, ["%02d" % v for v in range(24)])
 
 if __name__ == "__main__":
     unittest.main()
