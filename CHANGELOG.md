@@ -3,6 +3,26 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Sửa: dải trạng thái tiếng Anh vẫn hiện 'CHỜ MERGE'
+
+- Bảng `en` có hai giá trị chép nguyên tiếng Việt: `status.foot` và
+  `status.missing`. Người chọn tiếng Anh thấy giữa dải trạng thái một nhãn
+  tiếng Việt in hoa.
+- Không test nào bắt, vì hai bảng chỉ được so **tập khoá**, không so ngôn ngữ
+  của giá trị. Bộ test mới kiểm cả nội dung: chữ cái tiếng Việt trong bảng
+  `en`, khoảng trắng thừa, dấu rời NFD (hiện thành ô vuông ở vài font).
+
+## 2026-11-19 — Thêm bảy luật tự kiểm
+
+- `check_repo.py` có thêm: địa danh cũ, dấu `TODO`/`FIXME`, `workflow_dispatch`,
+  badge workflow của shields, nhịp cron dày hơn 5 phút, action không ghim
+  phiên bản, job thiếu `timeout-minutes`, tiêu đề Markdown nhảy cấp, chữ SVG
+  thiếu `class`, `id` trùng trong một file.
+- Mỗi luật ra đời từ một lỗi đã xảy ra thật và đều thuộc loại trình duyệt vẫn
+  vẽ, GitHub vẫn hiện — chỉ người đọc mới chịu.
+- `docs/TESTING.md` có bảng "Những luật chỉ máy thấy" ghi lại lỗi gốc, để lần
+  sau không ai xoá luật vì "có vẻ thừa".
+
 ## 2026-11-19 — Đồng hồ tự đếm phút, không cần JavaScript
 
 - Con số giờ:phút trước đây là một chuỗi tĩnh, chỉ đổi khi workflow chạy lại
