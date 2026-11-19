@@ -229,16 +229,16 @@
     <path d="M114.89 72.37L114.58 69.39" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
   </g>
   <g transform="rotate(100.000 122 140)">
-    <g class="hourHand" style="--cx:122px;--cy:140px;animation-delay:-12044.702s">
+    <g class="hourHand" style="--cx:122px;--cy:140px;animation-delay:-12054.483s">
       <rect x="119" y="107" width="6" height="40" rx="3" fill="#E8F4FF"/>
     </g>
   </g>
-  <g transform="rotate(124.470 122 140)">
-    <g class="minHand" style="--cx:122px;--cy:140px;animation-delay:-1244.702s">
+  <g transform="rotate(125.448 122 140)">
+    <g class="minHand" style="--cx:122px;--cy:140px;animation-delay:-1254.483s">
       <rect x="120" y="93" width="4" height="56" rx="2" fill="#7DD3FC" fill-opacity=".78"/>
     </g>
   </g>
-  <g class="secHand" style="--cx:122px;--cy:140px;animation-delay:-44.702s">
+  <g class="secHand" style="--cx:122px;--cy:140px;animation-delay:-54.483s">
     <path d="M122 152V80" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" filter="url(#glow)"/>
     <circle cx="122" cy="80" r="4.5" fill="#7DD3FC"/>
   </g>
