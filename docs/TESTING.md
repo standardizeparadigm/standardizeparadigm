@@ -106,7 +106,8 @@ Divider/footer:
 `check_repo`:
 
 - URL có `%`-escape sai hoặc giải mã không ra UTF-8 → báo lỗi.
-- Mojibake kiểu `Ã¡Â»` và chữ Hán/Hàn lạc vào văn bản Việt → báo lỗi.
+- Mojibake (dấu tiếng Việt bị tách thành hai ký tự Latin, hàm `looks_like_orphan_escape`)
+  và chữ Hán/Hàn lạc vào văn bản Việt → báo lỗi.
 - Mã màu `#1A2B3C` **không** bị nhầm là escape hỏng.
 - Tham chiếu `./assets/khong-co.svg` → báo lỗi; `#anchor` thì bỏ qua.
 
