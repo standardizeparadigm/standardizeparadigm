@@ -108,6 +108,63 @@ class TestGradeBoundaries(unittest.TestCase):
     def test_top_grade_needs_900(self):
         self.assertEqual(grade(self._stats(stars=300))[0], "S")
 
+
+
+def _luminance(color):
+    """Độ sáng tương đối theo WCAG 2.1."""
+    text = color.lstrip("#")
+    if len(text) == 3:
+        text = "".join(c * 2 for c in text)
+    parts = [int(text[i:i + 2], 16) / 255.0 for i in (0, 2, 4)]
+    parts = [c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+             for c in parts]
+    return 0.2126 * parts[0] + 0.7152 * parts[1] + 0.0722 * parts[2]
+
+
+def _contrast(a, b):
+    high, low = sorted((_luminance(a), _luminance(b)), reverse=True)
+    return (high + 0.05) / (low + 0.05)
+
+
+class TestContrast(unittest.TestCase):
+    """Chữ phải đọc được trên nền — đo bằng công thức WCAG, không bằng mắt.
+
+    `title`, `text`, `label` là chữ nội dung nên cần >= 4.5 (mức AA cho chữ
+    thường). `dim` là chú thích nhỏ và `accent` là nét trang trí, chỉ cần
+    >= 3.0 (mức AA cho thành phần giao diện).
+    """
+
+    def setUp(self):
+        self.themes = [(name, get_palette(name)) for name in theme_names()]
+
+    def test_titles_are_readable(self):
+        for name, pal in self.themes:
+            self.assertGreaterEqual(_contrast(pal.title, pal.bg_bot), 4.5, name)
+
+    def test_body_text_is_readable(self):
+        for name, pal in self.themes:
+            self.assertGreaterEqual(_contrast(pal.text, pal.bg_bot), 4.5, name)
+
+    def test_labels_are_readable(self):
+        for name, pal in self.themes:
+            self.assertGreaterEqual(_contrast(pal.label, pal.bg_bot), 4.5, name)
+
+    def test_dim_notes_reach_three_to_one(self):
+        for name, pal in self.themes:
+            self.assertGreaterEqual(_contrast(pal.dim, pal.bg_bot), 3.0, name)
+
+    def test_accents_stand_out_from_background(self):
+        for name, pal in self.themes:
+            self.assertGreaterEqual(_contrast(pal.accent, pal.bg_bot), 3.0, name)
+
+    def test_accent3_differs_from_accent(self):
+        for name, pal in self.themes:
+            self.assertNotEqual(pal.accent.lower(), pal.accent3.lower(), name)
+
+    def test_contrast_helper_bounds(self):
+        self.assertAlmostEqual(_contrast("#FFFFFF", "#000000"), 21.0, places=1)
+        self.assertAlmostEqual(_contrast("#777777", "#777777"), 1.0, places=1)
+
 if __name__ == "__main__":
     unittest.main()
 
