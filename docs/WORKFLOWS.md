@@ -1,4 +1,4 @@
-# ⚙️ Các workflow tự động
+# Các workflow tự động
 
 Tài liệu mô tả các GitHub Actions đang chạy trong repo `standardizeparadigm/standardizeparadigm`.
 
