@@ -172,7 +172,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
   <img src="./assets/activity.svg" width="48%" alt="Hoạt động 14 ngày gần nhất" /> <img src="./assets/live-clock.svg" width="48%" alt="Đồng hồ Việt Nam, tay kim chạy liên tục" />
 </div>
 
-<sub>⏱️ Cả hai thẻ tự vẽ lại bằng GitHub Actions; tay kim đồng hồ chạy bằng CSS nên luôn nhích. GitHub cache ảnh một lúc — chậm vài phút là cache, không phải lỗi.</sub>
+<sub>⏱️ Cả hai thẻ tự vẽ lại bằng GitHub Actions; kim đồng hồ quay và <b>số phút tự nhảy mỗi phút</b> bằng CSS. GitHub cache ảnh một lúc — chậm vài phút là cache, không phải lỗi.</sub>
 
 <div align="right"><a href="#top">🔝 &nbsp;Về đầu trang</a></div>
 
