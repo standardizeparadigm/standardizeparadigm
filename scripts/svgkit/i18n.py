@@ -118,7 +118,7 @@ STRINGS = {
         "clock.label": "VIETNAM TIME",
         "clock.left": "{h}h {m:02d}m left",
         "clock.day": "OF TODAY ALREADY GONE",
-        "clock.foot": "Hands keep moving with CSS between refreshes · workflow repaints every 5 minutes",
+        "clock.foot": "Hands and digits keep ticking in CSS between refreshes · workflow repaints every 5 minutes",
         "clock.greet.morning": "Good morning",
         "clock.greet.noon": "Good noon",
         "clock.greet.afternoon": "Good afternoon",
