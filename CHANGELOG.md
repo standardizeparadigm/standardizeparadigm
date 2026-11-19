@@ -81,6 +81,13 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
 - `api()` và `request_json()` có thêm `quiet=True` để dò workflow không làm
   ngập log CI bằng ba dòng 404 mỗi lượt chạy.
 
+## 2026-11-19 — Test chống tái phát đúng lỗi của vòng này
+
+- `test_every_workflow_file_is_on_the_strip`: so file trong `.github/workflows/`
+  với danh sách của dải, cả hai chiều — thêm workflow mà quên dải là đỏ ngay.
+- `test_workflow_states.py`: 11 test mô phỏng 404/success/failure/timeout/
+  in_progress/queued/cancelled/không có lượt chạy/lỗi 500/không token.
+
 ## 2026-11-19 — Cổng 3D: sửa lỗi mốc 24 giờ không bao giờ tới
 
 - Cổng so "lần chạy thành công gần nhất", nhưng lượt bị cổng bỏ qua **vẫn** là lượt thành công → mốc 24 giờ không bao giờ đạt được, ảnh chỉ đổi khi có push.
