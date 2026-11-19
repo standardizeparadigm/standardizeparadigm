@@ -124,3 +124,13 @@ File lớn nhất, vì CLI là nơi mọi thứ gặp nhau:
 - `--check`: 7/7 hợp lệ; file hỏng → mã thoát 1; thư mục rỗng → mã thoát 1.
 - Chạy như **tiến trình con** (`subprocess`) để bắt lỗi thứ tự khai báo hàm.
 
+## `test_workflow_gate.py`
+
+Cổng thông minh của `profile-3d.yml` là shell nằm trong YAML — loại code dễ hỏng mà không ai thấy. Test này:
+
+1. Đọc `.github/workflows/profile-3d.yml` bằng PyYAML, lấy step có `id: gate`.
+2. Tạo một `gh` giả trong thư mục tạm, trả về `created_at` và số PushEvent cho trước.
+3. Chạy đoạn shell với 5 tình huống: chưa từng chạy, có push mới, không có gì mới, quá 24 giờ, số đếm rác.
+
+Nếu PyYAML không có, 5 test này tự skip chứ không làm đỏ bộ test — CI thì luôn cài PyYAML.
+
