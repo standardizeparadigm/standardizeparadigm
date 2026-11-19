@@ -226,7 +226,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 </div>
 
 > [!NOTE]
-> **LoCheoIO — Lọ Chéo: Hũ Dưa Đại Chiến.** Game arcade muối dưa chạy 100% trong trình duyệt, gói gọn trong một file HTML, offline-first, không CDN không server. Chiếc lọ gốm chỉ chịu đi đường chéo ⚡
+> **LoCheoIO — Lọ Chéo: Hũ Dưa Đại Chiến.** Game arcade muối dưa chạy 100% trong trình duyệt, gói gọn trong một file HTML, offline-first, không CDN không server. Chiếc lọ gốm chỉ chịu đi đường chéo
 
 <details>
 <summary><b>Nhật ký học tập gần đây</b></summary>
