@@ -108,6 +108,32 @@ Tự bình luận chào mừng khi có issue/PR mới. Bỏ qua tài khoản bot
 
 ---
 
+## 7. Workflow Status — `status.yml`
+
+Vẽ `assets/status.svg`: một dải 7 viên thuốc, mỗi viên một workflow, màu
+theo lần chạy gần nhất (xanh = đạt, đỏ = lỗi, hổ phách = đang chạy, xám =
+chưa chạy, xanh dương = chờ merge).
+
+Vì sao không dùng badge shields.io ở đây:
+
+- shields chỉ đọc được workflow **nằm trên nhánh mặc định**. Workflow mới
+  tạo ở nhánh khác → badge trả `repo or workflow not found`.
+- Workflow chưa từng chạy xong → badge trả `no status` (ô xám).
+- Trang nạp thêm 6 ảnh từ server ngoài, mỗi ảnh có thể chậm hoặc chết.
+
+Dải này thì: đọc Actions API bằng chính token của repo, vẽ SVG, commit —
+nằm cùng repo, cùng CDN với các ảnh khác, không bao giờ "not found".
+
+- **Chạy:** mỗi 15 phút, và ngay khi có workflow khác vừa xong (`workflow_run`).
+- **Không đọc được API** → giữ nguyên ảnh cũ, không ghi thẻ rỗng.
+- Thêm workflow mới: thêm một dòng vào `WORKFLOWS` trong `scripts/svgkit/status.py`
+  — dải tự giãn bề rộng.
+
+> [!NOTE]
+> `workflow_dispatch` chỉ chạy được khi file workflow **đã có trên nhánh mặc
+> định**. Đó cũng là lý do badge lẫn nút "Run workflow" cùng "mất tích" với
+> một workflow còn nằm ở nhánh khác.
+
 ## Chạy lại ngay
 
 1. Vào repo → tab **Actions**.
