@@ -599,6 +599,40 @@ def check_test_claims(root=None):
                             "— hãy nâng lên" % (rel(path), number, claimed, total))
 
 
+# -------------------------------- 4bj. lớp CSS dùng trong ảnh phải có khai báo
+RE_CLASS_ATTR = re.compile(r'\bclass="([^"]+)"')
+RE_CLASS_RULE = re.compile(r"\.([A-Za-z][\w-]*)")
+
+
+def check_class_references(root=None):
+    """Mọi lớp dùng trong ảnh phải có luật CSS trong chính ảnh đó.
+
+    `class="pulse-typo"` không làm SVG hỏng — nó chỉ đơn giản là không chuyển
+    động. Không có gì báo, và mắt người khó phân biệt "ảnh tĩnh" với "ảnh
+    thiếu hoạt ảnh" nếu nhìn trong một giây.
+    """
+    root = root or ROOT
+    for path in sorted(glob.glob(os.path.join(root, "assets", "*.svg"))):
+        text = read(path)
+        # Chỉ soi trong khối <style>: dấu chấm trong phần thân là toạ độ.
+        style = RE_STYLE.findall(text)
+        defined = set(RE_CLASS_RULE.findall("\n".join(style)))
+        for attribute in RE_CLASS_ATTR.findall(text):
+            names = attribute.split()
+            # `smilOnly` đánh dấu phần tử chỉ được SMIL điều khiển (CSS tắt
+            # hẳn), nên lớp đi kèm không cần luật CSS.
+            if "smilOnly" in names:
+                continue
+            for name in names:
+                if name in ("fSans", "fMono"):
+                    continue
+                if name not in defined:
+                    err("%s: lớp %r không có luật CSS — hoạt ảnh sẽ im lặng "
+                        "không chạy" % (rel(path), name))
+
+
+RE_STYLE = re.compile(r"<style[^>]*>(.*?)</style>", re.S)
+
 # ------------------------------------------- 4bi. id trùng trong một ảnh
 RE_SVG_ID = re.compile(r'\bid="([^"]+)"')
 
@@ -1242,6 +1276,7 @@ def main(argv=None):
     check_svg_safety()
     check_font_shorthand()
     check_duplicate_ids()
+    check_class_references()
     check_doc_titles()
     check_svg_budget()
     check_python()
