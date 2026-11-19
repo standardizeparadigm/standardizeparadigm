@@ -1,6 +1,6 @@
 # 🤝 Đóng góp cho Standardize Paradigm
 
-Cảm ơn bạn đã quan tâm đến trang cá nhân này! Mình là học sinh lớp 7 tự học code — mọi đóng góp, dù nhỏ, đều rất đáng giá.
+Cảm ơn bạn đã quan tâm đến trang cá nhân này! Mình tự học code — mọi đóng góp, dù nhỏ, đều rất đáng giá.
 
 ## 🚀 Cách bắt đầu
 
