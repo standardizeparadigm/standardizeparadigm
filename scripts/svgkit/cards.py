@@ -133,10 +133,16 @@ def stats_card(pal, data, dt, t, width=640, height=258):
 
 def langs_card(pal, data, dt, t, width=640, height=258):
     """Thẻ ngôn ngữ: thanh xếp chồng + chú giải 2 cột."""
-    items = sorted((data.get("langs") or {}).items(), key=lambda kv: -kv[1])[:8]
+    every = sorted((data.get("langs") or {}).items(), key=lambda kv: -kv[1])
+    items = every[:8]
     if not items:
         items = [("Python", 1)]
-    total = sum(v for _, v in items) or 1
+        every = items
+    # Phần trăm tính trên TOÀN BỘ byte code, không phải chỉ 8 ngôn ngữ đầu:
+    # nhờ vậy "89.3%" đúng kể cả khi còn ngôn ngữ nhỏ không hiện ra.
+    total = sum(v for _, v in every) or 1
+    rest = every[8:]
+    rest_pct = 100.0 * sum(v for _, v in rest) / total
     stamp = dt.strftime("%d/%m · %H:%M")
 
     parts = open_svg(pal, width, height, t("langs.title"),
@@ -193,6 +199,10 @@ def langs_card(pal, data, dt, t, width=640, height=258):
         parts.append('    </rect>')
         parts.append('  </g>')
 
+    if rest:
+        parts.append('  <text x="618" y="%d" text-anchor="end" class="footNote">%s</text>'
+                     % (height - 10, esc(t("langs.more", n=len(rest),
+                                           pct=("%.1f" % rest_pct)))))
     parts += _footer(pal, t("langs.foot", stamp=stamp))
     parts.append("</svg>")
     return "\n".join(parts)

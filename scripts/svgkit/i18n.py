@@ -77,6 +77,7 @@ STRINGS = {
         "desc.langs": "Thẻ ngôn ngữ lập trình dùng nhiều nhất, tính theo byte code",
         "desc.clock": "Đồng hồ Việt Nam UTC+7 với kim quay liên tục",
         "desc.activity": "Biểu đồ contribution 14 ngày gần nhất",
+        "langs.more": "+{n} ngôn ngữ khác · {pct}%",
     },
     "en": {
         "stats.title": "GITHUB STATS",
@@ -137,6 +138,7 @@ STRINGS = {
         "desc.langs": "Most used languages card, measured in code bytes",
         "desc.clock": "Vietnam clock (UTC+7) with continuously moving hands",
         "desc.activity": "Contribution chart for the last 14 days",
+        "langs.more": "+{n} more languages · {pct}%",
     },
 }
 
