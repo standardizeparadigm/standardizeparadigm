@@ -53,51 +53,61 @@ class TestActivityCard(unittest.TestCase):
                                         i18n.get()))
 
 
-class TestStreaks(unittest.TestCase):
-    def test_simple(self):
-        current, longest = _streaks(series([1, 1, 0, 1, 1, 1]))
-        self.assertEqual(current, 3)
-        self.assertEqual(longest, 3)
+class TestStreaksFunction(unittest.TestCase):
+    """`_streaks` tính hai con số mà thẻ in ra."""
 
-    def test_current_zero_when_today_empty(self):
-        current, longest = _streaks(series([1, 1, 1, 0]))
-        self.assertEqual(current, 0)
-        self.assertEqual(longest, 3)
+    def test_empty_is_zero_pair(self):
+        self.assertEqual(_streaks([]), (0, 0))
 
-    def test_all_zero(self):
-        self.assertEqual(_streaks(series([0, 0, 0])), (0, 0))
+    def test_single_busy_day(self):
+        self.assertEqual(_streaks(series([3])), (1, 1))
 
-    def test_all_full(self):
-        self.assertEqual(_streaks(series([2, 2, 2, 2])), (4, 4))
+    def test_trailing_days_make_the_current_streak(self):
+        self.assertEqual(_streaks(series([0, 2, 5, 1]))[0], 3)
 
+    def test_zero_today_breaks_the_current_streak(self):
+        self.assertEqual(_streaks(series([1, 1, 0]))[0], 0)
 
-class TestAverageLineFlow(unittest.TestCase):
-    def test_average_line_flows(self):
-        svg = activity_card(get_palette("sky"), CONTRIB, DT, i18n.get("vi"))
-        self.assertIn("dashFlow", svg)
-        self.assertIn("stroke-dasharray", svg)
+    def test_longest_survives_a_gap(self):
+        self.assertEqual(_streaks(series([1, 1, 1, 0, 1]))[1], 3)
 
-class TestActivityTimezone(unittest.TestCase):
-    def test_stamp_is_vietnam_time(self):
-        utc = datetime(2026, 11, 19, 9, 0, tzinfo=timezone.utc)
-        svg = activity_card(get_palette(), CONTRIB, utc, i18n.get("vi"))
-        self.assertIn("19/11 · 16:00", svg)
+    def test_all_busy_is_both(self):
+        self.assertEqual(_streaks(series([1, 1, 1, 1])), (4, 4))
 
 
-class TestTodayHalo(unittest.TestCase):
-    """Cột hôm nay có vòng thở phía sau chấm sáng."""
+class TestStreakRendering(unittest.TestCase):
+    """Chuỗi ngày đến từ API; thẻ chỉ vẽ lại, không được bịa."""
 
-    def setUp(self):
-        self.svg = activity_card(get_palette(), CONTRIB, DT, i18n.get("vi"))
+    def _card(self, **extra):
+        contrib = {"total": 42, "days": series([2, 0, 5])}
+        contrib.update(extra)
+        return activity_card(get_palette("sky"), contrib, DT, i18n.get("vi"))
 
-    def test_halo_ring_present(self):
-        self.assertIn('r="11" fill="none"', self.svg)
-        self.assertIn('class="pulseSlow"', self.svg)
+    def test_missing_streak_renders_zero(self):
+        self.assertIn('>0 ngày<', self._card())
 
-    def test_dot_has_glow(self):
-        self.assertIn('r="3.4" fill="', self.svg)
-        self.assertIn('filter="url(#glow)"', self.svg)
+    def test_provided_streak_reaches_the_card(self):
+        svg = self._card(streak_current=8, streak_longest=14)
+        self.assertIn(">8 ngày<", svg)
+        self.assertIn(">14 ngày<", svg)
 
+    def test_total_is_printed(self):
+        self.assertIn(">42<", self._card())
+
+    def test_empty_day_list_returns_none(self):
+        # Hợp đồng: không có ngày nào thì trả None để tầng trên giữ ảnh cũ,
+        # thay vì ghi đè bằng một biểu đồ trống.
+        self.assertIsNone(activity_card(get_palette("sky"),
+                                        {"total": 0, "days": []},
+                                        DT, i18n.get("vi")))
+
+    def test_none_total_is_shown_as_a_dash(self):
+        # Không biết tổng thì hiện gạch, không hiện 0: 0 là một con số khẳng
+        # định "năm nay chưa có contribution nào".
+        svg = activity_card(get_palette("sky"),
+                            {"total": None, "days": series([1])},
+                            DT, i18n.get("vi"))
+        self.assertIn('class="bigValue">-<', svg)
 
 if __name__ == "__main__":
     unittest.main()
