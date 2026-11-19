@@ -81,6 +81,7 @@ chịu.
 | SMIL lặp dưới 1 giây | sửa CSS không chạm tới hoạt ảnh SMIL nên nó đi đường riêng |
 | Ví dụ Python không biên dịch được | người copy mất mười phút vì một dấu hai chấm thiếu |
 | File test không có tên trong tài liệu | người mới tạo thêm file thứ hai cùng test một thứ |
+| `pip install` không ghim | mỗi ngày cài một bản PyYAML khác, test chuyển sang skip mà không ai biết |
 | Không dùng emoji | máy thiếu font emoji hiện ô vuông, máy có thì ảnh bị đẩy cao hơn |
 
 ## `helpers.py`
