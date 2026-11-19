@@ -3,6 +3,15 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Nhãn tuổi đổi màu, và `--check` bắt ảnh phình
+
+- Dải trạng thái: tuổi quá một ngày chuyển sang hổ phách, để một dấu ĐẠT từ
+  25 ngày trước không trông y hệt lượt chạy sáng nay.
+- `generate_cards.py --check` in tổng dung lượng và trả mã 1 nếu có ảnh vượt
+  40 KB — trước đây một file 120 KB vẫn được báo là "hợp lệ".
+- `README_BUDGET` đếm dòng bằng `splitlines`, nên README đúng 360 dòng không
+  còn bị báo là 361.
+
 ## 2026-11-19 — Bốn luật mới bắt những lỗi không ai báo
 
 - **`id` trùng trong một ảnh**: `url(#halo)` chỉ trỏ tới phần tử đầu tiên,
