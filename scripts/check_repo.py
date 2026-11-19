@@ -599,6 +599,26 @@ def check_test_claims(root=None):
                             "— hãy nâng lên" % (rel(path), number, claimed, total))
 
 
+# --------------------------------------------- 4b6. Workflow phải chạy tay được
+def check_workflow_dispatch(root=None):
+    """Mọi workflow phải có `workflow_dispatch`.
+
+    Không có nó thì khi ảnh sai, người duy nhất sửa được là người biết
+    chờ đúng khung giờ của cron. Một nút "Run workflow" là khác biệt giữa
+    "sửa trong 30 giây" và "đợi 3 tiếng".
+    """
+    root = root or ROOT
+    folder = os.path.join(root, ".github", "workflows")
+    if not os.path.isdir(folder):
+        return
+    for name in sorted(os.listdir(folder)):
+        if not name.lower().endswith((".yml", ".yaml")):
+            continue
+        path = os.path.join(folder, name)
+        if "workflow_dispatch" not in read(path):
+            err("%s: thiếu 'workflow_dispatch' (không chạy tay được)" % rel(path))
+
+
 # ------------------------------------------------------- 4b5. Dấu việc còn treo
 RE_TODO = re.compile(r"\b(TODO|FIXME|XXX|HACK)\b")
 
@@ -788,6 +808,7 @@ def main(argv=None):
     check_conflict_markers()
     check_stale_places()
     check_todo_markers()
+    check_workflow_dispatch()
     check_svg_budget()
     check_python()
     check_module_docstrings()
