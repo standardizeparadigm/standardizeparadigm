@@ -146,6 +146,9 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 | sao nhấp nháy ở footer | 4s (lệch pha 0 – 4.2s) | CSS |
 | hạt sáng bay quanh vành rank | 22s | SMIL rotate |
 | đèn chạy trên 12 vạch giờ | 6s (mỗi vạch lệch 0.5s) | SMIL opacity |
+| `slotMin` (ô số phút) | 3600s | CSS |
+| `slotHour` (ô số giờ) | 86400s | CSS |
+| chấm đầu vòng cung ngày | 3.2s | SMIL `r` |
 | hạt sáng chạy dọc divider | 9s | SMIL |
 | thanh ngôn ngữ "thở" | 5s / 6s, lệch 0.35s | SMIL opacity |
 
