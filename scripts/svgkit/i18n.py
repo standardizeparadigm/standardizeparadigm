@@ -1,0 +1,213 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+i18n.py — Chữ trên các thẻ, hai thứ tiếng.
+
+Mặc định tiếng Việt (`--lang vi`), có thể đổi sang tiếng Anh (`--lang en`).
+Thêm ngôn ngữ mới = thêm một dict cùng bộ khóa; test sẽ báo nếu thiếu khóa.
+"""
+
+LANGS = ("vi", "en")
+DEFAULT_LANG = "vi"
+
+STRINGS = {
+    "vi": {
+        # --- thẻ thống kê
+        "stats.title": "GITHUB STATS",
+        "stats.updated": "CẬP NHẬT {stamp}",
+        "stats.stars": "STARS",
+        "stats.forks": "FORKS",
+        "stats.repos": "REPOS",
+        "stats.followers": "FOLLOWERS",
+        "stats.following": "FOLLOWING",
+        "stats.commits": "COMMITS",
+        "stats.rank": "RANK",
+        "stats.progress": "{pct}% TIẾN ĐỘ",
+        "stats.foot": "Dữ liệu thật từ GitHub API · ảnh nằm trong repo nên không bao giờ rate-limit",
+        # --- thẻ ngôn ngữ
+        "langs.title": "MOST USED LANGUAGES",
+        "langs.sub": "THEO BYTE CODE THẬT",
+        "langs.foot": "Tính theo số byte code thật trong các repo công khai · cập nhật {stamp}",
+        # --- đồng hồ
+        "clock.title": "LIVE CLOCK",
+        "clock.sub": "UTC+7 · LÀM MỚI MỖI 5 PHÚT",
+        "clock.label": "GIỜ VIỆT NAM",
+        "clock.left": "còn {h}g{m:02d}",
+        "clock.day": "NGÀY HÔM NAY ĐÃ TRÔI",
+        "clock.foot": "Kim và số tự chạy bằng CSS · vẽ lại mỗi 5 phút",
+        "clock.greet.morning": "Chào buổi sáng",
+        "clock.greet.noon": "Chào buổi trưa",
+        "clock.greet.afternoon": "Chào buổi chiều",
+        "clock.greet.evening": "Chào buổi tối",
+        "clock.greet.night": "Đang thức khuya",
+        # --- thẻ hoạt động
+        "act.title": "CONTRIBUTION ACTIVITY",
+        "act.sub": "365 NGÀY · {stamp}",
+        "act.total": "CẢ NĂM",
+        "act.streak": "CHUỖI HIỆN TẠI",
+        "act.best": "CHUỖI DÀI NHẤT",
+        "act.days": "ngày",
+        "act.range": "14 NGÀY GẦN NHẤT",
+        "act.today": "HÔM NAY +{n}",
+        "act.foot": "Đếm từ lịch contribution thật của GitHub · cập nhật {stamp}",
+        # --- chung
+        "wait.title.stats": "GitHub Stats",
+        "wait.title.langs": "Most Used Languages",
+        "wait.line1": "Chạy workflow “Profile Cards” để tạo thẻ này",
+        "wait.line2": "Actions → Profile Cards (LTS) → Run workflow",
+        "wait.empty1": "Chưa có dữ liệu",
+        "wait.empty2": "Thẻ này sẽ tự điền sau khi workflow chạy lần đầu",
+        # --- hero
+        "hero.sub": "Học sinh lớp 7 · Lập trình viên tự học · Kon Tum, Quảng Ngãi",
+        "hero.pill1": "LỚP 7",
+        "hero.pill2": "UTC+7",
+        "hero.pill3": "TỰ HỌC",
+        "hero.pill4": "KON TUM",
+        "hero.status": "đang code",
+        "hero.type1": "print(\"Hello World\")",
+        "hero.type2": "học một thứ → mở ra mười thứ",
+        "hero.type3": "bug hôm nay = bài học ngày mai",
+        "hero.hint": "keep learning · keep building · stay curious",
+        # --- footer
+        "footer.title": "Thanks for visiting!",
+        "footer.sub": "Keep learning • Keep building • Keep being curious",
+        "footer.made": "Làm bằng Python và rất nhiều lần Ctrl+S",
+        "desc.hero": "Ảnh bìa: tên, vai trò và nơi sống của tác giả",
+        "desc.footer": "Chân trang: lời cảm ơn và hai lớp sóng chuyển động",
+        "desc.stats": "Thẻ thống kê GitHub: stars, forks, repos, followers, following, commits và hạng",
+        "desc.langs": "Thẻ ngôn ngữ lập trình dùng nhiều nhất, tính theo byte code",
+        "desc.clock": "Đồng hồ Việt Nam UTC+7 với kim quay liên tục",
+        "desc.activity": "Biểu đồ contribution 14 ngày gần nhất",
+        "langs.more": "+{n} ngôn ngữ khác · {pct}%",
+        "act.avg": "TB {n}",
+        "act.peak": "cao nhất {n}",
+        "desc.wait": "Thẻ tạm: chạy workflow Profile Cards để có số liệu",
+        "status.title": "TRẠNG THÁI WORKFLOW",
+        "status.desc": "Trạng thái lần chạy gần nhất của từng workflow · cập nhật {stamp}",
+        "status.summary": "{ok}/{total} workflow ổn",
+        "status.passing": "ĐẠT",
+        "status.failing": "LỖI",
+        "status.running": "ĐANG CHẠY",
+        "status.none": "CHƯA CHẠY",
+        "status.unknown": "KHÔNG RÕ",
+        "status.ago_min": "{n} phút trước",
+        "status.ago_hr": "{n} giờ trước",
+        "status.ago_day": "{n} ngày trước",
+
+        "status.foot": "Workflow tự vẽ và commit dải này · cập nhật {stamp}",
+        "status.missing": "CHỜ MERGE",
+        "clock.updated": "cập nhật {hhmm}",
+    },
+    "en": {
+        "stats.title": "GITHUB STATS",
+        "stats.updated": "UPDATED {stamp}",
+        "stats.stars": "STARS",
+        "stats.forks": "FORKS",
+        "stats.repos": "REPOS",
+        "stats.followers": "FOLLOWERS",
+        "stats.following": "FOLLOWING",
+        "stats.commits": "COMMITS",
+        "stats.rank": "RANK",
+        "stats.progress": "{pct}% PROGRESS",
+        "stats.foot": "Real data from the GitHub API · images live in the repo, so no rate limits",
+        "langs.title": "MOST USED LANGUAGES",
+        "langs.sub": "BY REAL CODE BYTES",
+        "langs.foot": "Measured by real code bytes across public repos · updated {stamp}",
+        "clock.title": "LIVE CLOCK",
+        "clock.sub": "UTC+7 · REFRESHED EVERY 5 MIN",
+        "clock.label": "VIETNAM TIME",
+        "clock.left": "{h}h {m:02d}m left",
+        "clock.day": "OF TODAY ALREADY GONE",
+        "clock.foot": "Hands and digits tick in CSS · repainted every 5 min",
+        "clock.greet.morning": "Good morning",
+        "clock.greet.noon": "Good noon",
+        "clock.greet.afternoon": "Good afternoon",
+        "clock.greet.evening": "Good evening",
+        "clock.greet.night": "Still awake",
+        "act.title": "CONTRIBUTION ACTIVITY",
+        "act.sub": "365 DAYS · {stamp}",
+        "act.total": "THIS YEAR",
+        "act.streak": "CURRENT STREAK",
+        "act.best": "LONGEST STREAK",
+        "act.days": "days",
+        "act.range": "LAST 14 DAYS",
+        "act.today": "TODAY +{n}",
+        "act.foot": "Counted from the real GitHub contribution calendar · updated {stamp}",
+        "wait.title.stats": "GitHub Stats",
+        "wait.title.langs": "Most Used Languages",
+        "wait.line1": "Run the “Profile Cards” workflow to build this card",
+        "wait.line2": "Actions → Profile Cards (LTS) → Run workflow",
+        "wait.empty1": "No data yet",
+        "wait.empty2": "This card fills itself the first time the workflow runs",
+        "hero.sub": "Grade 7 student · self-taught developer · Kon Tum, Quang Ngai",
+        "hero.pill1": "GRADE 7",
+        "hero.pill2": "UTC+7",
+        "hero.pill3": "SELF-TAUGHT",
+        "hero.pill4": "KON TUM",
+        "hero.status": "coding now",
+        "hero.type1": "print(\"Hello World\")",
+        "hero.type2": "learn one thing → unlock ten more",
+        "hero.type3": "today's bug = tomorrow's lesson",
+        "hero.hint": "keep learning · keep building · stay curious",
+        "footer.title": "Thanks for visiting!",
+        "footer.sub": "Keep learning • Keep building • Keep being curious",
+        "footer.made": "Made with Python and a lot of Ctrl+S",
+        "desc.hero": "Cover image: the author's name, role and location",
+        "desc.footer": "Footer: thank-you line and two moving waves",
+        "desc.stats": "GitHub stats card: stars, forks, repos, followers, following, commits and rank",
+        "desc.langs": "Most used languages card, measured in code bytes",
+        "desc.clock": "Vietnam clock (UTC+7) with continuously moving hands",
+        "desc.activity": "Contribution chart for the last 14 days",
+        "langs.more": "+{n} more languages · {pct}%",
+        "act.avg": "AVG {n}",
+        "act.peak": "peak {n}",
+        "desc.wait": "Placeholder card: run the Profile Cards workflow",
+        "status.title": "WORKFLOW STATUS",
+        "status.desc": "Latest run of every workflow · updated {stamp}",
+        "status.summary": "{ok}/{total} workflows OK",
+        "status.passing": "PASSING",
+        "status.failing": "FAILING",
+        "status.running": "RUNNING",
+        "status.none": "NO RUNS",
+        "status.unknown": "UNKNOWN",
+        "status.ago_min": "{n}m ago",
+        "status.ago_hr": "{n}h ago",
+        "status.ago_day": "{n}d ago",
+
+        "status.foot": "Workflows draw and commit this strip · updated {stamp}",
+        "status.missing": "AWAIT MERGE",
+        "clock.updated": "updated {hhmm}",
+    },
+}
+
+
+WEEKDAYS = {
+    "vi": ["Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy",
+           "Chủ Nhật"],
+    "en": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
+           "Sunday"],
+}
+
+
+class Translator:
+    """Tra cứu chuỗi theo khóa, tự điền tham số, thiếu khóa thì trả khóa."""
+
+    def __init__(self, lang=DEFAULT_LANG):
+        self.lang = lang if lang in STRINGS else DEFAULT_LANG
+        self.table = STRINGS[DEFAULT_LANG].copy()
+        self.table.update(STRINGS[self.lang])
+
+    def weekday(self, index):
+        """0 = thứ Hai ... 6 = Chủ Nhật."""
+        return WEEKDAYS[self.lang][int(index) % 7]
+
+    def __call__(self, key, **kwargs):
+        text = self.table.get(key, key)
+        try:
+            return text.format(**kwargs) if kwargs else text
+        except (KeyError, IndexError, ValueError):
+            return text
+
+
+def get(lang=DEFAULT_LANG):
+    return Translator(lang)

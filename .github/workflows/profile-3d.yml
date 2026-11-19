@@ -1,36 +1,152 @@
 # =====================================================================
-#  profile-3d.yml - Bieu do contribution 3D
-#  Dat file nay tai: .github/workflows/profile-3d.yml
-#  Khong can sua gi ca. Sau khi commit: tab Actions -> Run workflow.
-#  Anh se duoc tao tai: profile-3d-contrib/profile-night-rainbow.svg
+#  profile-3d.yml — Biểu đồ contribution 3D, kiểm tra mỗi 30 phút
+#
+#  Ảnh 3D chỉ đổi khi (a) có push mới hoặc (b) sang ngày mới, nên không
+#  cần thức dậy mỗi 5 phút. Workflow thức mỗi 30 phút, còn CỔNG THÔNG MINH
+#  quyết định có vẽ lại hay không:
+#
+#    - có PushEvent mới kể từ lần chạy thành công trước  -> vẽ lại
+#    - đã quá 24 giờ kể từ lần chạy trước                -> vẽ lại (bắt mốc ngày mới)
+#    - còn lại                                           -> bỏ qua, thoát trong vài giây
+#
+#  Push vẫn được bắt ngay (trigger push bên dưới), nên ảnh không bao giờ
+#  chậm quá nửa giờ mà mỗi ngày chỉ tốn 1–2 commit thật.
 # =====================================================================
 name: GitHub Profile 3D Contrib
 
 on:
   schedule:
-    - cron: "0 18 * * *"   # moi ngay 01:00 gio Viet Nam
+    - cron: "*/30 * * * *"       # mỗi 30 phút; cổng 24h bên dưới tự bỏ qua
   workflow_dispatch:
   push:
     branches: [main]
+    paths:
+      - ".github/workflows/profile-3d.yml"
+      - "scripts/fetch_contributions.py"
+
+concurrency:
+  group: profile-3d
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    timeout-minutes: 10
+    # bot commit ảnh -> không chạy lại chính mình (tránh vòng lặp)
+    if: github.actor != 'github-actions[bot]'
     steps:
-      - uses: actions/checkout@v7
+      - name: Checkout nhánh mặc định
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          # cần lịch sử để biết ảnh 3D đổi lần cuối khi nào (git log)
+          fetch-depth: 0
 
-      - name: Generate 3D contribution graph
+      - name: Cổng thông minh — có gì mới không?
+        id: gate
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -uo pipefail
+          WF="profile-3d.yml"
+          OWNER="${GITHUB_REPOSITORY_OWNER:-${GITHUB_REPOSITORY%%/*}}"
+          NOW=$(date -u +%s)
+
+          # Mốc đúng để so sánh là lần ẢNH ĐỔI, không phải lần workflow chạy:
+          # một lượt bị cổng bỏ qua vẫn "thành công", nên nếu so theo run thì
+          # mốc 24 giờ không bao giờ tới.
+          LAST_TS=$(git log -1 --format=%ct -- profile-3d-contrib 2>/dev/null || true)
+          case "$LAST_TS" in ''|*[!0-9]*) LAST_TS=0 ;; esac
+
+          if [ "$LAST_TS" -eq 0 ]; then
+            LAST=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/$WF/runs?status=success&per_page=1" \
+                     --jq '.workflow_runs[0].created_at' 2>/dev/null || true)
+            if [ -z "$LAST" ] || [ "$LAST" = "null" ]; then
+              echo "Chưa từng có ảnh 3D -> vẽ lần đầu."
+              echo "run=1" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            LAST_TS=$(date -u -d "$LAST" +%s)
+          fi
+
+          LAST=$(date -u -d "@$LAST_TS" +%Y-%m-%dT%H:%M:%SZ)
+          NEW=$(gh api "users/$OWNER/events/public?per_page=100" \
+                  --jq "[.[] | select(.type == \"PushEvent\" and .created_at > \"$LAST\")] | length" \
+                  2>/dev/null || true)
+          case "$NEW" in ''|*[!0-9]*) NEW=0 ;; esac
+          AGE=$((NOW - LAST_TS))
+          echo "Lần chạy tốt trước : $LAST (cách đây ${AGE}s)"
+          echo "PushEvent mới      : $NEW"
+
+          if [ "${NEW:-0}" -gt 0 ]; then
+            echo "Có push mới -> vẽ lại."
+            echo "run=1" >> "$GITHUB_OUTPUT"
+          elif [ "$AGE" -ge 86400 ]; then
+            echo "Đã quá 24 giờ -> vẽ lại để bắt mốc ngày mới."
+            echo "run=1" >> "$GITHUB_OUTPUT"
+          else
+            echo "Chưa có gì mới -> bỏ qua lượt này (tiết kiệm runner)."
+            echo "run=0" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Vẽ biểu đồ 3D
+        if: steps.gate.outputs.run == '1'
         uses: yoshi389111/github-profile-3d-contrib@v0.9.3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           USERNAME: ${{ github.repository_owner }}
 
-      - name: Commit and push
+      - name: Kiểm tra ảnh sinh ra
+        if: steps.gate.outputs.run == '1'
         run: |
+          set -e
+          if [ ! -d profile-3d-contrib ]; then
+            echo "!! Không có thư mục profile-3d-contrib — action không chạy đúng."
+            exit 1
+          fi
+          echo "Số file SVG: $(find profile-3d-contrib -name '*.svg' | wc -l)"
+          python3 - <<'PY'
+          import glob
+          import sys
+          import xml.dom.minidom as md
+          bad = []
+          for path in glob.glob("profile-3d-contrib/*.svg"):
+              try:
+                  md.parse(path)
+              except Exception as error:
+                  bad.append("%s: %s" % (path, error))
+          if bad:
+              print("!! SVG bị lỗi XML:")
+              print("\n".join(bad))
+              sys.exit(1)
+          print("Tất cả SVG đều hợp lệ.")
+          PY
+
+      - name: Commit + push
+        if: steps.gate.outputs.run == '1'
+        run: |
+          set -e
+          TARGET="${{ github.event.repository.default_branch }}"
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A .
-          git commit -m "chore: update 3d contribution graph" || echo "no changes"
-          git push
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add profile-3d-contrib
+          if git diff --cached --quiet; then
+            echo "Không có thay đổi — bỏ qua commit."
+            exit 0
+          fi
+          git commit -m "chore(3d): cập nhật biểu đồ contribution"
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin "$TARGET" || true
+            if git push origin "HEAD:$TARGET"; then
+              echo "Đã push: $(git log -1 --oneline)"
+              exit 0
+            fi
+            echo "Push lần $i thất bại, thử lại..."
+            sleep $((i * 4))
+          done
+          echo "!! Push thất bại sau 3 lần thử." >&2
+          exit 1

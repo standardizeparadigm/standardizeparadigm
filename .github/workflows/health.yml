@@ -1,0 +1,78 @@
+# =====================================================================
+#  health.yml — "Bác sĩ" của repo
+#
+#  Chạy scripts/check_repo.py để bắt lỗi TRƯỚC khi bạn nhìn thấy trên
+#  trang: ký tự hỏng, SVG lỗi XML, URL %-escape sai, anchor chết,
+#  workflow YAML hỏng, script Python không biên dịch được...
+#
+#  Lịch: mỗi push / pull request + 06:00 mỗi ngày (giờ Việt Nam).
+# =====================================================================
+name: 🩺 Repo Health
+
+on:
+  push:
+    branches: [main, master]
+    # Ảnh do bot vẽ lại liên tục -> bỏ qua cả thư mục để không chạy 300+
+    # lần/ngày. Liệt kê từng file thì file mới sinh ra (footer.svg,
+    # divider.svg) lọt lưới và mỗi commit của bot lại đánh thức một lượt
+    # chạy tốn 40 giây.
+    paths-ignore:
+      - "assets/**"
+      - "profile-3d-contrib/**"
+  pull_request:
+  schedule:
+    - cron: "0 23 * * *"        # 06:00 giờ Việt Nam
+  workflow_dispatch:
+
+concurrency:
+  group: health-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Chuẩn bị Python + PyYAML (không bắt buộc)
+        run: |
+          python3 --version
+          python3 -m pip install --quiet --disable-pip-version-check pyyaml \
+            || echo "(không cài được pyyaml — sẽ kiểm tra YAML ở mức văn bản)"
+
+      - name: Kiểm tra sức khỏe repo
+        run: python3 scripts/check_repo.py
+
+      - name: Chạy bộ kiểm thử
+        run: python3 -m unittest discover -s scripts/tests -t scripts -v
+
+      - name: Thử vẽ lại toàn bộ SVG với MỌI bảng màu
+        run: |
+          set -e
+          for theme in $(python3 scripts/generate_cards.py --list-themes | awk '{print $1}'); do
+            echo "--- theme: $theme"
+            python3 scripts/generate_cards.py --demo --all \
+              --theme "$theme" --lang vi --out "/tmp/svg-$theme"
+            python3 scripts/generate_cards.py --demo --all \
+              --theme "$theme" --lang en --out "/tmp/svg-en-$theme"
+          done
+
+      - name: Kiểm tra SVG vừa vẽ
+        run: |
+          python3 - <<'PY'
+          import glob
+          import sys
+          import xml.dom.minidom as md
+          files = sorted(glob.glob("/tmp/svg-*/*.svg"))
+          if not files:
+              print("!! Không có SVG nào được sinh ra")
+              sys.exit(1)
+          for f in files:
+              md.parse(f)
+          print("OK  %d SVG hợp lệ" % len(files))
+          PY

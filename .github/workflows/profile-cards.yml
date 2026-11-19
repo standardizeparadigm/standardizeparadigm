@@ -1,124 +1,122 @@
 # =====================================================================
-#  profile-cards.yml  --  The thong ke GitHub (ban LTS v7)
+#  profile-cards.yml — Thẻ thống kê, ngôn ngữ, ảnh bìa, hoạt động
 #
-#  v7 sua loi "chay xanh nhung the van la ban tam":
-#   - chay script o che do --strict: khong lay duoc du lieu thi BAO DO,
-#     khong im lang nua.
-#   - kiem tra lai noi dung file SVG sau khi chay.
-#   - in ro da push commit nao.
+#  Chạy mỗi 3 giờ (:15), nhưng chỉ commit khi CÓ GÌ ĐỔI (--smart):
+#   - stats / top-langs / activity: ghi lại khi số liệu khác lần trước
+#   - hero / divider / footer: mỗi giờ một lần (ảnh thiết kế, không phải số liệu)
+#  Nhờ vậy trang tươi theo phút mà không sinh 144 commit rỗng mỗi ngày.
 #
-#  Dat file nay tai: .github/workflows/profile-cards.yml
-#  KHONG can sua gi, KHONG can tao token rieng.
+#  Bước 1: --cards --hero --strict --smart
+#  Bước 2: --activity --smart       (GraphQL; lỗi thì giữ ảnh cũ, không đỏ)
+#  Bước 3: kiểm tra XML từng ảnh trước khi commit
 # =====================================================================
 name: Profile Cards (LTS)
 
 on:
   schedule:
-    - cron: "0 1 * * *"     # moi ngay 08:00 gio Viet Nam
+    - cron: "15 */3 * * *"       # mỗi 3 giờ; số liệu GitHub đổi rất chậm
   workflow_dispatch:
   push:
     branches: [main, master]
     paths:
-      - "**/generate_cards.py"
+      - "scripts/generate_cards.py"
+      - "scripts/svgkit/**"
       - ".github/workflows/profile-cards.yml"
 
 concurrency:
   group: profile-cards
   cancel-in-progress: false
 
+permissions:
+  contents: write
+
 jobs:
   cards:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    timeout-minutes: 10
+    if: github.actor != 'github-actions[bot]'
     steps:
-      - name: Checkout
+      - name: Checkout nhánh mặc định
         uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.repository.default_branch }}
 
-      - name: Chan doan - in ra cay file thuc te
+      - name: Thông tin môi trường
         run: |
-          echo "Nhanh dang chay : ${{ github.ref_name }}"
-          echo "Nhanh mac dinh  : ${{ github.event.repository.default_branch }}"
-          echo "Chu repo        : ${{ github.repository_owner }}"
-          echo "Commit          : $(git log -1 --oneline 2>/dev/null || echo khong-doc-duoc)"
+          echo "Nhánh mặc định : ${{ github.event.repository.default_branch }}"
+          echo "Chủ repo        : ${{ github.repository_owner }}"
+          echo "Commit          : $(git log -1 --oneline)"
           echo "Python          : $(python3 --version 2>&1)"
-          echo ""
-          echo "--- Noi dung goc repo ---"
-          ls -la
-          echo ""
-          echo "--- Moi file .py trong repo ---"
-          find . -type f -name "*.py" -not -path "./.git/*" 2>/dev/null || true
 
-      - name: Tim va chay script
+      - name: Vẽ thẻ (chế độ --strict)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_USER: ${{ github.repository_owner }}
           DISPLAY_NAME: Standardize Paradigm
+          OUT_DIR: assets
+        run: python3 scripts/generate_cards.py --cards --hero --strict --smart
+
+      - name: Vẽ thẻ hoạt động (không chặn workflow)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_USER: ${{ github.repository_owner }}
+          OUT_DIR: assets
+        run: |
+          python3 scripts/generate_cards.py --activity --smart \
+            || echo "(bỏ qua) không lấy được lịch contribution — giữ ảnh cũ"
+
+      - name: Kiểm tra ảnh vừa ghi
         run: |
           set -e
-          SCRIPT=$(find . -type f -iname "generate_cards*" -not -path "./.git/*" 2>/dev/null | head -n 1)
+          python3 - <<'PY'
+          import os
+          import sys
+          import xml.dom.minidom as md
 
-          if [ -z "$SCRIPT" ]; then
-            echo "================================================================="
-            echo " KHONG TIM THAY generate_cards.py TRONG NHANH NAY"
-            echo "================================================================="
-            echo "  1. Sai nhanh: dang chay ${{ github.ref_name }},"
-            echo "     nhanh mac dinh la ${{ github.event.repository.default_branch }}"
-            echo "  2. File con nam trong Pull Request chua merge"
-            echo "  3. Ten file bi doi (generate_cards.py.txt)"
-            echo "  4. Up ca thu muc giai nen -> duong dan bi long 1 cap"
-            echo "  5. Up nguyen file .zip (GitHub khong tu giai nen)"
-            exit 1
-          fi
+          required = ["assets/stats.svg", "assets/top-langs.svg",
+                      "assets/hero.svg", "assets/divider.svg",
+                      "assets/footer.svg"]
+          optional = ["assets/activity.svg", "assets/live-clock.svg",
+                      "assets/status.svg"]
 
-          echo "Da tim thay script: $SCRIPT"
-          ROOT=$(cd "$(dirname "$SCRIPT")/.." && pwd)
-          echo "CARD_ROOT=$ROOT" >> "$GITHUB_ENV"
-
-          if [ "$ROOT" != "$(pwd)" ]; then
-            echo "*** CANH BAO: file khong nam o GOC repo. The van tao duoc,"
-            echo "    nhung GitHub CHI hien profile README o goc repo. ***"
-          fi
-
-          cp "$SCRIPT" /tmp/generate_cards.py
-          mkdir -p "$ROOT/assets"
-
-          echo ""
-          echo "--- Chay script (che do --strict: loi la bao do) ---"
-          OUT_DIR="$ROOT/assets" python3 /tmp/generate_cards.py --strict
-
-          echo ""
-          echo "--- Kiem tra lai noi dung the vua ghi ---"
-          for f in stats.svg top-langs.svg; do
-            if [ ! -f "$ROOT/assets/$f" ]; then
-              echo "!! thieu $f"; exit 1
-            fi
-            if grep -q "Chay workflow\|Chua co du lieu" "$ROOT/assets/$f"; then
-              echo "!! $f VAN LA THE TAM -> script khong ghi de duoc."
-              echo "   Doc cac dong HTTP o phan tren de biet ly do."
-              exit 1
-            fi
-            echo "OK  $f  ($(wc -c < "$ROOT/assets/$f") bytes)"
-          done
-          ls -la "$ROOT/assets"
+          for path in required + [p for p in optional if os.path.exists(p)]:
+              try:
+                  md.parse(path)
+              except Exception as error:
+                  print("!! %s lỗi XML: %s" % (path, error))
+                  sys.exit(1)
+              raw = open(path, encoding="utf-8").read()
+              if "Chưa có dữ liệu" in raw or "Chạy workflow" in raw:
+                  print("!! %s vẫn là thẻ tạm" % path)
+                  sys.exit(1)
+              print("OK  %-24s %6d bytes" % (path, len(raw.encode("utf-8"))))
+          PY
 
       - name: Commit + push
         run: |
+          set -e
+          TARGET="${{ github.event.repository.default_branch }}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A "$CARD_ROOT/assets"
-          if git diff --quiet --cached; then
-            echo "Khong co gi thay doi (the moi giong y the cu) - bo qua."
-          else
-            git commit -m "chore: cap nhat the thong ke"
-            git pull --rebase --autostash origin ${{ github.ref_name }} || true
-            git push
-            echo "Da push: $(git log -1 --oneline)"
+          git add assets
+          if git diff --cached --quiet; then
+            echo "Không có thay đổi — bỏ qua commit."
+            exit 0
           fi
-          echo ""
-          echo "================================================================="
-          echo " XONG. Neu trang ca nhan van hien the cu thi do la CACHE ANH"
-          echo " cua GitHub, khong phai loi. Doi 1-5 phut roi Ctrl+F5."
-          echo " Muon xem su that ngay, mo link nay:"
-          echo " github.com/${{ github.repository_owner }}/${{ github.repository_owner }}/blob/${{ github.ref_name }}/assets/stats.svg"
-          echo "================================================================="
+          git commit -m "chore(cards): cập nhật thẻ $(TZ=Asia/Ho_Chi_Minh date '+%H:%M')"
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin "$TARGET" || true
+            if git push origin "HEAD:$TARGET"; then
+              echo "Đã push: $(git log -1 --oneline)"
+              exit 0
+            fi
+            sleep $((i * 4))
+          done
+          echo "!! Push thất bại sau 3 lần thử." >&2
+          exit 1
+
+      - name: Nhắc về cache ảnh
+        if: always()
+        run: |
+          echo "Trang vẫn hiện ảnh cũ thì đó là CACHE của GitHub, không phải lỗi."
+          echo "Đợi 1–5 phút rồi Ctrl+F5."

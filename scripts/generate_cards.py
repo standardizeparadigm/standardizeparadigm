@@ -2,427 +2,395 @@
 # -*- coding: utf-8 -*-
 """
 =====================================================================
- generate_cards.py  --  Bo sinh the thong ke GitHub (ban LTS)
+ generate_cards.py — cửa vào duy nhất để vẽ toàn bộ SVG của profile
 =====================================================================
- Tai sao co file nay?
-   Cac service nhu github-readme-stats.vercel.app la server CONG CONG
-   dung chung cho hang tram nghin nguoi -> het quota API GitHub la anh
-   bao loi (503 / Maximum retries exceeded). Day la loi phia service.
+ Vì sao có file này?
+   Các service như github-readme-stats.vercel.app dùng chung server công
+   cộng cho hàng trăm nghìn người -> hết quota là ảnh báo lỗi 503.
+   Ở đây ta tự gọi API bằng token riêng của repo, tự vẽ, rồi commit ảnh
+   vào repo. Ảnh nằm trong repo nên KHÔNG BAO GIỜ bị rate-limit.
 
-   File nay tu goi API GitHub bang token rieng cua repo ban, tu ve SVG,
-   roi commit vao repo. Anh nam trong repo -> KHONG BAO GIO bi rate-limit.
+ Sinh ra:
+   assets/hero.svg         ảnh bìa động        (không cần API)
+   assets/divider.svg      đường kẻ động        (không cần API)
+   assets/footer.svg       chân trang động      (không cần API)
+   assets/live-clock.svg   đồng hồ Việt Nam     (không cần API)
+   assets/status.svg       dải trạng thái      (cần token + quyền actions:read)
+   assets/stats.svg        thẻ thống kê         (cần API)
+   assets/top-langs.svg    thẻ ngôn ngữ         (cần API)
+   assets/activity.svg     lịch contribution    (cần GraphQL + token)
 
- Dac diem LTS:
-   - Chi dung thu vien chuan cua Python (khong pip install -> khong vo)
-   - Dung GITHUB_TOKEN co san cua Actions (quota rieng cua repo ban)
-   - Neu API loi: giu nguyen anh cu, KHONG ghi de anh rong, exit 0
-   - Tu thu lai 3 lan khi mang loi
+ Ví dụ:
+   python3 scripts/generate_cards.py --all
+   python3 scripts/generate_cards.py --cards --activity --strict
+   python3 scripts/generate_cards.py --clock
+   python3 scripts/generate_cards.py --hero --theme emerald --lang en
+   python3 scripts/generate_cards.py --demo --all --out /tmp/thu
+   python3 scripts/generate_cards.py --list-themes
 
- Chay:
-   python3 scripts/generate_cards.py                 (that, trong Actions)
-   python3 scripts/generate_cards.py --demo          (du lieu mau, test)
-   python3 scripts/generate_cards.py --placeholder   (the cho "dang doi")
+ Nguyên tắc ổn định:
+   - Chỉ dùng thư viện chuẩn (không pip install -> không vỡ môi trường)
+   - Ghi file kiểu atomic: lỗi giữa chừng thì ảnh cũ vẫn nguyên
+   - API lỗi: giữ ảnh cũ, không ghi đè bằng thẻ rỗng
+   - Tự thử lại 3 lần khi mạng lỗi hoặc bị giới hạn
 =====================================================================
 """
 
+import argparse
+import hashlib
 import json
 import os
+import random
+import re
 import sys
-import time
-import urllib.error
-import urllib.parse
-import urllib.request
+import tempfile
 
-# ------------------------------------------------------------------ config
-API = "https://api.github.com"
-TOKEN = os.environ.get("GITHUB_TOKEN", "")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from svgkit import (activity_card, api, clock_card, divider, footer, hero,  # noqa: E402
+                    i18n, langs_card, stats_card, status_strip, waiting_card)
+from svgkit.palette import THEMES, get_palette  # noqa: E402
+
+OUT_DIR = os.environ.get("OUT_DIR", "assets")
 USER = (os.environ.get("GH_USER")
         or os.environ.get("USERNAME")
         or os.environ.get("GITHUB_REPOSITORY_OWNER")
         or "")
-OUT_DIR = os.environ.get("OUT_DIR", "assets")
+TOKEN = os.environ.get("GITHUB_TOKEN", "")
 DISPLAY_NAME = os.environ.get("DISPLAY_NAME", "")
-
-DEMO = "--demo" in sys.argv
-PLACEHOLDER = "--placeholder" in sys.argv
-STRICT = "--strict" in sys.argv
+REPO = os.environ.get("GITHUB_REPOSITORY", "standardizeparadigm/standardizeparadigm")
 
 BAD_USER = (
-    "\n!! KHONG BIET TAO THE CHO AI\n"
-    "   Khong co bien GH_USER / USERNAME / GITHUB_REPOSITORY_OWNER.\n"
-    "   Trong workflow phai co:  env:  GH_USER: ...owner...\n")
+    "\n!! KHÔNG BIẾT VẼ THẺ CHO AI\n"
+    "   Thiếu biến GH_USER / USERNAME / GITHUB_REPOSITORY_OWNER.\n"
+    "   Trong workflow cần:  env:  GH_USER: ...owner...\n")
 
 BAD_DATA = (
-    "\n!! KHONG LAY DUOC DU LIEU TU API GITHUB\n"
-    "   Xem cac dong HTTP o tren de biet ly do. Thuong la:\n"
-    "    - HTTP 404: sai ten user (kiem tra bien GH_USER).\n"
-    "    - HTTP 401: GITHUB_TOKEN khong duoc truyen vao buoc nay.\n"
-    "    - HTTP 403 + rate limit: doi vai phut roi chay lai.\n"
-    "    - Loi mang: chay lai workflow.\n"
-    "   THE CU DUOC GIU NGUYEN (khong ghi de bang the rong).\n")
-for a in sys.argv[1:]:
-    if not a.startswith("--"):
-        USER = a
-
-# ------------------------------------------------------------------ theme
-BG = "#0D1117"
-TITLE = "#38BDF8"
-TEXT = "#C9D1D9"
-DIM = "#8B949E"
-ACCENT = "#0EA5E9"
-LIGHT = "#7DD3FC"
-WHITE = "#FFFFFF"
-
-LANG_COLORS = {
-    "Python": "#3572A5", "JavaScript": "#F1E05A", "TypeScript": "#3178C6",
-    "HTML": "#E34C26", "CSS": "#563D7C", "SCSS": "#C6538C",
-    "Java": "#B07219", "C": "#555555", "C++": "#F34B7D", "C#": "#178600",
-    "Go": "#00ADD8", "Rust": "#DEA584", "Ruby": "#701516", "PHP": "#4F5D95",
-    "Kotlin": "#A97BFF", "Swift": "#F05138", "Dart": "#00B4AB",
-    "Shell": "#89E051", "Lua": "#000080", "Vue": "#41B883",
-    "Jupyter Notebook": "#DA5B0B", "Batchfile": "#C1F12E",
-    "PowerShell": "#012456", "Makefile": "#427819", "Dockerfile": "#384D54",
-    "Markdown": "#083FA1", "Assembly": "#6E4C13", "Processing": "#0096D8",
-    "Scratch": "#4D97FF", "Astro": "#FF5A03", "Svelte": "#FF3E00",
-}
-RAMP = ["#38BDF8", "#0EA5E9", "#0284C7", "#7DD3FC", "#0369A1",
-        "#60A5FA", "#2563EB", "#93C5FD"]
+    "\n!! KHÔNG LẤY ĐƯỢC DỮ LIỆU TỪ API GITHUB\n"
+    "   Xem các dòng HTTP ở trên để biết lý do. Thường là:\n"
+    "    - 404: sai tên user (kiểm tra GH_USER)\n"
+    "    - 401: GITHUB_TOKEN không được truyền vào bước này\n"
+    "    - 403 + rate limit: đợi vài phút rồi chạy lại\n"
+    "   ẢNH CŨ ĐƯỢC GIỮ NGUYÊN (không ghi đè bằng ảnh rỗng).\n")
 
 
-def lang_color(name, i):
-    return LANG_COLORS.get(name, RAMP[i % len(RAMP)])
+SMART = False          # --smart: bỏ qua ghi khi dữ liệu chưa đổi
+DRY_RUN = False        # --dry-run: vẽ nhưng không ghi file nào
+QUIET = False          # --quiet: chỉ in cảnh báo và lỗi
+DATA_MARK = re.compile(r"<!-- data:([0-9a-f]{8,}) -->")
 
 
-# ------------------------------------------------------------------ helpers
-def esc(s):
-    s = str(s)
-    s = s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-    return s.replace('"', "&quot;")
+# ------------------------------------------------------------------ output
+def say(message):
+    """In tiến trình — trừ khi người dùng chọn --quiet."""
+    if not QUIET:
+        print(message)
 
 
-def human(n):
-    try:
-        n = int(n)
-    except Exception:
-        return "-"
-    if n >= 1000000:
-        return str(round(n / 1000000.0, 1)) + "M"
-    if n >= 1000:
-        return str(round(n / 1000.0, 1)) + "k"
-    return str(n)
-
-
-def api(path, tries=3):
-    """GET mot endpoint API GitHub. Tra None neu that bai."""
-    url = path if path.startswith("http") else API + path
-    req = urllib.request.Request(url)
-    req.add_header("Accept", "application/vnd.github+json")
-    req.add_header("User-Agent", "profile-cards-lts")
-    if TOKEN:
-        req.add_header("Authorization", "Bearer " + TOKEN)
-    for attempt in range(tries):
-        try:
-            with urllib.request.urlopen(req, timeout=25) as r:
-                return json.loads(r.read().decode("utf-8"))
-        except urllib.error.HTTPError as e:
-            body = ""
-            try:
-                body = e.read().decode("utf-8", "replace")[:250]
-                body = " ".join(body.split())
-            except Exception:
-                pass
-            if e.code in (403, 429) and attempt < tries - 1:
-                sys.stderr.write("  HTTP %s -> thu lai | %s\n"
-                                 % (e.code, body))
-                time.sleep(5 * (attempt + 1))
-                continue
-            sys.stderr.write("  !! HTTP %s tren %s\n     %s\n"
-                             % (e.code, url, body))
-            return None
-        except Exception as e:
-            if attempt < tries - 1:
-                time.sleep(3 * (attempt + 1))
-                continue
-            sys.stderr.write("Loi mang: %s\n" % e)
-            return None
-    return None
-
-
-# ------------------------------------------------------------------ collect
-def collect():
-    print("  tao the cho user : %s" % USER)
-    print("  co GITHUB_TOKEN  : %s" % ("co" if TOKEN else "KHONG CO"))
-    user = api("/users/" + urllib.parse.quote(USER))
-    if not user:
-        sys.stderr.write("  !! khong doc duoc /users/%s\n" % USER)
+def data_hash(payload):
+    """Vân tay ngắn của dữ liệu (không gồm thời gian) để so sánh ảnh."""
+    if payload is None:
         return None
-    print("  OK /users/%s -> public_repos=%s followers=%s"
-          % (USER, user.get("public_repos"), user.get("followers")))
-
-    repos = []
-    for page in range(1, 6):
-        chunk = api("/users/%s/repos?per_page=100&type=owner&sort=pushed&page=%d"
-                    % (urllib.parse.quote(USER), page))
-        if not chunk:
-            break
-        repos.extend(chunk)
-        if len(chunk) < 100:
-            break
-
-    own = [r for r in repos if not r.get("fork")]
-    stars = sum(r.get("stargazers_count", 0) for r in own)
-    forks = sum(r.get("forks_count", 0) for r in own)
-
-    langs = {}
-    for r in own[:40]:
-        data = api("/repos/%s/languages" % r.get("full_name", ""))
-        if not data:
-            continue
-        for k, v in data.items():
-            langs[k] = langs.get(k, 0) + int(v)
-    if not langs:
-        for r in own:
-            k = r.get("language")
-            if k:
-                langs[k] = langs.get(k, 0) + 1
-
-    commits = None
-    s = api("/search/commits?q=author:%s&per_page=1" % urllib.parse.quote(USER))
-    if isinstance(s, dict) and "total_count" in s:
-        commits = s["total_count"]
-    else:
-        sys.stderr.write("  (chu y) khong lay duoc so commit -> the se hien '-'"
-                         " (khong sao, phan con lai van du)\n")
-    print("  tong ket: repos=%d own=%d stars=%d forks=%d langs=%d commits=%s"
-          % (len(repos), len(own), stars, forks, len(langs), commits))
-
-    return {
-        "name": DISPLAY_NAME or user.get("name") or user.get("login") or USER,
-        "stars": stars,
-        "forks": forks,
-        "repos": user.get("public_repos", len(own)),
-        "followers": user.get("followers", 0),
-        "following": user.get("following", 0),
-        "commits": commits,
-        "langs": langs,
-    }
+    blob = json.dumps(payload, sort_keys=True, ensure_ascii=False, default=str)
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()[:12]
 
 
+def stamp_data_mark(content, fingerprint):
+    """Nhúng dấu dữ liệu vào ảnh để lượt sau biết có cần vẽ lại không."""
+    if not fingerprint or "<!-- data:" in content:
+        return content
+    return content.replace("</svg>", "<!-- data:%s -->\n</svg>" % fingerprint)
+
+
+def read_mark(path):
+    try:
+        with open(path, encoding="utf-8") as handle:
+            found = DATA_MARK.search(handle.read())
+    except OSError:
+        return None
+    return found.group(1) if found else None
+
+
+def write(name, content, fingerprint=None):
+    """Ghi file kiểu atomic: hoặc xong hẳn, hoặc không đụng gì tới file cũ.
+
+    Ở chế độ --smart, nếu ảnh cũ đã mang đúng dấu dữ liệu này thì bỏ qua:
+    dữ liệu GitHub chưa đổi thì không cần commit thêm một dòng thời gian.
+    """
+    content = stamp_data_mark(content, fingerprint)
+    final_path = os.path.join(OUT_DIR, name)
+    if SMART and fingerprint and read_mark(final_path) == fingerprint:
+        say("= %s không đổi (bỏ qua)" % name)
+        return False
+    if DRY_RUN:
+        say("[dry-run] sẽ ghi %s (%d bytes)"
+            % (final_path, len(content.encode("utf-8"))))
+        return False
+    if not os.path.isdir(OUT_DIR):
+        os.makedirs(OUT_DIR)
+    final_path = os.path.join(OUT_DIR, name)
+    fd, tmp_path = tempfile.mkstemp(dir=OUT_DIR, prefix=".tmp-", suffix=".svg")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            # File kết thúc bằng đúng một newline: git diff sạch hơn, và
+            # `check_repo.py --fix` không còn gì để sửa trên ảnh vừa vẽ.
+            handle.write(content if content.endswith("\n") else content + "\n")
+        os.chmod(tmp_path, 0o644)
+        os.replace(tmp_path, final_path)
+    except Exception:
+        try:
+            os.unlink(tmp_path)
+        except OSError:
+            pass
+        raise
+    say("đã ghi %s (%d bytes)" % (final_path, len(content.encode("utf-8"))))
+    return True
+
+
+# ------------------------------------------------------------------ demo
 def demo_data():
     return {
         "name": "Standardize Paradigm",
         "stars": 128, "forks": 24, "repos": 17,
         "followers": 96, "following": 42, "commits": 1482,
-        "langs": {"Python": 512000, "JavaScript": 261000, "HTML": 143000,
-                  "CSS": 96000, "C++": 41000, "Java": 22000,
+        "langs": {"Python": 512000, "TypeScript": 261000, "HTML": 143000,
+                  "CSS": 96000, "C++": 41000, "JavaScript": 22000,
                   "Shell": 9000, "Markdown": 6000},
     }
 
 
-def grade(d):
-    score = (d["stars"] * 3 + d["repos"] * 4 + d["followers"] * 5
-             + (d["commits"] or 0) * 0.06 + d["forks"] * 2)
-    table = [(900, "S", 0.98), (600, "A+", 0.92), (380, "A", 0.84),
-             (220, "B+", 0.74), (120, "B", 0.62), (50, "C+", 0.48),
-             (0, "C", 0.34)]
-    for need, letter, pct in table:
-        if score >= need:
-            return letter, pct
-    return "C", 0.34
+def status_demo_rows():
+    """Trạng thái mẫu cho --demo: đủ 5 loại để xem màu.
+
+    Kèm tuổi lần chạy đủ cả ba mốc (phút / giờ / ngày) và hai viên không
+    có tuổi, để chế độ demo thấy luôn cả trường hợp thiếu dữ liệu.
+    """
+    return [("3D CONTRIB", "passing", 24), ("STATS CARDS", "passing", 130),
+            ("LIVE CLOCK", "running", 0), ("README GARDEN", "passing", None),
+            ("HEALTH", "failing", 1440), ("WELCOME", "none", None),
+            ("STATUS", "passing", 3)]
 
 
-# ------------------------------------------------------------------ svg base
-STYLE = "\n".join([
-    "    .t   { font: 700 18px 'Segoe UI', Ubuntu, Helvetica, sans-serif; fill: " + TITLE + " }",
-    "    .k   { font: 600 13px 'Segoe UI', Ubuntu, Helvetica, sans-serif; fill: " + TEXT + " }",
-    "    .v   { font: 700 13px 'Segoe UI', Ubuntu, Helvetica, sans-serif; fill: " + LIGHT + " }",
-    "    .s   { font: 400 10px 'Segoe UI', Ubuntu, Helvetica, sans-serif; fill: " + DIM + " }",
-    "    .g   { font: 700 26px 'Segoe UI', Ubuntu, Helvetica, sans-serif; fill: " + WHITE + " }",
-    "    .row { opacity: 0; animation: slide .55s ease-out forwards }",
-    "    @keyframes slide { from { opacity: 0; transform: translateX(-10px) } to { opacity: 1; transform: translateX(0) } }",
-    "    .bar { transform: scaleX(0); transform-origin: left center; animation: grow 1.15s cubic-bezier(.2,.8,.2,1) forwards }",
-    "    @keyframes grow { to { transform: scaleX(1) } }",
-    "    .glow { animation: pulse 3.2s ease-in-out infinite }",
-    "    @keyframes pulse { 0%, 100% { opacity: .55 } 50% { opacity: 1 } }",
-])
+def demo_contrib(dt):
+    """Dữ liệu contribution giả nhưng ổn định, đủ để xem thử bố cục."""
+    from datetime import timedelta
+    rnd = random.Random(7)
+    days = []
+    for offset in range(364, -1, -1):
+        day = dt.date() - timedelta(days=offset)
+        weight = 1.0 if day.weekday() < 5 else 0.45
+        days.append((day, max(0, int(rnd.gauss(4, 5) * weight))))
+    current, longest = api._streaks(days)
+    return {"total": sum(c for _, c in days), "days": days,
+            "streak_current": current, "streak_longest": longest}
 
 
-def head(w, h, title, label):
-    return "\n".join([
-        '<svg width="%d" height="%d" viewBox="0 0 %d %d" fill="none" '
-        'xmlns="http://www.w3.org/2000/svg" role="img" aria-label="%s">'
-        % (w, h, w, h, esc(label)),
-        "  <style>",
-        STYLE,
-        "  </style>",
-        '  <defs>',
-        '    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">',
-        '      <stop offset="0%%" stop-color="%s" />' % TITLE,
-        '      <stop offset="100%%" stop-color="%s" stop-opacity="0.15" />' % ACCENT,
-        '    </linearGradient>',
-        '  </defs>',
-        '  <rect x="0.5" y="0.5" width="%d" height="%d" rx="10" fill="%s" '
-        'stroke="url(#edge)" stroke-width="1" />' % (w - 1, h - 1, BG),
-        '  <text x="25" y="33" class="t">%s</text>' % esc(title),
-        '  <rect x="25" y="41" width="46" height="3" rx="1.5" fill="%s" class="glow" />' % TITLE,
-    ])
+# ------------------------------------------------------------------ CLI
+def parse_args(argv=None):
+    parser = argparse.ArgumentParser(
+        description="Vẽ toàn bộ SVG cho profile README.",
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("user", nargs="?", default="",
+                        help="tên user GitHub (mặc định lấy từ GH_USER)")
+    parser.add_argument("--all", action="store_true", help="vẽ tất cả (mặc định)")
+    parser.add_argument("--cards", action="store_true", help="stats + top-langs")
+    parser.add_argument("--hero", action="store_true", help="hero + divider + footer")
+    parser.add_argument("--clock", action="store_true", help="đồng hồ")
+    parser.add_argument("--activity", action="store_true", help="thẻ hoạt động")
+    parser.add_argument("--status", action="store_true",
+                        help="dải trạng thái các workflow")
+    parser.add_argument("--placeholder", action="store_true", help="thẻ chờ dữ liệu")
+    parser.add_argument("--demo", action="store_true", help="dùng dữ liệu mẫu")
+    parser.add_argument("--strict", action="store_true",
+                        help="lỗi dữ liệu thì trả mã 1 (mặc định chỉ cảnh báo)")
+    parser.add_argument("--theme", default="sky",
+                        help="bảng màu: %s" % ", ".join(THEMES))
+    parser.add_argument("--lang", default=i18n.DEFAULT_LANG,
+                        help="ngôn ngữ thẻ: vi | en")
+    parser.add_argument("--out", default=None, help="thư mục ghi ảnh")
+    parser.add_argument("--list-themes", action="store_true",
+                        help="in danh sách theme rồi thoát")
+    parser.add_argument("--list-langs", action="store_true",
+                        help="in danh sách ngôn ngữ rồi thoát")
+    parser.add_argument("--version", action="store_true",
+                        help="in phiên bản rồi thoát")
+    parser.add_argument("--check", action="store_true",
+                        help="kiểm tra các SVG đã có trong thư mục ra")
+    parser.add_argument("--smart", action="store_true",
+                        help="chỉ ghi ảnh khi dữ liệu thật sự đổi (bớt commit rác)")
+    parser.add_argument("--dry-run", action="store_true",
+                        help="vẽ và kiểm tra nhưng không ghi file nào")
+    parser.add_argument("--quiet", action="store_true",
+                        help="không in tiến trình, chỉ in lỗi")
+    return parser.parse_args(argv)
 
 
-# ------------------------------------------------------------------ card 1
-def card_stats(d):
-    w, h = 500, 205
-    letter, pct = grade(d)
-    rows = [
-        ("\u2b50", "Total Stars Earned", human(d["stars"])),
-        ("\U0001f374", "Total Forks", human(d["forks"])),
-        ("\U0001f4e6", "Public Repositories", human(d["repos"])),
-        ("\U0001f465", "Followers", human(d["followers"])),
-        ("\U0001f52d", "Following", human(d["following"])),
-        ("\u26a1", "Total Commits",
-         human(d["commits"]) if d["commits"] is not None else "-"),
-    ]
-    p = [head(w, h, esc(d["name"]) + " - GitHub Stats", "github stats card")]
-    y = 68
-    for i, (icon, key, val) in enumerate(rows):
-        delay = "%.2fs" % (0.12 * i)
-        p.append('  <g class="row" style="animation-delay: %s">' % delay)
-        p.append('    <text x="27" y="%d" class="k">%s</text>' % (y, icon))
-        p.append('    <text x="52" y="%d" class="k">%s</text>' % (y, esc(key)))
-        p.append('    <text x="330" y="%d" class="v" text-anchor="end">%s</text>'
-                 % (y, esc(val)))
-        p.append("  </g>")
-        y += 22
+def check_assets(directory):
+    """Parse mọi .svg trong thư mục; in bảng và trả mã thoát."""
+    import xml.dom.minidom
 
-    cx, cy, r = 417, 112, 44
-    circ = 2 * 3.14159265 * r
-    off = circ * (1 - pct)
-    p.append('  <circle cx="%d" cy="%d" r="%d" stroke="%s" stroke-width="7" '
-             'fill="none" opacity="0.25" />' % (cx, cy, r, ACCENT))
-    p.append('  <circle cx="%d" cy="%d" r="%d" stroke="%s" stroke-width="7" '
-             'fill="none" stroke-linecap="round" '
-             'transform="rotate(-90 %d %d)" '
-             'stroke-dasharray="%.1f" stroke-dashoffset="%.1f">'
-             % (cx, cy, r, TITLE, cx, cy, circ, circ))
-    p.append('    <animate attributeName="stroke-dashoffset" from="%.1f" '
-             'to="%.1f" dur="1.4s" fill="freeze" '
-             'calcMode="spline" keySplines="0.2 0.8 0.2 1" />' % (circ, off))
-    p.append("  </circle>")
-    p.append('  <text x="%d" y="%d" class="g" text-anchor="middle">%s</text>'
-             % (cx, cy + 8, letter))
-    p.append('  <text x="%d" y="%d" class="s" text-anchor="middle">RANK</text>'
-             % (cx, cy + 26))
-    p.append('  <text x="25" y="%d" class="s">Tu dong cap nhat moi ngay '
-             '\u2022 anh nam trong repo nen khong bao gio rate-limit</text>'
-             % (h - 14))
-    p.append("</svg>")
-    return "\n".join(p)
+    files = sorted(f for f in os.listdir(directory) if f.endswith(".svg")) \
+        if os.path.isdir(directory) else []
+    if not files:
+        sys.stderr.write("Không tìm thấy SVG nào trong %s\n" % directory)
+        return 1
+    bad = 0
+    for name in files:
+        path = os.path.join(directory, name)
+        try:
+            xml.dom.minidom.parse(path)
+        except Exception as error:                      # noqa: BLE001
+            bad += 1
+            print("  ✗ %-20s %s" % (name, error))
+        else:
+            print("  ✓ %-20s %6d bytes" % (name, os.path.getsize(path)))
+    print("%d/%d SVG hợp lệ" % (len(files) - bad, len(files)))
+    return 1 if bad else 0
 
 
-# ------------------------------------------------------------------ card 2
-def card_langs(d):
-    w, h = 400, 205
-    items = sorted(d["langs"].items(), key=lambda kv: -kv[1])[:8]
-    total = sum(v for _, v in items) or 1
-    p = [head(w, h, "Most Used Languages", "most used languages card")]
-
-    bx, by, bw, bh = 25, 60, w - 50, 11
-    p.append('  <clipPath id="clip"><rect x="%d" y="%d" width="%d" height="%d" '
-             'rx="5.5" /></clipPath>' % (bx, by, bw, bh))
-    p.append('  <g clip-path="url(#clip)">')
-    p.append('    <rect x="%d" y="%d" width="%d" height="%d" fill="#161B22" />'
-             % (bx, by, bw, bh))
-    x = float(bx)
-    for i, (name, val) in enumerate(items):
-        seg = bw * (val / float(total))
-        p.append('    <rect x="%.1f" y="%d" width="%.1f" height="%d" fill="%s" '
-                 'class="bar" style="animation-delay: %.2fs" />'
-                 % (x, by, max(seg, 1.0), bh, lang_color(name, i), 0.08 * i))
-        x += seg
-    p.append("  </g>")
-
-    col_x = [25, 215]
-    y0 = 104
-    for i, (name, val) in enumerate(items):
-        cx_ = col_x[i % 2]
-        y = y0 + (i // 2) * 24
-        pct = 100.0 * val / total
-        label = name if len(name) <= 13 else name[:12] + "\u2026"
-        p.append('  <g class="row" style="animation-delay: %.2fs">' % (0.1 * i))
-        p.append('    <circle cx="%d" cy="%d" r="5" fill="%s" />'
-                 % (cx_ + 5, y - 4, lang_color(name, i)))
-        p.append('    <text x="%d" y="%d" class="k">%s</text>'
-                 % (cx_ + 17, y, esc(label)))
-        p.append('    <text x="%d" y="%d" class="v" text-anchor="end">%.1f%%</text>'
-                 % (cx_ + 160, y, pct))
-        p.append("  </g>")
-
-    p.append('  <text x="25" y="%d" class="s">Tinh theo so byte code that '
-             'trong cac repo cua ban</text>' % (h - 14))
-    p.append("</svg>")
-    return "\n".join(p)
+def _suggest(value, options):
+    """Gợi ý gần đúng nhất — gõ sai một chữ thì không nên im lặng."""
+    import difflib
+    close = difflib.get_close_matches(str(value or "").lower(),
+                                      [o.lower() for o in options], n=1)
+    return close[0] if close else None
 
 
-# ------------------------------------------------------------------ waiting
-def card_waiting(w, title, line1, line2):
-    p = [head(w, 205, title, "waiting card")]
-    p.append('  <text x="%d" y="100" class="k" text-anchor="middle">%s</text>'
-             % (w // 2, esc(line1)))
-    p.append('  <text x="%d" y="126" class="s" text-anchor="middle">%s</text>'
-             % (w // 2, esc(line2)))
-    p.append('  <circle cx="%d" cy="152" r="5" fill="%s" class="glow" />'
-             % (w // 2 - 16, TITLE))
-    p.append('  <circle cx="%d" cy="152" r="5" fill="%s" class="glow" '
-             'style="animation-delay:.4s" />' % (w // 2, ACCENT))
-    p.append('  <circle cx="%d" cy="152" r="5" fill="%s" class="glow" '
-             'style="animation-delay:.8s" />' % (w // 2 + 16, LIGHT))
-    p.append("</svg>")
-    return "\n".join(p)
+def _pick_theme(name):
+    """Theme theo tên; tên lạ thì cảnh báo rồi dùng mặc định."""
+    palette = get_palette(name)
+    if (name or "").strip().lower() not in THEMES:
+        hint = _suggest(name, list(THEMES))
+        say("  ! theme %r không có — dùng %r%s"
+            % (name, palette.name,
+               (" (ý bạn là %r?)" % hint) if hint else ""))
+    return palette
 
 
-# ------------------------------------------------------------------ main
-def write(name, content):
-    if not os.path.isdir(OUT_DIR):
-        os.makedirs(OUT_DIR)
-    path = os.path.join(OUT_DIR, name)
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(content)
-    print("da ghi %s (%d bytes)" % (path, len(content.encode("utf-8"))))
+def _pick_language(lang):
+    """Ngôn ngữ theo mã; mã lạ thì cảnh báo rồi dùng mặc định."""
+    translator = i18n.get(lang)
+    if (lang or "").strip() not in i18n.STRINGS:
+        hint = _suggest(lang, list(i18n.STRINGS))
+        say("  ! ngôn ngữ %r không có — dùng %r%s"
+            % (lang, translator.lang,
+               (" (ý bạn là %r?)" % hint) if hint else ""))
+    return translator
 
 
-def main():
-    if PLACEHOLDER:
-        write("stats.svg", card_waiting(
-            500, "GitHub Stats",
-            "Chay workflow \"Profile Cards\" de tao the nay",
-            "Actions -> Profile Cards (LTS) -> Run workflow"))
-        write("top-langs.svg", card_waiting(
-            400, "Most Used Languages",
-            "Chua co du lieu",
-            "The nay se tu dien sau khi workflow chay lan dau"))
+def main(argv=None):
+    global OUT_DIR, USER, SMART, DRY_RUN, QUIET
+    args = parse_args(argv)
+    SMART = bool(args.smart)
+    DRY_RUN = bool(args.dry_run)
+    QUIET = bool(args.quiet)
+
+    if args.version:
+        print("generate_cards.py %s (svgkit)" % sys.modules["svgkit"].__version__)
         return 0
 
-    if DEMO:
-        d = demo_data()
-    else:
-        if not USER:
-            sys.stderr.write(BAD_USER)
-            return 1 if STRICT else 0
-        d = collect()
-        if not d:
-            sys.stderr.write(BAD_DATA)
-            return 1 if STRICT else 0
+    if args.list_langs:
+        for code in i18n.LANGS:
+            print("%-3s %s" % (code, i18n.get(code)("lang.name")))
+        return 0
 
-    write("stats.svg", card_stats(d))
-    write("top-langs.svg", card_langs(d))
-    print("  XONG: 2 the da duoc ghi bang DU LIEU THAT")
-    return 0
+    if args.check:
+        return check_assets(args.out or OUT_DIR)
+
+    if args.list_themes:
+        for name, palette in THEMES.items():
+            say("%-9s accent=%s accent2=%s accent3=%s"
+                  % (name, palette.accent, palette.accent2, palette.accent3))
+        return 0
+
+    if args.out:
+        OUT_DIR = args.out
+    if args.user:
+        USER = args.user
+
+    selected = (args.cards or args.hero or args.clock or args.activity
+                or args.status)
+    want_all = args.all or not selected
+
+    palette = _pick_theme(args.theme)
+    translator = _pick_language(args.lang)
+    dt = api.now_vn()
+
+    say("== generate_cards.py %s · theme=%s · lang=%s · %s (UTC+7) =="
+          % (sys.modules["svgkit"].__version__, palette.name,
+             translator.lang, dt.strftime("%d/%m/%Y %H:%M:%S")))
+
+    if args.placeholder:
+        write("stats.svg", waiting_card(
+            palette, 640, translator("wait.title.stats"),
+            translator("wait.line1"), translator("wait.line2"),
+            desc=translator("desc.wait")))
+        write("top-langs.svg", waiting_card(
+            palette, 640, translator("wait.title.langs"),
+            translator("wait.empty1"), translator("wait.empty2"),
+            desc=translator("desc.wait")))
+        return 0
+
+    status = 0
+    data = None
+
+    if want_all or args.hero:
+        # Ảnh bìa / chân trang là thiết kế, không phải số liệu: gộp theo khoá
+        # giờ nên chỉ vẽ lại khi sang giờ mới (hoặc khi đổi theme / đổi tên).
+        design = data_hash({"design": [USER, DISPLAY_NAME, palette.name,
+                                       translator.lang, dt.strftime("%Y-%m-%dT%H")]})
+        write("hero.svg", hero(palette, dt, translator), design)
+        write("divider.svg", divider(palette), design)
+        write("footer.svg", footer(palette, translator), design)
+
+    if want_all or args.clock:
+        write("live-clock.svg", clock_card(palette, dt, translator))
+
+    if want_all or args.cards:
+        if args.demo:
+            data = demo_data()
+        else:
+            if not USER:
+                sys.stderr.write(BAD_USER)
+                return 1 if args.strict else 0
+            data = api.collect_user(USER, TOKEN, DISPLAY_NAME)
+            if not data:
+                sys.stderr.write(BAD_DATA)
+                return 1 if args.strict else 0
+        fingerprint = data_hash({"cards": data})
+        write("stats.svg", stats_card(palette, data, dt, translator), fingerprint)
+        write("top-langs.svg", langs_card(palette, data, dt, translator), fingerprint)
+        say("  XONG: 2 thẻ đã được ghi bằng dữ liệu thật")
+
+    if want_all or args.activity:
+        contrib = (demo_contrib(dt) if args.demo
+                   else api.contributions(USER or DISPLAY_NAME, TOKEN))
+        if contrib:
+            content = activity_card(palette, contrib, dt, translator)
+            if content:
+                write("activity.svg", content,
+                      data_hash({"activity": contrib}))
+        else:
+            say("  (bỏ qua) không có dữ liệu contribution — giữ nguyên ảnh cũ")
+            status = status or (1 if args.strict else 0)
+
+    if want_all or args.status:
+        if args.demo:
+            rows = status_demo_rows()
+        else:
+            owner, _, repo = REPO.partition("/")
+            rows = api.workflow_states(owner, repo, TOKEN)
+        write("status.svg", status_strip(palette, rows, dt, translator),
+              data_hash({"status": rows}))
+
+    return status
 
 
 if __name__ == "__main__":
     try:
         sys.exit(main())
-    except Exception as exc:
+    except Exception as error:                       # pragma: no cover
         import traceback
         traceback.print_exc()
-        sys.stderr.write("Loi khong mong doi: %s\n" % exc)
-        sys.exit(1 if STRICT else 0)
+        sys.stderr.write("Lỗi không mong đợi: %s\n" % error)
+        sys.exit(1 if "--strict" in sys.argv else 0)

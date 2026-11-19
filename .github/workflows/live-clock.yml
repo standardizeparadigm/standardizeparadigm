@@ -1,0 +1,64 @@
+# =====================================================================
+#  live-clock.yml — Đồng hồ "sống", cập nhật theo phút
+#
+#  Cứ 5 phút vẽ lại assets/live-clock.svg (giờ Việt Nam, tiến độ ngày,
+#  lời chào theo giờ) rồi commit. 5 phút là chu kỳ NGẮN NHẤT mà
+#  GitHub Actions cho phép với cron (không hỗ trợ cron mỗi phút).
+#
+#  Không gọi API nào -> chạy rất nhanh (vài giây), không tốn quota.
+#  Muốn thưa hơn thì đổi "*/5" thành "*/15" hoặc "0 * * * *".
+# =====================================================================
+name: ⏱️ Live Clock
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+  push:
+    # Mọi push lên nhánh mặc định đều làm đồng hồ tươi ngay — kể cả khi bạn
+    # chỉ sửa README. Commit của bot bị chặn bởi `if:` bên dưới nên không lặp.
+    branches: [main, master]
+
+concurrency:
+  group: live-clock
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  clock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: github.actor != 'github-actions[bot]'
+    steps:
+      - name: Checkout nhánh mặc định
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 1
+
+      - name: Vẽ đồng hồ
+        run: python3 scripts/generate_cards.py --clock
+
+      - name: Commit + push
+        run: |
+          TARGET="${{ github.event.repository.default_branch }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/live-clock.svg
+          if git diff --cached --quiet; then
+            echo "Không có thay đổi — bỏ qua."
+            exit 0
+          fi
+          git commit -m "chore(live): đồng hồ $(TZ=Asia/Ho_Chi_Minh date '+%d/%m %H:%M')"
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin "$TARGET" || true
+            if git push origin "HEAD:$TARGET"; then
+              echo "Đã push: $(git log -1 --oneline)"
+              exit 0
+            fi
+            sleep $((i * 4))
+          done
+          echo "!! Push thất bại sau 3 lần thử." >&2
+          exit 1

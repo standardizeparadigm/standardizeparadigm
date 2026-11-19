@@ -1,18 +1,20 @@
 # =====================================================================
-#  readme-tend.yml  --  Nuôi dưỡng trang README (vườn không bao giờ khô cạn)
+#  readme-tend.yml — Nuôi dưỡng README (vườn không bao giờ khô cạn)
 #
-#  Cong viec:
-#    - Cap nhat con dau "lan cap nhat gan nhat" o cuoi README (<!-- TENDED_AT -->)
-#    - Kiem tra cac file tai lieu can thi (assets/, profile-3d-contrib/)
-#    - Commit va push neu co thay doi
+#  Việc làm:
+#    1. Cập nhật con dấu "lần cập nhật gần nhất" ở cuối README (TENDED_AT)
+#    2. Kiểm tra các thư mục ảnh còn đủ file
+#    3. Commit + push nếu có thay đổi
 #
-#  Dat file tai: .github/workflows/readme-tend.yml
+#  Lịch: mỗi 3 giờ, phút thứ 45 (lệch với profile-cards để hai workflow
+#  không giành nhau push cùng một giây). Con dấu thời gian
+#  vì thế không bao giờ cũ quá 3 giờ, mà chỉ tốn 8 lượt chạy mỗi ngày.
 # =====================================================================
 name: 🌱 README Garden
 
 on:
   schedule:
-    - cron: "0 7 * * 3"   # moi Chu nhat 14:00 gio Viet Nam (UTC+7)
+    - cron: "45 */3 * * *"     # mỗi 3 giờ, lệch 45 phút so với thẻ thống kê
   workflow_dispatch:
   push:
     branches: [main]
@@ -23,46 +25,72 @@ concurrency:
   group: readme-tend
   cancel-in-progress: false
 
+permissions:
+  contents: write
+
 jobs:
   tend:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    timeout-minutes: 5
+    if: github.actor != 'github-actions[bot]'
     steps:
-      - name: Checkout repo
+      - name: Checkout nhánh mặc định
         uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.repository.default_branch }}
 
-      - name: Cap nhat con dau lan tam quan tri
-        id: stamp
+      - name: Lấy mốc thời gian (giờ Việt Nam, có cả phút)
         run: |
-          TODAY=$(date +%d/%m/%Y)
-          echo "TODAY=$TODAY" >> "$GITHUB_ENV"
-          echo "Ngay hom nay: $TODAY"
+          STAMP="$(TZ=Asia/Ho_Chi_Minh date '+%d/%m/%Y %H:%M')"
+          echo "STAMP=$STAMP" >> "$GITHUB_ENV"
+          echo "Hôm nay: $STAMP"
 
-      - name: Thay the con dau TENDED_AT trong README
+      - name: Cập nhật con dấu TENDED_AT
         run: |
-          sed -i "s|<!-- TENDED_AT:.*-->|<!-- TENDED_AT: $TODAY -->|" README.md
+          if ! grep -q "TENDED_AT" README.md; then
+            echo "!! README.md không còn chỗ đánh dấu TENDED_AT." >&2
+            exit 1
+          fi
+          sed -i "s|<!-- TENDED_AT:.*-->|<!-- TENDED_AT: $STAMP -->|" README.md
           grep -n "TENDED_AT" README.md
 
-      - name: Kiem tra tai lieu can thi
+      - name: Kiểm tra thư mục ảnh
         run: |
+          set -e
           for d in assets profile-3d-contrib; do
-            if [ -d "$d" ]; then
-              echo "OK  thu muc $d co $(ls -1 "$d" | wc -l) file"
-            else
-              echo "!! THIEU thu muc $d"
+            if [ ! -d "$d" ]; then
+              echo "!! THIẾU thư mục $d" >&2
+              exit 1
+            fi
+            echo "OK  $d có $(find "$d" -type f | wc -l) file"
+          done
+          for name in live-clock stats top-langs hero divider footer status; do
+            if [ ! -f "assets/$name.svg" ]; then
+              echo "!! Thiếu assets/$name.svg" >&2
+              exit 1
             fi
           done
+          echo "OK  đủ 7 ảnh bắt buộc"
 
       - name: Commit + push
         run: |
+          set -e
+          TARGET="${{ github.event.repository.default_branch }}"
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add README.md
           if git diff --cached --quiet; then
-            echo "Khong co gi thay doi - bo qua commit."
-          else
-            git commit -m "chore(tend): cap nhat con dau nuoi duong $TODAY"
-            git push
-            echo "Da push commit cap nhat con dau."
+            echo "Không có gì thay đổi — bỏ qua commit."
+            exit 0
           fi
+          git commit -m "chore(tend): cập nhật con dấu nuôi dưỡng ($STAMP)"
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin "$TARGET" || true
+            if git push origin "HEAD:$TARGET"; then
+              echo "Đã push: $(git log -1 --oneline)"
+              exit 0
+            fi
+            sleep $((i * 4))
+          done
+          echo "!! Push thất bại sau 3 lần thử." >&2
+          exit 1

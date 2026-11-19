@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: ❓ Hỏi đáp & thảo luận
-    url: https://github.com/standardizeparadigm/standardizeparadigm/discussions
-    about: Gửi câu hỏi hoặc thảo luận về trang cá nhân này
+  - name: 💬 Lời nhắn & chào hỏi
+    url: https://github.com/standardizeparadigm/standardizeparadigm/issues/new?template=guestbook.md
+    about: Gửi lời nhắn, góp ý hoặc chỉ để chào một câu
+  - name: 📖 Cách đóng góp
+    url: https://github.com/standardizeparadigm/standardizeparadigm/blob/main/.github/CONTRIBUTING.md
+    about: Đọc hướng dẫn trước khi mở pull request

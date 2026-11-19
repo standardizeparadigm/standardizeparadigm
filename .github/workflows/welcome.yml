@@ -1,46 +1,94 @@
 # =====================================================================
-#  welcome.yml  --  Chao mung issue va pull request moi
+#  welcome.yml — Chào mừng issue và pull request mới
 #
-#  Moi lan co issue hoac PR moi duoc mo, bot se binh luan chao mung.
-#  Dat file tai: .github/workflows/welcome.yml
+#  Nguyên tắc an toàn:
+#    - Bỏ qua tài khoản bot (không chào bot, không tự chào mình)
+#    - Chỉ chào MỘT lần cho mỗi issue/PR (dò bình luận cũ trước khi gửi)
+#    - Dùng pull_request_target để bình luận được trên PR từ fork
+#      (job này KHÔNG checkout code của PR nên không có rủi ro bảo mật)
 # =====================================================================
 name: 👋 Welcome new contributors
 
 on:
   issues:
     types: [opened]
-  pull_request:
+  pull_request_target:
     types: [opened]
+  # Nút "Run workflow": hữu ích khi cần kiểm tra workflow mà không phải chờ
+  # một issue/PR thật. Lượt chạy tay dừng ngay ở bước đầu (không có số
+  # issue/PR để chào).
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: welcome-${{ github.event.issue.number || github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
   welcome:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
-      pull-requests: write
+    timeout-minutes: 5
+    if: github.event.sender.type != 'Bot'
     steps:
-      - name: Chao mung thanh vien moi
+      - name: Bỏ qua khi chạy tay
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          echo "Chạy tay: không có issue/PR để chào — kết thúc bình thường."
+      - name: Chào mừng thành viên mới
+        if: github.event_name != 'workflow_dispatch'
         uses: actions/github-script@v9
         with:
           script: |
             const payload = context.payload;
-            const isPr = payload.pull_request !== undefined;
+            const isPr = Boolean(payload.pull_request);
             const target = isPr ? payload.pull_request : payload.issue;
             const number = target.number;
             const actor = payload.sender.login;
-            const typeLabel = isPr ? "Pull Request" : "issue";
-            const typeEmoji = isPr ? "🚀" : "🎉";
+            const marker = "<!-- welcome-bot -->";
 
-            let body;
-            if (isPr) {
-              body = `Chao mung @${actor} gui ${typeEmoji} **Pull Request**!\n\nCam on ban da dong hanh voi **Standardize Paradigm**. Minh se review PR rat som co the. Neu la lan dau lam PR, aloi doc file [CONTRIBUTING](./.github/CONTRIBUTING.md) de biet cach lam.\n\nChuc ban mot ngay vui ve! 💙`;
-            } else {
-              body = `Chao mung @${actor} den voi ${typeEmoji} **Standardize Paradigm**!\n\nCam on ban da gui **issue**. Minh se xem tra va phan hoi rat som co the.\n\nNeu la loi nhan xet, gap gap cho trang ca nhan nay, hui gui qua muc [Guestbook](./issues/new?template=guestbook.md) nhe.\n\nChuc ban mot ngay vui ve! 💙`;
+            // Đã chào rồi thì thôi (tránh spam khi mở/đóng/mở lại)
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: number,
+                per_page: 100,
+              }
+            );
+            if (comments.some((c) => (c.body || "").includes(marker))) {
+              core.info(`#${number} đã được chào trước đó — bỏ qua.`);
+              return;
             }
 
-            github.rest.issues.createComment({
+            const lines = isPr
+              ? [
+                  `Chào mừng @${actor} — cảm ơn bạn đã gửi pull request! 🚀`,
+                  "",
+                  "Mình sẽ xem và phản hồi sớm nhất có thể. Nếu đây là PR đầu tiên của bạn, " +
+                    "đọc [CONTRIBUTING](../blob/main/.github/CONTRIBUTING.md) để biết quy ước commit nhé.",
+                  "",
+                  "Chúc bạn một ngày vui vẻ! 💙",
+                ]
+              : [
+                  `Chào mừng @${actor} đến với **Standardize Paradigm**! 🎉`,
+                  "",
+                  "Cảm ơn bạn đã mở issue. Mình sẽ đọc và trả lời sớm nhất có thể.",
+                  "",
+                  "Nếu chỉ muốn để lại lời nhắn, bạn có thể dùng mẫu " +
+                    "[Lời nhắn](../issues/new?template=guestbook.md) nhé.",
+                  "",
+                  "Chúc bạn một ngày vui vẻ! 💙",
+                ];
+
+            await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: number,
-              body: body,
+              body: marker + "\n" + lines.join("\n"),
             });
+            core.info(`Đã chào @${actor} ở #${number}.`);

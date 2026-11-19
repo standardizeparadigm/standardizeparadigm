@@ -1,0 +1,103 @@
+# =====================================================================
+#  status.yml — Dải trạng thái workflow, vẽ ngay trong repo
+#
+#  Vì sao cần: badge shields.io chỉ đọc được workflow NẰM TRÊN NHÁNH MẶC
+#  ĐỊNH. Workflow mới nằm ở nhánh khác -> "repo or workflow not found";
+#  workflow chưa từng chạy -> "no status". Nhìn vào trang là hai ô đỏ.
+#
+#  Dải này tự đọc Actions API rồi vẽ assets/status.svg:
+#    - chạy mỗi 10 phút (đủ tươi, không spam lịch sử git)
+#    - chạy lại ngay khi BẤT KỲ workflow nào vừa kết thúc (workflow_run)
+#    - không đọc được API thì giữ nguyên ảnh cũ, không ghi thẻ rỗng
+# =====================================================================
+name: 📊 Workflow Status
+
+on:
+  schedule:
+    # Bắt đầu ở phút thứ 2: đồng hồ chạy ở mọi phút chia hết cho 5
+    # (~40 giây/lượt), nên lệch 2 phút là hai bên không bao giờ
+    # cùng `git push` một lúc.
+    - cron: "2-59/10 * * * *"     # phút 2,12,22,32,42,52
+  workflow_run:
+    # Một workflow vừa xong -> cập nhật dải trạng thái ngay
+    workflows:
+      - "GitHub Profile 3D Contrib"
+      - "⏱️ Live Clock"
+      - "Profile Cards (LTS)"
+      - "🌱 README Garden"
+      - "🩺 Repo Health"
+      - "👋 Welcome new contributors"
+    types: [completed]
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+    paths:
+      - "scripts/svgkit/status.py"
+      - "scripts/svgkit/api.py"
+      - "scripts/generate_cards.py"
+      - ".github/workflows/status.yml"
+
+concurrency:
+  group: workflow-status
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read          # đọc trạng thái các lần chạy
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: github.actor != 'github-actions[bot]'
+    steps:
+      - name: Checkout nhánh mặc định
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+
+      - name: Vẽ dải trạng thái
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/generate_cards.py --status
+
+      - name: Kiểm tra ảnh vừa ghi
+        run: |
+          python3 - <<'PY'
+          import sys
+          import xml.dom.minidom as md
+          path = "assets/status.svg"
+          try:
+              md.parse(path)
+          except Exception as error:
+              print("!! %s lỗi XML: %s" % (path, error))
+              sys.exit(1)
+          raw = open(path, encoding="utf-8").read()
+          if "KHÔNG RÕ" in raw and "ĐẠT" not in raw and "PASSING" not in raw:
+              print("!! dải trạng thái không đọc được API — giữ ảnh cũ")
+              sys.exit(1)
+          print("OK  %s  %d bytes" % (path, len(raw.encode("utf-8"))))
+          PY
+
+      - name: Commit + push
+        run: |
+          set -e
+          TARGET="${{ github.event.repository.default_branch }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/status.svg
+          if git diff --cached --quiet; then
+            echo "Không có thay đổi — bỏ qua commit."
+            exit 0
+          fi
+          git commit -m "chore(status): dải trạng thái workflow $(TZ=Asia/Ho_Chi_Minh date '+%d/%m %H:%M')"
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin "$TARGET" || true
+            if git push origin "HEAD:$TARGET"; then
+              echo "Đã push: $(git log -1 --oneline)"
+              exit 0
+            fi
+            sleep $((i * 4))
+          done
+          echo "!! Push thất bại sau 3 lần thử." >&2
+          exit 1
