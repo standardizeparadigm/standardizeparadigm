@@ -29,6 +29,9 @@
   .pulse      { animation: pulse 2.6s ease-in-out infinite; }
   .pulseSlow  { animation: pulse 4.4s ease-in-out infinite; }
   .blink      { animation: blink 1.05s steps(1, end) infinite; }
+  /* Vòng cung quay tại chỗ quanh một chấm nhỏ (dùng cho trạng thái đang chạy) */
+  .spinDot    { animation: spin 1.6s linear infinite;
+                transform-box: fill-box; transform-origin: center; }
   .spinSlow   { animation: spin 26s linear infinite;
                 transform-box: view-box; transform-origin: center; }
   .spinRev    { animation: spinRev 34s linear infinite;
@@ -52,6 +55,8 @@
                 transform-box: view-box; transform-origin: var(--cx) var(--cy); }
   .hourHand   { animation: spin 43200s linear infinite;
                 transform-box: view-box; transform-origin: var(--cx) var(--cy); }
+  /* Nét đứt chạy dọc theo chính nó: dùng cho đường trung bình, đường dóng */
+  .dashFlow   { animation: dashFlow 2.6s linear infinite; }
   .wave       { animation: wave 14s linear infinite; }
   .wave2      { animation: wave 19s linear infinite reverse; }
 
@@ -69,13 +74,15 @@
   @keyframes sheen     { 0% { transform: translateX(-460px) } 55%,100% { transform: translateX(760px) } }
   @keyframes scan      { 0% { transform: translateY(-40px); opacity: 0 } 12% { opacity: .55 }
                          88% { opacity: .55 } 100% { transform: translateY(300px); opacity: 0 } }
+  @keyframes dashFlow  { to { stroke-dashoffset: -10 } }
   @keyframes wave      { to { transform: translateX(-500px) } }
 
   /* Ai bật "giảm chuyển động" trong hệ điều hành thì thấy ảnh tĩnh,
      vẫn đẹp và vẫn đủ thông tin — không phải hy sinh nội dung. */
   @media (prefers-reduced-motion: reduce) {
     .pulse, .pulseSlow, .blink, .spinSlow, .spinRev, .driftA, .driftB,
-    .driftC, .floatY, .twinkle, .fadeUp, .growIn, .sheen, .scan,
+    .driftC, .floatY, .twinkle, .fadeUp, .growIn, .sheen, .scan, .spinDot,
+    .dashFlow,
     .secHand, .minHand, .hourHand, .wave, .wave2 { animation: none !important; }
   }
 
@@ -161,29 +168,39 @@
     <text x="36" y="37" class="cardTitle">MOST USED LANGUAGES</text>
     <text x="618" y="36" text-anchor="end" class="cardSub">THEO BYTE CODE THẬT</text>
   </g>
+  <g clip-path="url(#cardBody)">
+    <rect x="0" y="-40" width="640" height="30" fill="url(#sheenGrad)" opacity=".26" class="scan" style="animation-duration:9s"/>
+  </g>
   <clipPath id="barClip"><rect x="22" y="54" width="596" height="16" rx="8"/></clipPath>
   <rect x="22" y="54" width="596" height="16" rx="8" fill="#0B1B2B" stroke="#17334F" stroke-opacity=".7"/>
   <g clip-path="url(#barClip)">
     <rect x="22.0" y="54" width="533.0" height="16" fill="#3178C6">
       <animate attributeName="width" from="0" to="533.0" dur="1.1s" begin="0.10s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+      <animate attributeName="fill-opacity" values="1;0.82;1" dur="5s" begin="0.60s" repeatCount="indefinite"/>
     </rect>
     <rect x="554.4" y="54" width="17.5" height="16" fill="#563D7C">
       <animate attributeName="width" from="0" to="17.5" dur="1.1s" begin="0.16s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+      <animate attributeName="fill-opacity" values="1;0.82;1" dur="6s" begin="0.95s" repeatCount="indefinite"/>
     </rect>
     <rect x="571.3" y="54" width="15.8" height="16" fill="#89E051">
       <animate attributeName="width" from="0" to="15.8" dur="1.1s" begin="0.22s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+      <animate attributeName="fill-opacity" values="1;0.82;1" dur="7s" begin="1.30s" repeatCount="indefinite"/>
     </rect>
     <rect x="586.5" y="54" width="15.2" height="16" fill="#F1E05A">
       <animate attributeName="width" from="0" to="15.2" dur="1.1s" begin="0.28s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+      <animate attributeName="fill-opacity" values="1;0.82;1" dur="8s" begin="1.65s" repeatCount="indefinite"/>
     </rect>
     <rect x="601.1" y="54" width="9.2" height="16" fill="#C1F12E">
       <animate attributeName="width" from="0" to="9.2" dur="1.1s" begin="0.34s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+      <animate attributeName="fill-opacity" values="1;0.82;1" dur="9s" begin="2.00s" repeatCount="indefinite"/>
     </rect>
     <rect x="609.7" y="54" width="5.5" height="16" fill="#3572A5">
       <animate attributeName="width" from="0" to="5.5" dur="1.1s" begin="0.40s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+      <animate attributeName="fill-opacity" values="1;0.82;1" dur="10s" begin="2.35s" repeatCount="indefinite"/>
     </rect>
     <rect x="614.5" y="54" width="4.1" height="16" fill="#E34C26">
       <animate attributeName="width" from="0" to="4.1" dur="1.1s" begin="0.46s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+      <animate attributeName="fill-opacity" values="1;0.82;1" dur="11s" begin="2.70s" repeatCount="indefinite"/>
     </rect>
     <rect x="22" y="54" width="596" height="8.0" fill="url(#gloss)"/>
     <rect x="-160" y="48" width="150" height="28" fill="url(#sheenGrad)" class="sheen" style="animation-duration:5.5s"/>
@@ -247,7 +264,7 @@
   </g>
   <g class="fadeUp" style="animation-delay:.62s">
     <circle cx="26" cy="242" r="3" fill="#38BDF8" class="pulse"/>
-    <text x="36" y="245" class="footNote">Tính theo số byte code thật trong các repo công khai · cập nhật 19/11 · 15:38</text>
+    <text x="36" y="245" class="footNote">Tính theo số byte code thật trong các repo công khai · cập nhật 19/11 · 15:48</text>
   </g>
 <!-- data:928a1a75b184 -->
 </svg>

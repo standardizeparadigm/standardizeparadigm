@@ -30,7 +30,15 @@
       <animate attributeName="stroke-opacity" values=".3;0;.3" dur="4.5s" repeatCount="indefinite"/>
     </circle>
   </g>
-  <circle cx="150" cy="13" r="2" fill="#38BDF8" opacity=".55"/>
-  <circle cx="850" cy="13" r="2" fill="#38BDF8" opacity=".55"/>
+  <circle cy="13" r="2.6" fill="#7DD3FC" filter="url(#dGlow)">
+    <animate attributeName="cx" values="-12;1012" dur="9s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;1;1;0" dur="9s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="150" cy="13" r="2" fill="#38BDF8" opacity=".55">
+    <animate attributeName="opacity" values=".15;.75;.15" dur="5.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="850" cy="13" r="2" fill="#38BDF8" opacity=".55">
+    <animate attributeName="opacity" values=".75;.15;.75" dur="5.5s" repeatCount="indefinite"/>
+  </circle>
 <!-- data:14168bef51b1 -->
 </svg>

@@ -29,6 +29,9 @@
   .pulse      { animation: pulse 2.6s ease-in-out infinite; }
   .pulseSlow  { animation: pulse 4.4s ease-in-out infinite; }
   .blink      { animation: blink 1.05s steps(1, end) infinite; }
+  /* Vòng cung quay tại chỗ quanh một chấm nhỏ (dùng cho trạng thái đang chạy) */
+  .spinDot    { animation: spin 1.6s linear infinite;
+                transform-box: fill-box; transform-origin: center; }
   .spinSlow   { animation: spin 26s linear infinite;
                 transform-box: view-box; transform-origin: center; }
   .spinRev    { animation: spinRev 34s linear infinite;
@@ -52,6 +55,8 @@
                 transform-box: view-box; transform-origin: var(--cx) var(--cy); }
   .hourHand   { animation: spin 43200s linear infinite;
                 transform-box: view-box; transform-origin: var(--cx) var(--cy); }
+  /* Nét đứt chạy dọc theo chính nó: dùng cho đường trung bình, đường dóng */
+  .dashFlow   { animation: dashFlow 2.6s linear infinite; }
   .wave       { animation: wave 14s linear infinite; }
   .wave2      { animation: wave 19s linear infinite reverse; }
 
@@ -69,13 +74,15 @@
   @keyframes sheen     { 0% { transform: translateX(-460px) } 55%,100% { transform: translateX(760px) } }
   @keyframes scan      { 0% { transform: translateY(-40px); opacity: 0 } 12% { opacity: .55 }
                          88% { opacity: .55 } 100% { transform: translateY(300px); opacity: 0 } }
+  @keyframes dashFlow  { to { stroke-dashoffset: -10 } }
   @keyframes wave      { to { transform: translateX(-500px) } }
 
   /* Ai bật "giảm chuyển động" trong hệ điều hành thì thấy ảnh tĩnh,
      vẫn đẹp và vẫn đủ thông tin — không phải hy sinh nội dung. */
   @media (prefers-reduced-motion: reduce) {
     .pulse, .pulseSlow, .blink, .spinSlow, .spinRev, .driftA, .driftB,
-    .driftC, .floatY, .twinkle, .fadeUp, .growIn, .sheen, .scan,
+    .driftC, .floatY, .twinkle, .fadeUp, .growIn, .sheen, .scan, .spinDot,
+    .dashFlow,
     .secHand, .minHand, .hourHand, .wave, .wave2 { animation: none !important; }
   }
 
@@ -161,7 +168,10 @@
   <g class="fadeUp">
     <rect x="22" y="22" width="4" height="18" rx="2" fill="url(#accentGrad)"/>
     <text x="36" y="37" class="cardTitle">GITHUB STATS</text>
-    <text x="618" y="36" text-anchor="end" class="cardSub">CẬP NHẬT 19/11 · 15:38</text>
+    <text x="618" y="36" text-anchor="end" class="cardSub">CẬP NHẬT 19/11 · 15:48</text>
+  </g>
+  <g clip-path="url(#cardBody)">
+    <rect x="0" y="-40" width="640" height="30" fill="url(#sheenGrad)" opacity=".26" class="scan" style="animation-duration:9s"/>
   </g>
   <g class="fadeUp" style="animation-delay:0.08s">
     <rect x="22" y="62" width="180" height="50" rx="12" fill="#0B1B2B" stroke="#17334F" stroke-opacity=".85"/>
@@ -208,6 +218,10 @@
   <g class="fadeUp" style="animation-delay:.5s">
     <circle cx="528" cy="144" r="82" fill="url(#halo)" opacity=".85"/>
     <circle cx="528" cy="144" r="68" fill="none" stroke="#0EA5E9" stroke-width="1" stroke-dasharray="2 6" stroke-opacity=".8" class="spinSlow" style="transform-origin:528px 144px;animation-duration:34s"/>
+    <g>
+      <animateTransform attributeName="transform" type="rotate" from="0 528 144" to="360 528 144" dur="22s" repeatCount="indefinite"/>
+      <circle cx="528" cy="76" r="2.6" fill="#7DD3FC" opacity=".9"/>
+    </g>
     <circle cx="528" cy="144" r="56" fill="none" stroke="#38BDF8" stroke-width="9" stroke-opacity=".18"/>
     <circle cx="528" cy="144" r="56" fill="none" stroke="url(#accentGrad)" stroke-width="9" stroke-linecap="round" transform="rotate(-90 528 144)" stroke-dasharray="351.9" stroke-dashoffset="91.5">
       <animate attributeName="stroke-dashoffset" from="351.9" to="91.5" dur="1.6s" begin=".15s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>

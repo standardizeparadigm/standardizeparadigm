@@ -29,6 +29,9 @@
   .pulse      { animation: pulse 2.6s ease-in-out infinite; }
   .pulseSlow  { animation: pulse 4.4s ease-in-out infinite; }
   .blink      { animation: blink 1.05s steps(1, end) infinite; }
+  /* Vòng cung quay tại chỗ quanh một chấm nhỏ (dùng cho trạng thái đang chạy) */
+  .spinDot    { animation: spin 1.6s linear infinite;
+                transform-box: fill-box; transform-origin: center; }
   .spinSlow   { animation: spin 26s linear infinite;
                 transform-box: view-box; transform-origin: center; }
   .spinRev    { animation: spinRev 34s linear infinite;
@@ -52,6 +55,8 @@
                 transform-box: view-box; transform-origin: var(--cx) var(--cy); }
   .hourHand   { animation: spin 43200s linear infinite;
                 transform-box: view-box; transform-origin: var(--cx) var(--cy); }
+  /* Nét đứt chạy dọc theo chính nó: dùng cho đường trung bình, đường dóng */
+  .dashFlow   { animation: dashFlow 2.6s linear infinite; }
   .wave       { animation: wave 14s linear infinite; }
   .wave2      { animation: wave 19s linear infinite reverse; }
 
@@ -69,13 +74,15 @@
   @keyframes sheen     { 0% { transform: translateX(-460px) } 55%,100% { transform: translateX(760px) } }
   @keyframes scan      { 0% { transform: translateY(-40px); opacity: 0 } 12% { opacity: .55 }
                          88% { opacity: .55 } 100% { transform: translateY(300px); opacity: 0 } }
+  @keyframes dashFlow  { to { stroke-dashoffset: -10 } }
   @keyframes wave      { to { transform: translateX(-500px) } }
 
   /* Ai bật "giảm chuyển động" trong hệ điều hành thì thấy ảnh tĩnh,
      vẫn đẹp và vẫn đủ thông tin — không phải hy sinh nội dung. */
   @media (prefers-reduced-motion: reduce) {
     .pulse, .pulseSlow, .blink, .spinSlow, .spinRev, .driftA, .driftB,
-    .driftC, .floatY, .twinkle, .fadeUp, .growIn, .sheen, .scan,
+    .driftC, .floatY, .twinkle, .fadeUp, .growIn, .sheen, .scan, .spinDot,
+    .dashFlow,
     .secHand, .minHand, .hourHand, .wave, .wave2 { animation: none !important; }
   }
 
@@ -159,7 +166,7 @@
   <g class="fadeUp">
     <rect x="22" y="22" width="4" height="18" rx="2" fill="url(#accentGrad)"/>
     <text x="36" y="37" class="cardTitle">CONTRIBUTION ACTIVITY</text>
-    <text x="618" y="36" text-anchor="end" class="cardSub">365 NGÀY · 19/11 · 15:38</text>
+    <text x="618" y="36" text-anchor="end" class="cardSub">365 NGÀY · 19/11 · 15:48</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.10s">
     <rect x="22" y="58" width="184" height="52" rx="12" fill="#0B1B2B" stroke="#17334F" stroke-opacity=".8"/>
@@ -188,7 +195,7 @@
     <path d="M22 186H618" stroke="#8CA4BD" stroke-opacity=".10" stroke-width="1"/>
     <path d="M22 208H618" stroke="#8CA4BD" stroke-opacity=".10" stroke-width="1"/>
   <g class="fadeUp" style="animation-delay:.3s">
-    <path d="M22 197.6H618" stroke="#7DD3FC" stroke-opacity=".38" stroke-width="1" stroke-dasharray="4 6"/>
+    <path d="M22 197.6H618" stroke="#7DD3FC" stroke-opacity=".38" stroke-width="1" stroke-dasharray="4 6" class="dashFlow"/>
     <text x="24" y="192.6" class="footNote" style="fill:#7DD3FC">TB 196</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.10s">
@@ -281,7 +288,7 @@
   </g>
   <g class="fadeUp" style="animation-delay:.7s">
     <circle cx="26" cy="242" r="3" fill="#38BDF8" class="pulse"/>
-    <text x="36" y="245" class="footNote">Đếm từ lịch contribution thật của GitHub · cập nhật 19/11 · 15:38</text>
+    <text x="36" y="245" class="footNote">Đếm từ lịch contribution thật của GitHub · cập nhật 19/11 · 15:48</text>
   </g>
 <!-- data:b24c8da78a09 -->
 </svg>
