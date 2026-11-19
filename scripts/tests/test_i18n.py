@@ -82,3 +82,27 @@ class TestFallbacks(unittest.TestCase):
         text = i18n.get("vi")("stats.progress", pct=74)
         self.assertIn("74", text)
         self.assertNotIn("{pct}", text)
+
+
+class TestKeysUsedByCode(unittest.TestCase):
+    def test_every_referenced_key_exists(self):
+        import os
+        import re
+
+        from helpers import SCRIPTS
+        from svgkit import i18n
+
+        pattern = re.compile(r"""(?<!desc=)\bt\(\s*["']([a-zA-Z0-9_.]+)["']""")
+        roots = [os.path.join(SCRIPTS, "svgkit"),
+                 os.path.join(SCRIPTS, "generate_cards.py")]
+        used = set()
+        for root in roots:
+            paths = ([root] if os.path.isfile(root)
+                     else [os.path.join(root, f) for f in os.listdir(root)
+                           if f.endswith(".py")])
+            for path in paths:
+                with open(path, encoding="utf-8") as handle:
+                    used.update(pattern.findall(handle.read()))
+        known = set(i18n.STRINGS["vi"])
+        missing = sorted(key for key in used if key not in known)
+        self.assertEqual(missing, [], "khoá i18n dùng mà chưa khai báo: %s" % missing)
