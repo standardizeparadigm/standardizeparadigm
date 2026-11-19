@@ -3,6 +3,31 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Sáu luật mới, và trang không còn một ký tự emoji
+
+Đợt này có hai việc lớn, cả hai đều là "dọn những thứ không ai báo".
+
+**Sáu luật mới trong `check_repo.py`:**
+
+| Luật | Bắt cái gì |
+| :-- | :-- |
+| `check_no_emoji` | emoji trong `.md`, `.py`, `.yml`, `.svg`, `.json` |
+| `check_svg_viewbox` | ảnh không co giãn được vì thiếu `viewBox` |
+| `check_animation_pace` | hoạt ảnh CSS lặp nhanh hơn 1 giây/chu kỳ |
+| `check_smil_pace` | cùng ngưỡng đó cho `<animate>` (SMIL) |
+| `check_python_fences` | ví dụ `python` trong tài liệu không biên dịch được |
+| `check_test_file_docs` | file test không có tên trong `docs/TESTING.md` |
+| `check_pip_pins` | `pip install` trong workflow không ghim phiên bản |
+
+**Toàn bộ emoji đã ra khỏi repo** — README, CHANGELOG, CONTRIBUTING, SECURITY,
+mẫu issue, tên workflow, lời chào tự động và tiêu đề tài liệu. Không phải vì
+emoji xấu, mà vì nó là thứ duy nhất trên trang phụ thuộc font của máy người
+đọc: cùng một file cao thấp khác nhau tuỳ máy, và trình đọc màn hình đọc tên
+biểu tượng thành lời giữa câu.
+
+**Mã ngôn ngữ được chuẩn hoá**: `--lang VI`, `vi-VN`, `en_GB`, `Vietnamese`
+đều hiểu đúng thay vì rơi về mặc định kèm cảnh báo sai.
+
 ## 2026-11-19 — Rà soát toàn bộ: 799 test, không lỗi nào còn mở
 
 Đợt này không thêm tính năng lớn nào; phần lớn thời gian dành cho việc tìm
