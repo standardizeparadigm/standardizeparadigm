@@ -3,6 +3,10 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Activity: nhãn ngày cao nhất
+
+- Cột cao nhất có nhãn `cao nhất 1.1k`, ẩn đi khi hôm nay đã là ngày cao nhất (chỗ đó đã có chấm nhấp nháy).
+
 ## 2026-11-19 — `--dry-run` và `--quiet`
 
 - `--dry-run` vẽ và kiểm tra nhưng không ghi file — xem trước mà không đụng ảnh thật.
