@@ -1,6 +1,6 @@
 <svg width="1134" height="74" viewBox="0 0 1134 74" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TRẠNG THÁI WORKFLOW" preserveAspectRatio="xMidYMid meet">
   <title>TRẠNG THÁI WORKFLOW</title>
-  <desc>Trạng thái lần chạy gần nhất của từng workflow · cập nhật 19/11 · 16:23</desc>
+  <desc>Trạng thái lần chạy gần nhất của từng workflow · cập nhật 19/11 · 16:26</desc>
   <style>
 
   .fSans { font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; }
@@ -171,6 +171,7 @@
     <circle cx="35" cy="29" r="4.4" fill="#34D399" filter="url(#glow)"/>
     <text x="48" y="25" class="fMono" style="font:600 7.5px 'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">3D CONTRIB</text>
     <text x="48" y="39" class="fSans" style="font:800 10px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#34D399;letter-spacing:.4px">ĐẠT</text>
+    <text x="159" y="39" text-anchor="end" class="fMono" style="font:600 6.8px 'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">9 giờ trước</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.06s">
     <rect x="176" y="9" width="150" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
@@ -179,6 +180,7 @@
     <circle cx="193" cy="29" r="4.4" fill="#34D399" filter="url(#glow)"/>
     <text x="206" y="25" class="fMono" style="font:600 7.5px 'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">STATS CARDS</text>
     <text x="206" y="39" class="fSans" style="font:800 10px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#34D399;letter-spacing:.4px">ĐẠT</text>
+    <text x="317" y="39" text-anchor="end" class="fMono" style="font:600 6.8px 'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">1 giờ trước</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.12s">
     <rect x="334" y="9" width="150" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
@@ -194,6 +196,7 @@
     <circle cx="509" cy="29" r="4.4" fill="#34D399" filter="url(#glow)"/>
     <text x="522" y="25" class="fMono" style="font:600 7.5px 'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">README GARDEN</text>
     <text x="522" y="39" class="fSans" style="font:800 10px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#34D399;letter-spacing:.4px">ĐẠT</text>
+    <text x="633" y="39" text-anchor="end" class="fMono" style="font:600 6.8px 'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">17 giờ trước</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.24s">
     <rect x="650" y="9" width="150" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
@@ -209,6 +212,7 @@
     <circle cx="825" cy="29" r="4.4" fill="#34D399" filter="url(#glow)"/>
     <text x="838" y="25" class="fMono" style="font:600 7.5px 'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">WELCOME</text>
     <text x="838" y="39" class="fSans" style="font:800 10px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#34D399;letter-spacing:.4px">ĐẠT</text>
+    <text x="949" y="39" text-anchor="end" class="fMono" style="font:600 6.8px 'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">24 ngày trước</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.36s">
     <rect x="966" y="9" width="150" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
@@ -219,7 +223,7 @@
   </g>
   <g class="fadeUp" style="animation-delay:.5s">
     <circle cx="22" cy="62" r="3" fill="#38BDF8" class="pulse"/>
-    <text x="32" y="65" class="footNote">Workflow tự vẽ và commit dải này · cập nhật 19/11 · 16:23</text>
+    <text x="32" y="65" class="footNote">Workflow tự vẽ và commit dải này · cập nhật 19/11 · 16:26</text>
   </g>
-<!-- data:a81b856016be -->
+<!-- data:dd29c91b8b4a -->
 </svg>
