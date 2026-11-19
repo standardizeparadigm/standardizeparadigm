@@ -226,5 +226,30 @@ class TestPillAgeLabel(unittest.TestCase):
     def test_footer_stamp_is_separate(self):
         self.assertIn("cập nhật", self.three)
 
+
+
+class TestSummaryCounter(unittest.TestCase):
+    """Con số tổng kết ở chân dải."""
+
+    def _strip(self, rows, lang="vi"):
+        return status_strip(get_palette(), rows, DT, i18n.get(lang))
+
+    def test_counts_passing_and_running_as_ok(self):
+        rows = [("A", "passing"), ("B", "running"), ("C", "failing"),
+                ("D", "missing")]
+        self.assertIn("2/4 workflow ổn", self._strip(rows))
+
+    def test_all_green(self):
+        rows = [("A", "passing"), ("B", "passing")]
+        self.assertIn("2/2 workflow ổn", self._strip(rows))
+
+    def test_english_wording(self):
+        rows = [("A", "passing"), ("B", "failing")]
+        self.assertIn("1/2 workflows OK", self._strip(rows, "en"))
+
+    def test_unknown_states_are_not_ok(self):
+        rows = [("A", "unknown"), ("B", "none")]
+        self.assertIn("0/2 workflow ổn", self._strip(rows))
+
 if __name__ == "__main__":
     unittest.main()
