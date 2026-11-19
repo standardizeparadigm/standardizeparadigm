@@ -788,6 +788,48 @@ class TestActionPins(unittest.TestCase):
         check_repo.check_action_pins(self.tmp)
         self.assertEqual(check_repo.errors, [])
 
+
+
+class TestHeadingLevels(unittest.TestCase):
+    """Tiêu đề nhảy cấp làm mục lục lệch bậc."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="headings-")
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _md(self, text, name="doc.md"):
+        with open(os.path.join(self.tmp, name), "w", encoding="utf-8") as handle:
+            handle.write(text)
+
+    def test_sequential_headings_pass(self):
+        self._md("# T\n\n## A\n\n### A1\n\n## B\n")
+        check_repo.check_heading_levels(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_skip_is_flagged(self):
+        self._md("# T\n\n## A\n\n#### A1\n")
+        check_repo.check_heading_levels(self.tmp)
+        self.assertTrue(any("nhảy cấp" in e for e in check_repo.errors))
+
+    def test_going_back_up_is_fine(self):
+        self._md("## A\n\n### B\n\n# C\n")
+        check_repo.check_heading_levels(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_hash_inside_code_fence_is_ignored(self):
+        self._md("## A\n\n```\n# comment\n```\n\n### A1\n")
+        check_repo.check_heading_levels(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_heading_without_space_is_not_a_heading(self):
+        self._md("## A\n\n####not-a-heading\n")
+        check_repo.check_heading_levels(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
 if __name__ == "__main__":
     unittest.main()
 
