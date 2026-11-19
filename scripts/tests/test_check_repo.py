@@ -564,6 +564,45 @@ class TestStalePlaces(unittest.TestCase):
         check_repo.check_stale_places(self.tmp)
         self.assertTrue(check_repo.errors)
 
+
+
+class TestTodoMarkers(unittest.TestCase):
+    """TODO/FIXME trong code đã merge."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="todo-")
+        os.makedirs(os.path.join(self.tmp, "scripts"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _py(self, text, name="a.py"):
+        with open(os.path.join(self.tmp, "scripts", name), "w",
+                  encoding="utf-8") as handle:
+            handle.write(text)
+
+    def test_clean_file_passes(self):
+        self._py('"""doc"""\n\ndef f():\n    return 1\n')
+        check_repo.check_todo_markers(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_todo_is_flagged(self):
+        self._py('"""doc"""\n# TODO: sửa sau\n')
+        check_repo.check_todo_markers(self.tmp)
+        self.assertTrue(any("TODO" in e for e in check_repo.errors))
+
+    def test_fixme_is_flagged(self):
+        self._py('"""doc"""\nx = 1  # FIXME\n')
+        check_repo.check_todo_markers(self.tmp)
+        self.assertTrue(any("FIXME" in e for e in check_repo.errors))
+
+    def test_noqa_line_is_exempt(self):
+        self._py('"""doc"""\nimport x  # noqa: F401  TODO trong noqa\n')
+        check_repo.check_todo_markers(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
 if __name__ == "__main__":
     unittest.main()
 
