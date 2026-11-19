@@ -3,6 +3,13 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Gõ sai `--theme` / `--lang` thì được nhắc
+
+- Trước đây `--lang xx` hay `--theme nokey` im lặng rơi về mặc định: người
+  dùng tưởng đã đổi mà ảnh vẫn như cũ, và không có dấu hiệu nào để biết.
+- Giờ có cảnh báo kèm gợi ý gần đúng (`difflib`): `--theme skky` → "dùng
+  'sky' (ý bạn là 'sky'?)". Vẫn rơi về mặc định để lượt chạy không hỏng.
+
 ## 2026-11-19 — Bốn luật mới cho repo tự canh mình
 
 - **Tài liệu mồ côi**: bài trong `docs/` mà không bài nào dẫn tới thì người
