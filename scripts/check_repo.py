@@ -599,6 +599,34 @@ def check_test_claims(root=None):
                             "— hãy nâng lên" % (rel(path), number, claimed, total))
 
 
+# ------------------------------------------------------- 4b5. Dấu việc còn treo
+RE_TODO = re.compile(r"\b(TODO|FIXME|XXX|HACK)\b")
+
+
+def check_todo_markers(root=None):
+    """Không để TODO/FIXME trong code đã merge.
+
+    Ghi chú việc còn treo trong code là cách chắc chắn nhất để nó không bao
+    giờ được làm: không ai đọc lại, không công cụ nào nhắc. Việc còn treo
+    thuộc về issue, không thuộc về comment.
+    """
+    root = root or ROOT
+    # File này định nghĩa luật nên phải nhắc tới các dấu đó.
+    exempt = ("scripts/check_repo.py", "scripts/tests/test_check_repo.py")
+    for base, dirs, files in os.walk(os.path.join(root, "scripts")):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.endswith(".py"):
+                continue
+            path = os.path.join(base, name)
+            if rel(path) in exempt:
+                continue
+            for number, line in enumerate(read(path).split("\n"), 1):
+                if RE_TODO.search(line) and "noqa" not in line:
+                    err("%s:%d còn dấu việc treo (%s)"
+                        % (rel(path), number, RE_TODO.search(line).group(1)))
+
+
 # ------------------------------------------------- 4b4. Địa danh đã đổi chỗ
 STALE_PLACES = ("Long Xuyên", "Long Xuyen", "An Giang")
 
@@ -759,6 +787,7 @@ def main(argv=None):
     check_readme_length()
     check_conflict_markers()
     check_stale_places()
+    check_todo_markers()
     check_svg_budget()
     check_python()
     check_module_docstrings()
