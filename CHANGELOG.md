@@ -88,6 +88,11 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
 - `test_workflow_states.py`: 11 test mô phỏng 404/success/failure/timeout/
   in_progress/queued/cancelled/không có lượt chạy/lỗi 500/không token.
 
+## 2026-11-19 — README ngắn lại, đúng hơn
+
+- Sáu dòng badge shields (3 hỏng) → một ảnh `assets/status.svg`.
+- Bảng workflow thêm dòng `Workflow Status`, sửa nhịp chạy của 3D và thẻ số liệu.
+
 ## 2026-11-19 — Cổng 3D: sửa lỗi mốc 24 giờ không bao giờ tới
 
 - Cổng so "lần chạy thành công gần nhất", nhưng lượt bị cổng bỏ qua **vẫn** là lượt thành công → mốc 24 giờ không bao giờ đạt được, ảnh chỉ đổi khi có push.
