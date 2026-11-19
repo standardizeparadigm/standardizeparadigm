@@ -13,6 +13,19 @@ import unittest
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
+
+def fake_rows(code, payload, token="t"):
+    """Gọi workflow_states với api_status giả, trả dict tên -> trạng thái."""
+    from svgkit import api
+    original = api.api_status
+    api.api_status = lambda *_a, **_k: (code, payload)
+    try:
+        rows = api.workflow_states("o", "r", token,
+                                   files=[("a.yml", "A"), ("b.yml", "B")])
+        return {row[0]: row[1] for row in rows}
+    finally:
+        api.api_status = original
+
 class TestWorkflowStates(unittest.TestCase):
     """api.workflow_states() — phân loại lần chạy gần nhất."""
 
@@ -62,7 +75,7 @@ class TestWorkflowStates(unittest.TestCase):
         self.assertEqual(self._states(500, None)["A"], "unknown")
 
     def test_without_token_everything_is_unknown(self):
-        rows = self._states(200, None, token="")
+        rows = fake_rows(200, None, token="")
         self.assertEqual(set(rows.values()), {"unknown"})
 
 
@@ -97,6 +110,60 @@ class TestAgeMinutes(unittest.TestCase):
         from svgkit import api
         naive_now = self.NOW.replace(tzinfo=None)
         self.assertEqual(api.age_minutes("2026-11-19T09:00:00Z", naive_now), 60)
+
+
+
+class TestConclusionMap(unittest.TestCase):
+    """Bảng ánh xạ conclusion -> trạng thái hiển thị."""
+
+    def test_every_value_is_a_known_state(self):
+        from svgkit.api import CONCLUSION_MAP
+        from svgkit.status import STATE_STYLE
+        for conclusion, state in CONCLUSION_MAP.items():
+            self.assertIn(state, STATE_STYLE, conclusion)
+
+    def test_success_and_neutral_are_not_failures(self):
+        from svgkit.api import CONCLUSION_MAP
+        self.assertEqual(CONCLUSION_MAP.get("success"), "passing")
+        self.assertNotEqual(CONCLUSION_MAP.get("neutral"), "failing")
+
+    def test_skipped_is_not_a_failure(self):
+        from svgkit.api import CONCLUSION_MAP
+        self.assertNotEqual(CONCLUSION_MAP.get("skipped"), "failing")
+
+    def test_unknown_conclusion_falls_back(self):
+        rows = fake_rows(200, {"workflow_runs": [
+            {"status": "completed", "conclusion": "brand-new-state",
+             "updated_at": "2026-11-19T09:00:00Z"}]})
+        self.assertEqual(rows, {"A": "unknown", "B": "unknown"})
+
+    def test_running_ignores_conclusion(self):
+        # Lượt đang chạy có conclusion = null; đừng đọc nó thành "unknown".
+        rows = fake_rows(200, {"workflow_runs": [
+            {"status": "in_progress", "conclusion": None,
+             "updated_at": "2026-11-19T09:00:00Z"}]})
+        self.assertEqual(rows, {"A": "running", "B": "running"})
+
+
+class TestRowShape(unittest.TestCase):
+    def test_rows_are_triples_with_minutes(self):
+        from svgkit import api
+        original = api.api_status
+        api.api_status = lambda *_a, **_k: (200, {"workflow_runs": [
+            {"status": "completed", "conclusion": "success",
+             "updated_at": "2020-01-01T00:00:00Z"}]})
+        try:
+            rows = api.workflow_states("o", "r", "t", files=[("a.yml", "A")])
+        finally:
+            api.api_status = original
+        self.assertEqual(len(rows[0]), 3)
+        self.assertIsInstance(rows[0][2], int)
+        self.assertGreater(rows[0][2], 1000)
+
+    def test_age_missing_when_timestamp_missing(self):
+        rows = fake_rows(200, {"workflow_runs": [
+            {"status": "completed", "conclusion": "success"}]})
+        self.assertEqual(rows, {"A": "passing", "B": "passing"})
 
 if __name__ == "__main__":
     unittest.main()
