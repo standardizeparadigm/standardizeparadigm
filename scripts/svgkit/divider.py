@@ -7,7 +7,7 @@ Thay cho các file GIF nặng từ user-images.githubusercontent.com: nhẹ hơn
 nhiều, không phụ thuộc server ngoài, và chạy hoạt ảnh mượt.
 """
 
-from .primitives import esc, open_svg
+from .primitives import esc, open_svg, smil_reduce_style
 
 
 def divider(pal, width=1000, height=26):
@@ -31,18 +31,19 @@ def divider(pal, width=1000, height=26):
         '    </linearGradient>',
         '    <filter id="dGlow"><feGaussianBlur stdDeviation="2.4"/></filter>',
         '  </defs>',
+        smil_reduce_style(),
         f'  <rect x="0" y="12" width="{width}" height="1.6" fill="url(#ln)"/>',
-        '  <rect x="-120" y="11.4" width="120" height="2.8" '
+        '  <rect class="smilOnly" x="-120" y="11.4" width="120" height="2.8" '
         'fill="url(#sparkLine)" filter="url(#dGlow)">',
         f'    <animate attributeName="x" values="-120;{width + 20}" dur="7s" '
         'repeatCount="indefinite"/>',
         '  </rect>',
-        '  <rect x="-120" y="12.2" width="60" height="1.6" '
+        '  <rect class="smilOnly" x="-120" y="12.2" width="60" height="1.6" '
         'fill="url(#sparkLine)" opacity=".45" filter="url(#dGlow)">',
         f'    <animate attributeName="x" values="{width + 20};-120" dur="13s" '
         'repeatCount="indefinite"/>',
         '  </rect>',
-        f'  <g transform="translate({mid:.1f} 13)">',
+        f'  <g class="smilOnly" transform="translate({mid:.1f} 13)">',
         '    <rect x="-4.5" y="-4.5" width="9" height="9" rx="2" '
         f'transform="rotate(45)" fill="{pal.accent3}" opacity=".9">',
         '      <animateTransform attributeName="transform" type="rotate" '
@@ -57,17 +58,20 @@ def divider(pal, width=1000, height=26):
         '  </g>',
         # Hạt sáng nhỏ chạy dọc theo đường kẻ, ngược chiều với vệt sáng chính:
         # hai chuyển động cắt nhau nên mắt luôn thấy đường kẻ "đang sống".
-        f'  <circle cy="13" r="2.6" fill="{pal.accent3}" filter="url(#dGlow)">',
+        f'  <circle class="smilOnly" cy="13" r="2.6" fill="{pal.accent3}" '
+        'filter="url(#dGlow)">',
         f'    <animate attributeName="cx" values="-12;{width + 12}" dur="9s" '
         'repeatCount="indefinite"/>',
         '    <animate attributeName="opacity" values="0;1;1;0" dur="9s" '
         'repeatCount="indefinite"/>',
         '  </circle>',
-        f'  <circle cx="150" cy="13" r="2" fill="{pal.accent}" opacity=".55">',
+        f'  <circle class="smilOnly" cx="150" cy="13" r="2" fill="{pal.accent}" '
+        'opacity=".55">',
         '    <animate attributeName="opacity" values=".15;.75;.15" dur="5.5s" '
         'repeatCount="indefinite"/>',
         '  </circle>',
-        f'  <circle cx="850" cy="13" r="2" fill="{pal.accent}" opacity=".55">',
+        f'  <circle class="smilOnly" cx="850" cy="13" r="2" fill="{pal.accent}" '
+        'opacity=".55">',
         '    <animate attributeName="opacity" values=".75;.15;.75" dur="5.5s" '
         'repeatCount="indefinite"/>',
         '  </circle>',
@@ -101,6 +105,7 @@ def footer(pal, t, width=1000, height=200):
                                      width + period * 2, height, height))
     parts = open_svg(pal, width, height, t("footer.title"),
                      desc=t("desc.footer"), halo=False, radius=22)
+    parts.append(smil_reduce_style())
     parts.append('  <g clip-path="url(#cardBody)">')
     parts.append('    <ellipse cx="140" cy="-20" rx="260" ry="130" '
                  'fill="url(#halo)" filter="url(#soft)"/>')
@@ -118,7 +123,7 @@ def footer(pal, t, width=1000, height=200):
             ((120, 0.0, 3.2), (250, -1.6, 2.2), (410, -3.1, 2.8),
              (610, -0.8, 2.0), (760, -2.4, 3.6), (880, -4.2, 2.4))):
         parts.append('    <circle cx="%d" cy="%d" r="%.1f" fill="%s" opacity="0" '
-                     'class="bubble">'
+                     'class="bubble smilOnly">'
                      '<animate attributeName="cy" values="%d;%d" dur="11s" '
                      'begin="%.1fs" repeatCount="indefinite"/>'
                      '<animate attributeName="opacity" values="0;.55;0" dur="11s" '

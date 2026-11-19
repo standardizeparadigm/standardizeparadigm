@@ -257,6 +257,19 @@ def defs_block(pal):
     return _fill(DEFS, pal)
 
 
+# Hoạt ảnh SMIL (<animate>) không tắt được bằng CSS animation: none. Cách duy
+# nhất để tôn trọng prefers-reduced-motion là ẩn hẳn phần tử mang SMIL — và
+# chỉ ẩn phần *trang trí* (vệt sáng, bong bóng), không ẩn phần nội dung.
+SMIL_REDUCE_CSS = (
+    '@media (prefers-reduced-motion: reduce) { .smilOnly { display: none } }'
+)
+
+
+def smil_reduce_style():
+    """Thẻ <style> để nhúng vào ảnh có hoạt ảnh SMIL."""
+    return '  <style>%s</style>' % SMIL_REDUCE_CSS
+
+
 def open_svg(pal, width, height, label, desc=None, halo=True, radius=18):
     """Mở thẻ: SVG + CSS + defs + nền + viền gradient.
 
