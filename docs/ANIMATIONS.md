@@ -130,3 +130,24 @@ Mỗi file SVG có sẵn khối `@media (prefers-reduced-motion: reduce)` tắt 
 - Chấm màu của ngôn ngữ đứng đầu có thêm vòng `r="9"` với `stroke-opacity=".35"` và nhịp `pulseSlow` (4.4s).
 - Các ngôn ngữ còn lại chỉ có chấm `r="5"` — mắt tự biết đâu là ngôn ngữ chính mà không cần thêm chữ "top 1".
 
+## Bảng chu kỳ (để dễ chỉnh)
+
+| Hiệu ứng | Chu kỳ | Kiểu |
+| :-- | :-- | :-- |
+| `pulse` | 2.6s | CSS |
+| `pulseSlow` | 4.4s | CSS |
+| `blink` (con trỏ gõ chữ) | 1.05s | CSS steps |
+| `twinkle` (sao) | 4s | CSS |
+| `floatY` (chip) | 5.2s | CSS |
+| `sheen` (vệt sáng) | 6.5s | CSS |
+| `scan` (dải quét) | 7.5s | CSS |
+| `wave` / `wave2` | 14s / 19s | CSS |
+| kim giây / phút / giờ | 60s / 3600s / 43200s | CSS |
+| vành đồng hồ | 18s | CSS |
+| bụi sáng hero | 7–13s | SMIL |
+| vòng lan toả | 5.2s | SMIL |
+| tia sáng divider | 7s / 13s | SMIL |
+| bong bóng footer | 11s | SMIL |
+
+Đổi số ở đây là đổi nhịp của cả trang — không cần sửa từng ảnh.
+
