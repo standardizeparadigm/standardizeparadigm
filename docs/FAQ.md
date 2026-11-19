@@ -77,3 +77,21 @@ Nhớ đổi tên, tiểu sử và liên hệ — đừng để hai trang giốn
 
 Đúng thiết kế: cổng thông minh bỏ qua lượt chạy khi chưa có push mới và ảnh chưa quá 24 giờ. Muốn vẽ ngay: **Actions → GitHub Profile 3D Contrib → Run workflow** — `workflow_dispatch` luôn đi qua cổng ở trạng thái "chưa có mốc", nên vẽ lại ngay.
 
+
+## Badge trên trang báo `repo or workflow not found`?
+
+Badge shields.io đọc trạng thái qua API `.../actions/workflows/<file>`, và
+API đó **chỉ thấy workflow nằm trên nhánh mặc định**. Workflow còn ở nhánh
+khác thì badge trả `repo or workflow not found`; workflow có trên nhánh
+mặc định nhưng chưa chạy xong lần nào thì trả `no status`.
+
+Cách chắc chắn nhất: dùng `assets/status.svg` — repo tự vẽ dải trạng thái
+bằng token của chính nó, nên không có khái niệm "không tìm thấy".
+
+## Đã thêm workflow mới, sao không chạy tay được?
+
+`workflow_dispatch` chỉ xuất hiện khi file workflow **đã có trên nhánh mặc
+định**. Đây là quy định của GitHub, không phải lỗi cấu hình: `gh workflow
+run` trên một workflow chỉ có ở nhánh phụ sẽ trả HTTP 404.
+
+Merge trước, chạy sau.
