@@ -151,6 +151,11 @@ Mỗi file SVG có sẵn khối `@media (prefers-reduced-motion: reduce)` tắt 
 | vòng lan toả | 5.2s | SMIL |
 | tia sáng divider | 7s / 13s | SMIL |
 | bong bóng footer | 11s | SMIL |
+| sao nhấp nháy ở footer | 4s (lệch pha 0 – 4.2s) | CSS |
+| hạt sáng bay quanh vành rank | 22s | SMIL rotate |
+| đèn chạy trên 12 vạch giờ | 6s (mỗi vạch lệch 0.5s) | SMIL opacity |
+| hạt sáng chạy dọc divider | 9s | SMIL |
+| thanh ngôn ngữ "thở" | 5s / 6s, lệch 0.35s | SMIL opacity |
 
 Đổi số ở đây là đổi nhịp của cả trang — không cần sửa từng ảnh.
 
