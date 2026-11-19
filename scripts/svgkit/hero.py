@@ -41,6 +41,34 @@ def _stars(width, height, pal, seed=20260820):
     return parts
 
 
+def _particles(pal, width, height, seed=77123):
+    """Bụi sáng bay lên chậm — chi tiết nhỏ nhưng làm nền "thở"."""
+    rnd = random.Random(seed)
+    parts = ['  <g>']
+    for index in range(14):
+        px = rnd.uniform(30, width - 30)
+        py = rnd.uniform(40, height - 50)
+        if 250 < px < 840 and 40 < py < 220:
+            px = rnd.uniform(30, 240)          # tránh vùng chữ
+        radius = rnd.uniform(1.0, 2.2)
+        rise = rnd.uniform(18, 40)
+        duration = rnd.uniform(7, 13)
+        begin = -rnd.uniform(0, 9)
+        color = rnd.choice([pal.accent3, pal.accent])
+        parts.append(
+            '    <circle cx="%.0f" cy="%.0f" r="%.1f" fill="%s" opacity="0" '
+            'class="dust">'
+            '<animate attributeName="cy" values="%.0f;%.0f" dur="%.1fs" '
+            'begin="%.1fs" repeatCount="indefinite"/>'
+            '<animate attributeName="opacity" values="0;.7;0" dur="%.1fs" '
+            'begin="%.1fs" repeatCount="indefinite"/>'
+            '</circle>'
+            % (px, py, radius, color, py + 6, py - rise, duration, begin,
+               duration, begin))
+    parts.append("  </g>")
+    return parts
+
+
 def _orbit(pal, cx=148, cy=140):
     parts = ['  <g>']
     parts.append('    <circle cx="%d" cy="%d" r="86" fill="url(#halo)" opacity=".9"/>'
@@ -157,6 +185,7 @@ def hero(pal, dt, t, width=1000, height=280):
     parts.append('  </g>')
 
     parts += _stars(width, height, pal)
+    parts += _particles(pal, width, height)
     parts += _orbit(pal)
     parts += _chips(pal)
 
