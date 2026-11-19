@@ -162,3 +162,27 @@ Vì vậy:
 - `--smart` so vân tay dữ liệu là đủ tin cậy, không bị "nhiễu" do vị trí sao đổi mỗi lần.
 - Test có thể khẳng định chính xác toạ độ, số lượng, chu kỳ.
 
+
+## Dải trạng thái — `status.svg`
+
+Dải này kể chuyện bằng **màu và chuyển động cùng lúc**, nên nhìn không cần
+đọc vẫn biết workflow nào đang có vấn đề.
+
+- **Viên thuốc hiện lần lượt**: mỗi viên `fadeUp` trễ 60ms so với viên trước
+  (`animation-delay` 0.00s, 0.06s, 0.12s…). Bảy viên mất 0.42s để vào chỗ.
+- **Vệt sáng quét** (`sheen`, 9 giây/vòng) chạy ngang cả dải — cùng một
+  chuyển động với các thẻ khác nên cả trang có nhịp thống nhất.
+- **ĐẠT**: chấm xanh có vòng `pulseSlow` 4.4 giây — nhịp thở chậm, không
+  gây mỏi mắt khi có nhiều viên xanh cùng lúc.
+- **ĐANG CHẠY**: vòng cung khuyết `spinDot` quay 1.6 giây/vòng quanh chấm
+  hổ phách. `transform-box: fill-box` để vòng cung quay quanh tâm của chính
+  nó, không phải tâm cả ảnh.
+- **LỖI**: chấm đỏ đứng yên, không nhấp nháy. Lỗi cần được nhìn thấy ngay,
+  không cần thu hút thêm.
+- **Chờ merge / chưa chạy**: xám và xanh dương, không có vòng — trạng thái
+  "chưa có gì để nói" thì cũng không nên động đậy.
+- **Chân dải**: chấm `pulse` cạnh dấu thời gian, cùng kiểu với chân các thẻ
+  khác, để mắt biết dải này vừa được vẽ lại.
+
+Tất cả các lớp trên đều nằm trong danh sách tắt của `prefers-reduced-motion`,
+nên ai bật "giảm chuyển động" sẽ thấy một dải tĩnh nhưng vẫn đủ màu và chữ.
