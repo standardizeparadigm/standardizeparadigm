@@ -678,6 +678,67 @@ class TestShieldsWorkflowBadges(unittest.TestCase):
         check_repo.check_shields_workflow_badges(self.tmp)
         self.assertEqual(check_repo.errors, [])
 
+
+
+class TestCronResolution(unittest.TestCase):
+    """Cron dày hơn 5 phút: GitHub âm thầm gộp lại."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="cron-")
+        os.makedirs(os.path.join(self.tmp, ".github", "workflows"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _wf(self, schedule):
+        with open(os.path.join(self.tmp, ".github", "workflows", "a.yml"),
+                  "w", encoding="utf-8") as handle:
+            handle.write('on:\n  schedule:\n    - cron: "%s"\n'
+                         '  workflow_dispatch:\n' % schedule)
+
+    def test_five_minutes_passes(self):
+        self._wf("*/5 * * * *")
+        check_repo.check_cron_resolution(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_ten_minute_step_passes(self):
+        self._wf("2-59/10 * * * *")
+        check_repo.check_cron_resolution(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_hourly_at_minute_passes(self):
+        self._wf("15 */3 * * *")
+        check_repo.check_cron_resolution(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_every_minute_is_flagged(self):
+        self._wf("* * * * *")
+        check_repo.check_cron_resolution(self.tmp)
+        self.assertTrue(any("5 phút" in e for e in check_repo.errors))
+
+    def test_step_one_is_flagged(self):
+        self._wf("*/1 * * * *")
+        check_repo.check_cron_resolution(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_step_four_is_flagged(self):
+        self._wf("*/4 * * * *")
+        check_repo.check_cron_resolution(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_broken_expression_is_flagged(self):
+        self._wf("*/5 * *")
+        check_repo.check_cron_resolution(self.tmp)
+        self.assertTrue(any("5 trường" in e for e in check_repo.errors))
+
+    def test_minute_step_helper(self):
+        self.assertEqual(check_repo._minute_step("*/12"), 12)
+        self.assertEqual(check_repo._minute_step("*"), 0)
+        self.assertIsNone(check_repo._minute_step("7"))
+        self.assertIsNone(check_repo._minute_step("2-59/10"))
+
 if __name__ == "__main__":
     unittest.main()
 
