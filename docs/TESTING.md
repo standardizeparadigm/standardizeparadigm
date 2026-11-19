@@ -8,28 +8,31 @@ python3 -m unittest discover -s scripts/tests -t scripts -v     # in tên từng
 python3 -m unittest tests.test_clock -v                          # chỉ một file
 ```
 
-Hiện có **hơn 230 test** trên 13 file, chạy xong trong chưa tới 1 giây.
+Hiện có **313 test** trên 16 file, chạy xong trong chưa tới 1,5 giây.
 
-Con số ghi theo kiểu "hơn N" để tài liệu không lệch mỗi lần thêm một test;
-muốn con số chính xác thì chạy lệnh ở mục cuối trang.
+Con số này được kiểm tự động: `test_docs.py` đếm lại toàn bộ bộ test và so
+với chữ trong file bạn đang đọc, nên nó không thể lệch âm thầm.
 
 ## Bản đồ
 
-| File | Số test | Kiểm tra điều gì |
-| :-- | --: | :-- |
-| `test_palette.py` | 11 | 6 theme, token, màu ngôn ngữ, cách tính rank |
-| `test_i18n.py` | 13 | đủ khoá vi/en, thứ trong tuần, dự phòng khi thiếu khoá |
-| `test_primitives.py` | 26 | escape XML, `human()`/`num()`, icon, khung thẻ, giảm chuyển động |
-| `test_hero.py` | 12 | kích thước, tiêu đề, chip, hạt bụi, vòng lan toả |
-| `test_cards.py` | 15 | thẻ stats, top-langs, chú giải, a11y |
-| `test_clock.py` | 10 | góc kim, thứ/ngày, tiến độ ngày, vành |
-| `test_activity.py` | 13 | 14 cột, chuỗi ngày, đường trung bình, nhãn cao nhất |
-| `test_divider.py` | 9 | tia sáng, sóng, bong bóng |
-| `test_check_repo.py` | 23 | bắt mojibake, URL hỏng, tham chiếu ảnh chết, BOM/CRLF/ký tự lạ |
-| `test_cli.py` | 39 | cờ CLI, `--smart`, `--dry-run`, chạy như script con |
-| `test_status.py` | 22 | bố cục dải trạng thái, màu/nhãn từng trạng thái, a11y |
-| `test_workflow_states.py` | 11 | đọc trạng thái workflow từ API (không gọi mạng) |
-| `test_workflow_gate.py` | 7 | cổng thông minh của `profile-3d.yml` |
+| File | Kiểm tra điều gì |
+| :-- | :-- |
+| `test_palette.py` | 6 theme, token, màu ngôn ngữ, cách tính rank |
+| `test_i18n.py` | đủ khoá vi/en, thứ trong tuần, dự phòng khi thiếu khoá |
+| `test_primitives.py` | escape XML, `human()`/`num()`, icon, khung thẻ, giảm chuyển động, vệt sáng mép trên |
+| `test_api_time.py` | quy đổi múi giờ (`to_vn`), `now_vn()` |
+| `test_hero.py` | kích thước, tiêu đề, chip, hạt bụi, vòng lan toả |
+| `test_cards.py` | thẻ stats, top-langs, chú giải, a11y, mốc thời gian theo UTC+7 |
+| `test_clock.py` | góc kim, thứ/ngày, tiến độ ngày, vành, dấu "cập nhật" |
+| `test_activity.py` | 14 cột, chuỗi ngày, đường trung bình, nhãn cao nhất, vòng thở hôm nay |
+| `test_divider.py` | tia sáng, sóng, bong bóng |
+| `test_check_repo.py` | mojibake, URL hỏng, ảnh chết, BOM/CRLF, luật workflow, tài liệu khớp cron |
+| `test_cli.py` | cờ CLI, `--smart`, `--dry-run`, chạy như script con |
+| `test_status.py` | bố cục dải trạng thái, màu/nhãn từng trạng thái, nhãn tuổi, a11y |
+| `test_workflow_states.py` | đọc trạng thái workflow từ API (không gọi mạng), `age_minutes()` |
+| `test_workflow_gate.py` | cổng thông minh của `profile-3d.yml` |
+| `test_repo_workflows.py` | chạy chính các luật workflow trên repo thật |
+| `test_docs.py` | quy ước Markdown, đếm test, mục lục tài liệu |
 
 ## `helpers.py`
 
