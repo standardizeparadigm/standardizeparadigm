@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 
 from helpers import SCRIPTS, assert_valid_svg  # noqa: F401
 
-from svgkit import i18n, langs_card, stats_card, waiting_card
+from svgkit import activity_card, i18n, langs_card, stats_card, waiting_card
 from svgkit.palette import get_palette
 
 DT = datetime(2026, 11, 19, 15, 4, 5)
@@ -169,6 +169,37 @@ class TestWaitingCardStructure(unittest.TestCase):
     def test_title_reaches_the_root_element(self):
         self.assertIn("<title>Đang tải</title>", self.svg)
 
+
+
+class TestIconCoverage(unittest.TestCase):
+    """Icon thiếu thì biến mất mà không có lỗi nào."""
+
+    def test_known_icon_renders_a_group(self):
+        from svgkit.primitives import icon
+        self.assertTrue(icon("star", 0, 0, "#fff").startswith("<g transform="))
+
+    def test_unknown_icon_falls_back_to_spark(self):
+        from svgkit.primitives import ICONS, icon
+        self.assertIn(ICONS["spark"], icon("không-có", 0, 0, "#fff"))
+
+    def test_cards_draw_icons(self):
+        from svgkit.primitives import ICONS
+        sources = "".join([
+            stats_card(get_palette("sky"), DATA, DT, i18n.get("vi")),
+            langs_card(get_palette("sky"), DATA, DT, i18n.get("vi")),
+            activity_card(get_palette("sky"),
+                          {"total": 10, "days": [(1, 2), (2, 0)]},
+                          DT, i18n.get("vi")),
+        ])
+        drawn = sum(1 for body in ICONS.values() if body in sources)
+        self.assertGreaterEqual(drawn, 5)
+
+    def test_icons_are_paths_not_emoji(self):
+        from svgkit.primitives import ICONS
+        for name, body in ICONS.items():
+            self.assertTrue(body.startswith("<"), name)
+            self.assertFalse(
+                any(0x1F300 <= ord(ch) <= 0x1FAFF for ch in body), name)
 if __name__ == "__main__":
     unittest.main()
 
