@@ -101,7 +101,7 @@ trắng thì thêm `--fix` để nó tự sửa — cờ này chỉ đụng th�
 
 "Bác sĩ" của repo, chạy mỗi lần push/PR và 06:00 mỗi ngày:
 
-- Chạy **hơn 400 unit test** (`python3 -m unittest discover -s scripts/tests -t scripts`)
+- Chạy **hơn 500 unit test** (`python3 -m unittest discover -s scripts/tests -t scripts`)
 - Thử vẽ lại toàn bộ SVG với **6 bảng màu × 2 ngôn ngữ** rồi parse XML từng file
 - Chữ có lỗi encoding (ký tự hỏng, chữ Hán/Hàn lạc vào, mojibake)
 - URL có `%`-escape sai hoặc giải mã ra UTF-8 không hợp lệ
@@ -206,7 +206,7 @@ Ba lớp bảo hiểm khi vẫn trùng giờ:
 - [README.md](../README.md) — trang cá nhân
 - [scripts/generate_cards.py](../scripts/generate_cards.py) — sinh toàn bộ SVG
 - [scripts/svgkit/](../scripts/svgkit) — thư viện vẽ (palette, i18n, primitives…)
-- [scripts/tests/](../scripts/tests) — hơn 400 unit test
+- [scripts/tests/](../scripts/tests) — hơn 500 unit test
 - [scripts/check_repo.py](../scripts/check_repo.py) — kiểm tra sức khỏe repo
 - [docs/ANIMATIONS.md](./ANIMATIONS.md) — từng hoạt ảnh trong mỗi tấm ảnh
 - [docs/THEMES.md](./THEMES.md) — 6 bảng màu và cách thêm bảng màu mới
