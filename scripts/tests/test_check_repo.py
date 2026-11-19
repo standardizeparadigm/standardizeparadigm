@@ -17,23 +17,23 @@ class TestUrlChecks(unittest.TestCase):
         check_repo.warnings = []
 
     def test_good_url_passes(self):
-        check_repo.check_url("https://example.com/a%20b", "test")
+        check_repo.verify_url("https://example.com/a%20b", "test")
         self.assertEqual(check_repo.errors, [])
 
     def test_broken_percent_escape(self):
-        check_repo.check_url("https://example.com/vi%C3ean", "test")
+        check_repo.verify_url("https://example.com/vi%C3ean", "test")
         self.assertTrue(check_repo.errors)
 
     def test_bad_escape_pair(self):
-        check_repo.check_url("https://example.com/%E2%8", "test")
+        check_repo.verify_url("https://example.com/%E2%8", "test")
         self.assertTrue(check_repo.errors)
 
     def test_space_in_url(self):
-        check_repo.check_url("https://example.com/a b", "test")
+        check_repo.verify_url("https://example.com/a b", "test")
         self.assertTrue(check_repo.errors)
 
     def test_anchor_ignored(self):
-        check_repo.check_url("#about", "test")
+        check_repo.verify_url("#about", "test")
         self.assertEqual(check_repo.errors, [])
 
 
@@ -1897,6 +1897,33 @@ class TestPipPins(unittest.TestCase):
         # `--upgrade pip` khong phai ten goi kem phien ban, nhung cung khong
         # phai mot goi that su duoc ghim — luat chi doi `==x.y.z` khi co ten.
         self.assertEqual(len(self._run()), 1)
+
+
+class TestListRules(unittest.TestCase):
+    """`--rules` phải kể được mọi luật, và không kể thứ không phải luật."""
+
+    def test_returns_every_check_function(self):
+        names = check_repo.list_rules()
+        self.assertGreaterEqual(len(names), 30)
+        self.assertIn("check_no_emoji", names)
+        self.assertIn("check_svg_budget", names)
+
+    def test_names_are_sorted(self):
+        names = check_repo.list_rules()
+        self.assertEqual(names, sorted(names))
+
+    def test_no_helper_is_listed(self):
+        names = check_repo.list_rules()
+        self.assertNotIn("check_url", names)  # hàm phụ, không phải luật
+
+    def test_cli_flag_prints_count(self):
+        import io
+        import contextlib
+        buffer = io.StringIO()
+        with contextlib.redirect_stdout(buffer):
+            code = check_repo.main(["--rules"])
+        self.assertEqual(code, 0)
+        self.assertIn("luật.", buffer.getvalue())
 
 
 if __name__ == "__main__":

@@ -213,7 +213,7 @@ def looks_like_orphan_escape(token):
     return all(ch.isprintable() and ord(ch) > 0x9f for ch in text)
 
 
-def check_url(url, where):
+def verify_url(url, where):
     if url.startswith(("#", "mailto:", "tel:")):
         return
     if " " in url:
@@ -254,7 +254,7 @@ def check_markdown(path):
             continue
         line = text[:m.start()].count("\n") + 1
         where = "%s:%d" % (rel(path), line)
-        check_url(url, where)
+        verify_url(url, where)
         # ảnh/đường dẫn tương đối phải tồn tại
         if not url.startswith(("http", "#", "mailto:", "tel:", "data:")):
             target = url.split("#")[0].split("?")[0]
