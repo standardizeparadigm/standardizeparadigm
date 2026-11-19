@@ -2,7 +2,7 @@
 """Test hai thẻ dữ liệu và thẻ chờ."""
 
 import unittest
-from datetime import datetime
+from datetime import datetime, timezone
 
 from helpers import SCRIPTS, assert_valid_svg  # noqa: F401
 
@@ -106,6 +106,20 @@ class TestLangBarBreathing(unittest.TestCase):
 
     def test_breathing_is_subtle(self):
         self.assertIn('values="1;0.82;1"', self.svg)
+
+class TestCardTimezone(unittest.TestCase):
+    """Tem "cập nhật" cũng phải là giờ Việt Nam khi nhận mốc UTC."""
+
+    UTC_DT = datetime(2026, 11, 19, 9, 0, tzinfo=timezone.utc)
+
+    def test_stats_stamp_is_vietnam_time(self):
+        svg = stats_card(get_palette(), DATA, self.UTC_DT, i18n.get("vi"))
+        self.assertIn("19/11 · 16:00", svg)
+
+    def test_langs_stamp_is_vietnam_time(self):
+        svg = langs_card(get_palette(), DATA, self.UTC_DT, i18n.get("vi"))
+        self.assertIn("19/11 · 16:00", svg)
+
 
 if __name__ == "__main__":
     unittest.main()

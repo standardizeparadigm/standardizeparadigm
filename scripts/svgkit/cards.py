@@ -6,6 +6,7 @@ cards.py — Hai thẻ dữ liệu: thống kê và ngôn ngữ.
 Cả hai cùng kích thước 640x258 để đứng cạnh nhau cho thẳng hàng.
 """
 
+from .api import to_vn
 from .palette import grade, lang_color
 from .primitives import esc, human, icon, open_svg
 
@@ -100,6 +101,7 @@ def _rank_ring(pal, percent, letter, label, progress_text,
 
 
 def stats_card(pal, data, dt, t, width=640, height=258):
+    dt = to_vn(dt)
     """Thẻ thống kê: 6 ô số liệu + vòng hạng."""
     letter, percent = grade(data)
     stamp = dt.strftime("%d/%m · %H:%M")
@@ -151,6 +153,7 @@ def stats_card(pal, data, dt, t, width=640, height=258):
 
 
 def langs_card(pal, data, dt, t, width=640, height=258):
+    dt = to_vn(dt)
     """Thẻ ngôn ngữ: thanh xếp chồng + chú giải 2 cột."""
     every = sorted((data.get("langs") or {}).items(), key=lambda kv: -kv[1])
     items = every[:8]
