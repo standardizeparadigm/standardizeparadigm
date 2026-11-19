@@ -71,6 +71,56 @@ class TestMojibake(unittest.TestCase):
         self.assertIsNone(check_repo.RE_CJK.search("Tiến độ hiện từng cột"))
 
 
+
+
+class TestSvgAccessibility(unittest.TestCase):
+    """SVG phải có <title>, trừ khi tự khai là ảnh trang trí."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        check_repo.checked = {"svg": 0, "md": 0, "workflow": 0, "py": 0,
+                              "text": 0}
+        self.tmp = tempfile.mkdtemp(prefix="svg-a11y-")
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _put(self, markup, name="a.svg"):
+        with open(os.path.join(self.tmp, name), "w", encoding="utf-8") as fh:
+            fh.write(markup)
+
+    def _run(self):
+        old = check_repo.ROOT
+        check_repo.ROOT = self.tmp
+        try:
+            check_repo.check_svg()
+        finally:
+            check_repo.ROOT = old
+
+    def test_titled_svg_passes(self):
+        self._put('<svg xmlns="http://www.w3.org/2000/svg">'
+                  '<title>Thẻ</title><rect/></svg>')
+        self._run()
+        self.assertEqual(check_repo.errors, [])
+
+    def test_untitled_svg_is_flagged(self):
+        self._put('<svg xmlns="http://www.w3.org/2000/svg"><rect/></svg>')
+        self._run()
+        self.assertTrue(any("<title>" in e for e in check_repo.errors))
+
+    def test_aria_hidden_svg_is_exempt(self):
+        self._put('<svg xmlns="http://www.w3.org/2000/svg" '
+                  'aria-hidden="true"><rect/></svg>')
+        self._run()
+        self.assertEqual(check_repo.errors, [])
+
+    def test_presentation_role_svg_is_exempt(self):
+        self._put('<svg xmlns="http://www.w3.org/2000/svg" '
+                  'role="presentation"><rect/></svg>')
+        self._run()
+        self.assertEqual(check_repo.errors, [])
+
 if __name__ == "__main__":
     unittest.main()
 
