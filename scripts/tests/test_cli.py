@@ -291,3 +291,36 @@ class TestSmartMode(unittest.TestCase):
         with open(os.path.join(self.out, "stats.svg"), encoding="utf-8") as handle:
             text = handle.read()
         self.assertRegex(text, r"<!-- data:[0-9a-f]{12} -->")
+
+
+class TestDataFingerprint(unittest.TestCase):
+    def test_none_means_no_fingerprint(self):
+        self.assertIsNone(generate_cards.data_hash(None))
+
+    def test_stable_across_key_order(self):
+        one = generate_cards.data_hash({"a": 1, "b": [1, 2]})
+        two = generate_cards.data_hash({"b": [1, 2], "a": 1})
+        self.assertEqual(one, two)
+        self.assertEqual(len(one), 12)
+
+    def test_changes_with_data(self):
+        base = generate_cards.data_hash({"stars": 2})
+        self.assertNotEqual(base, generate_cards.data_hash({"stars": 3}))
+
+    def test_marker_roundtrip(self):
+        import tempfile as tf
+
+        with tf.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "x.svg")
+            svg = generate_cards.stamp_data_mark("<svg></svg>", "abcdef123456")
+            with open(path, "w", encoding="utf-8") as handle:
+                handle.write(svg)
+            self.assertEqual(generate_cards.read_mark(path), "abcdef123456")
+
+    def test_missing_file_has_no_mark(self):
+        self.assertIsNone(generate_cards.read_mark("/tmp/khong-ton-tai-12345.svg"))
+
+    def test_stamp_is_idempotent(self):
+        once = generate_cards.stamp_data_mark("<svg></svg>", "abcdef123456")
+        twice = generate_cards.stamp_data_mark(once, "abcdef123456")
+        self.assertEqual(once, twice)
