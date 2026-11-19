@@ -214,6 +214,33 @@ class TestWorkflowDocCoverage(unittest.TestCase):
         check_repo.check_workflow_docs(self.tmp)
         self.assertEqual(check_repo.errors, [])
 
+
+
+class TestFixableText(unittest.TestCase):
+    """`--fix` chỉ sửa thứ vô hình, không đổi nội dung."""
+
+    def test_crlf_becomes_lf(self):
+        self.assertEqual(check_repo.fixable_text("a\r\nb\r\n"), "a\nb\n")
+
+    def test_bom_is_removed(self):
+        self.assertEqual(check_repo.fixable_text("\ufeffa"), "a\n")
+
+    def test_trailing_spaces_are_stripped(self):
+        self.assertEqual(check_repo.fixable_text("a   \nb\t\n"), "a\nb\n")
+
+    def test_missing_final_newline_is_added(self):
+        self.assertEqual(check_repo.fixable_text("a"), "a\n")
+
+    def test_extra_blank_lines_at_end_collapse(self):
+        self.assertEqual(check_repo.fixable_text("a\n\n\n"), "a\n")
+
+    def test_vietnamese_text_is_untouched(self):
+        text = "Dải trạng thái — ĐẠT · 9 giờ trước\n"
+        self.assertEqual(check_repo.fixable_text(text), text)
+
+    def test_indentation_is_preserved(self):
+        self.assertEqual(check_repo.fixable_text("  a\n    b\n"), "  a\n    b\n")
+
 if __name__ == "__main__":
     unittest.main()
 
