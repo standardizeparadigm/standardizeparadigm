@@ -1035,6 +1035,53 @@ class TestSvgSafety(unittest.TestCase):
         check_repo.check_svg_safety(self.tmp)
         self.assertTrue(check_repo.errors)
 
+
+
+class TestDocTitles(unittest.TestCase):
+    """Tài liệu không có tiêu đề: link chia sẻ hiện một câu giữa đoạn."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="titles-")
+        os.makedirs(os.path.join(self.tmp, "docs"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _md(self, text, name="a.md"):
+        with open(os.path.join(self.tmp, "docs", name), "w",
+                  encoding="utf-8") as handle:
+            handle.write(text)
+
+    def test_h1_passes(self):
+        self._md("# Tiêu đề\n\nnội dung\n")
+        check_repo.check_doc_titles(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_leading_blank_lines_are_skipped(self):
+        self._md("\n\n# Tiêu đề\n")
+        check_repo.check_doc_titles(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_h2_first_is_flagged(self):
+        self._md("## Mục\n")
+        check_repo.check_doc_titles(self.tmp)
+        self.assertTrue(any("tiêu đề" in e for e in check_repo.errors))
+
+    def test_prose_first_is_flagged(self):
+        self._md("Một câu mở đầu.\n\n# Tiêu đề\n")
+        check_repo.check_doc_titles(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_missing_folder_is_fine(self):
+        empty = tempfile.mkdtemp(prefix="no-docs-")
+        try:
+            check_repo.check_doc_titles(empty)
+            self.assertEqual(check_repo.errors, [])
+        finally:
+            shutil.rmtree(empty, ignore_errors=True)
+
 if __name__ == "__main__":
     unittest.main()
 
