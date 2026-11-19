@@ -14,6 +14,7 @@ Vì sao không dùng badge của shields.io?
     phụ thuộc dịch vụ ngoài, không bao giờ "not found".
 """
 
+from .api import to_vn
 from .primitives import esc, open_svg
 
 # Trạng thái → (màu, khoá i18n). Màu cố định theo nghĩa, không theo theme:
@@ -82,6 +83,7 @@ def _pill(pal, x, name, state, t, delay):
 
 def status_strip(pal, rows, dt, t, width=None):
     """Vẽ dải trạng thái. `rows` = [(tên_ngắn, trạng_thái), ...]."""
+    dt = to_vn(dt)
     if not rows:
         rows = [("—", "unknown")]
     width = width or width_for(len(rows))

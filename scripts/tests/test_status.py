@@ -160,5 +160,14 @@ class TestContent(unittest.TestCase):
 
 
 
+class TestStripTimezone(unittest.TestCase):
+    def test_stamp_is_vietnam_time(self):
+        utc = datetime.datetime(2026, 11, 19, 9, 0,
+                                tzinfo=datetime.timezone.utc)
+        svg = status_strip(get_palette(), [("X", "passing")], utc,
+                           i18n.get("vi"))
+        self.assertIn("19/11 · 16:00", svg)
+
+
 if __name__ == "__main__":
     unittest.main()
