@@ -84,6 +84,12 @@ class TestStates(unittest.TestCase):
         self.assertIn(i18n.get("vi")("status.missing"),
                       render([("X", "missing")]))
 
+    def test_running_gets_spinning_arc(self):
+        svg = render([("X", "running")])
+        self.assertIn('class="spinDot"', svg)
+        self.assertIn("stroke-dasharray", svg)
+        self.assertNotIn('class="spinDot"', render([("X", "passing")]))
+
     def test_ring_only_for_live_states(self):
         living = render([("X", "passing")])
         dead = render([("X", "none")])
@@ -109,7 +115,8 @@ class TestContent(unittest.TestCase):
 
     def test_no_foreign_script_leaks(self):
         svg = render()
-        for bad in ("Ã", "â€", "\\u"):
+        # viết bằng escape để chính file test không chứa chuỗi mojibake
+        for bad in ("\u00c3", "\u00e2\u20ac", "\u0000"):
             self.assertNotIn(bad, svg)
 
     def test_workflow_list_is_unique_and_complete(self):

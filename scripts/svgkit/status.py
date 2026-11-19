@@ -58,11 +58,15 @@ def _pill(pal, x, name, state, t, delay):
                  % (x, PILL_W, pal.panel, pal.stroke))
     parts.append('    <rect x="%d" y="9" width="%d" height="20" rx="10" '
                  'fill="url(#gloss)" opacity=".5"/>' % (x, PILL_W))
-    if state in ("passing", "running"):
-        ring = "pulse" if state == "running" else "pulseSlow"
+    if state == "running":
+        # vòng cung khuyết quay tròn: dấu hiệu "đang chạy" rõ hơn nhấp nháy
         parts.append('    <circle cx="%d" cy="29" r="9" fill="none" stroke="%s" '
-                     'stroke-opacity=".35" class="%s"/>'
-                     % (x + 17, color, ring))
+                     'stroke-width="1.7" stroke-opacity=".8" '
+                     'stroke-dasharray="13 44" stroke-linecap="round" '
+                     'class="spinDot"/>' % (x + 17, color))
+    elif state == "passing":
+        parts.append('    <circle cx="%d" cy="29" r="9" fill="none" stroke="%s" '
+                     'stroke-opacity=".35" class="pulseSlow"/>' % (x + 17, color))
     parts.append('    <circle cx="%d" cy="29" r="4.4" fill="%s"%s/>'
                  % (x + 17, color,
                     ' filter="url(#glow)"' if state in ("passing", "running") else ""))
