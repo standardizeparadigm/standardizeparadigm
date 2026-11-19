@@ -66,8 +66,15 @@ class TestStreaksFunction(unittest.TestCase):
     def test_trailing_days_make_the_current_streak(self):
         self.assertEqual(_streaks(series([0, 2, 5, 1]))[0], 3)
 
-    def test_zero_today_breaks_the_current_streak(self):
-        self.assertEqual(_streaks(series([1, 1, 0]))[0], 0)
+    def test_zero_today_keeps_yesterday_streak_alive(self):
+        # Hôm nay chưa code chưa phải là mất chuỗi: GitHub giữ chuỗi hết ngày.
+        self.assertEqual(_streaks(series([1, 1, 0]))[0], 2)
+
+    def test_zero_yesterday_breaks_the_current_streak(self):
+        self.assertEqual(_streaks(series([1, 1, 0, 0]))[0], 0)
+
+    def test_streak_of_only_today_is_one(self):
+        self.assertEqual(_streaks(series([0, 0, 4]))[0], 1)
 
     def test_longest_survives_a_gap(self):
         self.assertEqual(_streaks(series([1, 1, 1, 0, 1]))[1], 3)
