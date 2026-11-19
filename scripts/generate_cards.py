@@ -385,7 +385,10 @@ def main(argv=None):
         write("footer.svg", footer(palette, translator), design)
 
     if want_all or args.clock:
-        write("live-clock.svg", clock_card(palette, dt, translator))
+        # Đồng hồ cũng mang dấu dữ liệu như bảy ảnh còn lại: dấu ghi lại
+        # đúng phút đã vẽ, nên ai cầm file cũng biết nó "tươi" tới đâu.
+        clock_mark = data_hash({"clock": dt.strftime("%Y-%m-%dT%H:%M")})
+        write("live-clock.svg", clock_card(palette, dt, translator), clock_mark)
 
     if want_all or args.cards:
         if args.demo:
