@@ -40,7 +40,7 @@ Chạy bộ kiểm tra ngay trên máy bạn (không cần cài gì):
 
 ```bash
 python3 scripts/check_repo.py                          # sức khỏe repo
-python3 -m unittest discover -s scripts/tests -t scripts   # hơn 320 unit test
+python3 -m unittest discover -s scripts/tests -t scripts   # hơn 400 unit test
 ```
 
 Chúng chỉ ra ký tự lỗi encoding, SVG hỏng, link chết, workflow sai — đúng những gì CI của repo kiểm tra.
