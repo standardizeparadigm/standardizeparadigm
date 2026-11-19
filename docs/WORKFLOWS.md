@@ -27,9 +27,20 @@ Một câu hỏi duy nhất quyết định nhịp: **ảnh này đổi nhanh đ
 | Star, fork, ngôn ngữ | vài ngày một lần | 3 giờ |
 | Trạng thái workflow | mỗi khi có lượt chạy xong | 10 phút + `workflow_run` |
 
-Hai workflow ghi file cùng lúc sẽ giành nhau `git push`, nên các nhịp được
-**lệch phút**: thẻ số liệu ở phút 15, README ở phút 45. Cơ chế push có sẵn
-vòng thử lại 3 lần, nhưng phòng tránh từ đầu vẫn rẻ hơn.
+Hai workflow ghi file cùng lúc sẽ giành nhau `git push`, nên mỗi job được
+một phút riêng trong giờ — không job nào chạm phút của job khác:
+
+| Phút | Job | Vì sao đúng phút đó |
+| :-- | :-- | :-- |
+| :00 :05 :10 … :55 | `live-clock` | nhịp 5 phút, sàn của GitHub |
+| :02 :12 :22 :32 :42 :52 | `status` | lệch 2 phút để không đứng sau đồng hồ |
+| :07 :37 | `profile-3d` | không phải bội số của 5 nên không chạm đồng hồ |
+| :13 (mỗi 3 giờ) | `profile-cards` | chen giữa :10 và :15 của đồng hồ |
+| :23 (mỗi 3 giờ) | `readme-tend` | ngay sau `status` (:22) |
+| 23:03 UTC | `health` | 06:03 giờ Việt Nam, sau lượt đồng hồ :00 |
+
+`check_repo.py` cảnh báo nếu sau này ai thêm lịch mà chạm phút của job khác.
+Cơ chế push có sẵn vòng thử lại 3 lần, nhưng phòng tránh từ đầu vẫn rẻ hơn.
 
 > GitHub Actions **không hỗ trợ cron mỗi phút** — chu kỳ ngắn nhất là `*/5`. Vì vậy phần "chạy liên tục" được lo bằng hoạt ảnh ngay trong SVG (CSS/SMIL), còn workflow chỉ vẽ lại để ảnh không bị lệch số liệu.
 
