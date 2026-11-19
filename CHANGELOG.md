@@ -3,6 +3,10 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — docs/ANIMATIONS.md: bảng chu kỳ
+
+- Một bảng gom toàn bộ chu kỳ hoạt ảnh (CSS và SMIL) để chỉnh nhịp cả trang ở một chỗ.
+
 ## 2026-11-19 — docs/TESTING.md
 
 - Bản đồ 11 file test, mỗi file kiểm tra gì, cách viết test mới và CI chạy những gì.
