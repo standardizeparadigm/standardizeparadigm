@@ -3,6 +3,10 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Clock: đuôi kim giây
+
+- Kim giây có thêm chấm đối trọng phía sau trục, đúng kiểu đồng hồ cơ.
+
 ## 2026-11-19 — Clock: vệt sáng quét quanh vành
 
 - Một cung gradient `dasharray="70 320"` quay 18 giây/vòng, trên vành ngoài — vành cũng "thở" như kim.
