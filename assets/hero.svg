@@ -200,9 +200,9 @@
     <path d="M0 240V1000" stroke="#7DD3FC" stroke-opacity=".05" stroke-width="1"/>
     <path d="M0 280V1000" stroke="#7DD3FC" stroke-opacity=".05" stroke-width="1"/>
   </g>
-    <ellipse cx="150" cy="40" rx="250" ry="150" fill="url(#halo)" filter="url(#soft)" class="driftA"/>
-    <ellipse cx="860" cy="250" rx="290" ry="150" fill="url(#halo2)" filter="url(#soft)" class="driftB"/>
-    <ellipse cx="600" cy="300" rx="320" ry="130" fill="url(#halo)" filter="url(#soft)" opacity=".55" class="driftC"/>
+    <ellipse cx="150" cy="40" rx="250" ry="150" fill="url(#halo)" class="driftA"/>
+    <ellipse cx="860" cy="250" rx="290" ry="150" fill="url(#halo2)" class="driftB"/>
+    <ellipse cx="600" cy="300" rx="320" ry="130" fill="url(#halo)" opacity=".55" class="driftC"/>
     <rect x="0" y="0" width="1000" height="1.5" fill="url(#accentGrad)" opacity="0" class="scan"/>
     <rect x="0" y="0" width="1000" height="1" fill="#7DD3FC" opacity="0" class="scan" style="animation-duration:12.5s;animation-delay:-4.2s"/>
   </g>
@@ -290,7 +290,7 @@
     <rect x="272" y="202" width="2" height="18" rx="1" fill="#38BDF8" class="blink"/>
   </g>
   <text x="966" y="256" text-anchor="end" class="heroHint">keep learning · keep building · stay curious</text>
-  <text x="252" y="256" class="heroHint">~/standardizeparadigm · 19/11 · 19:03</text>
+  <text x="252" y="256" class="heroHint">~/standardizeparadigm · 19/11 · 19:06</text>
   <rect x="30" y="270" width="940" height="3" rx="1.5" fill="url(#accentGrad)" opacity=".55" class="pulseSlow"/>
 <!-- data:263a63016ee7 -->
 </svg>
