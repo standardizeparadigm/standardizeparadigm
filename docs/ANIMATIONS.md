@@ -86,3 +86,10 @@ Mỗi file SVG có sẵn khối `@media (prefers-reduced-motion: reduce)` tắt 
 2. Hoặc xem ảnh qua `https://github.com/.../raw/...svg` — nhiều trình xem tĩnh chỉ hiện khung đầu tiên, và mọi khung đầu tiên đều được vẽ đẹp sẵn.
 
 > Mọi hoạt ảnh đều khai báo thời lượng cố định, không dùng `random` — hai lần tải trang luôn giống nhau, nên không có hiện tượng "nhấp nháy khác nhau" mỗi lần refresh.
+## Hero — bụi sáng và vòng lan toả
+
+- **Bụi sáng**: 14 hạt, mỗi hạt là một `<circle class="dust">` với hai `<animate>`: `cy` chạy lên 18–40px, `opacity` chạy `0 → .7 → 0`. Chu kỳ 7–13 giây, `begin` âm để lệch pha ngay từ khung đầu.
+- Vị trí hạt được sinh bằng `random.Random(77123)` — **cùng seed, cùng kết quả** mỗi lần vẽ, nên ảnh không "nhảy" giữa hai lần build.
+- Hạt nào rơi vào vùng chữ (x 250–840, y 40–220) sẽ bị đẩy sang trái; có test khoá lại điều này.
+- **Vòng lan toả**: hai vòng tròn quanh lõi "SP", bán kính `26 → 86`, `opacity .55 → 0`, chu kỳ 5.2 giây, lệch pha 2.6 giây — như nhịp thở.
+
