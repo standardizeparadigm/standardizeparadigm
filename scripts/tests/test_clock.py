@@ -250,6 +250,28 @@ class TestLiveSlotRules(unittest.TestCase):
     def test_reduced_motion_disables_the_digits(self):
         self.assertIn(".liveHour text, .liveMin text,", self.svg)
 
+
+
+class TestFooterFitsCard(unittest.TestCase):
+    """Dòng chân thẻ phải nằm gọn trong khổ 640px.
+
+    Chữ SVG không tự xuống dòng: chuỗi quá dài chạy thẳng ra ngoài mép và
+    bị cắt giữa từ. 9px với letter-spacing .3 cho khoảng 5,3px mỗi ký tự,
+    chân thẻ bắt đầu ở x=254 nên còn 364px — tức khoảng 55 ký tự.
+    """
+
+    LIMIT = 56
+
+    def test_vietnamese_footer_fits(self):
+        self.assertLessEqual(len(i18n.get("vi")("clock.foot")), self.LIMIT)
+
+    def test_english_footer_fits(self):
+        self.assertLessEqual(len(i18n.get("en")("clock.foot")), self.LIMIT)
+
+    def test_footer_text_reaches_the_card(self):
+        svg = clock_card(get_palette("sky"), DT, i18n.get("vi"))
+        self.assertIn(i18n.get("vi")("clock.foot"), svg)
+
 if __name__ == "__main__":
     unittest.main()
 
