@@ -81,7 +81,7 @@ def footer(pal, t, width=1000, height=200):
     fill2 = ('%s L%d %d L0 %d Z' % (_wave(170, 10, period, width + period * 2),
                                      width + period * 2, height, height))
     parts = open_svg(pal, width, height, t("footer.title"),
-                     halo=False, radius=22)
+                     desc=t("desc.footer"), halo=False, radius=22)
     parts.append('  <g clip-path="url(#cardBody)">')
     parts.append('    <ellipse cx="140" cy="-20" rx="260" ry="130" '
                  'fill="url(#halo)" filter="url(#soft)"/>')
