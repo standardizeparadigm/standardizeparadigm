@@ -28,3 +28,7 @@ python3 scripts/generate_cards.py --list-themes        # xem danh sách + mã m�
 
 - Nhấn `#A78BFA`, phụ `#8B5CF6`, nhạt `#C4B5FD`.
 - Màu tiêu đề riêng `#F3EBFF` (không dùng trắng tinh) để chữ tím không bị "chói".
+## `sunset`
+
+- Nhấn `#FB923C`, phụ `#F97316`, nhạt `#FDBA74`.
+- Cam ấm; chữ phụ vẫn dùng xám xanh để không bị "nóng" cả trang.
