@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — 3D contrib: kiểm tra mỗi 5 phút
+
+- Lịch `*/5 * * * *` cộng **cổng thông minh**: chỉ vẽ lại khi có PushEvent mới hoặc đã quá 24 giờ.
+- Ảnh vẫn tươi theo phút mà không đốt hàng giờ runner mỗi ngày.
+
 ## 2026-11-19 — check_repo kiểm tra tham chiếu ảnh
 
 - Mọi `./…` trong Markdown phải trỏ tới file có thật — đổi tên ảnh mà quên sửa README là bắt được ngay.
