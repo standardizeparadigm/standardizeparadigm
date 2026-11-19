@@ -117,3 +117,13 @@ python3 scripts/generate_cards.py --demo --all --out /tmp/xem-thu
 
 Ba hàm này đều là hàm thuần (trừ `write`) nên test được mà không cần đĩa.
 
+### Quy ước đặt tên
+
+| Loại | Mẫu | Ví dụ |
+| :-- | :-- | :-- |
+| Hàm vẽ công khai | `<thẻ>_card` | `stats_card`, `activity_card` |
+| Hàm phụ trong module | `_<việc>` | `_rank_ring`, `_hands`, `_wave` |
+| Khoá i18n | `<module>.<mục>` | `hero.sub`, `act.avg`, `desc.stats` |
+| Icon | danh từ tiếng Anh | `star`, `flame`, `trophy` |
+| Class CSS | camelCase | `fadeUp`, `pulseSlow`, `secHand` |
+
