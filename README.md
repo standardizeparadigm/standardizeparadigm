@@ -84,8 +84,8 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
   <tr>
     <td><b>📊</b></td>
     <td><b>Profile Cards (LTS)</b><br /><sub><code>profile-cards.yml</code> + <code>scripts/generate_cards.py</code></sub></td>
-    <td>Vẽ <code>stats.svg</code>, <code>top-langs.svg</code>, <code>hero.svg</code>, <code>activity.svg</code> bằng dữ liệu thật — token riêng của repo, không phụ thuộc dịch vụ ngoài.</td>
-    <td><b>Mỗi 30 phút</b> · <code>*/30 * * * *</code></td>
+    <td>Vẽ <code>stats.svg</code>, <code>top-langs.svg</code>, <code>hero.svg</code>, <code>activity.svg</code> bằng dữ liệu thật; chế độ <code>--smart</code> chỉ commit khi số liệu thật sự đổi.</td>
+    <td><b>Mỗi 10 phút</b> · <code>*/10 * * * *</code></td>
   </tr>
   <tr>
     <td><b>⏱️</b></td>
