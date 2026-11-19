@@ -155,7 +155,7 @@ Quy ước: mỗi test một hành vi; tên test nói rõ hành vi đó; không 
 `health.yml` chạy đúng ba bước liên quan tới test:
 
 ```bash
-python3 -m unittest discover -s scripts/tests -t scripts -v     # 226 test
+python3 -m unittest discover -s scripts/tests -t scripts -v     # tất cả test
 python3 scripts/generate_cards.py --demo --all --theme <t> --lang <l>   # 6 theme × 2 ngôn ngữ
 python3 scripts/check_repo.py                                    # mojibake, link, YAML, .py
 ```
