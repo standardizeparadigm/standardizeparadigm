@@ -70,3 +70,16 @@ class TestLangColor(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestTokensAreComplete(unittest.TestCase):
+    def test_css_placeholders_are_all_defined(self):
+        import re
+
+        from svgkit import primitives
+        from svgkit.palette import get_palette
+
+        tokens = set(re.findall(r"@[A-Z0-9_]+@", primitives.CSS + primitives.DEFS))
+        mapping = get_palette().as_tokens()
+        missing = sorted(token for token in tokens if token not in mapping)
+        self.assertEqual(missing, [], "token thiếu trong Palette: %s" % missing)
