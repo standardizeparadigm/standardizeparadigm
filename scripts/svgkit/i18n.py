@@ -74,6 +74,7 @@ STRINGS = {
         "desc.hero": "Ảnh bìa: tên, vai trò và nơi sống của tác giả",
         "desc.footer": "Chân trang: lời cảm ơn và hai lớp sóng chuyển động",
         "desc.stats": "Thẻ thống kê GitHub: stars, forks, repos, followers, following, commits và hạng",
+        "desc.langs": "Thẻ ngôn ngữ lập trình dùng nhiều nhất, tính theo byte code",
     },
     "en": {
         "stats.title": "GITHUB STATS",
@@ -131,6 +132,7 @@ STRINGS = {
         "desc.hero": "Cover image: the author's name, role and location",
         "desc.footer": "Footer: thank-you line and two moving waves",
         "desc.stats": "GitHub stats card: stars, forks, repos, followers, following, commits and rank",
+        "desc.langs": "Most used languages card, measured in code bytes",
     },
 }
 

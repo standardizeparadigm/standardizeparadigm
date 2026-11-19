@@ -127,7 +127,8 @@ def langs_card(pal, data, dt, t, width=640, height=258):
     total = sum(v for _, v in items) or 1
     stamp = dt.strftime("%d/%m · %H:%M")
 
-    parts = open_svg(pal, width, height, "most used languages card")
+    parts = open_svg(pal, width, height, "most used languages card",
+                     desc=t("desc.langs"))
     parts += _header(pal, t("langs.title"), t("langs.sub"))
 
     bx, by, bw, bh = 22, 54, width - 44, 16
