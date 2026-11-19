@@ -39,3 +39,16 @@ Nhờ vậy `cards.py` test được bằng dữ liệu giả, và `api.py` thay
 
 Đổi lại: phải tự viết `esc()`, tự tính toạ độ, tự quản lý màu. Đó là cái giá đã trả và đã có test.
 
+## Ranh giới module
+
+| Module | Được biết | Không được biết |
+| :-- | :-- | :-- |
+| `api.py` | HTTP, JSON, token | không biết SVG |
+| `cards.py`, `hero.py`, `clock.py`, `activity.py`, `divider.py` | `palette`, `i18n`, `primitives` | không biết HTTP, không đọc file |
+| `primitives.py` | chuỗi, số | không biết dữ liệu GitHub |
+| `palette.py` | mã màu | không biết gì khác |
+| `i18n.py` | chuỗi | không biết gì khác |
+| `generate_cards.py` | tất cả | là nơi duy nhất đọc/ghi file |
+
+Chỉ `generate_cards.py` chạm vào đĩa. Đó là lý do toàn bộ phần vẽ test được mà không cần thư mục tạm.
+
