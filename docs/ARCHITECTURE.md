@@ -63,3 +63,9 @@ Chỉ `generate_cards.py` chạm vào đĩa. Đó là lý do toàn bộ phần v
 
 `css_block(pal)` và `defs_block(pal)` thay toàn bộ `@…@` trong `CSS`/`DEFS` bằng màu thật. Vì vậy **không có mã màu nào hard-code** trong phần vẽ — đổi theme là đổi cả 7 ảnh.
 
+## i18n
+
+- `STRINGS["vi"]` và `STRINGS["en"]` phải cùng bộ khoá; test so sánh hai tập khoá.
+- `Translator.__call__(key, **kw)` thay `{tên}`; khoá thiếu trả lại chính tên khoá để lỗi hiện ra trong ảnh thay vì làm sập workflow.
+- Tên thứ trong tuần là dữ liệu (`WEEKDAYS`), không phải chuỗi ghép tay.
+
