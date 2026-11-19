@@ -3,6 +3,22 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Sửa: `main()` không dọn lỗi của lượt trước
+
+- `check_repo.py` giữ danh sách lỗi ở cấp module. Gọi `main()` hai lần trong
+  một tiến trình (điều mà test làm liên tục) thì lỗi của lượt trước còn nằm
+  đó và lượt sau báo đỏ vô cớ.
+- Trên CI không ai thấy, vì mỗi lượt chạy là một tiến trình mới. Chỉ test
+  phát hiện — và đúng là test phát hiện thật, ngay khi thêm ca "cây sạch thì
+  mã thoát bằng 0".
+
+## 2026-11-19 — Luật thứ hai mươi: bảng Markdown thẳng cột
+
+- Một dòng thiếu dấu `|` làm cả bảng lệch: ô cuối trôi sang cột khác và trên
+  GitHub trông như bảng bị gãy. Markdown không coi đó là lỗi cú pháp.
+- Cùng đợt: tài liệu phải mở bằng tiêu đề `#` (GitHub lấy dòng đầu làm mô tả
+  khi chia sẻ link), và ảnh không được gọi URL ngoài hay mang `<script>`.
+
 ## 2026-11-19 — Sửa: README ghi nhầm lịch của đồng hồ
 
 - Bảng workflow trong README ghi dòng Live Clock chạy `*/30` "mỗi 30 phút".
