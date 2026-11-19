@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Mọi thẻ có `<title>` và `<desc>`
+
+- Trước chỉ có `aria-label` — trình đọc màn hình đọc được nhưng công cụ tìm kiếm và chế độ đọc không thấy gì.
+- Giờ mỗi tấm ảnh có tiêu đề trùng `aria-label` và một dòng mô tả riêng, đã dịch cả vi/en.
+
 ## 2026-11-19 — CONTRIBUTING: nhắc không sửa tay SVG
 
 - `assets/*.svg` do máy sinh; sửa tay sẽ bị lượt workflow kế tiếp ghi đè.
