@@ -166,7 +166,7 @@ class TestEscape(unittest.TestCase):
         self.assertIn("<", node.firstChild.data)
 
 
-class TestIcons(unittest.TestCase):
+class TestIconFallback(unittest.TestCase):
     def test_unknown_icon_falls_back_to_spark(self):
         from svgkit.primitives import ICONS, icon
 
