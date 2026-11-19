@@ -62,7 +62,7 @@ STRINGS = {
         "hero.pill1": "LỚP 7",
         "hero.pill2": "UTC+7",
         "hero.pill3": "TỰ HỌC",
-        "hero.pill4": "LONG XUYÊN",
+        "hero.pill4": "KON TUM",
         "hero.status": "đang code",
         "hero.type1": "print(\"Hello World\")",
         "hero.type2": "học một thứ → mở ra mười thứ",
