@@ -128,6 +128,11 @@ RE_MOJIBAKE = re.compile("(\u00c3[\u0080-\u00bf]|\u00e2\u20ac|\u00c4\u2018|"
 
 
 def check_text_encoding(path, text):
+    """Bắt ký tự lạ trong một file đã đọc: Hán, Hàn, mojibake, ký tự thay thế.
+
+    Tách khỏi `check_markdown` để dùng lại được cho mọi file văn bản, không
+    chỉ Markdown.
+    """
     for token, why in RE_BAD_CHARS:
         if token in text:
             line = text[:text.index(token)].count("\n") + 1
