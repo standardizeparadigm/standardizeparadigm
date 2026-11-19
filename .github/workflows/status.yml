@@ -25,7 +25,7 @@ on:
       - "Live Clock"
       - "Profile Cards (LTS)"
       - "🌱 README Garden"
-      - "🩺 Repo Health"
+      - "Repo Health"
       - "👋 Welcome new contributors"
     types: [completed]
   workflow_dispatch:

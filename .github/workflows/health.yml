@@ -7,7 +7,7 @@
 #
 #  Lịch: mỗi push / pull request + 06:00 mỗi ngày (giờ Việt Nam).
 # =====================================================================
-name: 🩺 Repo Health
+name: Repo Health
 
 on:
   push:
