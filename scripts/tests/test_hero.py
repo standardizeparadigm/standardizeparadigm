@@ -50,3 +50,24 @@ class TestHero(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestParticles(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.svg = hero(get_palette("sky"), DT, i18n.get("vi"))
+
+    def test_particles_have_smil(self):
+        self.assertIn('attributeName="cy"', self.svg)
+        self.assertIn('values="0;.7;0"', self.svg)
+
+    def test_particles_stay_out_of_text_block(self):
+        import re
+
+        dust = re.findall(r'<circle cx="(\d+)" cy="(\d+)" r="[\d.]+" fill="#[^"]+" '
+                          r'opacity="0" class="dust"', self.svg)
+        self.assertEqual(len(dust), 14)
+        for cx, cy in dust:
+            x, y = int(cx), int(cy)
+            inside = 250 < x < 840 and 40 < y < 220
+            self.assertFalse(inside, "hạt sáng rơi vào vùng chữ tại (%d, %d)" % (x, y))
