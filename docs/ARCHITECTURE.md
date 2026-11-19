@@ -96,6 +96,24 @@ Hai công cụ, chọn theo tình huống:
 
 Nguyên tắc: **nếu hoạt ảnh làm khung đầu tiên xấu, đổi sang SMIL hoặc đổi trạng thái mặc định**.
 
+## Một file, nhiều trình vẽ
+
+Ảnh SVG của repo này được đọc bởi ít nhất năm loại chương trình: trình duyệt
+(README), CDN của GitHub (khi nhúng), app di động GitHub, trình xem ảnh trên
+máy, và các bộ dựng như resvg khi ai đó xuất PNG. Chúng không hiểu CSS giống
+nhau, nên có hai quy ước bắt buộc:
+
+| Quy ước | Vì sao |
+| :-- | :-- |
+| Không dùng `font:` viết tắt | resvg và vài bản librsvg bỏ qua cả khai báo; chữ rơi về 16px |
+| Hoạt ảnh phải có trạng thái tĩnh đẹp sẵn | nhiều trình xem chỉ vẽ khung đầu tiên |
+| `prefers-reduced-motion` tắt mọi thứ | người bật "giảm chuyển động" thấy ảnh tĩnh đầy đủ |
+| Không gọi URL ngoài | mỗi URL là một lần gọi mạng của người xem, và một chỗ có thể chết |
+
+Ba quy ước đầu từng bị vi phạm và đều có luật trong `check_repo.py` canh;
+quy ước cuối là một luật riêng. Bài học chung: **thứ gì trình duyệt tha thứ
+thì mọi trình khác có thể không**, và không có gì báo cho bạn biết.
+
 ## Thời gian trong một file tĩnh
 
 Một file SVG không chạy được code, nên "đồng hồ sống" phải giải bằng dữ liệu:
