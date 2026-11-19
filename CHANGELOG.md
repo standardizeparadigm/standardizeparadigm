@@ -3,6 +3,14 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Tài liệu phải khớp lịch chạy thật
+
+- Trong một vòng đã có hai lần bảng lịch chạy trong `docs/WORKFLOWS.md` và
+  `README.md` nói một đằng, YAML nói một nẻo. Người đọc tin bảng, không ai
+  đọc cron.
+- `check_repo.check_workflow_docs()` đọc cron thật từ `.github/workflows/*`,
+  rồi so từng dòng bảng có nhắc tên workflow và từng `<code>cron</code>`
+  trong README. Chạy ngay lần đầu đã bắt được `*/15` còn sót.
 ## 2026-11-19 — Mọi thẻ đều quy về giờ Việt Nam
 
 - Thẻ số liệu, ngôn ngữ, hoạt động và dải trạng thái cũng in mốc thời gian;
