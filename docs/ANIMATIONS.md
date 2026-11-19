@@ -1,4 +1,4 @@
-# 🎞️ Kiểm kê hoạt ảnh
+# Kiểm kê hoạt ảnh
 
 Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đều viết bằng **CSS keyframes** hoặc **SMIL** ngay trong file SVG — không JavaScript, không thư viện, không request nào thêm.
 
