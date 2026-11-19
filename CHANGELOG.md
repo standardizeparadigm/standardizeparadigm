@@ -126,6 +126,11 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
   `prefers-reduced-motion`), 3 test cho 9 khoá chuỗi của dải trạng thái ở cả
   hai ngôn ngữ.
 
+## 2026-11-19 — Tài liệu dùng 'hơn N test'
+
+- Bốn chỗ ghi số test cứng đã lệch ba lần trong một vòng. Đổi sang "hơn 230" để
+  tài liệu không phải sửa mỗi lần thêm test; con số chính xác thì chạy bộ test.
+
 ## 2026-11-19 — Cổng 3D: sửa lỗi mốc 24 giờ không bao giờ tới
 
 - Cổng so "lần chạy thành công gần nhất", nhưng lượt bị cổng bỏ qua **vẫn** là lượt thành công → mốc 24 giờ không bao giờ đạt được, ảnh chỉ đổi khi có push.
