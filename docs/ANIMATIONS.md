@@ -72,3 +72,9 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 - Trước khi vẽ, nhóm kim được xoay sẵn tới góc hiện tại, rồi hoạt ảnh nhận `animation-delay` âm đúng số giây đã trôi — nên kim khớp giờ ngay giây đầu tiên, không bị "nhảy" khi ảnh mới được commit.
 - Chấm ở tâm nhấp nháy (`pulse`), thanh tiến độ ngày chạy tới phần trăm đã trôi.
 
+## Activity — 14 ngày
+
+- Mỗi cột mọc từ đáy lên bằng SMIL `animate` trên `height` + `y`, độ trễ tăng 40ms mỗi ngày.
+- Ngày không có contribution vẫn vẽ một vạch mờ để thấy nhịp nghỉ.
+- Điểm sáng trên cột hôm nay nhấp nháy (`pulse`) — chỉ báo "số liệu đang tính tới hôm nay".
+
