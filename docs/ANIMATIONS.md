@@ -107,3 +107,9 @@ Mỗi file SVG có sẵn khối `@media (prefers-reduced-motion: reduce)` tắt 
 - Nhãn `TB 196` nằm ở đầu trái, phía trên đường.
 - **Nhãn cao nhất**: đặt trên đỉnh cột cao nhất, chữ nhỏ màu nhấn. Nếu hôm nay chính là ngày cao nhất thì bỏ nhãn — chỗ đó đã có chấm nhấp nháy của "hôm nay".
 
+## Live clock — vành và kim
+
+- Ba kim quay bằng CSS với chu kỳ thật: 60s, 3600s, 43200s. Góc ban đầu ghi vào `transform` tĩnh, `animation-delay` âm bằng đúng số giây đã trôi → khớp giờ ngay khung đầu.
+- **Vành**: một cung gradient `stroke-dasharray="70 320"` quay 18 giây/vòng trên vành ngoài, cùng vòng nét đứt quay 40 giây ở ngoài xa hơn — hai tốc độ khác nhau nên mắt không thấy "đều đều".
+- **Kim giây** có đối trọng: một chấm nhỏ phía sau trục, giống đồng hồ cơ thật.
+
