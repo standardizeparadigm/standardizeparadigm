@@ -148,7 +148,7 @@ class TestTopLanguageHighlight(unittest.TestCase):
         self.assertEqual(svg.count('class="pulseSlow"'), 1)
 
 
-class TestWaitingCard(unittest.TestCase):
+class TestWaitingCardContent(unittest.TestCase):
     def test_guides_to_workflow(self):
         t = i18n.get("vi")
         svg = waiting_card(get_palette(), 640, "GITHUB STATS",
