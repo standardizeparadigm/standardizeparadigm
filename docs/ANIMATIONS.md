@@ -36,3 +36,9 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 - Vệt sáng là một `<text>` trắng mờ 28% bị cắt bởi `clipPath` chứa hình chữ nhật chạy ngang.
 - Chuyển động bằng SMIL: `values="-460;1012;1012"` — quét hết chữ trong 55% thời gian rồi nghỉ. Dùng SMIL vì nếu trình xem không chạy hoạt ảnh, khung đầu vẫn nằm ngoài vùng chữ (không bị mảng trắng đè lên).
 
+## Hero — gõ chữ
+
+- Ba câu `hero.type1/2/3` cùng nằm ở một chỗ; mỗi câu có `clipPath` riêng giãn từ 0 đến hết câu.
+- Chu kỳ 25.2 giây: câu hiện dần ~1.5s, giữ ~3.9s, xoá, nghỉ — rồi tới câu kế.
+- Con trỏ `|` nhấp nháy bằng `blink` (1.05s, `steps(1, end)`) để giống terminal thật.
+
