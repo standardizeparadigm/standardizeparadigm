@@ -146,8 +146,9 @@ Ba hàm này đều là hàm thuần (trừ `write`) nên test được mà khô
 
 ## `status.py`
 
-- `status_strip(pal, rows, dt, t)` — `rows` là danh sách `(tên_ngắn, trạng_thái)`
-  đã chuẩn hoá; hàm này **không** gọi mạng.
+- `status_strip(pal, rows, dt, t)` — `rows` là danh sách
+  `(tên_ngắn, trạng_thái[, số_phút])` đã chuẩn hoá; hàm này **không** gọi mạng.
+  Hai phần tử vẫn hợp lệ — phần tử thứ ba là tuỳ chọn.
 - `WORKFLOWS` là danh sách `(file_workflow, tên_hiển_thị)`; thêm workflow mới
   thì thêm một dòng, bề rộng dải tự giãn.
 - `STATE_STYLE` ánh xạ trạng thái → màu + khoá i18n. Màu cố định theo nghĩa
