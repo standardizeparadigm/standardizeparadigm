@@ -175,6 +175,8 @@ thường bỏ qua — vì đó là những lỗi đã xảy ra thật ở đây
 | Tài liệu | bài trong `docs/` không được dẫn tới, câu "hơn N unit test" đã sai, README dài quá 360 dòng |
 | Python | mọi file biên dịch được và mở đầu bằng docstring |
 | Merge | dấu `<<<<<<<` còn sót trong bất kỳ file văn bản nào |
+| Ảnh, chi tiết | `id` trùng, lớp CSS không tồn tại, `url(#x)` trỏ hụt, keyframe lẻ, `font:` viết tắt, `NaN` trong toạ độ |
+| Lịch chạy | hai workflow nổ cùng một phút (cảnh báo), cron dày hơn 5 phút |
 
 ## Bảo mật
 
