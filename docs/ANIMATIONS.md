@@ -79,14 +79,6 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 - Ngày không có contribution vẫn vẽ một vạch mờ để thấy nhịp nghỉ.
 - Điểm sáng trên cột hôm nay nhấp nháy (`pulse`) — chỉ báo "số liệu đang tính tới hôm nay".
 
-## Tắt hoạt ảnh
-
-Mỗi file SVG có sẵn khối `@media (prefers-reduced-motion: reduce)` tắt toàn bộ hoạt ảnh CSS. Nếu bạn thấy chuyển động gây khó chịu:
-
-1. Bật "giảm chuyển động" trong hệ điều hành (Windows: *Animation effects*; macOS: *Reduce motion*; Android/iOS: *Remove animations*).
-2. Hoặc xem ảnh qua `https://github.com/.../raw/...svg` — nhiều trình xem tĩnh chỉ hiện khung đầu tiên, và mọi khung đầu tiên đều được vẽ đẹp sẵn.
-
-> Mọi hoạt ảnh đều khai báo thời lượng cố định, không dùng `random` — hai lần tải trang luôn giống nhau, nên không có hiện tượng "nhấp nháy khác nhau" mỗi lần refresh.
 ## Hero — bụi sáng và vòng lan toả
 
 - **Bụi sáng**: 14 hạt, mỗi hạt là một `<circle class="dust">` với hai `<animate>`: `cy` chạy lên 18–40px, `opacity` chạy `0 → .7 → 0`. Chu kỳ 7–13 giây, `begin` âm để lệch pha ngay từ khung đầu.
@@ -193,3 +185,12 @@ Dải này kể chuyện bằng **màu và chuyển động cùng lúc**, nên n
 
 Tất cả các lớp trên đều nằm trong danh sách tắt của `prefers-reduced-motion`,
 nên ai bật "giảm chuyển động" sẽ thấy một dải tĩnh nhưng vẫn đủ màu và chữ.
+
+## Tắt hoạt ảnh
+
+Mỗi file SVG có sẵn khối `@media (prefers-reduced-motion: reduce)` tắt toàn bộ hoạt ảnh CSS. Nếu bạn thấy chuyển động gây khó chịu:
+
+1. Bật "giảm chuyển động" trong hệ điều hành (Windows: *Animation effects*; macOS: *Reduce motion*; Android/iOS: *Remove animations*).
+2. Hoặc xem ảnh qua `https://github.com/.../raw/...svg` — nhiều trình xem tĩnh chỉ hiện khung đầu tiên, và mọi khung đầu tiên đều được vẽ đẹp sẵn.
+
+> Mọi hoạt ảnh đều khai báo thời lượng cố định, không dùng `random` — hai lần tải trang luôn giống nhau, nên không có hiện tượng "nhấp nháy khác nhau" mỗi lần refresh.
