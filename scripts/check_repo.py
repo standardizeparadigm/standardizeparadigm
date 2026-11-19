@@ -599,6 +599,32 @@ def check_test_claims(root=None):
                             "— hãy nâng lên" % (rel(path), number, claimed, total))
 
 
+# --------------------------------------------------- 4bf. Ảnh không gọi ra ngoài
+SVG_NAMESPACE = "http://www.w3.org/2000/svg"
+RE_URL_IN_SVG = re.compile(r"https?://[^\"'\s)]+")
+UNSAFE_SVG = ("<script", "javascript:", "onload=", "onclick=", "onerror=")
+
+
+def check_svg_safety(root=None):
+    """Ảnh tự vẽ không được gọi tài nguyên ngoài, không mang mã chạy.
+
+    Một ảnh README tải từ CDN của GitHub; mọi URL bên trong nó là một lần
+    gọi mạng của người xem (và là một chỗ có thể chết). `<script>` và
+    thuộc tính `on*` thì GitHub đã lọc — nhưng nếu file được xem ở nơi
+    khác thì không. Cả hai đều không có lý do tồn tại trong ảnh này.
+    """
+    root = root or ROOT
+    for path in sorted(glob.glob(os.path.join(root, "assets", "*.svg"))):
+        text = read(path)
+        for url in RE_URL_IN_SVG.findall(text):
+            if url.rstrip("/") != SVG_NAMESPACE:
+                err("%s gọi ra ngoài: %s" % (rel(path), url))
+        for marker in UNSAFE_SVG:
+            if marker.lower() in text.lower():
+                err("%s chứa %r — ảnh tự vẽ không cần mã chạy"
+                    % (rel(path), marker))
+
+
 # --------------------------------------------------- 4be. Bảng Markdown thẳng cột
 RE_TABLE_DIVIDER = re.compile(r"^\|?[\s:|-]+\|[\s:|-]*$")
 
@@ -1078,6 +1104,7 @@ def main(argv=None):
     check_svg_duplicate_ids()
     check_svg_artifacts()
     check_markdown_tables()
+    check_svg_safety()
     check_svg_budget()
     check_python()
     check_module_docstrings()
