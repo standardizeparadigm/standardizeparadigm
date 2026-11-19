@@ -3,6 +3,17 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — `check_repo.py --fix` và luật "số test trong tài liệu"
+
+- `--fix` chuẩn hoá BOM/CRLF/khoảng trắng/dòng trống cuối file. Chỉ đụng
+  thứ vô hình với người đọc: có test khoá lại rằng chữ tiếng Việt, dấu em
+  dash và dấu giữa (`·`) đi qua nguyên vẹn, và chạy hai lần thì lần hai
+  không sửa gì (nếu không, workflow sẽ tự push một commit mỗi 5 phút).
+- Generator SVG giờ ghi newline cuối file, nên `--fix` không còn gì để sửa
+  trên ảnh vừa vẽ — hết vòng lặp giữa hai công cụ.
+- Luật mới: câu `hơn N unit test` phải còn đúng (`N <= số thật < N + 100`).
+  Bốn file từng ghi `hơn 100` trong khi bộ test đã hơn 320.
+
 ## 2026-11-19 — Nhãn "còn 7g37" trong thẻ đồng hồ
 
 - Thanh tiến độ ngày chỉ nói *đã trôi bao nhiêu*; lúc 23h cái người ta cần
