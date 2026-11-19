@@ -15,10 +15,9 @@ on:
     - cron: "*/5 * * * *"
   workflow_dispatch:
   push:
-    branches: [main]
-    paths:
-      - "scripts/generate_cards.py"
-      - ".github/workflows/live-clock.yml"
+    # Mọi push lên nhánh mặc định đều làm đồng hồ tươi ngay — kể cả khi bạn
+    # chỉ sửa README. Commit của bot bị chặn bởi `if:` bên dưới nên không lặp.
+    branches: [main, master]
 
 concurrency:
   group: live-clock
