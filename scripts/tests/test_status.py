@@ -292,5 +292,67 @@ class TestPillGeometry(unittest.TestCase):
         svg = status.status_strip(get_palette("sky"), rows, DT, i18n.get("vi"))
         self.assertIn('width="%d"' % status.width_for(3), svg)
 
+
+
+class TestStateStyles(unittest.TestCase):
+    """Sáu trạng thái, sáu màu, sáu nhãn — không trạng thái nào vô hình."""
+
+    STATES = ("passing", "failing", "running", "none", "missing", "unknown")
+
+    def test_every_state_has_a_colour_and_a_key(self):
+        for state in self.STATES:
+            self.assertIn(state, status.STATE_STYLE)
+            colour, key = status.STATE_STYLE[state]
+            self.assertRegex(colour, r"^#[0-9A-Fa-f]{6}$")
+            self.assertTrue(key.startswith("status."))
+
+    def test_labels_are_distinct(self):
+        t = i18n.get()
+        labels = [t(status.STATE_STYLE[state][1]) for state in self.STATES]
+        self.assertEqual(len(set(labels)), len(labels))
+
+    def test_unknown_state_falls_back_instead_of_crashing(self):
+        rows = [("X", "exploded"), ("Y", "passing")]
+        svg = status.status_strip(get_palette("sky"), rows, DT, i18n.get())
+        self.assertIn(i18n.get()("status.unknown"), svg)
+
+    def test_running_state_carries_the_spinning_arc(self):
+        rows = [("X", "running")]
+        svg = status.status_strip(get_palette("sky"), rows, DT, i18n.get())
+        self.assertIn('class="spinDot"', svg)
+
+    def test_passing_state_pulses_instead_of_spinning(self):
+        rows = [("X", "passing")]
+        svg = status.status_strip(get_palette("sky"), rows, DT, i18n.get())
+        self.assertNotIn('class="spinDot"', svg)
+        self.assertIn("pulseSlow", svg)
+
+
+class TestSummaryLine(unittest.TestCase):
+    def test_all_passing_counts_seven(self):
+        rows = [("A%d" % i, "passing") for i in range(7)]
+        svg = status.status_strip(get_palette("sky"), rows, DT, i18n.get())
+        self.assertIn("7/7", svg)
+
+    def test_failures_are_not_counted_as_ok(self):
+        rows = [("A", "passing"), ("B", "failing"), ("C", "none")]
+        svg = status.status_strip(get_palette("sky"), rows, DT, i18n.get())
+        self.assertIn("1/3", svg)
+
+    def test_missing_counts_as_not_ok(self):
+        rows = [("A", "missing"), ("B", "passing")]
+        svg = status.status_strip(get_palette("sky"), rows, DT, i18n.get())
+        self.assertIn("1/2", svg)
+
+    def test_footer_mentions_the_draw_time(self):
+        # Mốc có múi giờ UTC -> dải phải in theo giờ Việt Nam (+7).
+        svg = status.status_strip(get_palette("sky"), [("A", "passing")],
+                                  datetime.datetime(
+                                      2026, 11, 19, 15, 4,
+                                      tzinfo=datetime.timezone.utc),
+                                  i18n.get())
+        self.assertIn("19/11", svg)
+        self.assertIn("22:04", svg)   # 15:04 UTC -> 22:04 giờ Việt Nam
+
 if __name__ == "__main__":
     unittest.main()
