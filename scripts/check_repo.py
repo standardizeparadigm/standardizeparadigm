@@ -633,6 +633,36 @@ def check_class_references(root=None):
 
 RE_STYLE = re.compile(r"<style[^>]*>(.*?)</style>", re.S)
 
+# ------------------------ 4bm. Keyframe khai báo và keyframe được dùng
+RE_KEYFRAMES_DEF = re.compile(r"@keyframes\s+([A-Za-z][\w-]*)")
+# `animation: none` và các từ khoá chung không phải tên keyframe.
+NON_KEYFRAME_WORDS = {"none", "inherit", "initial", "unset", "revert",
+                      "ease", "ease-in", "ease-out", "ease-in-out", "linear",
+                      "alternate", "reverse", "infinite", "both", "forwards",
+                      "backwards", "running", "paused", "normal", "steps"}
+RE_ANIMATION_USE = re.compile(r"animation(?:-name)?\s*:\s*([A-Za-z][\w-]*)")
+
+
+def check_keyframes(root=None):
+    """Keyframe phải có đôi: khai báo thì phải dùng, dùng thì phải khai báo.
+
+    `animation: pulsee 2s` không báo lỗi; phần tử chỉ đứng im. Ngược lại, một
+    `@keyframes` không ai dùng là vài trăm byte chết trong mỗi ảnh — nhân lên
+    tám ảnh thì thành vài KB.
+    """
+    root = root or ROOT
+    for path in sorted(glob.glob(os.path.join(root, "assets", "*.svg"))):
+        text = read(path)
+        style = "\n".join(RE_STYLE.findall(text))
+        defined = set(RE_KEYFRAMES_DEF.findall(style))
+        used = set(RE_ANIMATION_USE.findall(style)) - NON_KEYFRAME_WORDS
+        for name in sorted(used - defined):
+            err("%s: animation dùng %r nhưng không có @keyframes tương ứng"
+                % (rel(path), name))
+        for name in sorted(defined - used):
+            err("%s: @keyframes %r không được dùng ở đâu" % (rel(path), name))
+
+
 # ------------------------------ 4bl. url(#id) phải trỏ tới một định nghĩa
 PAINT_TAGS = ("linearGradient", "radialGradient", "filter", "clipPath",
               "mask", "pattern", "symbol", "marker")
@@ -1331,6 +1361,7 @@ def main(argv=None):
     check_class_references()
     check_bad_numbers()
     check_url_targets()
+    check_keyframes()
     check_doc_titles()
     check_svg_budget()
     check_python()
