@@ -32,7 +32,7 @@
 
 ## 01 — Về mình
 
-Xin chào 👋 Mình là **Standardize Paradigm**, học sinh **lớp 7** ở Long Xuyên, An Giang. Mình học code vì **nó vui thật sự**: bắt đầu từ một dòng `print("Hello World")`, rồi mò dần sang web, game và chatbot. Học được một thứ là lại thấy mười thứ khác muốn thử 🚀
+Xin chào 👋 Mình là **Standardize Paradigm**, học sinh **lớp 7** ở phường Kon Tum, tỉnh Quảng Ngãi. Mình học code vì **nó vui thật sự**: bắt đầu từ một dòng `print("Hello World")`, rồi mò dần sang web, game và chatbot. Học được một thứ là lại thấy mười thứ khác muốn thử 🚀
 
 ```yaml
 role:       Học sinh lớp 7 · Lập trình viên tự học
