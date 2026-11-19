@@ -18,7 +18,7 @@ python3 scripts/generate_cards.py --list-themes        # xem danh sách + mã m�
 
 ## `sky` — mặc định
 
-- Nền `#0B1220 → #060A14`, nhấn `#38BDF8`, nhấn phụ `#0EA5E9`, nhấn nhạt `#7DD3FC`.
+- Nền `#07111D → #0A1421`, nhấn `#38BDF8`, nhấn phụ `#0EA5E9`, nhấn nhạt `#7DD3FC`.
 - Chọn làm mặc định vì tương phản chữ trắng trên nền đậm đạt ~12:1, đọc lâu không mỏi.
 ## `emerald`
 
@@ -44,6 +44,6 @@ python3 scripts/generate_cards.py --list-themes        # xem danh sách + mã m�
 ## Thêm bảng màu mới
 
 1. Mở `scripts/svgkit/palette.py`.
-2. Thêm một `Palette(...)` vào `THEMES` với đủ 14 token.
+2. Thêm một `Palette(...)` vào `THEMES` với đủ 14 trường (nền, panel, viền, 4 cấp chữ, 3 màu nhấn, `deep`, font, mono).
 3. Chạy `python3 scripts/generate_cards.py --all --theme ten-moi`.
 4. `health.yml` sẽ tự thử vẽ bảng màu mới ở cả hai ngôn ngữ trong lần push kế tiếp.
