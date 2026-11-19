@@ -830,6 +830,48 @@ class TestHeadingLevels(unittest.TestCase):
         check_repo.check_heading_levels(self.tmp)
         self.assertEqual(check_repo.errors, [])
 
+
+
+class TestJobTimeouts(unittest.TestCase):
+    """Job thiếu timeout-minutes mặc định giữ runner 6 tiếng."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="timeouts-")
+        os.makedirs(os.path.join(self.tmp, ".github", "workflows"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _wf(self, body):
+        with open(os.path.join(self.tmp, ".github", "workflows", "a.yml"),
+                  "w", encoding="utf-8") as handle:
+            handle.write(body)
+
+    def test_job_with_timeout_passes(self):
+        self._wf("name: x\non:\n  workflow_dispatch:\n\njobs:\n  build:\n"
+                 "    runs-on: ubuntu-latest\n    timeout-minutes: 5\n"
+                 "    steps:\n      - run: echo hi\n")
+        check_repo.check_job_timeouts(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_job_without_timeout_is_flagged(self):
+        self._wf("name: x\non:\n  workflow_dispatch:\n\njobs:\n  build:\n"
+                 "    runs-on: ubuntu-latest\n    steps:\n      - run: echo hi\n")
+        check_repo.check_job_timeouts(self.tmp)
+        self.assertTrue(any("timeout-minutes" in e for e in check_repo.errors))
+
+    def test_two_jobs_one_timeout_is_flagged(self):
+        self._wf("jobs:\n  a:\n    timeout-minutes: 5\n  b:\n    runs-on: x\n")
+        check_repo.check_job_timeouts(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_file_without_jobs_is_ignored(self):
+        self._wf("name: x\non:\n  workflow_dispatch:\n")
+        check_repo.check_job_timeouts(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
 if __name__ == "__main__":
     unittest.main()
 
