@@ -164,3 +164,18 @@ class TestEscape(unittest.TestCase):
         dom = parse(svg)
         node = dom.getElementsByTagName("text")[0]
         self.assertIn("<", node.firstChild.data)
+
+
+class TestIcons(unittest.TestCase):
+    def test_unknown_icon_is_empty(self):
+        from svgkit.primitives import icon
+
+        self.assertEqual(icon("khong-co-icon-nay", 0, 0, "#FFFFFF"), "")
+
+    def test_known_icons_draw_path(self):
+        from svgkit.primitives import ICONS, icon
+
+        for name in ICONS:
+            out = icon(name, 10, 20, "#38BDF8")
+            self.assertIn("<path", out, name)
+            self.assertIn("#38BDF8", out, name)
