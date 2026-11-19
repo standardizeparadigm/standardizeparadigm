@@ -239,5 +239,76 @@ class TestAssetShape(unittest.TestCase):
             self.assertTrue("@keyframes" in text or "<animate" in text,
                             "%s không có hoạt ảnh nào" % name)
 
+
+
+class TestEveryThemeEveryLanguage(unittest.TestCase):
+    """Sinh ảnh cho mọi bảng màu × ngôn ngữ rồi soi lại bằng chính các luật.
+
+    Luật chỉ soi `assets/`, tức là bản của theme `sky` + tiếng Việt. Một bảng
+    màu khác có thể sinh ra `url(#…)` trỏ hụt hoặc id trùng mà không ai thấy
+    cho tới khi có người đổi theme.
+    """
+
+    COMBOS = [("sky", "vi"), ("emerald", "en"), ("mono", "vi")]
+
+    @classmethod
+    def setUpClass(cls):
+        import shutil
+        import tempfile
+        import generate_cards
+        import check_repo
+        cls.check_repo = check_repo
+        cls.tmp = tempfile.mkdtemp(prefix="themes-")
+        out = os.path.join(cls.tmp, "assets")
+        for theme, lang in cls.COMBOS:
+            code = generate_cards.main(["--demo", "--all", "--theme", theme,
+                                        "--lang", lang, "--out", out,
+                                        "--quiet"])
+            assert code == 0, (theme, lang, code)
+        cls.out = out
+
+    @classmethod
+    def tearDownClass(cls):
+        import shutil
+        shutil.rmtree(cls.tmp, ignore_errors=True)
+
+    def _reset(self):
+        self.check_repo.errors = []
+        self.check_repo.warnings = []
+
+    def test_eight_files_each_run(self):
+        self.assertEqual(len([n for n in os.listdir(self.out)
+                              if n.endswith(".svg")]), 8)
+
+    def test_duplicate_ids(self):
+        self._reset()
+        self.check_repo.check_duplicate_ids(self.tmp)
+        self.assertEqual(self.check_repo.errors, [])
+
+    def test_url_targets(self):
+        self._reset()
+        self.check_repo.check_url_targets(self.tmp)
+        self.assertEqual(self.check_repo.errors, [])
+
+    def test_class_references(self):
+        self._reset()
+        self.check_repo.check_class_references(self.tmp)
+        self.assertEqual(self.check_repo.errors, [])
+
+    def test_keyframes(self):
+        self._reset()
+        self.check_repo.check_keyframes(self.tmp)
+        self.assertEqual(self.check_repo.errors, [])
+
+    def test_bad_numbers(self):
+        self._reset()
+        self.check_repo.check_bad_numbers(self.tmp)
+        self.assertEqual(self.check_repo.errors, [])
+
+    def test_font_shorthand(self):
+        self._reset()
+        self.check_repo.check_font_shorthand(self.tmp)
+        self.assertEqual(self.check_repo.errors, [])
+
 if __name__ == "__main__":
     unittest.main()
