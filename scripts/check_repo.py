@@ -471,6 +471,31 @@ def check_dead_assets(root=None):
             err("assets/%s không được nhúng ở đâu (ảnh chết)" % name)
 
 
+# ------------------------------------------------------- 4a2. Ngân sách ảnh
+SVG_BUDGET = 40 * 1024          # 40 KB: một ảnh README không nên nặng hơn
+
+
+def check_svg_budget(root=None, limit=SVG_BUDGET):
+    """Mỗi ảnh SVG phải nằm dưới ngân sách bề rộng.
+
+    Chỉ áp cho `assets/` — ảnh do repo này tự vẽ. `profile-3d-contrib/` do
+    action bên thứ ba sinh ra (mỗi file ~180 KB, hàng trăm `path`), không
+    phải thứ ta kiểm soát.
+
+    Ảnh được tải trên mọi lần mở trang và qua CDN của GitHub. 40 KB là mức
+    thoải mái cho một thẻ 640×258 có CSS + SMIL; vượt qua đó thường là dấu
+    hiệu ai đó nhúng dữ liệu lớn (base64, path dày đặc) vào file.
+    """
+    root = root or ROOT
+    for path in sorted(glob.glob(os.path.join(root, "assets", "*.svg"))):
+        if "/.git/" in path.replace(os.sep, "/"):
+            continue
+        size = os.path.getsize(path)
+        if size > limit:
+            err("%s nặng %.1f KB, vượt ngân sách %.0f KB"
+                % (rel(path), size / 1024.0, limit / 1024.0))
+
+
 # ---------------------------------------------------- 4b1. Tài liệu mồ côi
 MD_LINK = re.compile(r"\]\(([^)\s]+)")
 
@@ -632,6 +657,7 @@ def main(argv=None):
     check_dead_assets()
     check_test_claims()
     check_orphan_docs()
+    check_svg_budget()
     check_python()
     # Mọi file Markdown trong repo (README, docs, CONTRIBUTING, mẫu issue...).
     # Dùng os.walk vì glob không đi vào thư mục ẩn như .github/.
