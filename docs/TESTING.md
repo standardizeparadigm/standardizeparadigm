@@ -192,6 +192,18 @@ sai giờ, và triệu chứng ("ảnh lệch bảy tiếng") không chỉ thẳ
   `tzinfo` là mọi phép so sánh phía sau đổ.
 - Ngày cuối tháng, năm nhuận, và mốc `00:00` đều có ca riêng.
 
+## `test_docs.py`
+
+Quy ước **hình thức** của tài liệu, không phải nội dung:
+
+- Đúng một `H1` mỗi file, và tiêu đề không nhảy cấp (không `##` rồi `####`).
+- Mỗi tiêu đề có dòng trống phía trước — thiếu nó thì GitHub gộp tiêu đề vào
+  đoạn văn trên.
+- File kết thúc bằng đúng một newline; thiếu thì diff cuối file luôn bẩn.
+- Tiêu đề trong một file không trùng nhau (anchor GitHub sẽ thành `-1`).
+- Link nội bộ trỏ tới file và anchor có thật.
+- Không còn ký tự hỏng trong tài liệu.
+
 ## `test_workflow_gate.py`
 
 Cổng thông minh của `profile-3d.yml` là shell nằm trong YAML — loại code dễ hỏng mà không ai thấy. Test này:
