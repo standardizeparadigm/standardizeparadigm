@@ -496,6 +496,27 @@ def check_svg_budget(root=None, limit=SVG_BUDGET):
                 % (rel(path), size / 1024.0, limit / 1024.0))
 
 
+# --------------------------------------------------------- 4b0. README ngắn
+README_BUDGET = 360            # dòng: đủ để giới thiệu, không đủ để lan man
+
+
+def check_readme_length(root=None, limit=README_BUDGET):
+    """README phải ngắn.
+
+    Trang cá nhân là thứ người lạ mở 20 giây rồi đóng. README dài quá 360
+    dòng là dấu hiệu nội dung đã tràn ra khỏi phần giới thiệu và nên
+    chuyển vào `docs/`.
+    """
+    root = root or ROOT
+    path = os.path.join(root, "README.md")
+    if not os.path.exists(path):
+        return
+    lines = len(read(path).split("\n"))
+    if lines > limit:
+        err("README.md dài %d dòng, vượt ngân sách %d — chuyển bớt vào docs/"
+            % (lines, limit))
+
+
 # ---------------------------------------------------- 4b1. Tài liệu mồ côi
 MD_LINK = re.compile(r"\]\(([^)\s]+)")
 
@@ -681,6 +702,7 @@ def main(argv=None):
     check_dead_assets()
     check_test_claims()
     check_orphan_docs()
+    check_readme_length()
     check_svg_budget()
     check_python()
     check_module_docstrings()
