@@ -26,7 +26,7 @@ def now_vn():
 
 
 # --------------------------------------------------------------- REST
-def request_json(url, token="", payload=None, tries=3):
+def request_json(url, token="", payload=None, tries=3, quiet=False):
     """GET (hoặc POST nếu có payload) và trả JSON, lỗi thì None."""
     data = None
     headers = {
@@ -54,10 +54,13 @@ def request_json(url, token="", payload=None, tries=3):
                 sys.stderr.write("  HTTP %s -> thử lại | %s\n" % (error.code, body))
                 time.sleep(5 * (attempt + 1))
                 continue
-            sys.stderr.write("  !! HTTP %s trên %s\n     %s\n"
-                             % (error.code, url, body))
+            if not quiet:
+                sys.stderr.write("  !! HTTP %s trên %s\n     %s\n"
+                                 % (error.code, url, body))
             return None
         except Exception as error:                      # mạng, timeout, JSON hỏng
+            if quiet:
+                return None
             if attempt < tries - 1:
                 time.sleep(3 * (attempt + 1))
                 continue
@@ -66,9 +69,9 @@ def request_json(url, token="", payload=None, tries=3):
     return None
 
 
-def api(path, token="", tries=3):
+def api(path, token="", tries=3, quiet=False):
     url = path if path.startswith("http") else API + path
-    return request_json(url, token=token, tries=tries)
+    return request_json(url, token=token, tries=tries, quiet=quiet)
 
 
 # --------------------------------------------------------------- REST data
@@ -152,6 +155,46 @@ query ($login: String!) {
   }
 }
 """
+
+
+CONCLUSION_MAP = {
+    "success": "passing",
+    "failure": "failing",
+    "timed_out": "failing",
+    "startup_failure": "failing",
+    "action_required": "failing",
+    "cancelled": "unknown",
+    "skipped": "unknown",
+    "neutral": "unknown",
+    "stale": "unknown",
+}
+
+
+def workflow_states(owner, repo, token="", files=None):
+    """Trạng thái lần chạy gần nhất của từng workflow.
+
+    Trả về [(tên_file, trạng_thái)] với trạng thái là một trong
+    passing / failing / running / none / unknown. Không có token hoặc
+    workflow chưa tồn tại trên nhánh mặc định -> "none" (chưa chạy),
+    chứ không ném lỗi.
+    """
+    from .status import WORKFLOWS
+
+    wanted = files or WORKFLOWS
+    rows = []
+    for filename, short in wanted:
+        info = api("/repos/%s/%s/actions/workflows/%s/runs?per_page=1&exclude_pull_requests=true"
+                   % (owner, repo, filename), token, quiet=True) if token else None
+        runs = ((info or {}).get("workflow_runs") or [])
+        if not runs:
+            rows.append((short, "none"))
+            continue
+        run = runs[0]
+        if run.get("status") in ("in_progress", "queued", "requested", "waiting"):
+            rows.append((short, "running"))
+        else:
+            rows.append((short, CONCLUSION_MAP.get(run.get("conclusion"), "unknown")))
+    return rows
 
 
 def _streaks(days):
