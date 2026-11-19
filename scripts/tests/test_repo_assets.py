@@ -310,5 +310,24 @@ class TestEveryThemeEveryLanguage(unittest.TestCase):
         self.check_repo.check_font_shorthand(self.tmp)
         self.assertEqual(self.check_repo.errors, [])
 
+
+
+class TestDataMarks(unittest.TestCase):
+    """Dấu dữ liệu nhúng cuối file: cách --smart biết ảnh có cần vẽ lại."""
+
+    def test_every_asset_carries_a_mark(self):
+        for name in asset_files():
+            self.assertRegex(read(name), r"<!-- data:[0-9a-f]{12} -->", name)
+
+    def test_mark_is_the_last_thing_before_the_closing_tag(self):
+        for name in asset_files():
+            lines = read(name).rstrip("\n").split("\n")
+            self.assertEqual(lines[-1], "</svg>", name)
+            self.assertRegex(lines[-2], r"^<!-- data:[0-9a-f]{12} -->$", name)
+
+    def test_no_second_mark(self):
+        for name in asset_files():
+            self.assertEqual(read(name).count("<!-- data:"), 1, name)
+
 if __name__ == "__main__":
     unittest.main()
