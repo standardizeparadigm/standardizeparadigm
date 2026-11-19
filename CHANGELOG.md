@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Cổng 3D không được chết im lặng
+
+- `${GITHUB_REPOSITORY_OWNER}` chưa đặt + `set -u` → cổng thoát giữa đường và luôn bỏ qua lượt vẽ.
+- Giờ có giá trị dự phòng, số đếm sai định dạng được đưa về 0, và 5 test dùng `gh` giả khoá lại hành vi.
+
 ## 2026-11-19 — `check_assets()` khai báo sai thứ tự
 
 - Hàm nằm sau khối `if __name__ == "__main__"` nên khi chạy bằng script thì `NameError`.
