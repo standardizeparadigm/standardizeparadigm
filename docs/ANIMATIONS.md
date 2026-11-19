@@ -197,6 +197,9 @@ Dải này kể chuyện bằng **màu và chuyển động cùng lúc**, nên n
   "chưa có gì để nói" thì cũng không nên động đậy.
 - **Chân dải**: chấm `pulse` cạnh dấu thời gian, cùng kiểu với chân các thẻ
   khác, để mắt biết dải này vừa được vẽ lại.
+- **Nhãn tuổi quá một ngày**: chữ "25 ngày trước" đổi từ xám sang hổ phách.
+  Màu hổ phách trong dải vốn đã mang nghĩa "cần để ý", nên mắt dừng lại đúng
+  chỗ một dấu ĐẠT xanh đã cũ không còn nói gì về hôm nay.
 
 Tất cả các lớp trên đều nằm trong danh sách tắt của `prefers-reduced-motion`,
 nên ai bật "giảm chuyển động" sẽ thấy một dải tĩnh nhưng vẫn đủ màu và chữ.
