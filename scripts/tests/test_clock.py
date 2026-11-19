@@ -120,6 +120,29 @@ class TestLabelNotRepeated(unittest.TestCase):
         self.assertNotIn("GIỜ VIỆT NAM · UTC+7", svg)
 
 
+
+
+class TestHoursLeft(unittest.TestCase):
+    """Nhãn "còn bao lâu nữa hết ngày" cạnh thanh tiến độ."""
+
+    def _card(self, hour, minute, lang="vi"):
+        # giờ không kèm múi = giờ Việt Nam, nên khỏi phải quy đổi trong test
+        return clock_card(get_palette(), datetime(2026, 11, 19, hour, minute),
+                          i18n.get(lang))
+
+    def test_counts_down_to_midnight(self):
+        self.assertIn("còn 0g37", self._card(23, 23))
+
+    def test_morning_has_a_full_day_ahead(self):
+        self.assertIn("còn 16g00", self._card(8, 0))
+
+    def test_minutes_are_zero_padded(self):
+        self.assertIn("còn 1g05", self._card(22, 55))
+
+    def test_english_label(self):
+        self.assertIn("16h 00m left", self._card(8, 0, "en"))
+
+
 if __name__ == "__main__":
     unittest.main()
 
