@@ -1631,6 +1631,47 @@ class TestNoEmoji(unittest.TestCase):
         self.assertEqual(self._run(), [])
 
 
+class TestSvgViewBox(unittest.TestCase):
+    """Ảnh không có `viewBox` thì không co giãn được."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.tmp)
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def _svg(self, name, body):
+        with open(os.path.join(self.tmp, "assets", name), "w",
+                  encoding="utf-8") as handle:
+            handle.write(body)
+
+    def _run(self):
+        check_repo.errors = []
+        check_repo.check_svg_viewbox(root=self.tmp)
+        return list(check_repo.errors)
+
+    def test_missing_viewbox_is_reported(self):
+        self._svg("a.svg", '<svg xmlns="http://www.w3.org/2000/svg"'
+                           ' width="10" height="10"></svg>')
+        errors = self._run()
+        self.assertEqual(len(errors), 1)
+        self.assertIn("viewBox", errors[0])
+
+    def test_present_viewbox_passes(self):
+        self._svg("a.svg", '<svg viewBox="0 0 10 10"></svg>')
+        self.assertEqual(self._run(), [])
+
+    def test_viewbox_far_from_the_head_is_reported(self):
+        # Luật chỉ đọc 600 ký tự đầu — viewBox nằm sâu bên trong là dấu hiệu
+        # nó bị chèn vào một thẻ con chứ không phải thẻ <svg> gốc.
+        self._svg("a.svg", "<svg>" + "x" * 700 + ' viewBox="0 0 1 1"></svg>')
+        self.assertEqual(len(self._run()), 1)
+
+    def test_non_svg_files_are_ignored(self):
+        with open(os.path.join(self.tmp, "assets", "note.txt"), "w") as handle:
+            handle.write("no viewBox here")
+        self.assertEqual(self._run(), [])
+
+
 if __name__ == "__main__":
     unittest.main()
 
