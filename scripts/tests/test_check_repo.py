@@ -374,6 +374,44 @@ class TestOrphanDocs(unittest.TestCase):
         check_repo.check_orphan_docs(self.tmp)
         self.assertEqual(check_repo.errors, [])
 
+
+
+class TestSvgBudget(unittest.TestCase):
+    """Mỗi ảnh trong assets/ phải nhẹ hơn ngân sách."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="budget-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+        os.makedirs(os.path.join(self.tmp, "profile-3d-contrib"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _svg(self, name, size, folder="assets"):
+        path = os.path.join(self.tmp, folder, name)
+        with open(path, "w", encoding="utf-8") as handle:
+            handle.write("<svg>" + "x" * size + "</svg>")
+
+    def test_small_asset_passes(self):
+        self._svg("a.svg", 100)
+        check_repo.check_svg_budget(self.tmp, limit=1000)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_oversized_asset_is_flagged(self):
+        self._svg("a.svg", 2000)
+        check_repo.check_svg_budget(self.tmp, limit=1000)
+        self.assertTrue(any("vượt ngân sách" in e for e in check_repo.errors))
+
+    def test_third_party_folder_is_out_of_scope(self):
+        self._svg("big.svg", 5000, folder="profile-3d-contrib")
+        check_repo.check_svg_budget(self.tmp, limit=1000)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_default_budget_is_forty_kilobytes(self):
+        self.assertEqual(check_repo.SVG_BUDGET, 40 * 1024)
+
 if __name__ == "__main__":
     unittest.main()
 
