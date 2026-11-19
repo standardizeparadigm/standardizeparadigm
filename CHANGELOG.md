@@ -12,6 +12,7 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
 - Cột hôm nay trong thẻ hoạt động có thêm vòng thở `r=11` phía sau chấm sáng.
 - Tất cả dùng lại keyframe sẵn có (`sheen`, `pulse`, `pulseSlow`) nên
   `prefers-reduced-motion` tắt sạch, không phải thêm ngoại lệ.
+
 ## 2026-11-19 — Bốn quy ước an toàn cho workflow
 
 - `check_workflow_hygiene()` bắt bốn thứ mà thiếu là sinh sự cố khó lần:
@@ -22,6 +23,7 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
     → workflow tự kích hoạt chính nó, vòng lặp vô hạn.
 - Cùng luật đó chạy lại trên repo thật trong `test_repo_workflows.py`, nên
   sai quy ước là đỏ ngay trên máy chứ không phải đợi CI.
+
 ## 2026-11-19 — Tài liệu phải khớp lịch chạy thật
 
 - Trong một vòng đã có hai lần bảng lịch chạy trong `docs/WORKFLOWS.md` và
@@ -30,6 +32,7 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
 - `check_repo.check_workflow_docs()` đọc cron thật từ `.github/workflows/*`,
   rồi so từng dòng bảng có nhắc tên workflow và từng `<code>cron</code>`
   trong README. Chạy ngay lần đầu đã bắt được `*/15` còn sót.
+
 ## 2026-11-19 — Mọi thẻ đều quy về giờ Việt Nam
 
 - Thẻ số liệu, ngôn ngữ, hoạt động và dải trạng thái cũng in mốc thời gian;
@@ -37,6 +40,7 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
 - `to_vn()` được gọi ở **đầu mỗi hàm vẽ thẻ**, không phải ở chỗ gọi: hàm vẽ
   tự chịu trách nhiệm về giờ của chính nó, không tin người gọi.
 - Test riêng cho từng thẻ: đầu vào 09:00 UTC phải ra chuỗi 16:00.
+
 ## 2026-11-19 — Đồng hồ sai giờ: hai lỗi chồng lên nhau
 
 - Ảnh đồng hồ cũ hiển thị **giờ UTC** dưới nhãn "giờ Việt Nam": renderer
@@ -47,6 +51,7 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
   Việt Nam, giờ có múi thì `astimezone(TZ_VN)`.
 - Thêm dòng `cập nhật HH:MM` ngay trong thẻ và ghi chú dưới đáy: kim tự quay
   bằng CSS giữa hai lần vẽ lại, nên đọc thẻ là biết ảnh chụp lúc nào.
+
 ## 2026-11-19 — Dải trạng thái workflow thay cho badge shields.io
 
 - Ba badge trong ảnh chụp bị hỏng: `live-clock` và `health` trả *repo or
@@ -439,4 +444,3 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
 
 - Hơn 100 unit test phủ palette, i18n, từng thẻ SVG, CLI và `check_repo.py`.
 - Chạy bằng `python3 -m unittest discover -s scripts/tests -t scripts`, không cần cài gì thêm.
-

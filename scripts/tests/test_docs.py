@@ -1,0 +1,150 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""Quy ước hình thức cho tài liệu Markdown.
+
+Không kiểm tra nội dung đúng/sai (việc của người đọc) mà kiểm tra những
+thứ máy kiểm được và người hay quên: đúng một H1, không nhảy cấp tiêu đề,
+tiêu đề luôn có dòng trống phía trước, file kết thúc bằng đúng một newline.
+Mỗi lỗi trong số này đều từng xuất hiện thật trong repo này.
+"""
+
+import os
+import re
+import unittest
+
+from helpers import SCRIPTS  # noqa: F401  (bảo đảm scripts/ nằm trong sys.path)
+
+ROOT = os.path.dirname(SCRIPTS)
+
+DOC_FILES = ["README.md", "CHANGELOG.md", ".github/CONTRIBUTING.md",
+             "scripts/svgkit/README.md"]
+DOCS_DIR = os.path.join(ROOT, "docs")
+
+RE_H1 = re.compile(r"^# \S")
+RE_HEADING = re.compile(r"^(#{1,6}) \S")
+RE_FENCE = re.compile(r"^\s*```")
+
+
+def all_docs():
+    paths = [os.path.join(ROOT, name) for name in DOC_FILES]
+    if os.path.isdir(DOCS_DIR):
+        paths += [os.path.join(DOCS_DIR, n) for n in sorted(os.listdir(DOCS_DIR))
+                  if n.endswith(".md")]
+    return [p for p in paths if os.path.exists(p)]
+
+
+def read(path):
+    with open(path, encoding="utf-8") as handle:
+        return handle.read()
+
+
+def prose_lines(text):
+    """(số_dòng, nội_dung) của những dòng *ngoài* khối code."""
+    inside = False
+    for number, line in enumerate(text.splitlines(), 1):
+        if RE_FENCE.match(line):
+            inside = not inside
+            continue
+        if not inside:
+            yield number, line
+
+
+def rel(path):
+    return os.path.relpath(path, ROOT).replace(os.sep, "/")
+
+
+def has_h1(path):
+    return any(RE_H1.match(line) for _, line in prose_lines(read(path)))
+
+
+class TestSingleH1(unittest.TestCase):
+    def test_never_more_than_one_h1(self):
+        for path in all_docs():
+            count = sum(1 for _, line in prose_lines(read(path))
+                        if RE_H1.match(line))
+            self.assertLessEqual(count, 1, "%s có %d H1" % (rel(path), count))
+
+    def test_docs_folder_files_have_an_h1(self):
+        # README trang cá nhân cố tình mở bằng ảnh bìa chứ không bằng chữ,
+        # nên chỉ các bài trong docs/ (và CHANGELOG) bắt buộc có H1.
+        for path in all_docs():
+            if os.path.basename(os.path.dirname(path)) == "docs" or \
+                    path.endswith(("CHANGELOG.md", "CONTRIBUTING.md")):
+                self.assertTrue(has_h1(path), "%s thiếu H1" % rel(path))
+
+    def test_h1_comes_before_every_other_heading(self):
+        for path in all_docs():
+            headings = [line for _, line in prose_lines(read(path))
+                        if RE_HEADING.match(line)]
+            self.assertTrue(headings, rel(path))
+            if has_h1(path):
+                self.assertTrue(headings[0].startswith("# "), rel(path))
+
+
+class TestHeadingLevels(unittest.TestCase):
+    def test_levels_never_skip(self):
+        for path in all_docs():
+            # Không có H1 thì bài được phép mở bằng ## (README trang cá nhân).
+            previous = 1 if not has_h1(path) else 0
+            for number, line in prose_lines(read(path)):
+                match = RE_HEADING.match(line)
+                if not match:
+                    continue
+                level = len(match.group(1))
+                self.assertLessEqual(level, previous + 1,
+                                     "%s:%d nhảy cấp %d → %d"
+                                     % (rel(path), number, previous, level))
+                previous = level
+
+    def test_heading_has_blank_line_before_it(self):
+        for path in all_docs():
+            lines = read(path).splitlines()
+            for number, line in prose_lines(read(path)):
+                if not RE_HEADING.match(line) or number == 1:
+                    continue
+                self.assertEqual(lines[number - 2].strip(), "",
+                                 "%s:%d thiếu dòng trống trước tiêu đề"
+                                 % (rel(path), number))
+
+
+class TestFileEdges(unittest.TestCase):
+    def test_ends_with_exactly_one_newline(self):
+        for path in all_docs():
+            text = read(path)
+            self.assertTrue(text.endswith("\n"), rel(path))
+            self.assertFalse(text.endswith("\n\n"), "%s có dòng trống cuối"
+                             % rel(path))
+
+    def test_no_crlf(self):
+        for path in all_docs():
+            self.assertNotIn("\r", read(path), rel(path))
+
+    def test_no_trailing_spaces(self):
+        for path in all_docs():
+            for number, line in prose_lines(read(path)):
+                self.assertEqual(line, line.rstrip(),
+                                 "%s:%d có khoảng trắng cuối dòng"
+                                 % (rel(path), number))
+
+
+class TestAnimationsDoc(unittest.TestCase):
+    """Bài kiểm kê hoạt ảnh phải kết thúc bằng lối thoát."""
+
+    def setUp(self):
+        self.path = os.path.join(DOCS_DIR, "ANIMATIONS.md")
+        self.text = read(self.path)
+
+    def test_reduced_motion_section_is_last(self):
+        headings = [line for _, line in prose_lines(self.text)
+                    if line.startswith("## ")]
+        self.assertTrue(headings)
+        self.assertIn("Tắt hoạt ảnh", headings[-1])
+
+    def test_table_lists_every_asset_with_animation(self):
+        for name in ("hero", "divider", "footer", "stats", "top-langs",
+                     "live-clock", "activity", "status"):
+            self.assertIn("`%s.svg`" % name, self.text)
+
+
+if __name__ == "__main__":
+    unittest.main()
