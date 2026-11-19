@@ -414,6 +414,32 @@ class TestDial(unittest.TestCase):
     def test_ticks_are_inside_the_card(self):
         self.assertNotIn("NaN", self.svg)
 
+
+
+class TestWeekdayNames(unittest.TestCase):
+    """Thứ trong tuần: tiếng Việt và tiếng Anh phải khớp thứ thật."""
+
+    def test_vietnamese_weekday(self):
+        # 19/11/2026 là thứ Năm.
+        svg = clock_card(get_palette("sky"),
+                         datetime(2026, 11, 19, 15, 4), i18n.get("vi"))
+        self.assertIn("Thứ Năm", svg)
+
+    def test_english_weekday(self):
+        svg = clock_card(get_palette("sky"),
+                         datetime(2026, 11, 19, 15, 4), i18n.get("en"))
+        self.assertIn("Thursday", svg)
+
+    def test_sunday_maps_to_chu_nhat(self):
+        svg = clock_card(get_palette("sky"),
+                         datetime(2026, 11, 22, 8, 0), i18n.get("vi"))
+        self.assertIn("Chủ Nhật", svg)
+
+    def test_date_is_zero_padded(self):
+        svg = clock_card(get_palette("sky"),
+                         datetime(2026, 1, 5, 8, 0), i18n.get("vi"))
+        self.assertIn("05/01", svg)
+
 if __name__ == "__main__":
     unittest.main()
 
