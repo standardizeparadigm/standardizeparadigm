@@ -162,7 +162,7 @@ def main(argv=None):
         return 0
 
     if args.check:
-        return check_assets(OUT_DIR or args.out or "assets")
+        return check_assets(args.out or OUT_DIR)
 
     if args.list_themes:
         for name, palette in THEMES.items():

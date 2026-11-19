@@ -136,3 +136,45 @@ class TestCheckFlag(unittest.TestCase):
             with contextlib.redirect_stderr(io.StringIO()):
                 code = generate_cards.main(["--check", "--out", tmp])
             self.assertEqual(code, 1)
+
+
+class TestInfoFlags(unittest.TestCase):
+    def test_version_prints_number(self):
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            code = generate_cards.main(["--version"])
+        self.assertEqual(code, 0)
+        self.assertRegex(out.getvalue(), r"\d+\.\d+\.\d+")
+
+    def test_list_langs(self):
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            code = generate_cards.main(["--list-langs"])
+        self.assertEqual(code, 0)
+        self.assertIn("vi", out.getvalue())
+        self.assertIn("en", out.getvalue())
+
+
+class TestCheckFlag(unittest.TestCase):
+    def test_check_reports_good_files(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            generate_cards.main(["--demo", "--cards", "--out", tmp])
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                code = generate_cards.main(["--check", "--out", tmp])
+            self.assertEqual(code, 0)
+            self.assertIn("hợp lệ", out.getvalue())
+
+    def test_check_reports_broken_file(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with open(os.path.join(tmp, "broken.svg"), "w", encoding="utf-8") as handle:
+                handle.write("<svg><rect</svg>")
+            with contextlib.redirect_stdout(io.StringIO()):
+                code = generate_cards.main(["--check", "--out", tmp])
+            self.assertEqual(code, 1)
+
+    def test_check_empty_dir(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with contextlib.redirect_stderr(io.StringIO()):
+                code = generate_cards.main(["--check", "--out", tmp])
+            self.assertEqual(code, 1)
