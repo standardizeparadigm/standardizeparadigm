@@ -633,6 +633,26 @@ def check_class_references(root=None):
 
 RE_STYLE = re.compile(r"<style[^>]*>(.*?)</style>", re.S)
 
+# ---------------------------------- 4bk. Không có NaN / None trong thuộc tính
+RE_BAD_NUMBER = re.compile(r'(?:="(?:[^"]*?\b(?:NaN|None|nan|inf)\b[^"]*)"|'
+                           r'[:;]\s*-?\d+(?:\.\d+)?e[+-]?\d+)')
+
+
+def check_bad_numbers(root=None):
+    """Toạ độ trong ảnh không được là NaN, None hay số mũ.
+
+    Một phép chia cho 0 hay một `None` lọt vào f-string sẽ tạo `d="MNaN 12"`:
+    SVG hợp lệ về cú pháp XML, trình duyệt bỏ qua cả phần tử, và ảnh chỉ mất
+    một nét — không có lỗi nào để lần theo.
+    """
+    root = root or ROOT
+    for path in sorted(glob.glob(os.path.join(root, "assets", "*.svg"))):
+        for number, line in enumerate(read(path).split("\n"), 1):
+            for match in RE_BAD_NUMBER.findall(line):
+                err("%s:%d có số không hợp lệ trong thuộc tính: %s"
+                    % (rel(path), number, match.strip()))
+
+
 # ------------------------------------------- 4bi. id trùng trong một ảnh
 RE_SVG_ID = re.compile(r'\bid="([^"]+)"')
 
@@ -1277,6 +1297,7 @@ def main(argv=None):
     check_font_shorthand()
     check_duplicate_ids()
     check_class_references()
+    check_bad_numbers()
     check_doc_titles()
     check_svg_budget()
     check_python()
