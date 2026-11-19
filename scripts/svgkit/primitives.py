@@ -108,6 +108,9 @@ CSS = """
   .pulse      { animation: pulse 2.6s ease-in-out infinite; }
   .pulseSlow  { animation: pulse 4.4s ease-in-out infinite; }
   .blink      { animation: blink 1.05s steps(1, end) infinite; }
+  /* Vòng cung quay tại chỗ quanh một chấm nhỏ (dùng cho trạng thái đang chạy) */
+  .spinDot    { animation: spin 1.6s linear infinite;
+                transform-box: fill-box; transform-origin: center; }
   .spinSlow   { animation: spin 26s linear infinite;
                 transform-box: view-box; transform-origin: center; }
   .spinRev    { animation: spinRev 34s linear infinite;
@@ -154,7 +157,7 @@ CSS = """
      vẫn đẹp và vẫn đủ thông tin — không phải hy sinh nội dung. */
   @media (prefers-reduced-motion: reduce) {
     .pulse, .pulseSlow, .blink, .spinSlow, .spinRev, .driftA, .driftB,
-    .driftC, .floatY, .twinkle, .fadeUp, .growIn, .sheen, .scan,
+    .driftC, .floatY, .twinkle, .fadeUp, .growIn, .sheen, .scan, .spinDot,
     .secHand, .minHand, .hourHand, .wave, .wave2 { animation: none !important; }
   }
 """
