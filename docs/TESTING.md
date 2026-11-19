@@ -35,3 +35,18 @@ Hai file test không tự thêm `scripts/` vào `sys.path` được — `tests/_
 - `assert_valid_svg(testcase, svg, label)` — kiểm tra 4 thứ tối thiểu: có `<svg`, có `</svg>`, có `xmlns`, gốc là `svg`.
 - `render_demo_all()` — vẽ cả 7 thẻ ở chế độ demo ra thư mục tạm rồi trả về `{tên: nội dung}`.
 
+## `test_palette.py` và `test_i18n.py`
+
+Palette:
+
+- Tên theme lạ (`"khong-co"`) rơi về `sky`, không ném lỗi.
+- Mọi theme có đủ 14 trường và `as_tokens()` phủ hết các token `@…@` dùng trong CSS.
+- `lang_color()` trả đúng màu chính thức cho ngôn ngữ đã biết, ngôn ngữ lạ lấy từ `RAMP`.
+- `grade()` trả chữ cái hợp lệ và phần trăm trong `[0, 100]`.
+
+i18n:
+
+- Hai ngôn ngữ có **cùng bộ khoá** — thiếu một khoá là fail ngay.
+- Khoá lạ trả về chính tên khoá (để thấy được trong ảnh) chứ không ném `KeyError`.
+- `{pct}` được thay đúng; `weekday(0..6)` trả đúng tên.
+
