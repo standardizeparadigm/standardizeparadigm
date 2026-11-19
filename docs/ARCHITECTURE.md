@@ -137,3 +137,15 @@ Nguyên tắc: **nếu hoạt ảnh làm khung đầu tiên xấu, đổi sang S
 - Khối `@media (prefers-reduced-motion: reduce)` tắt toàn bộ hoạt ảnh CSS cho người cần.
 - Tương phản: chữ chính trên nền đậm đạt ≥ 7:1 ở cả 6 theme (đo bằng mã màu trong `palette.py`).
 
+## Thêm một thẻ mới
+
+Checklist 7 bước:
+
+1. Tạo `scripts/svgkit/<ten>.py` với một hàm `xxx_card(pal, data, dt, t, width=640, height=258)`.
+2. Mở bằng `open_svg(pal, width, height, t("<ten>.title"), desc=t("desc.<ten>"))`.
+3. Mọi màu lấy từ `pal`, mọi chữ lấy từ `t(...)`, mọi chuỗi qua `esc()`.
+4. Vẽ trong khung của `clipPath#cardBody` nếu có lớp trang trí.
+5. Thêm khoá i18n cho **cả** `vi` và `en`.
+6. Thêm test vào `scripts/tests/`, thêm một dòng vào bảng trong `docs/ANIMATIONS.md`.
+7. Thêm cờ CLI nếu thẻ cần dữ liệu riêng, và một dòng trong workflow.
+
