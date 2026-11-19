@@ -177,6 +177,12 @@ thường bỏ qua — vì đó là những lỗi đã xảy ra thật ở đây
 | Merge | dấu `<<<<<<<` còn sót trong bất kỳ file văn bản nào |
 | Ảnh, chi tiết | `id` trùng, lớp CSS không tồn tại, `url(#x)` trỏ hụt, keyframe lẻ, `font:` viết tắt, `NaN` trong toạ độ |
 | Lịch chạy | hai workflow nổ cùng một phút (cảnh báo), cron dày hơn 5 phút |
+| Chữ trên trang | emoji ở bất kỳ file văn bản nào (phụ thuộc font), câu ghi cấp học |
+| Ảnh co giãn | thiếu `viewBox` — `width="48%"` thành pixel |
+| Hoạt ảnh | chu kỳ lặp nhanh hơn 1 giây (CSS và SMIL, hai đường riêng) |
+| Ví dụ trong tài liệu | khối `python` không biên dịch được |
+| Bản đồ test | file `test_*.py` không có mục trong `docs/TESTING.md` |
+| Chuỗi cung ứng | `pip install` không ghim phiên bản |
 
 ## Bảo mật
 
