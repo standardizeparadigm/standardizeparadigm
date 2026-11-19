@@ -85,6 +85,23 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
   tên ở mọi kích thước. Mask là cách duy nhất đọc ra hình trăng ở mọi trình
   vẽ, kể cả trình không hiểu CSS.
 
+## Nhịp chậm nhất được phép
+
+Mọi hoạt ảnh lặp trong repo phải chậm hơn **một chu kỳ mỗi giây**. Ngưỡng
+này không phải khẩu vị: WCAG 2.3.1 đặt mốc an toàn ở ba lần nháy mỗi giây,
+và một chu kỳ mỗi giây là biên rộng gấp ba.
+
+Hai luật giữ điều đó, vì hai đường đi khác nhau:
+
+- `check_animation_pace` đọc **khối khai báo CSS** (không đọc từng dòng, để
+  bắt được kiểu viết `animation-duration` một dòng, `iteration-count` dòng
+  khác).
+- `check_smil_pace` đọc thuộc tính `dur` của `<animate>`; `600ms` được quy
+  đổi trước khi so, vì đọc "600" thành 600 giây là bỏ lọt đúng ca nguy hiểm.
+
+Luật chỉ chặn phía **nhanh**. Kim đồng hồ quay một vòng mỗi giờ (3600s) là
+chuyển động chậm có chủ đích, không phải nháy — nó vẫn qua.
+
 ## Top languages — vệt sáng thứ hai
 
 - Thanh xếp chồng đã có `sheen` 5.5 giây. Thêm một vệt mảnh 64px chạy chậm
