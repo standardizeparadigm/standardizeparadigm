@@ -39,16 +39,20 @@ def _sun_moon(pal, hour, x, y):
                             x + 10 * math.cos(angle), y + 10 * math.sin(angle)))
         parts.append('</g>')
         return "".join(parts)
-    # Trăng khuyết: hai đường cong bậc hai cùng hai đầu, đường ngoài phình
-    # 5.4 về bên phải, đường trong phình 2.0. Bản cũ dùng cung tròn có bán
-    # kính tính bằng "0" nên mọi trình vẽ đều ra một cục méo — không trình
-    # nào báo lỗi, chỉ là hình trăng không giống trăng.
-    return ('<path d="M%.2f %.2fQ%.2f %.2f %.2f %.2fQ%.2f %.2f %.2f %.2fZ" '
-            'fill="%s"/>'
-            % (x, y - 5.0,
-               x + 5.4, y - 2.4, x + 5.4, y,
-               x + 2.0, y + 2.2, x, y + 5.0,
-               pal.accent3))
+    # Trăng khuyết: một hình tròn bị "cắn" bởi một hình tròn khác, cắt bằng
+    # mask. Bản cũ dùng cung tròn có bán kính truyền vào là 0 nên mọi trình
+    # vẽ đều ra một cục méo; cách này đúng ở mọi bộ dựng, kể cả trình xem
+    # ảnh không hiểu CSS.
+    side = 22.0
+    return ('<mask id="moonBite" maskUnits="userSpaceOnUse" '
+            'x="%.1f" y="%.1f" width="%.0f" height="%.0f">'
+            '<rect x="%.1f" y="%.1f" width="%.0f" height="%.0f" fill="#FFFFFF"/>'
+            '<circle cx="%.1f" cy="%.1f" r="5.0" fill="#000000"/></mask>'
+            '<circle cx="%.1f" cy="%.1f" r="6.4" fill="%s" mask="url(#moonBite)"/>'
+            % (x - side / 2, y - side / 2, side, side,
+               x - side / 2, y - side / 2, side, side,
+               x + 4.6, y - 2.4,
+               x, y, pal.accent3))
 
 
 def _dial(pal, cx, cy, radius):
