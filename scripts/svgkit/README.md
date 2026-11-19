@@ -86,3 +86,10 @@ python3 scripts/generate_cards.py --demo --all --out /tmp/xem-thu
 - `collect_user()` gom user + repos + ngôn ngữ + commit trong một dict phẳng để `cards.py` khỏi phải biết gì về HTTP.
 - `_streaks()` tính chuỗi ngày từ danh sách contribution.
 
+## Quy ước khi sửa `svgkit`
+
+1. Không hard-code màu — lấy từ `pal` (nếu thiếu màu, thêm vào `Palette` và cả 6 theme).
+2. Không hard-code chữ — thêm khoá vào `STRINGS` cho cả `vi` và `en`.
+3. Mọi chuỗi vào SVG phải qua `esc()`.
+4. Thêm thẻ mới thì thêm test trong `scripts/tests/` và một dòng vào bảng trên.
+5. Chạy `python3 -m unittest discover -s scripts/tests -t scripts` trước khi commit — CI chạy đúng lệnh đó.
