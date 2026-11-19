@@ -261,17 +261,17 @@
     <path d="M107.86 73.49L107.24 70.55" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M114.89 72.37L114.58 69.39" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
   </g>
-  <g transform="rotate(135.000 122 140)">
-    <g class="hourHand" style="--cx:122px;--cy:140px;animation-delay:-16205.007s">
+  <g transform="rotate(141.500 122 140)">
+    <g class="hourHand" style="--cx:122px;--cy:140px;animation-delay:-17035.649s">
       <rect x="119" y="107" width="6" height="40" rx="3" fill="#E8F4FF"/>
     </g>
   </g>
-  <g transform="rotate(180.501 122 140)">
-    <g class="minHand" style="--cx:122px;--cy:140px;animation-delay:-1805.007s">
+  <g transform="rotate(263.565 122 140)">
+    <g class="minHand" style="--cx:122px;--cy:140px;animation-delay:-2635.649s">
       <rect x="120" y="93" width="4" height="56" rx="2" fill="#7DD3FC" fill-opacity=".78"/>
     </g>
   </g>
-  <g class="secHand" style="--cx:122px;--cy:140px;animation-delay:-5.007s">
+  <g class="secHand" style="--cx:122px;--cy:140px;animation-delay:-55.649s">
     <path d="M122 152V80" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" filter="url(#glow)"/>
     <circle cx="122" cy="80" r="4.5" fill="#7DD3FC"/>
     <circle cx="122" cy="152" r="2.6" fill="#38BDF8" fill-opacity=".8"/>
@@ -280,8 +280,8 @@
   <circle cx="122" cy="140" r="2" fill="#FFFFFF"/>
   <g class="fadeUp" style="animation-delay:.2s">
     <text x="244" y="74" class="clockLabel">GIỜ VIỆT NAM</text>
-    <text x="616" y="74" text-anchor="end" class="cardSub">cập nhật 16:30</text>
-    <text x="244" y="124" class="clockTime" fill="url(#titleGrad)">16:30</text>
+    <text x="616" y="74" text-anchor="end" class="cardSub">cập nhật 16:43</text>
+    <text x="244" y="124" class="clockTime" fill="url(#titleGrad)">16:43</text>
     <text x="244" y="148" class="clockDate">Thứ Năm · 19/11/2026</text>
   </g>
   <g class="fadeUp" style="animation-delay:.3s">
@@ -292,14 +292,14 @@
   </g>
   <g class="fadeUp" style="animation-delay:.4s">
     <text x="244" y="206" class="footNote" style="letter-spacing:1.1px">NGÀY HÔM NAY ĐÃ TRÔI</text>
-    <text x="616" y="206" text-anchor="end" class="legendValue">69%</text>
-    <text x="570" y="206" text-anchor="end" class="footNote" style="letter-spacing:.6px;fill:#5C7590">còn 7g30</text>
+    <text x="616" y="206" text-anchor="end" class="legendValue">70%</text>
+    <text x="570" y="206" text-anchor="end" class="footNote" style="letter-spacing:.6px;fill:#5C7590">còn 7g17</text>
     <rect x="244" y="212" width="372" height="8" rx="4" fill="#0B1B2B" fill-opacity=".6"/>
-    <rect x="244" y="212" width="255.8" height="8" rx="4" fill="url(#barGrad)">
-      <animate attributeName="width" from="0" to="255.8" dur="1.3s" begin=".3s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+    <rect x="244" y="212" width="259.1" height="8" rx="4" fill="url(#barGrad)">
+      <animate attributeName="width" from="0" to="259.1" dur="1.3s" begin=".3s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
       <animate attributeName="opacity" values=".75;1;.75" dur="3.4s" repeatCount="indefinite"/>
     </rect>
-    <circle cx="499.8" cy="216" r="5" fill="#7DD3FC" filter="url(#glow)" class="pulse"/>
+    <circle cx="503.1" cy="216" r="5" fill="#7DD3FC" filter="url(#glow)" class="pulse"/>
   </g>
   <g class="fadeUp" style="animation-delay:.5s">
     <circle cx="244" cy="242" r="3" fill="#38BDF8" class="pulse"/>
