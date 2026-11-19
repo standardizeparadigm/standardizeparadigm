@@ -29,8 +29,13 @@ def human(number):
 
 
 def num(value):
-    """Số thực gọn gàng cho thuộc tính SVG."""
-    return ("%.1f" % value).rstrip("0").rstrip(".")
+    """Số thực gọn gàng cho thuộc tính SVG.
+
+    "-0" là giá trị hợp lệ nhưng vô nghĩa và làm diff ồn ào: -0.04 làm tròn
+    thành "-0" trong khi mắt đọc là 0. Kẹp về "0" luôn.
+    """
+    text = ("%.1f" % value).rstrip("0").rstrip(".")
+    return "0" if text in ("-0", "") else text
 
 
 # --------------------------------------------------------------- icon
