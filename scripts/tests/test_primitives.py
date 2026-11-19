@@ -92,6 +92,18 @@ class TestOpenSvg(unittest.TestCase):
         self.assertIn('id="cardBody"', markup)
         self.assertIn('stroke="url(#edge)"', markup)
 
+    def test_top_edge_carries_a_travelling_light(self):
+        markup = "\n".join(primitives.open_svg(get_palette(), 640, 258, "x"))
+        self.assertIn('y="0.4"', markup)
+        self.assertIn('class="sheen"', markup)
+
+    def test_travelling_light_sits_inside_the_clip(self):
+        # phải nằm giữa <g clip-path> ... </g>, nếu không sẽ tràn góc bo
+        markup = "\n".join(primitives.open_svg(get_palette(), 640, 258, "x"))
+        before, _, after = markup.partition('y="0.4"')
+        self.assertGreater(before.count("<g clip-path"), before.count("</g>"))
+        self.assertIn("</g>", after)
+
 
 if __name__ == "__main__":
     unittest.main()

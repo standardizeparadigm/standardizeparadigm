@@ -290,6 +290,10 @@ def open_svg(pal, width, height, label, desc=None, halo=True, radius=18):
         parts.append('    <ellipse cx="%d" cy="%d" rx="240" ry="120" '
                      'fill="url(#halo2)" opacity=".45"/>'
                      % (int(width * 0.92), height))
+        # Ánh sáng chạy dọc mép trên: vệt sáng mảnh, không che nội dung.
+        parts.append('    <rect x="-150" y="0.4" width="130" height="1.6" '
+                     'fill="url(#sheenGrad)" opacity=".55" class="sheen" '
+                     'style="animation-duration:%ds"/>' % (8 + width % 5))
     parts.append('  </g>')
     parts.append('  <rect x="0.7" y="0.7" width="%.1f" height="%.1f" rx="%.1f" '
                  'fill="none" stroke="url(#edge)" stroke-width="1.3"/>'
