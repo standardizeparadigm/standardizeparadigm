@@ -197,5 +197,34 @@ class TestHumanAge(unittest.TestCase):
         self.assertEqual(human_age(5, en), "5m ago")
         self.assertEqual(human_age(120, en), "2h ago")
 
+
+
+class TestPillAgeLabel(unittest.TestCase):
+    """Nhãn tuổi chỉ hiện khi biết tuổi, và không đè lên nhãn trạng thái."""
+
+    def setUp(self):
+        self.t = i18n.get("vi")
+        self.two = status_strip(get_palette(), [("A", "passing"), ("B", "failing")],
+                                DT, self.t)
+        self.three = status_strip(
+            get_palette(), [("A", "passing", 7), ("B", "failing", None)], DT, self.t)
+
+    def test_no_label_without_age(self):
+        self.assertNotIn("phút trước", self.two)
+
+    def test_label_appears_with_age(self):
+        self.assertIn("7 phút trước", self.three)
+
+    def test_none_age_renders_nothing(self):
+        # viên B không có số phút -> không có nhãn nào cho nó
+        self.assertEqual(self.three.count("trước"), 1)
+
+    def test_two_tuple_rows_still_parse(self):
+        minidom.parseString(self.two.encode("utf-8"))
+        minidom.parseString(self.three.encode("utf-8"))
+
+    def test_footer_stamp_is_separate(self):
+        self.assertIn("cập nhật", self.three)
+
 if __name__ == "__main__":
     unittest.main()
