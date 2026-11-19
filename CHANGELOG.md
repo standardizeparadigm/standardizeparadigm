@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Cổng 3D: sửa lỗi mốc 24 giờ không bao giờ tới
+
+- Cổng so "lần chạy thành công gần nhất", nhưng lượt bị cổng bỏ qua **vẫn** là lượt thành công → mốc 24 giờ không bao giờ đạt được, ảnh chỉ đổi khi có push.
+- Giờ so theo `git log -1 -- profile-3d-contrib` (lần ảnh đổi thật), cần `fetch-depth: 0`, và có 2 test dựng repo git tạm để khoá hành vi.
+
 ## 2026-11-19 — Icon lạ không còn để trống
 
 - `icon()` rơi về `spark` thay vì trả chuỗi rỗng — không bao giờ có ô trống trong thẻ vì gõ sai tên icon.
