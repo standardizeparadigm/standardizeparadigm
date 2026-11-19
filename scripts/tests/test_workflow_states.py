@@ -21,8 +21,10 @@ class TestWorkflowStates(unittest.TestCase):
         original = api.api_status
         api.api_status = lambda *_a, **_k: (code, payload)
         try:
-            return dict(api.workflow_states("o", "r", token,
-                                            files=[("a.yml", "A"), ("b.yml", "B")]))
+            rows = api.workflow_states("o", "r", token,
+                                       files=[("a.yml", "A"), ("b.yml", "B")])
+            # hàng có 3 phần tử: (tên, trạng thái, số phút từ lần chạy cuối)
+            return {row[0]: row[1] for row in rows}
         finally:
             api.api_status = original
 
