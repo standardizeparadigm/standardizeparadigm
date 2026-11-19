@@ -3,6 +3,10 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — docs/TESTING.md
+
+- Bản đồ 11 file test, mỗi file kiểm tra gì, cách viết test mới và CI chạy những gì.
+
 ## 2026-11-19 — docs/ARCHITECTURE.md
 
 - Giải thích luồng dữ liệu, ranh giới module, vì sao chỉ dùng thư viện chuẩn, chiến lược hoạt ảnh, cách ghi file, xử lý lỗi và checklist thêm thẻ mới.
