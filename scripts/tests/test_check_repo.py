@@ -920,6 +920,45 @@ class TestSvgTextAndIds(unittest.TestCase):
         finally:
             shutil.rmtree(empty, ignore_errors=True)
 
+
+
+class TestSvgArtifacts(unittest.TestCase):
+    """Rác Python lọt vào ảnh."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="artifacts-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _svg(self, body):
+        with open(os.path.join(self.tmp, "assets", "a.svg"), "w",
+                  encoding="utf-8") as handle:
+            handle.write(body)
+
+    def test_clean_svg_passes(self):
+        self._svg('<text class="a">42</text>')
+        check_repo.check_svg_artifacts(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_none_is_flagged(self):
+        self._svg('<text class="a">None</text>')
+        check_repo.check_svg_artifacts(self.tmp)
+        self.assertTrue(any("None" in e for e in check_repo.errors))
+
+    def test_nan_is_flagged(self):
+        self._svg('<text class="a">nan%</text>')
+        check_repo.check_svg_artifacts(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_traceback_is_flagged(self):
+        self._svg("<desc>Traceback (most recent call last)</desc>")
+        check_repo.check_svg_artifacts(self.tmp)
+        self.assertTrue(any("Traceback" in e for e in check_repo.errors))
+
 if __name__ == "__main__":
     unittest.main()
 
