@@ -123,4 +123,3 @@ def recent(minutes):
     moment = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(
         minutes=minutes)
     return moment.strftime("%Y-%m-%dT%H:%M:%SZ")
-
