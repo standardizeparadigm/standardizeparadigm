@@ -53,3 +53,18 @@ class TestMotion(unittest.TestCase):
         svg = footer(get_palette(), i18n.get("vi"))
         self.assertEqual(svg.count('class="bubble"'), 6)
         self.assertIn('values="0;.55;0"', svg)
+
+    def test_travelling_dot_crosses_the_line(self):
+        svg = divider(get_palette())
+        self.assertIn('attributeName="cx"', svg)
+        self.assertIn('values="-12;1012"', svg)      # width mặc định 1000
+
+    def test_side_dots_breathe_out_of_phase(self):
+        svg = divider(get_palette())
+        self.assertIn('values=".15;.75;.15"', svg)
+        self.assertIn('values=".75;.15;.75"', svg)
+
+    def test_footer_has_twinkling_stars(self):
+        svg = footer(get_palette(), i18n.get("vi"))
+        self.assertEqual(svg.count('class="twinkle"'), 5)
+        self.assertIn('animation-delay:-3.4s', svg)

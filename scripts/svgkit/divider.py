@@ -55,8 +55,22 @@ def divider(pal, width=1000, height=26):
         'dur="4.5s" repeatCount="indefinite"/>',
         '    </circle>',
         '  </g>',
-        f'  <circle cx="150" cy="13" r="2" fill="{pal.accent}" opacity=".55"/>',
-        f'  <circle cx="850" cy="13" r="2" fill="{pal.accent}" opacity=".55"/>',
+        # Hạt sáng nhỏ chạy dọc theo đường kẻ, ngược chiều với vệt sáng chính:
+        # hai chuyển động cắt nhau nên mắt luôn thấy đường kẻ "đang sống".
+        f'  <circle cy="13" r="2.6" fill="{pal.accent3}" filter="url(#dGlow)">',
+        f'    <animate attributeName="cx" values="-12;{width + 12}" dur="9s" '
+        'repeatCount="indefinite"/>',
+        '    <animate attributeName="opacity" values="0;1;1;0" dur="9s" '
+        'repeatCount="indefinite"/>',
+        '  </circle>',
+        f'  <circle cx="150" cy="13" r="2" fill="{pal.accent}" opacity=".55">',
+        '    <animate attributeName="opacity" values=".15;.75;.15" dur="5.5s" '
+        'repeatCount="indefinite"/>',
+        '  </circle>',
+        f'  <circle cx="850" cy="13" r="2" fill="{pal.accent}" opacity=".55">',
+        '    <animate attributeName="opacity" values=".75;.15;.75" dur="5.5s" '
+        'repeatCount="indefinite"/>',
+        '  </circle>',
         '</svg>',
     ]
     return "\n".join(parts)
@@ -112,6 +126,13 @@ def footer(pal, t, width=1000, height=200):
                      '</circle>'
                      % (bx, 186 - index * 3, size, pal.accent3,
                         190 - index * 3, 96 - index * 4, delay, delay))
+    # Vài ngôi sao nhấp nháy ở nửa trên: chân trang không chỉ có sóng.
+    for sx, sy, radius, delay in ((64, 34, 1.6, 0.0), (298, 22, 1.2, -1.1),
+                                  (512, 34, 1.8, -2.3), (702, 20, 1.3, -3.4),
+                                  (934, 42, 1.5, -0.7)):
+        parts.append('    <circle cx="%d" cy="%d" r="%.1f" fill="%s" '
+                     'class="twinkle" style="animation-delay:%.1fs"/>'
+                     % (sx, sy, radius, pal.accent3, delay))
     parts.append('  </g>')
     parts += [
         '  <g class="fadeUp">',
