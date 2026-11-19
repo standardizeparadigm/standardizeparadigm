@@ -10,7 +10,7 @@ Tài liệu mô tả các GitHub Actions đang chạy trong repo `standardizepar
 | :-- | :-- | :-- | :-- |
 | `live-clock.yml` | `*/5 * * * *` | mỗi 5 phút | `assets/live-clock.svg` |
 | `profile-3d.yml` | `8-59/10 * * * *` + cổng 24h | mỗi 10 phút kiểm tra | `profile-3d-contrib/*.svg` khi có push mới |
-| `profile-cards.yml` | `13 */3 * * *` | 8 lần/ngày | `stats`, `top-langs`, `hero`, `activity` (chỉ ghi khi đổi) |
+| `profile-cards.yml` | `13 * * * *` | 24 lần/ngày | `stats`, `top-langs`, `hero`, `activity` (chỉ ghi khi đổi) |
 | `readme-tend.yml` | `23 */3 * * *` | 8 lần/ngày | con dấu `TENDED_AT` |
 | `status.yml` | `2-59/5 * * * *` + `workflow_run` | phút 2,7,12 … 57 | `assets/status.svg` |
 | `health.yml` | push/PR + `3 23 * * *` | 06:03 hằng ngày | test + kiểm tra repo |
@@ -71,7 +71,7 @@ Vẽ bằng Python thuần, không cần thư viện ngoài:
 | `assets/footer.svg` | dải sóng cuối trang |
 | `assets/status.svg` | dải trạng thái 7 workflow (do `status.yml` vẽ) |
 
-- **Chạy:** `13 */3 * * *` (mỗi 3 giờ, phút :13) · `workflow_dispatch` · khi `scripts/**` thay đổi.
+- **Chạy:** `13 * * * *` (mỗi giờ, phút :13) · `workflow_dispatch` · khi `scripts/**` thay đổi.
 - **`--smart`:** mỗi ảnh mang một dấu `<!-- data:… -->` là vân tay của dữ liệu đã dùng. Lượt sau, nếu vân tay không đổi thì **không ghi file, không commit** — trang vẫn được kiểm tra 8 lần/ngày mà lịch sử git không đầy commit rỗng. Ảnh thiết kế (`hero`, `divider`, `footer`) gộp theo khoá giờ `%Y-%m-%dT%H`, nên chúng chỉ vẽ lại khi sang giờ mới — với nhịp 8 lượt/ngày thì thực tế là mỗi lượt.
 - **Dữ liệu:** `GITHUB_TOKEN` có sẵn của repo → quota riêng, không chia sẻ với hàng nghìn repo khác. Thẻ `activity` dùng GraphQL; thiếu dữ liệu thì giữ ảnh cũ chứ không làm đỏ workflow.
 - **Chế độ `--strict`:** API lỗi là workflow báo đỏ ngay, không âm thầm giữ ảnh cũ.
