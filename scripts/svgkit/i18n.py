@@ -58,7 +58,7 @@ STRINGS = {
         "wait.empty1": "Chưa có dữ liệu",
         "wait.empty2": "Thẻ này sẽ tự điền sau khi workflow chạy lần đầu",
         # --- hero
-        "hero.sub": "Học sinh lớp 7 · Lập trình viên tự học · Long Xuyên, An Giang",
+        "hero.sub": "Học sinh lớp 7 · Lập trình viên tự học · Kon Tum, Quảng Ngãi",
         "hero.pill1": "LỚP 7",
         "hero.pill2": "UTC+7",
         "hero.pill3": "TỰ HỌC",
