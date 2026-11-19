@@ -63,7 +63,7 @@ motto:      "Cứ thử đi, sai thì học được nhiều hơn"
 Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng hồ, biểu đồ 3D — đều do **GitHub Actions tự vẽ và commit ngay vào repo**: không gọi server bên thứ ba, không bao giờ bị rate-limit hay 503. Chi tiết từng bước: [docs/WORKFLOWS.md](./docs/WORKFLOWS.md)
 
 <div align="center">
-  <img src="./assets/status.svg" width="100%" alt="Trạng thái 7 workflow — tự vẽ từ Actions API và commit mỗi 15 phút" />
+  <img src="./assets/status.svg" width="100%" alt="Trạng thái 7 workflow — tự vẽ từ Actions API và commit mỗi 10 phút" />
 </div>
 
 <br />
