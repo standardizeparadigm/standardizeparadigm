@@ -8,6 +8,7 @@ Vẽ 14 ngày gần nhất dưới dạng cột, kèm tổng cả năm và hai c
 để workflow giữ nguyên ảnh cũ thay vì ghi đè bằng thẻ rỗng.
 """
 
+from .api import to_vn
 from .primitives import esc, human, icon, open_svg
 
 WEEKDAY_SHORT = ["T2", "T3", "T4", "T5", "T6", "T7", "CN"]
@@ -29,6 +30,7 @@ def _stat_block(pal, x, icon_name, value, label, delay):
 
 
 def activity_card(pal, contrib, dt, t, width=640, height=258):
+    dt = to_vn(dt)
     """contrib = {total, days:[(date, count)...], streak_current, streak_longest}."""
     if not contrib or not contrib.get("days"):
         return None

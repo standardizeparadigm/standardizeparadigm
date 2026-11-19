@@ -2,7 +2,7 @@
 """Test thẻ hoạt động contribution."""
 
 import unittest
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 from helpers import SCRIPTS, assert_valid_svg  # noqa: F401
 
@@ -76,6 +76,13 @@ class TestAverageLineFlow(unittest.TestCase):
         svg = activity_card(get_palette("sky"), CONTRIB, DT, i18n.get("vi"))
         self.assertIn("dashFlow", svg)
         self.assertIn("stroke-dasharray", svg)
+
+class TestActivityTimezone(unittest.TestCase):
+    def test_stamp_is_vietnam_time(self):
+        utc = datetime(2026, 11, 19, 9, 0, tzinfo=timezone.utc)
+        svg = activity_card(get_palette(), CONTRIB, utc, i18n.get("vi"))
+        self.assertIn("19/11 · 16:00", svg)
+
 
 if __name__ == "__main__":
     unittest.main()
