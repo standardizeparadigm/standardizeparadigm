@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 """Test ảnh bìa."""
 
+import re
 import unittest
 from datetime import datetime
 
 from helpers import SCRIPTS, assert_valid_svg  # noqa: F401
 
 from svgkit import hero, i18n
+from svgkit.primitives import esc
 from svgkit.palette import get_palette
 
 DT = datetime(2026, 11, 19, 15, 4, 5)
@@ -103,6 +105,43 @@ class TestLocationPill(unittest.TestCase):
 
     def test_pill_is_filled_not_hollow(self):
         self.assertIn('fill-opacity=".5" stroke=', self.svg)
+
+
+
+class TestHeroBackground(unittest.TestCase):
+    """Nền hero: lưới, sao, bụi — tất cả phải tất định."""
+
+    def setUp(self):
+        self.svg = hero(get_palette("sky"), DT, i18n.get())
+
+    def test_grid_lines_are_evenly_spaced(self):
+        # Lưới là các path dọc/ngang đều nhau; lệch một nét là mắt thấy.
+        vertical = re.findall(r'<path d="M(\d+) 0V280"', self.svg)
+        if vertical:
+            gaps = {int(b) - int(a) for a, b in zip(vertical, vertical[1:])}
+            self.assertEqual(len(gaps), 1, gaps)
+
+    def test_stars_are_deterministic(self):
+        again = hero(get_palette("sky"), DT, i18n.get())
+        self.assertEqual(self.svg, again)
+
+    def test_particles_count_is_stable(self):
+        self.assertEqual(self.svg.count('class="twinkle"'),
+                         hero(get_palette("sky"), DT, i18n.get()).count('class="twinkle"'))
+
+    def test_two_themes_differ(self):
+        other = hero(get_palette("sunset"), DT, i18n.get())
+        self.assertNotEqual(self.svg, other)
+
+    def test_two_languages_differ(self):
+        other = hero(get_palette("sky"), DT, i18n.get("en"))
+        self.assertNotEqual(self.svg, other)
+
+    def test_typing_line_comes_from_i18n(self):
+        # Dấu ngoặc kép trong dòng lệnh được escape thành &quot; khi vào XML.
+        en = hero(get_palette("sky"), DT, i18n.get("en"))
+        expected = esc(i18n.get("en")("hero.type1"))
+        self.assertIn(expected, en)
 
 if __name__ == "__main__":
     unittest.main()
