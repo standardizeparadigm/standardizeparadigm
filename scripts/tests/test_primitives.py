@@ -280,6 +280,38 @@ class TestIconShapes(unittest.TestCase):
         for name in primitives.ICONS:
             self.assertTrue(all(ord(ch) < 0x2190 for ch in name), name)
 
+
+
+class TestReducedMotionCoverage(unittest.TestCase):
+    """Mọi hoạt ảnh phải tắt được bằng prefers-reduced-motion."""
+
+    def setUp(self):
+        self.css = primitives.CSS
+
+    def _animated_classes(self):
+        import re
+        return sorted(set(re.findall(r"\.([A-Za-z][\w-]*)\s*\{[^}]*animation",
+                                     self.css)))
+
+    def test_every_animated_class_is_listed_in_the_media_query(self):
+        block = self.css.split("prefers-reduced-motion")[1]
+        for name in self._animated_classes():
+            if name in ("smilOnly",):
+                continue
+            self.assertIn("." + name, block, name)
+
+    def test_media_query_uses_important(self):
+        block = self.css.split("prefers-reduced-motion")[1]
+        self.assertIn("animation: none !important", block)
+
+    def test_keyframes_are_defined_for_every_animation(self):
+        import re
+        used = set(re.findall(r"animation(?:-name)?\s*:\s*([A-Za-z][\w-]*)",
+                              self.css))
+        defined = set(re.findall(r"@keyframes\s+([A-Za-z][\w-]*)", self.css))
+        used -= {"none", "inherit"}
+        self.assertEqual(sorted(used - defined), [])
+
 if __name__ == "__main__":
     unittest.main()
 
