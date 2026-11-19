@@ -236,7 +236,8 @@ class TestLiveSlotRules(unittest.TestCase):
         self.assertIn("slotMin 3600s linear infinite", self.svg)
 
     def test_hour_cycle_is_one_day(self):
-        self.assertIn("slotHour 86400s linear infinite", self.svg)
+        self.assertIn("animation-name: slotHour; animation-duration: 86400s",
+                      self.svg)
 
     def test_keyframes_show_for_one_minute(self):
         # 60/3600 = 1.666%
