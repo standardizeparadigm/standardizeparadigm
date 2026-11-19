@@ -73,7 +73,8 @@ def stats_card(pal, data, dt, t, width=640, height=258):
     """Thẻ thống kê: 6 ô số liệu + vòng hạng."""
     letter, percent = grade(data)
     stamp = dt.strftime("%d/%m · %H:%M")
-    parts = open_svg(pal, width, height, "github stats card")
+    parts = open_svg(pal, width, height, "github stats card",
+                     desc=t("desc.stats"))
     parts.append('  <clipPath id="cardClip"><rect x="0" y="0" width="%d" '
                  'height="%d" rx="18"/></clipPath>' % (width, height))
     parts.append('  <g clip-path="url(#cardClip)">'

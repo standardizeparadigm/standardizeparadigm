@@ -73,6 +73,7 @@ STRINGS = {
         "footer.made": "Làm bằng Python và rất nhiều lần Ctrl+S",
         "desc.hero": "Ảnh bìa: tên, vai trò và nơi sống của tác giả",
         "desc.footer": "Chân trang: lời cảm ơn và hai lớp sóng chuyển động",
+        "desc.stats": "Thẻ thống kê GitHub: stars, forks, repos, followers, following, commits và hạng",
     },
     "en": {
         "stats.title": "GITHUB STATS",
@@ -129,6 +130,7 @@ STRINGS = {
         "footer.made": "Made with Python and a lot of Ctrl+S",
         "desc.hero": "Cover image: the author's name, role and location",
         "desc.footer": "Footer: thank-you line and two moving waves",
+        "desc.stats": "GitHub stats card: stars, forks, repos, followers, following, commits and rank",
     },
 }
 
