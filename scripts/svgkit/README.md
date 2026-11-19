@@ -72,3 +72,10 @@ python3 scripts/generate_cards.py --demo --all --out /tmp/xem-thu
 - `_greeting_key()`: chia ngày thành sáng / trưa / chiều / tối / đêm; `_sun_moon()` đổi icon theo giờ.
 - Thanh tiến độ ngày = số phút đã trôi / 1440.
 
+## `activity.py`
+
+- `activity_card(pal, contrib, dt, t)`; `contrib` đến từ `api.contributions()`.
+- Ba ô số: tổng năm, chuỗi hiện tại, chuỗi dài nhất.
+- 14 cột cuối, nhãn thứ theo ngôn ngữ; cột hôm nay có điểm nhấp nháy.
+- `contrib is None` → trả `None` để CLI giữ ảnh cũ.
+
