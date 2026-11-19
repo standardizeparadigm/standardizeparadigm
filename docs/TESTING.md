@@ -70,3 +70,12 @@ Phần lớn test nằm ở đây vì `primitives` là nền của mọi thẻ:
 - Hai vòng lan toả quanh lõi có chu kỳ 5.2s.
 - Bản tiếng Anh không còn chuỗi tiếng Việt nào.
 
+## `test_cards.py`
+
+- Thẻ stats hiện đúng số liệu đầu vào (`2 stars`, `3 followers`…).
+- Vòng rank có `stroke-dasharray` và phần trăm đúng với `grade()`.
+- Thiếu commits thì hiện `—` chứ không hiện `0` gây hiểu nhầm.
+- Top-langs: phần trăm cộng lại ≈ 100, sắp xếp giảm dần, tên dài bị cắt bằng `…`.
+- Dữ liệu rỗng vẫn ra thẻ hợp lệ (fallback `Python`).
+- A11y: `<title>` khớp `aria-label`, có `<desc>` (trừ divider).
+
