@@ -97,7 +97,7 @@ trắng thì thêm `--fix` để nó tự sửa — cờ này chỉ đụng th�
 
 "Bác sĩ" của repo, chạy mỗi lần push/PR và 06:00 mỗi ngày:
 
-- Chạy **hơn 100 unit test** (`python3 -m unittest discover -s scripts/tests -t scripts`)
+- Chạy **hơn 320 unit test** (`python3 -m unittest discover -s scripts/tests -t scripts`)
 - Thử vẽ lại toàn bộ SVG với **6 bảng màu × 2 ngôn ngữ** rồi parse XML từng file
 - Chữ có lỗi encoding (ký tự hỏng, chữ Hán/Hàn lạc vào, mojibake)
 - URL có `%`-escape sai hoặc giải mã ra UTF-8 không hợp lệ
