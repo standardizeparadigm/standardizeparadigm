@@ -126,7 +126,7 @@ Vì sao không dùng badge shields.io ở đây:
 Dải này thì: đọc Actions API bằng chính token của repo, vẽ SVG, commit —
 nằm cùng repo, cùng CDN với các ảnh khác, không bao giờ "not found".
 
-- **Chạy:** mỗi 15 phút, và ngay khi có workflow khác vừa xong (`workflow_run`).
+- **Chạy:** mỗi 10 phút, và ngay khi có workflow khác vừa xong (`workflow_run`).
 - **Không đọc được API** → giữ nguyên ảnh cũ, không ghi thẻ rỗng.
 - Thêm workflow mới: thêm một dòng vào `WORKFLOWS` trong `scripts/svgkit/status.py`
   — dải tự giãn bề rộng.
