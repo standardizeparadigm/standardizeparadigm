@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Activity: bỏ tổng Σ
+
+- Góc phải hiện `Σ 2.7k` trùng ý với ô `CẢ NĂM 2.8k` bên trên.
+- Thay bằng `HÔM NAY +0` — thông tin mới, không lặp.
+
 ## 2026-11-19 — Activity: cột 0 vẫn nhìn thấy
 
 - Ngày không có contribution trước đây vẽ bằng màu nền nên mất hút.
