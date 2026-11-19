@@ -786,6 +786,40 @@ def check_font_shorthand(root=None):
                     "font-weight/font-size/font-family" % (rel(path), number))
 
 
+# ---------------------------------------------------- 4bf. Không dùng emoji
+# Khoảng mã của emoji (pictograph) và ký hiệu một-màu. Dấu tick `✓` và dấu
+# chéo `✗` cố tình nằm ngoài: chúng là ký tự đánh dấu trong output terminal,
+# rộng một ô, không phải hình vẽ.
+RE_EMOJI = re.compile("[\u2300-\u23ff\U0001F000-\U0001FAFF"
+                      "\u2600-\u27bf\u2b00-\u2bff\ufe0f]")
+EMOJI_ALLOWED = {"\u2713", "\u2717"}
+EMOJI_SUFFIXES = (".md", ".py", ".yml", ".yaml", ".svg", ".json", ".txt")
+
+
+def check_no_emoji(root=None):
+    """Repo không dùng emoji — kể cả trong tiêu đề, bảng và thông báo.
+
+    Emoji phụ thuộc font của máy đọc: máy không có font màu hiện ô vuông,
+    máy có thì hiện hình to gấp đôi chữ, nên cùng một README cao thấp khác
+    nhau. Trình đọc màn hình còn đọc tên chúng thành lời ("mầm cây", "bắt
+    tay") giữa câu. Chữ thuần thì mọi nơi giống nhau.
+    """
+    root = root or ROOT
+    for base, dirs, files in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.lower().endswith(EMOJI_SUFFIXES):
+                continue
+            path = os.path.join(base, name)
+            for number, line in enumerate(read(path).split("\n"), 1):
+                found = [ch for ch in RE_EMOJI.findall(line)
+                         if ch not in EMOJI_ALLOWED]
+                if found:
+                    err("%s:%d có emoji %s — dùng chữ thuần"
+                        % (rel(path), number,
+                           " ".join("U+%04X" % ord(ch) for ch in found)))
+
+
 # ------------------------------------------------- 4bg. Tài liệu mở bằng tiêu đề
 def check_doc_titles(root=None):
     """Mỗi tài liệu phải mở bằng một tiêu đề cấp 1.
@@ -1419,6 +1453,7 @@ def main(argv=None):
     check_svg_safety()
     check_font_shorthand()
     check_no_grade_claim()
+    check_no_emoji()
     check_duplicate_ids()
     check_class_references()
     check_bad_numbers()

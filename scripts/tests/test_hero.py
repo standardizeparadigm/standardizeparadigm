@@ -47,7 +47,7 @@ class TestHero(unittest.TestCase):
 
     def test_no_emoji_dependency(self):
         # icon phải là path/circle, không phải emoji trong <text>
-        self.assertNotIn("✨", self.svg)
+        self.assertNotIn(chr(0x2728), self.svg)
 
 
 class TestTwoScanLines(unittest.TestCase):
