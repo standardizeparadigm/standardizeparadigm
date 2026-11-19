@@ -1589,6 +1589,22 @@ def check_python():
 
 
 # --------------------------------------------------------------- main
+
+def list_rules():
+    """In tên và câu đầu tiên trong docstring của từng luật.
+
+    Danh sách này sinh ra từ chính module, nên không bao giờ cũ: luật mới
+    thêm vào là nó hiện ra, luật bị xoá là nó biến mất. `docs/TESTING.md`
+    mới là chỗ giải thích *vì sao*; đây là chỗ trả lời "repo tự kiểm gì".
+    """
+    names = sorted(name for name in globals()
+                   if name.startswith("check_") and callable(globals()[name]))
+    for name in names:
+        doc = (globals()[name].__doc__ or "").strip().split("\n")[0]
+        print("  %-26s %s" % (name, doc))
+    return names
+
+
 def main(argv=None):
     # Dọn trạng thái cũ: khi hàm này được gọi từ trong test (hoặc gọi hai lần
     # trong một tiến trình), lỗi của lượt trước còn nằm trong danh sách và
@@ -1599,6 +1615,11 @@ def main(argv=None):
     if "--help" in argv or "-h" in argv:
         print("Dùng: python3 scripts/check_repo.py [--fix]")
         print("  --fix   chuẩn hoá BOM/CRLF/khoảng trắng thay vì chỉ báo lỗi")
+        print("  --rules in danh sách luật kèm một dòng giải thích")
+        return 0
+    if "--rules" in argv:
+        names = list_rules()
+        print("\n%d luật." % len(names))
         return 0
     if "--fix" in argv:
         fixed = fix_text_files()
