@@ -453,6 +453,41 @@ class TestModuleDocstrings(unittest.TestCase):
         check_repo.check_module_docstrings(self.tmp)
         self.assertTrue(any("svgkit/b.py" in e for e in check_repo.errors))
 
+
+
+class TestReadmeLength(unittest.TestCase):
+    """README phải ngắn."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="readme-")
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _readme(self, lines):
+        with open(os.path.join(self.tmp, "README.md"), "w",
+                  encoding="utf-8") as handle:
+            handle.write("\n".join("dòng %d" % i for i in range(lines)) + "\n")
+
+    def test_short_readme_passes(self):
+        self._readme(100)
+        check_repo.check_readme_length(self.tmp, limit=360)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_long_readme_is_flagged(self):
+        self._readme(500)
+        check_repo.check_readme_length(self.tmp, limit=360)
+        self.assertTrue(any("vượt ngân sách" in e for e in check_repo.errors))
+
+    def test_missing_readme_is_not_an_error(self):
+        check_repo.check_readme_length(self.tmp, limit=360)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_default_budget(self):
+        self.assertEqual(check_repo.README_BUDGET, 360)
+
 if __name__ == "__main__":
     unittest.main()
 
