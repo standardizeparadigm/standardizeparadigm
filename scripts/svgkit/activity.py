@@ -40,7 +40,8 @@ def activity_card(pal, contrib, dt, t, width=640, height=258):
     longest = contrib.get("streak_longest", 0)
     weekdays = WEEKDAY_SHORT if t.lang == "vi" else WEEKDAY_SHORT_EN
 
-    parts = open_svg(pal, width, height, "contribution activity card")
+    parts = open_svg(pal, width, height, t("act.title"),
+                     desc=t("desc.activity"))
     parts.append('  <g class="fadeUp">')
     parts.append('    <rect x="22" y="22" width="4" height="18" rx="2" '
                  'fill="url(#accentGrad)"/>')
