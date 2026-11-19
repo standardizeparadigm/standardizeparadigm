@@ -3,6 +3,15 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Dải trạng thái workflow thay cho badge shields.io
+
+- Ba badge trong ảnh chụp bị hỏng: `live-clock` và `health` trả *repo or
+  workflow not found* (file chỉ có ở nhánh phụ), `welcome` trả *no status*
+  (có workflow nhưng chưa chạy xong lần nào).
+- `assets/status.svg` do chính repo vẽ từ Actions API: 7 viên thuốc, mỗi
+  viên một workflow, màu theo lần chạy gần nhất. Không phụ thuộc server ngoài
+  nên không có khái niệm "not found".
+
 ## 2026-11-19 — Cổng 3D: sửa lỗi mốc 24 giờ không bao giờ tới
 
 - Cổng so "lần chạy thành công gần nhất", nhưng lượt bị cổng bỏ qua **vẫn** là lượt thành công → mốc 24 giờ không bao giờ đạt được, ảnh chỉ đổi khi có push.
