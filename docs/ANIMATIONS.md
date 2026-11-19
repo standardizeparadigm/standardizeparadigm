@@ -141,7 +141,9 @@ Mỗi file SVG có sẵn khối `@media (prefers-reduced-motion: reduce)` tắt 
 | `twinkle` (sao) | 4s | CSS |
 | `floatY` (chip) | 5.2s | CSS |
 | `sheen` (vệt sáng) | 6.5s | CSS |
-| `scan` (dải quét) | 7.5s | CSS |
+| `scan` (dải quét) | 7.5s · 12.5s (hero, hai làn) · 9s (thẻ số liệu) | CSS |
+| `spinDot` (vòng cung "đang chạy") | 1.6s | CSS |
+| `dashFlow` (nét đứt tự chạy) | 2.6s | CSS |
 | `wave` / `wave2` | 14s / 19s | CSS |
 | kim giây / phút / giờ | 60s / 3600s / 43200s | CSS |
 | vành đồng hồ | 18s | CSS |
