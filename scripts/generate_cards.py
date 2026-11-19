@@ -274,10 +274,12 @@ def main(argv=None):
     if args.placeholder:
         write("stats.svg", waiting_card(
             palette, 640, translator("wait.title.stats"),
-            translator("wait.line1"), translator("wait.line2")))
+            translator("wait.line1"), translator("wait.line2"),
+            desc=translator("desc.wait")))
         write("top-langs.svg", waiting_card(
             palette, 640, translator("wait.title.langs"),
-            translator("wait.empty1"), translator("wait.empty2")))
+            translator("wait.empty1"), translator("wait.empty2"),
+            desc=translator("desc.wait")))
         return 0
 
     status = 0

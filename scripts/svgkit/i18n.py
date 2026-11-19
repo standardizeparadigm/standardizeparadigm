@@ -80,6 +80,7 @@ STRINGS = {
         "langs.more": "+{n} ngôn ngữ khác · {pct}%",
         "act.avg": "TB {n}",
         "act.peak": "cao nhất {n}",
+        "desc.wait": "Thẻ tạm: chạy workflow Profile Cards để có số liệu",
     },
     "en": {
         "stats.title": "GITHUB STATS",
@@ -143,6 +144,7 @@ STRINGS = {
         "langs.more": "+{n} more languages · {pct}%",
         "act.avg": "AVG {n}",
         "act.peak": "peak {n}",
+        "desc.wait": "Placeholder card: run the Profile Cards workflow",
     },
 }
 

@@ -212,9 +212,9 @@ def langs_card(pal, data, dt, t, width=640, height=258):
     return "\n".join(parts)
 
 
-def waiting_card(pal, width, title, line1, line2):
+def waiting_card(pal, width, title, line1, line2, desc=None):
     """Thẻ tạm khi chưa có dữ liệu (không bao giờ đè lên ảnh thật)."""
-    parts = open_svg(pal, width, 258, title)
+    parts = open_svg(pal, width, 258, title, desc=desc)
     parts.append('  <text x="%d" y="112" text-anchor="middle" class="fSans" '
                  'style="font:700 14px %s;fill:%s">%s</text>'
                  % (width // 2, pal.font, pal.text, esc(line1)))

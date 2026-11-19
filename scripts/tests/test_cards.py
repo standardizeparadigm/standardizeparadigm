@@ -111,3 +111,17 @@ class TestTopLanguageHighlight(unittest.TestCase):
         pal = get_palette()
         svg = langs_card(pal, {"langs": {"Python": 900, "Go": 100}}, DT, i18n.get("vi"))
         self.assertEqual(svg.count('class="pulseSlow"'), 1)
+
+
+class TestWaitingCard(unittest.TestCase):
+    def test_guides_to_workflow(self):
+        svg = waiting_card(get_palette(), 640, "GITHUB STATS",
+                           i18n.get("vi")("wait.line1"),
+                           i18n.get("vi")("wait.empty1"))
+        self.assertIn("<svg", svg)
+        self.assertIn("Profile Cards", svg)
+        self.assertIn("<desc>", svg)
+
+    def test_smaller_width_supported(self):
+        svg = waiting_card(get_palette(), 420, "TITLE", "line", "line2")
+        self.assertIn('width="420"', svg)
