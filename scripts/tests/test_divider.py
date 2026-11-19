@@ -63,6 +63,39 @@ class TestSmilReducedMotion(unittest.TestCase):
         svg = divider(get_palette())
         self.assertIn('height="1.6" fill="url(#ln)"', svg)
 
+
+
+class TestDividerGeometry(unittest.TestCase):
+    """Đường kẻ phải khớp chiều rộng mọi khung, không lệch nửa điểm ảnh."""
+
+    def test_mid_diamond_is_centred(self):
+        for width in (640, 1000, 1200):
+            svg = divider(get_palette("sky"), width)
+            self.assertIn("translate(%.1f 13)" % (width / 2.0), svg, width)
+
+    def test_viewbox_follows_width(self):
+        svg = divider(get_palette("sky"), 820)
+        self.assertIn('viewBox="0 0 820 26"', svg)
+        self.assertIn('width="820"', svg)
+
+    def test_spark_travels_exactly_the_full_width(self):
+        svg = divider(get_palette("sky"), 1000)
+        self.assertIn('values="-120;1020"', svg)
+
+    def test_reverse_spark_starts_off_the_right_edge(self):
+        svg = divider(get_palette("sky"), 1000)
+        self.assertIn('values="1020;-120"', svg)
+
+    def test_line_sits_on_the_vertical_middle(self):
+        # Khung 26 cao: đường kẻ ở y=12, dày 1.6 -> tâm đúng 12.8.
+        svg = divider(get_palette("sky"))
+        self.assertIn('<rect x="0" y="12" width="1000" height="1.6"', svg)
+
+    def test_role_is_presentation(self):
+        svg = divider(get_palette("sky"))
+        self.assertIn('role="presentation"', svg)
+        self.assertIn('aria-hidden="true"', svg)
+
 if __name__ == "__main__":
     unittest.main()
 
