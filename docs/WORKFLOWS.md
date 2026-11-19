@@ -3,6 +3,8 @@
 Tài liệu mô tả các GitHub Actions đang chạy trong repo `standardizeparadigm/standardizeparadigm`.
 
 **Nguyên tắc chung:** mọi hình đều do workflow vẽ và **commit ngay vào repo** — không gọi server bên thứ ba, không bao giờ bị rate-limit hay lỗi 503. Tất cả action đều ghim phiên bản (`@vN`) và có `permissions` tối thiểu.
+Lệnh `pip install` trong workflow cũng ghim (`pyyaml==6.0.2`) — một gói
+cài bản mới mỗi ngày là cùng một lỗ hổng với action `@main`.
 
 ## Bảng lịch chạy
 
