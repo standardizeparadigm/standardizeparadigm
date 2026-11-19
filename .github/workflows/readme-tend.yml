@@ -10,7 +10,7 @@
 #  không giành nhau push cùng một giây). Con dấu thời gian
 #  vì thế không bao giờ cũ quá 3 giờ, mà chỉ tốn 8 lượt chạy mỗi ngày.
 # =====================================================================
-name: 🌱 README Garden
+name: README Garden
 
 on:
   schedule:

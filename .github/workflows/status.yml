@@ -24,7 +24,7 @@ on:
       - "GitHub Profile 3D Contrib"
       - "Live Clock"
       - "Profile Cards (LTS)"
-      - "🌱 README Garden"
+      - "README Garden"
       - "Repo Health"
       - "👋 Welcome new contributors"
     types: [completed]
