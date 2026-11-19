@@ -30,9 +30,11 @@ GitHub Actions **không hỗ trợ** cron mỗi phút; chu kỳ ngắn nhất l�
 
 Nên trang này làm hai lớp:
 
-- **Lớp ảnh**: đồng hồ kiểm tra mỗi 5 phút, biểu đồ 3D mỗi 30 phút (có cổng 24h), thẻ số liệu và README mỗi 3 giờ, dải trạng thái mỗi 10 phút — lệch 2 phút so với
-  đồng hồ để hai workflow không cùng `git push` một lúc. Chỗ nào có `--smart` thì
-  chỉ commit khi số liệu thật sự đổi.
+- **Lớp ảnh**: đồng hồ 5 phút một lần, dải trạng thái 10 phút, biểu đồ 3D 30
+  phút (có cổng 24h), thẻ số liệu và README 3 giờ một lần. Mỗi job giữ một phút
+  riêng (:00, :02, :07, :13, :23) nên không hai job nào cùng `git push` một
+  lúc — bảng phút đầy đủ ở [WORKFLOWS.md](./WORKFLOWS.md). Chỗ nào có `--smart`
+  thì chỉ commit khi số liệu thật sự đổi.
 - **Lớp hoạt ảnh**: CSS/SMIL trong file SVG làm ảnh **luôn chuyển động** giữa hai lần cập nhật. Kim đồng hồ quay liên tục, không cần workflow nào cả.
 - **Lớp chữ số**: con số giờ:phút không phải một chuỗi tĩnh mà là 24 ô giờ +
   60 ô phút chồng lên nhau, mỗi ô chỉ hiện trong đúng phút của nó. Nên **số
