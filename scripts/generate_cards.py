@@ -266,9 +266,13 @@ def main(argv=None):
     data = None
 
     if want_all or args.hero:
-        write("hero.svg", hero(palette, dt, translator))
-        write("divider.svg", divider(palette))
-        write("footer.svg", footer(palette, translator))
+        # Ảnh bìa / chân trang là thiết kế, không phải số liệu: vẽ lại mỗi
+        # giờ một lần (hoặc khi đổi theme / đổi tên) thay vì mỗi 10 phút.
+        design = data_hash({"design": [USER, DISPLAY_NAME, palette.name,
+                                       translator.lang, dt.strftime("%Y-%m-%dT%H")]})
+        write("hero.svg", hero(palette, dt, translator), design)
+        write("divider.svg", divider(palette), design)
+        write("footer.svg", footer(palette, translator), design)
 
     if want_all or args.clock:
         write("live-clock.svg", clock_card(palette, dt, translator))
