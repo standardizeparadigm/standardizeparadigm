@@ -3,6 +3,13 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — README có ngân sách dòng
+
+- Trang cá nhân là thứ người lạ mở 20 giây rồi đóng. README hiện 338 dòng;
+  luật mới chặn ở 360 và nhắc chuyển bớt nội dung vào `docs/`.
+- Đây là yêu cầu trực tiếp ("đừng làm quá dài") được biến thành thứ máy
+  kiểm được, thay vì một lời hứa dễ quên.
+
 ## 2026-11-19 — Gõ sai `--theme` / `--lang` thì được nhắc
 
 - Trước đây `--lang xx` hay `--theme nokey` im lặng rơi về mặc định: người
