@@ -36,7 +36,7 @@ Xin chào 👋 Mình là **Standardize Paradigm**, học sinh **lớp 7** ở ph
 
 ```yaml
 role:       Học sinh lớp 7 · Lập trình viên tự học
-location:   Long Xuyên, An Giang, Việt Nam (UTC+7)
+location:   Phường Kon Tum, Quảng Ngãi, Việt Nam (UTC+7)
 learning:   [Python, JavaScript, Web, "mọi thứ trông thú vị"]
 superpower: học nhanh + không sợ code lỗi
 motto:      "Cứ thử đi, sai thì học được nhiều hơn"
