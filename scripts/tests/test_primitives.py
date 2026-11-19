@@ -113,3 +113,30 @@ class TestReducedMotion(unittest.TestCase):
         declared = set(re.findall(r"^\s*\.(\w+)\s*\{ animation:", primitives.CSS, re.M))
         for name in declared:
             self.assertIn("." + name, block, "thiếu %s trong khối giảm chuyển động" % name)
+
+
+class TestNumbers(unittest.TestCase):
+    def test_human_small(self):
+        from svgkit.primitives import human
+
+        self.assertEqual(human(0), "0")
+        self.assertEqual(human(7), "7")
+        self.assertEqual(human(999), "999")
+
+    def test_human_thousands(self):
+        from svgkit.primitives import human
+
+        self.assertEqual(human(1000), "1k")
+        self.assertEqual(human(3476), "3.5k")
+        self.assertEqual(human(12345), "12.3k")
+
+    def test_human_millions(self):
+        from svgkit.primitives import human
+
+        self.assertEqual(human(1200000), "1.2M")
+
+    def test_num_trims_float(self):
+        from svgkit.primitives import num
+
+        self.assertEqual(num(12.0), "12")
+        self.assertEqual(num(12.345), "12.3")
