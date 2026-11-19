@@ -1,4 +1,6 @@
-<svg width="640" height="258" viewBox="0 0 640 258" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="dong ho Viet Nam cap nhat moi 5 phut" preserveAspectRatio="xMidYMid meet">
+<svg width="640" height="258" viewBox="0 0 640 258" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LIVE CLOCK" preserveAspectRatio="xMidYMid meet">
+  <title>LIVE CLOCK</title>
+  <desc>Đồng hồ Việt Nam UTC+7 với kim quay liên tục</desc>
   <style>
 
   .fSans { font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; }
@@ -68,6 +70,14 @@
   @keyframes scan      { 0% { transform: translateY(-40px); opacity: 0 } 12% { opacity: .55 }
                          88% { opacity: .55 } 100% { transform: translateY(300px); opacity: 0 } }
   @keyframes wave      { to { transform: translateX(-500px) } }
+
+  /* Ai bật "giảm chuyển động" trong hệ điều hành thì thấy ảnh tĩnh,
+     vẫn đẹp và vẫn đủ thông tin — không phải hy sinh nội dung. */
+  @media (prefers-reduced-motion: reduce) {
+    .pulse, .pulseSlow, .blink, .spinSlow, .spinRev, .driftA, .driftB,
+    .driftC, .floatY, .twinkle, .fadeUp, .growIn, .sheen, .scan,
+    .secHand, .minHand, .hourHand, .wave, .wave2 { animation: none !important; }
+  }
 
   </style>
 
@@ -218,17 +228,17 @@
     <path d="M107.86 73.49L107.24 70.55" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M114.89 72.37L114.58 69.39" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
   </g>
-  <g transform="rotate(98.500 122 140)">
-    <g class="hourHand" style="--cx:122px;--cy:140px;animation-delay:-11839.895s">
+  <g transform="rotate(100.000 122 140)">
+    <g class="hourHand" style="--cx:122px;--cy:140px;animation-delay:-12044.702s">
       <rect x="119" y="107" width="6" height="40" rx="3" fill="#E8F4FF"/>
     </g>
   </g>
-  <g transform="rotate(103.990 122 140)">
-    <g class="minHand" style="--cx:122px;--cy:140px;animation-delay:-1039.895s">
+  <g transform="rotate(124.470 122 140)">
+    <g class="minHand" style="--cx:122px;--cy:140px;animation-delay:-1244.702s">
       <rect x="120" y="93" width="4" height="56" rx="2" fill="#7DD3FC" fill-opacity=".78"/>
     </g>
   </g>
-  <g class="secHand" style="--cx:122px;--cy:140px;animation-delay:-19.895s">
+  <g class="secHand" style="--cx:122px;--cy:140px;animation-delay:-44.702s">
     <path d="M122 152V80" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" filter="url(#glow)"/>
     <circle cx="122" cy="80" r="4.5" fill="#7DD3FC"/>
   </g>
@@ -236,7 +246,7 @@
   <circle cx="122" cy="140" r="2" fill="#FFFFFF"/>
   <g class="fadeUp" style="animation-delay:.2s">
     <text x="244" y="74" class="clockLabel">GIỜ VIỆT NAM · UTC+7</text>
-    <text x="244" y="124" class="clockTime" fill="url(#titleGrad)">15:17</text>
+    <text x="244" y="124" class="clockTime" fill="url(#titleGrad)">15:20</text>
     <text x="244" y="148" class="clockDate">Thứ Năm · 19/11/2026</text>
   </g>
   <g class="fadeUp" style="animation-delay:.3s">
@@ -249,14 +259,14 @@
     <text x="244" y="206" class="footNote" style="letter-spacing:1.1px">NGÀY HÔM NAY ĐÃ TRÔI</text>
     <text x="616" y="206" text-anchor="end" class="legendValue">64%</text>
     <rect x="244" y="212" width="372" height="8" rx="4" fill="#0B1B2B" fill-opacity=".6"/>
-    <rect x="244" y="212" width="236.9" height="8" rx="4" fill="url(#barGrad)">
-      <animate attributeName="width" from="0" to="236.9" dur="1.3s" begin=".3s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+    <rect x="244" y="212" width="237.7" height="8" rx="4" fill="url(#barGrad)">
+      <animate attributeName="width" from="0" to="237.7" dur="1.3s" begin=".3s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
       <animate attributeName="opacity" values=".75;1;.75" dur="3.4s" repeatCount="indefinite"/>
     </rect>
-    <circle cx="480.9" cy="216" r="5" fill="#7DD3FC" filter="url(#glow)" class="pulse"/>
+    <circle cx="481.7" cy="216" r="5" fill="#7DD3FC" filter="url(#glow)" class="pulse"/>
   </g>
   <g class="fadeUp" style="animation-delay:.5s">
     <circle cx="244" cy="242" r="3" fill="#38BDF8" class="pulse"/>
-    <text x="254" y="245" class="footNote">Cập nhật lúc 15:17 · tự làm mới mỗi 5 phút bởi GitHub Actions</text>
+    <text x="254" y="245" class="footNote">Cập nhật lúc 15:20 · tự làm mới mỗi 5 phút bởi GitHub Actions</text>
   </g>
 </svg>

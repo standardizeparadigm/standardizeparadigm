@@ -1,4 +1,6 @@
 <svg width="1000" height="280" viewBox="0 0 1000 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Standardize Paradigm - Học sinh lớp 7 · Lập trình viên tự học · Long Xuyên, An Giang" preserveAspectRatio="xMidYMid meet">
+  <title>Standardize Paradigm - Học sinh lớp 7 · Lập trình viên tự học · Long Xuyên, An Giang</title>
+  <desc>Ảnh bìa: tên, vai trò và nơi sống của tác giả</desc>
   <style>
 
   .fSans { font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; }
@@ -68,6 +70,14 @@
   @keyframes scan      { 0% { transform: translateY(-40px); opacity: 0 } 12% { opacity: .55 }
                          88% { opacity: .55 } 100% { transform: translateY(300px); opacity: 0 } }
   @keyframes wave      { to { transform: translateX(-500px) } }
+
+  /* Ai bật "giảm chuyển động" trong hệ điều hành thì thấy ảnh tĩnh,
+     vẫn đẹp và vẫn đủ thông tin — không phải hy sinh nội dung. */
+  @media (prefers-reduced-motion: reduce) {
+    .pulse, .pulseSlow, .blink, .spinSlow, .spinRev, .driftA, .driftB,
+    .driftC, .floatY, .twinkle, .fadeUp, .growIn, .sheen, .scan,
+    .secHand, .minHand, .hourHand, .wave, .wave2 { animation: none !important; }
+  }
 
   </style>
 
@@ -252,6 +262,6 @@
     <rect x="272" y="202" width="2" height="18" rx="1" fill="#38BDF8" class="blink"/>
   </g>
   <text x="966" y="256" text-anchor="end" class="heroHint">keep learning · keep building · stay curious</text>
-  <text x="252" y="256" class="heroHint">~/standardizeparadigm · 19/11 · 15:17</text>
+  <text x="252" y="256" class="heroHint">~/standardizeparadigm · 19/11 · 15:20</text>
   <rect x="30" y="270" width="940" height="3" rx="1.5" fill="url(#accentGrad)" opacity=".55" class="pulseSlow"/>
 </svg>

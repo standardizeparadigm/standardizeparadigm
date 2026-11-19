@@ -1,4 +1,6 @@
 <svg width="640" height="258" viewBox="0 0 640 258" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="most used languages card" preserveAspectRatio="xMidYMid meet">
+  <title>most used languages card</title>
+  <desc>Thẻ ngôn ngữ lập trình dùng nhiều nhất, tính theo byte code</desc>
   <style>
 
   .fSans { font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; }
@@ -68,6 +70,14 @@
   @keyframes scan      { 0% { transform: translateY(-40px); opacity: 0 } 12% { opacity: .55 }
                          88% { opacity: .55 } 100% { transform: translateY(300px); opacity: 0 } }
   @keyframes wave      { to { transform: translateX(-500px) } }
+
+  /* Ai bật "giảm chuyển động" trong hệ điều hành thì thấy ảnh tĩnh,
+     vẫn đẹp và vẫn đủ thông tin — không phải hy sinh nội dung. */
+  @media (prefers-reduced-motion: reduce) {
+    .pulse, .pulseSlow, .blink, .spinSlow, .spinRev, .driftA, .driftB,
+    .driftC, .floatY, .twinkle, .fadeUp, .growIn, .sheen, .scan,
+    .secHand, .minHand, .hourHand, .wave, .wave2 { animation: none !important; }
+  }
 
   </style>
 
@@ -236,6 +246,6 @@
   </g>
   <g class="fadeUp" style="animation-delay:.62s">
     <circle cx="26" cy="242" r="3" fill="#38BDF8" class="pulse"/>
-    <text x="36" y="245" class="footNote">Tính theo số byte code thật trong các repo công khai · cập nhật 19/11 · 15:17</text>
+    <text x="36" y="245" class="footNote">Tính theo số byte code thật trong các repo công khai · cập nhật 19/11 · 15:20</text>
   </g>
 </svg>

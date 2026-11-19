@@ -1,4 +1,6 @@
-<svg width="640" height="258" viewBox="0 0 640 258" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="contribution activity card" preserveAspectRatio="xMidYMid meet">
+<svg width="640" height="258" viewBox="0 0 640 258" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CONTRIBUTION ACTIVITY" preserveAspectRatio="xMidYMid meet">
+  <title>CONTRIBUTION ACTIVITY</title>
+  <desc>Biểu đồ contribution 14 ngày gần nhất</desc>
   <style>
 
   .fSans { font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; }
@@ -68,6 +70,14 @@
   @keyframes scan      { 0% { transform: translateY(-40px); opacity: 0 } 12% { opacity: .55 }
                          88% { opacity: .55 } 100% { transform: translateY(300px); opacity: 0 } }
   @keyframes wave      { to { transform: translateX(-500px) } }
+
+  /* Ai bật "giảm chuyển động" trong hệ điều hành thì thấy ảnh tĩnh,
+     vẫn đẹp và vẫn đủ thông tin — không phải hy sinh nội dung. */
+  @media (prefers-reduced-motion: reduce) {
+    .pulse, .pulseSlow, .blink, .spinSlow, .spinRev, .driftA, .driftB,
+    .driftC, .floatY, .twinkle, .fadeUp, .growIn, .sheen, .scan,
+    .secHand, .minHand, .hourHand, .wave, .wave2 { animation: none !important; }
+  }
 
   </style>
 
@@ -149,7 +159,7 @@
   <g class="fadeUp">
     <rect x="22" y="22" width="4" height="18" rx="2" fill="url(#accentGrad)"/>
     <text x="36" y="37" class="cardTitle">CONTRIBUTION ACTIVITY</text>
-    <text x="618" y="36" text-anchor="end" class="cardSub">365 NGÀY · 19/11 · 15:17</text>
+    <text x="618" y="36" text-anchor="end" class="cardSub">365 NGÀY · 19/11 · 15:20</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.10s">
     <rect x="22" y="58" width="184" height="52" rx="12" fill="#0B1B2B" stroke="#17334F" stroke-opacity=".8"/>
@@ -264,6 +274,6 @@
   <text x="596.7" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#7DD3FC;letter-spacing:.3px">T5</text>
   <g class="fadeUp" style="animation-delay:.7s">
     <circle cx="26" cy="242" r="3" fill="#38BDF8" class="pulse"/>
-    <text x="36" y="245" class="footNote">Đếm từ lịch contribution thật của GitHub · cập nhật 19/11 · 15:17</text>
+    <text x="36" y="245" class="footNote">Đếm từ lịch contribution thật của GitHub · cập nhật 19/11 · 15:20</text>
   </g>
 </svg>
