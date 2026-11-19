@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Thẻ hoạt động 14 ngày
+
+- `assets/activity.svg`: 14 cột contribution thật từ GraphQL, kèm chuỗi ngày hiện tại và chuỗi dài nhất.
+- Không lấy được dữ liệu thì trả `None` và giữ ảnh cũ, không làm đỏ workflow.
+
 ## 2026-11-19 — svgkit 2.0 — tách thư viện vẽ
 
 - `scripts/generate_cards.py` từ 1 file dài thành gói `scripts/svgkit/`: palette, i18n, primitives, hero, divider, cards, clock, activity, api.
