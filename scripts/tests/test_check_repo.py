@@ -281,6 +281,55 @@ class TestFixTextFiles(unittest.TestCase):
         self._put(".git/config", "a\r\n")
         self.assertEqual(check_repo.fix_text_files(self.tmp), [])
 
+
+
+class TestTestClaims(unittest.TestCase):
+    """Câu 'hơn N unit test' trong tài liệu."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="claims-")
+        os.makedirs(os.path.join(self.tmp, "scripts", "tests"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _tests(self, count):
+        body = "".join("    def test_%d(self):\n        pass\n" % i
+                       for i in range(count))
+        with open(os.path.join(self.tmp, "scripts", "tests", "test_x.py"), "w",
+                  encoding="utf-8") as handle:
+            handle.write("import unittest\n\n\nclass T(unittest.TestCase):\n" + body)
+
+    def _doc(self, text):
+        with open(os.path.join(self.tmp, "README.md"), "w",
+                  encoding="utf-8") as handle:
+            handle.write(text)
+
+    def test_accurate_claim_passes(self):
+        self._tests(150)
+        self._doc("hơn 100 unit test")
+        check_repo.check_test_claims(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_claim_above_reality_is_flagged(self):
+        self._tests(40)
+        self._doc("hơn 100 unit test")
+        check_repo.check_test_claims(self.tmp)
+        self.assertTrue(any("chỉ có 40" in e for e in check_repo.errors))
+
+    def test_stale_claim_is_flagged(self):
+        self._tests(400)
+        self._doc("hơn 100 unit test")
+        check_repo.check_test_claims(self.tmp)
+        self.assertTrue(any("hãy nâng lên" in e for e in check_repo.errors))
+
+    def test_real_test_count_ignores_non_test_functions(self):
+        self._tests(3)
+        check_repo.check_test_claims(self.tmp)
+        self.assertEqual(check_repo.real_test_count(self.tmp), 3)
+
 if __name__ == "__main__":
     unittest.main()
 
