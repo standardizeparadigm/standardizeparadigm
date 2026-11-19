@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — `--dry-run` và `--quiet`
+
+- `--dry-run` vẽ và kiểm tra nhưng không ghi file — xem trước mà không đụng ảnh thật.
+- `--quiet` im lặng hoàn toàn khi mọi thứ ổn, chỉ còn lỗi trên stderr.
+
 ## 2026-11-19 — Bộ test lên 150
 
 - Thêm test cho hạt bụi, cung rank, vành đồng hồ, đường trung bình, tia sáng và vân tay dữ liệu.
