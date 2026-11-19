@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Test bộ chữ hai ngôn ngữ."""
 
+import re
 import unittest
 
 from helpers import SCRIPTS  # noqa: F401
@@ -100,6 +101,34 @@ class TestStringHygiene(unittest.TestCase):
             lowered = value.lower()
             for letter in vietnamese:
                 self.assertNotIn(letter, lowered, "en/%s" % key)
+
+
+
+class TestKeyHygiene(unittest.TestCase):
+    """Tên khoá và cách dùng placeholder."""
+
+    def test_keys_are_namespaced(self):
+        for key in i18n.STRINGS["vi"]:
+            self.assertIn(".", key, key)
+
+    def test_placeholders_are_lowercase_names(self):
+        for key, text in i18n.STRINGS["vi"].items():
+            for name in re.findall(r"\{(\w+)\}", text):
+                self.assertTrue(name.islower(), "%s: {%s}" % (key, name))
+
+    def test_no_placeholder_is_repeated(self):
+        for key, text in i18n.STRINGS["vi"].items():
+            names = re.findall(r"\{(\w+)\}", text)
+            self.assertEqual(len(names), len(set(names)), key)
+
+    def test_no_percent_formatting_left(self):
+        # %s / %d sẽ làm Translator.format ném KeyError khó hiểu.
+        for key, text in i18n.STRINGS["vi"].items():
+            self.assertNotRegex(text, r"%[sdrf]", key)
+
+    def test_extra_arguments_are_ignored(self):
+        # Gọi thừa tham số không được làm sập ảnh.
+        self.assertIsInstance(i18n.get()("hero.title", unused=1), str)
 
 if __name__ == "__main__":
     unittest.main()
