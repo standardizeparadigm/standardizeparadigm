@@ -65,5 +65,38 @@ class TestWorkflowStates(unittest.TestCase):
         rows = self._states(200, None, token="")
         self.assertEqual(set(rows.values()), {"unknown"})
 
+
+
+class TestAgeMinutes(unittest.TestCase):
+    """age_minutes() — đổi mốc ISO của GitHub thành số phút."""
+
+    NOW = __import__("datetime").datetime(
+        2026, 11, 19, 10, 0, 0, tzinfo=__import__("datetime").timezone.utc)
+
+    def _age(self, iso):
+        from svgkit import api
+        return api.age_minutes(iso, self.NOW)
+
+    def test_zero_when_just_finished(self):
+        self.assertEqual(self._age("2026-11-19T10:00:30Z"), 0)
+
+    def test_minutes(self):
+        self.assertEqual(self._age("2026-11-19T09:04:11Z"), 55)
+
+    def test_garbage_is_none_not_zero(self):
+        # None quan trọng hơn 0: 0 nghĩa là "vừa xong", còn None nghĩa là
+        # "không biết" — và dải trạng thái sẽ bỏ trống nhãn thay vì nói dối.
+        self.assertIsNone(self._age("hôm qua"))
+        self.assertIsNone(self._age(""))
+        self.assertIsNone(self._age(None))
+
+    def test_future_timestamp_never_negative(self):
+        self.assertEqual(self._age("2026-11-19T10:05:00Z"), 0)
+
+    def test_aware_now_is_not_mangled(self):
+        from svgkit import api
+        naive_now = self.NOW.replace(tzinfo=None)
+        self.assertEqual(api.age_minutes("2026-11-19T09:00:00Z", naive_now), 60)
+
 if __name__ == "__main__":
     unittest.main()
