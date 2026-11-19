@@ -96,6 +96,33 @@ class TestCli(unittest.TestCase):
         self.assertEqual(leftovers, [])
 
 
+
+
+class TestUnknownFlags(unittest.TestCase):
+    """Gõ sai theme/ngôn ngữ phải được nhắc, không im lặng."""
+
+    def _run(self, argv):
+        out = io.StringIO()
+        with tempfile.TemporaryDirectory() as tmp:
+            with contextlib.redirect_stdout(out):
+                generate_cards.main(argv + ["--demo", "--clock", "--dry-run",
+                                            "--out", tmp])
+        return out.getvalue()
+
+    def test_unknown_theme_warns_and_falls_back(self):
+        text = self._run(["--theme", "skky"])
+        self.assertIn("theme 'skky' không có", text)
+        self.assertIn("dùng 'sky'", text)
+
+    def test_unknown_language_warns_and_falls_back(self):
+        text = self._run(["--lang", "e"])
+        self.assertIn("ngôn ngữ 'e' không có", text)
+        self.assertIn("'en'", text)
+
+    def test_known_values_are_silent(self):
+        for argv in (["--theme", "sky"], ["--lang", "en"]):
+            self.assertNotIn("không có", self._run(argv))
+
 if __name__ == "__main__":
     unittest.main()
 
