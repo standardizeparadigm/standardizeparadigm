@@ -114,3 +114,7 @@ Tự bình luận chào mừng khi có issue/PR mới. Bỏ qua tài khoản bot
 - [scripts/svgkit/](../scripts/svgkit) — thư viện vẽ (palette, i18n, primitives…)
 - [scripts/tests/](../scripts/tests) — hơn 100 unit test
 - [scripts/check_repo.py](../scripts/check_repo.py) — kiểm tra sức khỏe repo
+- [docs/ANIMATIONS.md](./ANIMATIONS.md) — từng hoạt ảnh trong mỗi tấm ảnh
+- [docs/THEMES.md](./THEMES.md) — 6 bảng màu và cách thêm bảng màu mới
+- [scripts/svgkit/README.md](../scripts/svgkit/README.md) — bản đồ thư viện vẽ
+- [CHANGELOG.md](../CHANGELOG.md) — vì sao mỗi thay đổi được làm
