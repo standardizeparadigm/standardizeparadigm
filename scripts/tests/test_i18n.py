@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Test bộ chữ hai ngôn ngữ."""
 
+import os
 import re
 import unittest
 
@@ -129,6 +130,28 @@ class TestKeyHygiene(unittest.TestCase):
     def test_extra_arguments_are_ignored(self):
         # Gọi thừa tham số không được làm sập ảnh.
         self.assertIsInstance(i18n.get()("hero.title", unused=1), str)
+
+
+
+class TestNoDeadStrings(unittest.TestCase):
+    """Khoá dịch không ai dùng là bản dịch chết — vẫn phải dịch, vẫn sai."""
+
+    def _corpus(self):
+        root = SCRIPTS
+        text = []
+        for base, dirs, files in os.walk(root):
+            dirs[:] = [d for d in dirs if d != "__pycache__" and d != "tests"]
+            for name in sorted(files):
+                if name.endswith((".py", ".md")) and name != "i18n.py":
+                    with open(os.path.join(base, name), encoding="utf-8") as f:
+                        text.append(f.read())
+        return "\n".join(text)
+
+    def test_every_key_is_referenced_somewhere(self):
+        corpus = self._corpus()
+        dead = sorted(key for key in i18n.STRINGS["vi"]
+                      if ('"%s"' % key) not in corpus)
+        self.assertEqual(dead, [])
 
 if __name__ == "__main__":
     unittest.main()
