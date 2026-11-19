@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Test hai thẻ dữ liệu và thẻ chờ."""
 
+import re
 import unittest
 from datetime import datetime, timezone
 
@@ -200,6 +201,57 @@ class TestIconCoverage(unittest.TestCase):
             self.assertTrue(body.startswith("<"), name)
             self.assertFalse(
                 any(0x1F300 <= ord(ch) <= 0x1FAFF for ch in body), name)
+
+
+class TestStatsTiles(unittest.TestCase):
+    """Sáu ô số liệu: 2 cột × 3 hàng, đều nhau, không tràn khung."""
+
+    def setUp(self):
+        self.svg = stats_card(get_palette(), DATA, DT, i18n.get())
+
+    def _tiles(self):
+        return [(int(x), int(y)) for x, y in
+                re.findall(r'<rect x="(\d+)" y="(\d+)" width="180" height="50"', self.svg)]
+
+    def test_six_tiles(self):
+        self.assertEqual(len(self._tiles()), 6)
+
+    def test_two_columns_three_rows(self):
+        tiles = self._tiles()
+        self.assertEqual(len({x for x, _ in tiles}), 2)
+        self.assertEqual(len({y for _, y in tiles}), 3)
+
+    def test_tiles_stay_inside_the_card(self):
+        for x, y in self._tiles():
+            self.assertLessEqual(x + 180, 640 - 22)
+            self.assertLessEqual(y + 50, 258)
+
+    def test_columns_do_not_overlap(self):
+        xs = sorted({x for x, _ in self._tiles()})
+        self.assertGreaterEqual(xs[1] - xs[0], 180)
+
+    def test_every_tile_has_an_icon(self):
+        self.assertEqual(self.svg.count('class="tileValue"'), 6)
+        self.assertEqual(self.svg.count('class="tileLabel"'), 6)
+
+
+class TestRankLabel(unittest.TestCase):
+    """Nhãn dưới vòng rank phải khớp tiến độ, không phải hằng số."""
+
+    def test_low_profile_has_a_next_rank(self):
+        svg = stats_card(get_palette(), {"followers": 3}, DT, i18n.get())
+        self.assertIn("TỚI HẠNG", svg)
+        self.assertNotIn(i18n.get()("stats.max"), svg)
+
+    def test_top_profile_says_top_rank(self):
+        svg = stats_card(get_palette(), {"followers": 400}, DT, i18n.get())
+        self.assertIn(i18n.get()("stats.max"), svg)
+
+    def test_percentage_moves_with_the_numbers(self):
+        small = stats_card(get_palette(), {"followers": 45}, DT, i18n.get())
+        bigger = stats_card(get_palette(), {"followers": 47}, DT, i18n.get())
+        self.assertNotEqual(small, bigger)
+
 if __name__ == "__main__":
     unittest.main()
 
