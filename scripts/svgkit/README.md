@@ -52,3 +52,9 @@ python3 scripts/generate_cards.py --demo --all --out /tmp/xem-thu
 - Phải: tên, mô tả, ba chip công nghệ bồng bềnh, dòng gõ chữ, con dấu thời gian.
 - Mọi lớp trang trí nằm trong `<g clip-path="url(#cardBody)">`.
 
+## `divider.py`
+
+- `divider(pal)` → 1000×26: gradient ngang + tia sáng chạy + hai quầng mờ.
+- `footer(pal, t)` → 1000×200: lời cảm ơn, khẩu hiệu, hai lớp sóng trôi ngược chiều.
+- `_wave()` sinh path sóng bằng hàm sin, tham số là biên độ và chu kỳ — muốn sóng cao hơn chỉ cần đổi số.
+
