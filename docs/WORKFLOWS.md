@@ -11,7 +11,7 @@ Tài liệu mô tả các GitHub Actions đang chạy trong repo `standardizepar
 | `live-clock.yml` | `*/5 * * * *` | mỗi 5 phút | `assets/live-clock.svg` |
 | `profile-3d.yml` | `7-59/30 * * * *` + cổng 24h | mỗi 30 phút kiểm tra | `profile-3d-contrib/*.svg` khi có push mới |
 | `profile-cards.yml` | `13 */3 * * *` | 8 lần/ngày | `stats`, `top-langs`, `hero`, `activity` (chỉ ghi khi đổi) |
-| `readme-tend.yml` | `45 */3 * * *` | 8 lần/ngày | con dấu `TENDED_AT` |
+| `readme-tend.yml` | `23 */3 * * *` | 8 lần/ngày | con dấu `TENDED_AT` |
 | `status.yml` | `2-59/10 * * * *` + `workflow_run` | phút 2,12,22,32,42,52 | `assets/status.svg` |
 | `health.yml` | push/PR + `0 23 * * *` | 06:00 hằng ngày | test + kiểm tra repo |
 | `welcome.yml` | theo sự kiện | — | chào issue/PR mới |

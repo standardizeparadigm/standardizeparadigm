@@ -91,7 +91,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
     <td><b>🌱</b></td>
     <td><b>README Garden</b><br /><sub><code>readme-tend.yml</code></sub></td>
     <td>Cập nhật con dấu “lần cập nhật gần nhất” ở cuối trang và kiểm tra các thư mục ảnh còn đủ file.</td>
-    <td><b>Mỗi 3 giờ</b> · <code>45 */3 * * *</code></td>
+    <td><b>Mỗi 3 giờ</b> · <code>23 */3 * * *</code></td>
   </tr>
   <tr>
     <td><b>🩺</b></td>

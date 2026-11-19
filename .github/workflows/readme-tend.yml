@@ -14,7 +14,7 @@ name: 🌱 README Garden
 
 on:
   schedule:
-    - cron: "45 */3 * * *"     # mỗi 3 giờ, lệch 45 phút so với thẻ thống kê
+    - cron: "23 */3 * * *"     # mỗi 3 giờ ở phút :23, sau status (:22) một phút
   workflow_dispatch:
   push:
     branches: [main]
