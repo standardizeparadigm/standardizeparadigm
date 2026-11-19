@@ -135,3 +135,15 @@ Ba hàm này đều là hàm thuần (trừ `write`) nên test được mà khô
 - Ảnh lớn nhất là `live-clock.svg` (~20 KB) vì có 60 vạch + CSS đầy đủ.
 - Toàn bộ CSS/defs lặp lại trong từng file — đổi lại là mỗi ảnh **tự đứng một mình**, không phụ thuộc file ngoài, nên dùng được ở bất cứ đâu (README, trang web, PDF).
 
+
+## `status.py`
+
+- `status_strip(pal, rows, dt, t)` — `rows` là danh sách `(tên_ngắn, trạng_thái)`
+  đã chuẩn hoá; hàm này **không** gọi mạng.
+- `WORKFLOWS` là danh sách `(file_workflow, tên_hiển_thị)`; thêm workflow mới
+  thì thêm một dòng, bề rộng dải tự giãn.
+- `STATE_STYLE` ánh xạ trạng thái → màu + khoá i18n. Màu cố định theo nghĩa
+  (xanh/đỏ/hổ phách/xám) chứ không theo theme, vì "đỏ = lỗi" phải đúng ở cả
+  6 bảng màu.
+- Việc phân biệt 404 với lỗi mạng nằm ở `api.api_status()` — trả mã HTTP để
+  `api.workflow_states()` biết một workflow còn nằm ở nhánh khác.
