@@ -12,3 +12,10 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 | `live-clock.svg` | ba kim quay, chấm nhấp nháy, thanh tiến độ ngày |
 | `activity.svg` | cột mọc lên, điểm hôm nay nhấp nháy |
 
+## Hero — lớp nền
+
+- **Lưới mờ**: tĩnh, làm nền cho phần chữ.
+- **Ba quầng sáng** (`driftA` 16s, `driftB` 21s, `driftC` 26s): trôi chậm theo các hướng khác nhau để nền không bao giờ "đứng hình".
+- **Sao** (`twinkle` 4s, độ trễ so le): mờ 12% rồi sáng 85%, giống sao thật.
+- **Dải quét** (`scan` 7.5s): một vệt sáng mảnh chạy từ trên xuống; đặt `opacity="0"` để khung hình tĩnh vẫn sạch.
+
