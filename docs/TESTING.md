@@ -204,6 +204,20 @@ Quy ước **hình thức** của tài liệu, không phải nội dung:
 - Link nội bộ trỏ tới file và anchor có thật.
 - Không còn ký tự hỏng trong tài liệu.
 
+## `test_repo_assets.py`
+
+Test của từng renderer chứng minh *hàm vẽ* đúng; file này chứng minh *file
+đang nằm trong repo* đúng — hai chuyện khác nhau, vì một ảnh có thể được sinh
+từ phiên bản cũ của renderer và không ai vẽ lại:
+
+- Mọi ảnh trong `assets/` parse được và có `viewBox`.
+- Số liệu trong `stats.svg` khớp `assets/data.json`.
+- Đồng hồ trong file có đủ 12 khung giờ (mỗi khung một khối CSS).
+- Vẽ lại cùng dữ liệu bằng mọi bảng màu và mọi ngôn ngữ: 6 × 2 lượt, không
+  lượt nào lỗi.
+- Dấu `<!-- data:hex -->` ở dòng áp chót khớp nội dung file — sửa tay một
+  chữ là dấu lệch.
+
 ## `test_workflow_gate.py`
 
 Cổng thông minh của `profile-3d.yml` là shell nằm trong YAML — loại code dễ hỏng mà không ai thấy. Test này:
