@@ -14,7 +14,10 @@ name: 📊 Workflow Status
 
 on:
   schedule:
-    - cron: "*/10 * * * *"        # mỗi 10 phút; mỗi lượt chỉ ~10 giây
+    # Bắt đầu ở phút thứ 2: đồng hồ chạy ở mọi phút chia hết cho 5
+    # (~40 giây/lượt), nên lệch 2 phút là hai bên không bao giờ
+    # cùng `git push` một lúc.
+    - cron: "2-59/10 * * * *"     # phút 2,12,22,32,42,52
   workflow_run:
     # Một workflow vừa xong -> cập nhật dải trạng thái ngay
     workflows:
