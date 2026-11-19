@@ -144,3 +144,14 @@ Nếu PyYAML không có, 5 test này tự skip chứ không làm đỏ bộ test
 
 Quy ước: mỗi test một hành vi; tên test nói rõ hành vi đó; không test phần trang trí mà không có lý do (ví dụ: toạ độ hạt bụi thì có lý do — để không đè chữ).
 
+## CI chạy gì
+
+`health.yml` chạy đúng ba bước liên quan tới test:
+
+```bash
+python3 -m unittest discover -s scripts/tests -t scripts -v     # 159 test
+python3 scripts/generate_cards.py --demo --all --theme <t> --lang <l>   # 6 theme × 2 ngôn ngữ
+python3 scripts/check_repo.py                                    # mojibake, link, YAML, .py
+```
+
+Nghĩa là một bảng màu mới hay một ngôn ngữ mới đều được vẽ thử và parse XML trước khi ai đó nhìn thấy nó trên trang chủ.
