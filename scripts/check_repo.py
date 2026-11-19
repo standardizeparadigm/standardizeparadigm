@@ -634,8 +634,11 @@ def check_class_references(root=None):
 RE_STYLE = re.compile(r"<style[^>]*>(.*?)</style>", re.S)
 
 # ---------------------------------- 4bk. Không có NaN / None trong thuộc tính
-RE_BAD_NUMBER = re.compile(r'(?:="(?:[^"]*?\b(?:NaN|None|nan|inf)\b[^"]*)"|'
-                           r'[:;]\s*-?\d+(?:\.\d+)?e[+-]?\d+)')
+RE_BAD_NUMBER = re.compile(
+    # NaN / None trong giá trị thuộc tính, hoặc số mũ kiểu 1.5e-07 ngay sau
+    # một lệnh path / dấu cách / dấu phẩy (mã màu #1E90FF không bị bắt).
+    r'(="[^"]*(?:NaN|None)[^"]*"|'
+    r'(?:[\s,MLHVCSQTAZmlhvcsqtaz])-?\d+(?:\.\d+)?[eE][+-]?\d+)')
 
 
 def check_bad_numbers(root=None):
@@ -648,7 +651,10 @@ def check_bad_numbers(root=None):
     root = root or ROOT
     for path in sorted(glob.glob(os.path.join(root, "assets", "*.svg"))):
         for number, line in enumerate(read(path).split("\n"), 1):
-            for match in RE_BAD_NUMBER.findall(line):
+            # Mã màu #0EA5E9 có thể chứa chuỗi trông như số mũ; bỏ chúng đi
+            # trước khi soi để không bắt oan.
+            cleaned = re.sub(r"#[0-9A-Fa-f]{3,8}", "#hex", line)
+            for match in RE_BAD_NUMBER.findall(cleaned):
                 err("%s:%d có số không hợp lệ trong thuộc tính: %s"
                     % (rel(path), number, match.strip()))
 

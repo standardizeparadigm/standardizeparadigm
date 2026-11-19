@@ -1285,6 +1285,50 @@ class TestClassReferences(unittest.TestCase):
         check_repo.check_class_references()
         self.assertEqual(check_repo.errors, [])
 
+
+
+class TestBadNumbers(unittest.TestCase):
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="num-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _svg(self, body):
+        with open(os.path.join(self.tmp, "assets", "a.svg"), "w",
+                  encoding="utf-8") as handle:
+            handle.write(body)
+
+    def test_clean_numbers_pass(self):
+        self._svg('<path d="M12.5 0.5A4 4 0 0 1 20 8"/>')
+        check_repo.check_bad_numbers(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_nan_is_reported(self):
+        self._svg('<path d="MNaN 12"/>')
+        check_repo.check_bad_numbers(self.tmp)
+        self.assertTrue(any("NaN" in e for e in check_repo.errors))
+
+    def test_none_is_reported(self):
+        self._svg('<rect x="None" y="4" width="2" height="2"/>')
+        check_repo.check_bad_numbers(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_scientific_notation_is_reported(self):
+        # Trong toạ độ path, nơi số mũ hay xuất hiện nhất.
+        self._svg('<path d="M1.5e-07 4L8 8"/>')
+        check_repo.check_bad_numbers(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_word_in_free_text_is_not_flagged(self):
+        # Chữ "None" trong <desc> là văn xuôi, không phải toạ độ.
+        self._svg('<text x="4" y="4">None of the above</text>')
+        check_repo.check_bad_numbers(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
 if __name__ == "__main__":
     unittest.main()
 
