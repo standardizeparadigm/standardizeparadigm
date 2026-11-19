@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Activity: cột 0 vẫn nhìn thấy
+
+- Ngày không có contribution trước đây vẽ bằng màu nền nên mất hút.
+- Đổi sang màu viền mờ 70% — nhìn được nhịp nghỉ, không phải lỗi render.
+
 ## 2026-11-19 — Stats: phần trăm rank theo i18n
 
 - Chuỗi `74% tiến độ` trước đây hard-code `%d%%`, giờ đi qua khoá dịch `stats.progress`.
