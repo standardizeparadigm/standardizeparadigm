@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Tôn trọng `prefers-reduced-motion`
+
+- Người bật “giảm chuyển động” trong hệ điều hành sẽ thấy ảnh tĩnh — không còn hoạt ảnh nào quay cuồng.
+- Ảnh tĩnh vẫn đẹp vì khung đầu tiên đã được vẽ sẵn ở trạng thái cuối.
+
 ## 2026-11-19 — Mọi thẻ có `<title>` và `<desc>`
 
 - Trước chỉ có `aria-label` — trình đọc màn hình đọc được nhưng công cụ tìm kiếm và chế độ đọc không thấy gì.
