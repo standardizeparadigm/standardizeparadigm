@@ -59,7 +59,7 @@ Vẽ bằng Python thuần, không cần thư viện ngoài:
 | `assets/footer.svg` | dải sóng cuối trang |
 | `assets/status.svg` | dải trạng thái 7 workflow (do `status.yml` vẽ) |
 
-- **Chạy:** `*/10 * * * *` (mỗi 10 phút) · `workflow_dispatch` · khi `scripts/**` thay đổi.
+- **Chạy:** `15 */3 * * *` (mỗi 3 giờ) · `workflow_dispatch` · khi `scripts/**` thay đổi.
 - **`--smart`:** mỗi ảnh mang một dấu `<!-- data:… -->` là vân tay của dữ liệu đã dùng. Lượt sau, nếu vân tay không đổi thì **không ghi file, không commit** — trang vẫn được kiểm tra mỗi 10 phút mà lịch sử git không đầy commit rỗng. Ảnh thiết kế (`hero`, `divider`, `footer`) vẽ lại mỗi giờ một lần.
 - **Dữ liệu:** `GITHUB_TOKEN` có sẵn của repo → quota riêng, không chia sẻ với hàng nghìn repo khác. Thẻ `activity` dùng GraphQL; thiếu dữ liệu thì giữ ảnh cũ chứ không làm đỏ workflow.
 - **Chế độ `--strict`:** API lỗi là workflow báo đỏ ngay, không âm thầm giữ ảnh cũ.
