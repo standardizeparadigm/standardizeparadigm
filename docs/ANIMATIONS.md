@@ -125,3 +125,8 @@ Mỗi file SVG có sẵn khối `@media (prefers-reduced-motion: reduce)` tắt 
 - Mỗi bong bóng lệch pha (0, −1.6, −3.1, −0.8, −2.4, −4.2 giây) nên nhìn như nước đang lăn tăn chứ không phải "đồng loạt bật lên".
 - Toàn bộ nằm trong `clip-path="url(#cardBody)"`.
 
+## Top languages — khoanh sáng ngôn ngữ đầu
+
+- Chấm màu của ngôn ngữ đứng đầu có thêm vòng `r="9"` với `stroke-opacity=".35"` và nhịp `pulseSlow` (4.4s).
+- Các ngôn ngữ còn lại chỉ có chấm `r="5"` — mắt tự biết đâu là ngôn ngữ chính mà không cần thêm chữ "top 1".
+
