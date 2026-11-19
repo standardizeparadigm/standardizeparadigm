@@ -1117,6 +1117,46 @@ class TestExitCode(unittest.TestCase):
         self.assertIn("SVG", text)
         self.assertIn("workflow", text)
         self.assertIn("script Python", text)
+
+
+class TestFontShorthand(unittest.TestCase):
+    """`font:` viết tắt: trình duyệt hiểu, nhiều trình vẽ khác thì không."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="font-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _svg(self, body):
+        with open(os.path.join(self.tmp, "assets", "a.svg"), "w",
+                  encoding="utf-8") as handle:
+            handle.write(body)
+
+    def test_longhand_passes(self):
+        self._svg("<style>.a { font-weight: 800; font-size: 54px; "
+                  "font-family: Arial; }</style>")
+        check_repo.check_font_shorthand(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_shorthand_in_style_block_is_flagged(self):
+        self._svg("<style>.a { font: 800 54px Arial; }</style>")
+        check_repo.check_font_shorthand(self.tmp)
+        self.assertTrue(any("viết tắt" in e for e in check_repo.errors))
+
+    def test_shorthand_in_inline_style_is_flagged(self):
+        self._svg('<text style="font:600 7.5px monospace">x</text>')
+        check_repo.check_font_shorthand(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_word_font_family_is_not_confused(self):
+        self._svg('<text style="font-family:Arial;font-weight:700">x</text>')
+        check_repo.check_font_shorthand(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
 if __name__ == "__main__":
     unittest.main()
 
