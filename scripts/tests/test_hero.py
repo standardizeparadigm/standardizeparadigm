@@ -9,7 +9,7 @@ from helpers import SCRIPTS, assert_valid_svg  # noqa: F401
 
 from svgkit import hero, i18n
 from svgkit.primitives import esc
-from svgkit.palette import get_palette
+from svgkit.palette import get_palette, theme_names
 
 DT = datetime(2026, 11, 19, 15, 4, 5)
 
@@ -142,6 +142,49 @@ class TestHeroBackground(unittest.TestCase):
         en = hero(get_palette("sky"), DT, i18n.get("en"))
         expected = esc(i18n.get("en")("hero.type1"))
         self.assertIn(expected, en)
+
+
+
+class TestHeroContent(unittest.TestCase):
+    def setUp(self):
+        self.svg = hero(get_palette("sky"), DT, i18n.get("vi"))
+
+    def test_name_is_the_biggest_text(self):
+        self.assertIn("heroTitle", self.svg)
+        self.assertIn("Standardize Paradigm", self.svg)
+
+    def test_four_pills_plus_location(self):
+        # LỚP 7, UTC+7, TỰ HỌC, (ghim) KON TUM, đang code.
+        self.assertEqual(self.svg.count('class="heroPill"'), 5)
+
+    def test_location_pill_says_kon_tum(self):
+        self.assertIn("KON TUM", self.svg)
+
+    def test_no_other_place_name_leaks_in(self):
+        for stale in ("LONG XUYÊN", "AN GIANG", "Long Xuyên", "An Giang"):
+            self.assertNotIn(stale, self.svg)
+
+    def test_gradient_ids_are_defined(self):
+        ids = set(re.findall(r'id="([^"]+)"', self.svg))
+        for ref in set(re.findall(r"url\(#([^)]+)\)", self.svg)):
+            self.assertIn(ref, ids)
+
+    def test_sheen_highlight_uses_a_clip_path(self):
+        self.assertIn("sheenClip", self.svg)
+
+
+class TestHeroWidths(unittest.TestCase):
+    def test_default_width_is_a_thousand(self):
+        self.assertIn('width="1000"', hero(get_palette("sky"), DT, i18n.get()))
+
+    def test_narrow_hero_still_valid(self):
+        svg = hero(get_palette("sky"), DT, i18n.get(), width=640)
+        assert_valid_svg(self, svg, "hero-640")
+
+    def test_every_theme_renders(self):
+        for name in theme_names():
+            assert_valid_svg(self, hero(get_palette(name), DT, i18n.get()),
+                             "hero-" + name)
 
 if __name__ == "__main__":
     unittest.main()
