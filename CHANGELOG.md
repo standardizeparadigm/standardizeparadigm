@@ -3,6 +3,18 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Hoạt ảnh SMIL và "giảm chuyển động"
+
+- `prefers-reduced-motion` chỉ tắt được hoạt ảnh CSS. `<animate>` của SMIL
+  vẫn chạy, nên vệt sáng của đường kẻ và bong bóng chân trang vẫn động với
+  người đã bật "giảm chuyển động".
+- Cách sửa: đánh dấu mọi phần tử mang SMIL bằng `class="smilOnly"` và thêm
+  thẻ `<style>` ẩn chúng theo media query. Chỉ ẩn phần trang trí — đường kẻ
+  tĩnh, viên kim cương, tiêu đề vẫn hiện đủ.
+- Lỗi này được phát hiện bởi `test_repo_assets.py` — module kiểm **ảnh đã
+  commit**, không phải hàm vẽ. Một ảnh có thể sinh từ phiên bản cũ và không
+  ai vẽ lại.
+
 ## 2026-11-19 — svgkit 2.2.0
 
 - Vòng này thêm ba thứ làm thay đổi API công khai, nên nâng phiên bản nhỏ:
