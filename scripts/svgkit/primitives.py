@@ -145,6 +145,14 @@ CSS = """
   @keyframes scan      { 0% { transform: translateY(-40px); opacity: 0 } 12% { opacity: .55 }
                          88% { opacity: .55 } 100% { transform: translateY(300px); opacity: 0 } }
   @keyframes wave      { to { transform: translateX(-500px) } }
+
+  /* Ai bật "giảm chuyển động" trong hệ điều hành thì thấy ảnh tĩnh,
+     vẫn đẹp và vẫn đủ thông tin — không phải hy sinh nội dung. */
+  @media (prefers-reduced-motion: reduce) {
+    .pulse, .pulseSlow, .blink, .spinSlow, .spinRev, .driftA, .driftB,
+    .driftC, .floatY, .twinkle, .fadeUp, .growIn, .sheen, .scan,
+    .secHand, .minHand, .hourHand, .wave, .wave2 { animation: none !important; }
+  }
 """
 
 
