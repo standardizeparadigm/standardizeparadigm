@@ -117,6 +117,21 @@ Nguyên tắc: **nếu hoạt ảnh làm khung đầu tiên xấu, đổi sang S
 
 `--strict` đổi "im lặng giữ ảnh cũ" thành mã thoát 1, để workflow báo đỏ khi bạn muốn biết.
 
+## Kiểm tra tự động những gì
+
+`scripts/check_repo.py` chạy trong CI và trên máy, kiểm cả thứ mà test
+thường bỏ qua — vì đó là những lỗi đã xảy ra thật ở đây:
+
+| Nhóm | Bắt được |
+| :-- | :-- |
+| SVG | XML hỏng, thiếu `<title>` (trừ ảnh tự khai trang trí) |
+| Chữ | BOM, CRLF, UTF-8 hỏng, ký tự thay thế, mojibake |
+| Markdown | link nội bộ chết, ảnh không tồn tại |
+| Workflow | thiếu `permissions`/`concurrency`/`timeout-minutes`, `git push` không có cổng bot |
+| Tài liệu ↔ YAML | bảng lịch chạy sai cron, workflow không có dòng nào trong bảng |
+| Ảnh | `assets/*.svg` không được nhúng ở đâu (ảnh chết) |
+| Python | mọi file biên dịch được |
+
 ## Bảo mật
 
 - **Escaping**: mọi chuỗi từ API đi qua `esc()` trước khi vào SVG. Tên repo hay tên người có `<script>` cũng chỉ là chữ.
