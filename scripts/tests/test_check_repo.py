@@ -1464,6 +1464,50 @@ class TestBudgets(unittest.TestCase):
         check_repo.check_svg_budget()
         self.assertEqual(check_repo.errors, [])
 
+
+
+class TestStatusWorkflowList(unittest.TestCase):
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="statuslist-")
+        os.makedirs(os.path.join(self.tmp, ".github", "workflows"))
+        os.makedirs(os.path.join(self.tmp, "scripts", "svgkit"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _status(self, entries):
+        rows = "\n".join('    ("%s", "%s"),' % (f, n) for f, n in entries)
+        with open(os.path.join(self.tmp, "scripts", "svgkit", "status.py"),
+                  "w", encoding="utf-8") as handle:
+            handle.write("WORKFLOWS = [\n%s\n]\n" % rows)
+
+    def _file(self, name):
+        with open(os.path.join(self.tmp, ".github", "workflows", name), "w",
+                  encoding="utf-8") as handle:
+            handle.write("name: x\n")
+
+    def test_all_real_passes(self):
+        self._status([("a.yml", "A")])
+        self._file("a.yml")
+        check_repo.check_status_workflow_list(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_missing_file_is_reported(self):
+        self._status([("ghost.yml", "GHOST")])
+        check_repo.check_status_workflow_list(self.tmp)
+        self.assertTrue(any("ghost.yml" in e for e in check_repo.errors))
+
+    def test_parser_reads_the_pairs(self):
+        self._status([("a.yml", "A"), ("b.yml", "B")])
+        self.assertEqual(check_repo.status_workflows(self.tmp),
+                         [("a.yml", "A"), ("b.yml", "B")])
+
+    def test_real_repo_is_consistent(self):
+        check_repo.check_status_workflow_list()
+        self.assertEqual(check_repo.errors, [])
+
 if __name__ == "__main__":
     unittest.main()
 
