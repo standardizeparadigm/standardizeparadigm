@@ -3,6 +3,13 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Chân dải trạng thái có con số tổng kết
+
+- Thêm `4/7 workflow ổn` ở góc phải chân dải: đọc được tình hình chung mà
+  không phải đếm màu trên bảy viên thuốc.
+- "Đang chạy" được tính là ổn (nó không phải vấn đề); lỗi và chờ merge mới
+  là vấn đề. Bốn test khoá cách đếm này.
+
 ## 2026-11-19 — Hoạt ảnh SMIL và "giảm chuyển động"
 
 - `prefers-reduced-motion` chỉ tắt được hoạt ảnh CSS. `<animate>` của SMIL
