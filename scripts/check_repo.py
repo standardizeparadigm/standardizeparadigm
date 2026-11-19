@@ -256,6 +256,11 @@ def verify_url(url, where):
 
 
 def check_markdown(path):
+    """Kiểm một file Markdown: ký tự lạ, link, ảnh nhúng, tiêu đề, bảng.
+
+    Gọi từ vòng `os.walk` trong `main()` vì `glob` không đi vào thư mục ẩn
+    như `.github/` — nơi có mẫu issue và CONTRIBUTING.
+    """
     text = read(path)
     checked["md"] += 1
     check_text_encoding(path, text)
