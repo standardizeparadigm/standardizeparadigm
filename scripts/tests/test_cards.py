@@ -72,6 +72,23 @@ class TestWaitingCard(unittest.TestCase):
         assert_valid_svg(self, svg, "waiting")
 
 
+class TestRankRingOrbit(unittest.TestCase):
+    """Vành rank có thêm một hạt sáng bay vòng quanh."""
+
+    def setUp(self):
+        self.svg = stats_card(get_palette(), DATA, DT, i18n.get("vi"))
+
+    def test_orbit_animation_present(self):
+        self.assertIn('type="rotate"', self.svg)
+        self.assertIn('dur="22s"', self.svg)
+
+    def test_orbit_dot_sits_on_the_dashed_ring(self):
+        self.assertIn('r="2.6"', self.svg)
+
+    def test_orbit_rotation_is_centered_on_the_ring(self):
+        # vành mặc định ở (528, 144); hạt phải quay quanh đúng tâm đó
+        self.assertIn('from="0 528 144" to="360 528 144"', self.svg)
+
 if __name__ == "__main__":
     unittest.main()
 

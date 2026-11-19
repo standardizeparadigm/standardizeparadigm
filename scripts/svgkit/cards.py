@@ -44,6 +44,14 @@ def _rank_ring(pal, percent, letter, label, progress_text,
                  'class="spinSlow" style="transform-origin:%dpx %dpx;'
                  'animation-duration:34s"/>'
                  % (cx, cy, radius + 12, pal.accent2, cx, cy))
+    # Hạt sáng chạy trên vành nét đứt: vòng rank có "vệ tinh" riêng.
+    parts.append('    <g>')
+    parts.append('      <animateTransform attributeName="transform" type="rotate" '
+                 'from="0 %d %d" to="360 %d %d" dur="22s" repeatCount="indefinite"/>'
+                 % (cx, cy, cx, cy))
+    parts.append('      <circle cx="%d" cy="%d" r="2.6" fill="%s" opacity=".9"/>'
+                 % (cx, cy - (radius + 12), pal.accent3))
+    parts.append('    </g>')
     parts.append('    <circle cx="%d" cy="%d" r="%d" fill="none" stroke="%s" '
                  'stroke-width="9" stroke-opacity=".18"/>'
                  % (cx, cy, radius, pal.accent))
