@@ -261,5 +261,57 @@ class TestInternalLinks(unittest.TestCase):
         text = re.sub(r"[^\w\s-]", "", text)
         return re.sub(r"\s+", "-", text).strip("-")
 
+
+
+# Trình soạn thảo và công cụ dán web hay để lại những ký tự này. Mắt người
+# đọc "Báº¡n" vẫn đoán ra, nhưng grep thì không, và bản dịch thì hỏng.
+BROKEN_MARKS = {
+    "\ufffd": "ký tự thay thế U+FFFD",
+    "\u00a0": "dấu cách không ngắt (NBSP)",
+    "\u200b": "dấu cách rộng bằng 0 (ZWSP)",
+    "\ufeff": "BOM giữa file",
+}
+# Chuỗi "Ã" một mình là chữ Việt hợp lệ (ĐÃ, Ã); chỉ bắt khi đi kèm một ký
+# tự Latin-1 bổ sung — dấu hiệu của UTF-8 bị đọc thành Latin-1.
+RE_MOJIBAKE = re.compile("[\u00c3\u00c2][\u0080-\u00bf\u2018-\u203a]")
+
+EXEMPT = {"scripts/check_repo.py", "scripts/tests/test_check_repo.py"}
+
+
+class TestNoBrokenCharacters(unittest.TestCase):
+    """Không một file nào được mang ký tự hỏng."""
+
+    def _files(self):
+        for base, dirs, files in os.walk(ROOT):
+            dirs[:] = sorted(d for d in dirs
+                             if d not in {".git", "node_modules", "__pycache__",
+                                          "assets", ".venv"})
+            for name in sorted(files):
+                if not name.endswith((".md", ".py", ".yml", ".yaml", ".svg")):
+                    continue
+                path = os.path.join(base, name)
+                if rel(path) in EXEMPT:
+                    continue
+                yield path
+
+    def test_no_replacement_or_invisible_space(self):
+        for path in self._files():
+            text = read(path)
+            for mark, label in BROKEN_MARKS.items():
+                self.assertNotIn(mark, text, "%s có %s" % (rel(path), label))
+
+    def test_no_latin1_mojibake(self):
+        for path in self._files():
+            for number, line in enumerate(read(path).splitlines(), 1):
+                self.assertIsNone(RE_MOJIBAKE.search(line),
+                                  "%s:%d nghi chữ hỏng: %r"
+                                  % (rel(path), number, line.strip()[:60]))
+
+    def test_vietnamese_words_are_precomposed(self):
+        # Dấu mũ rời (NFD) hiển thị đúng nhưng tìm kiếm không ra.
+        for path in self._files():
+            text = read(path)
+            self.assertNotIn("\u0300", text, rel(path))
+
 if __name__ == "__main__":
     unittest.main()
