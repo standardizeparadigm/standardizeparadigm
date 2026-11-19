@@ -640,6 +640,44 @@ class TestWorkflowDispatch(unittest.TestCase):
         finally:
             shutil.rmtree(empty, ignore_errors=True)
 
+
+
+class TestShieldsWorkflowBadges(unittest.TestCase):
+    """Badge workflow của shields.io từng hiện ô đỏ — không quay lại."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="shields-")
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _md(self, text):
+        with open(os.path.join(self.tmp, "README.md"), "w",
+                  encoding="utf-8") as handle:
+            handle.write(text)
+
+    def test_static_badges_pass(self):
+        self._md('<img src="https://img.shields.io/badge/Grade-7-38BDF8" />')
+        check_repo.check_shields_workflow_badges(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_actions_workflow_badge_is_flagged(self):
+        self._md("![](https://img.shields.io/github/actions/workflow/status/a/b/x.yml)")
+        check_repo.check_shields_workflow_badges(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_legacy_status_badge_is_flagged(self):
+        self._md("![](https://img.shields.io/github/workflow/status/a/b/x.yml)")
+        check_repo.check_shields_workflow_badges(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_own_status_svg_is_fine(self):
+        self._md("![status](assets/status.svg)")
+        check_repo.check_shields_workflow_badges(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
 if __name__ == "__main__":
     unittest.main()
 
