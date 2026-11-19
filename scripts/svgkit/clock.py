@@ -54,6 +54,12 @@ def _dial(pal, cx, cy, radius):
                  'class="spinSlow" style="transform-origin:%dpx %dpx;'
                  'animation-duration:40s"/>'
                  % (cx, cy, radius + 9, pal.accent, cx, cy))
+    # Vệt sáng quét quanh vành: kim quay đã "sống", vành cũng phải thở.
+    parts.append('    <circle cx="%d" cy="%d" r="%d" fill="none" '
+                 'stroke="url(#accentGrad)" stroke-width="2" '
+                 'stroke-dasharray="70 320" stroke-opacity=".55" class="spinSlow" '
+                 'style="transform-origin:%dpx %dpx;animation-duration:18s"/>'
+                 % (cx, cy, radius + 1, cx, cy))
     for i in range(60):
         angle = math.radians(i * 6 - 90)
         major = (i % 5 == 0)
@@ -93,6 +99,8 @@ def _hands(pal, cx, cy, hour, minute, second):
         '    <path d="M%d %dV%d" stroke="%s" stroke-width="2" stroke-linecap="round" '
         'filter="url(#glow)"/>' % (cx, cy + 12, cy - 60, pal.accent),
         '    <circle cx="%d" cy="%d" r="4.5" fill="%s"/>' % (cx, cy - 60, pal.accent3),
+        '    <circle cx="%d" cy="%d" r="2.6" fill="%s" fill-opacity=".8"/>'
+        % (cx, cy + 12, pal.accent),
         '  </g>',
         '  <circle cx="%d" cy="%d" r="6" fill="%s" stroke="%s" stroke-width="2.4"/>'
         % (cx, cy, pal.bg_bot, pal.accent),

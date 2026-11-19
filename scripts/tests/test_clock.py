@@ -55,3 +55,19 @@ class TestGreeting(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestDialDetails(unittest.TestCase):
+    def setUp(self):
+        self.svg = clock_card(get_palette(), datetime(2026, 11, 19, 15, 34, 20),
+                              i18n.get("vi"))
+
+    def test_rim_sweep_present(self):
+        self.assertIn('stroke-dasharray="70 320"', self.svg)
+        self.assertIn("animation-duration:18s", self.svg)
+
+    def test_second_hand_has_counterweight(self):
+        self.assertIn('r="2.6"', self.svg)
+
+    def test_sixty_tick_marks(self):
+        self.assertEqual(self.svg.count('stroke-linecap="round" opacity='), 60)
