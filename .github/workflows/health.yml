@@ -12,9 +12,14 @@ name: 🩺 Repo Health
 on:
   push:
     branches: [main, master]
-    # Đồng hồ commit mỗi 5 phút -> bỏ qua để không chạy 288 lần/ngày
+    # Ảnh do bot vẽ lại liên tục -> bỏ qua để không chạy 300+ lần/ngày
     paths-ignore:
       - "assets/live-clock.svg"
+      - "assets/activity.svg"
+      - "assets/stats.svg"
+      - "assets/top-langs.svg"
+      - "assets/hero.svg"
+      - "profile-3d-contrib/**"
   pull_request:
   schedule:
     - cron: "0 23 * * *"        # 06:00 giờ Việt Nam
@@ -44,8 +49,19 @@ jobs:
       - name: Kiểm tra sức khỏe repo
         run: python3 scripts/check_repo.py
 
-      - name: Thử vẽ lại toàn bộ SVG (chế độ demo, không gọi API)
-        run: python3 scripts/generate_cards.py --demo --all --out /tmp/svg-test
+      - name: Chạy bộ kiểm thử (105 test)
+        run: python3 -m unittest discover -s scripts/tests -t scripts -v
+
+      - name: Thử vẽ lại toàn bộ SVG với MỌI bảng màu
+        run: |
+          set -e
+          for theme in $(python3 scripts/generate_cards.py --list-themes | awk '{print $1}'); do
+            echo "--- theme: $theme"
+            python3 scripts/generate_cards.py --demo --all \
+              --theme "$theme" --lang vi --out "/tmp/svg-$theme"
+            python3 scripts/generate_cards.py --demo --all \
+              --theme "$theme" --lang en --out "/tmp/svg-en-$theme"
+          done
 
       - name: Kiểm tra SVG vừa vẽ
         run: |
@@ -53,11 +69,11 @@ jobs:
           import glob
           import sys
           import xml.dom.minidom as md
-          files = sorted(glob.glob("/tmp/svg-test/*.svg"))
+          files = sorted(glob.glob("/tmp/svg-*/*.svg"))
           if not files:
               print("!! Không có SVG nào được sinh ra")
               sys.exit(1)
           for f in files:
               md.parse(f)
-              print("OK  %s" % f)
+          print("OK  %d SVG hợp lệ" % len(files))
           PY
