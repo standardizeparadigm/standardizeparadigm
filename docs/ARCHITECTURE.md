@@ -45,6 +45,7 @@ Nhờ vậy `cards.py` test được bằng dữ liệu giả, và `api.py` thay
 | :-- | :-- | :-- |
 | `api.py` | HTTP, JSON, token | không biết SVG |
 | `cards.py`, `hero.py`, `clock.py`, `activity.py`, `divider.py` | `palette`, `i18n`, `primitives` | không biết HTTP, không đọc file |
+| `status.py` | `palette`, `i18n`, `primitives` | không gọi API (nhận `rows` đã chuẩn hoá từ `api.py`) |
 | `primitives.py` | chuỗi, số | không biết dữ liệu GitHub |
 | `palette.py` | mã màu | không biết gì khác |
 | `i18n.py` | chuỗi | không biết gì khác |
