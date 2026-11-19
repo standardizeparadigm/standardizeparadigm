@@ -21,7 +21,7 @@ on:
       - "profile-3d-contrib/**"
   pull_request:
   schedule:
-    - cron: "0 23 * * *"        # 06:00 giờ Việt Nam
+    - cron: "3 23 * * *"        # 06:03 giờ Việt Nam — sau lượt đồng hồ :00
   workflow_dispatch:
 
 concurrency:
