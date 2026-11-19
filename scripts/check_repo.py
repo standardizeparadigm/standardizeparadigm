@@ -599,6 +599,26 @@ def check_test_claims(root=None):
                             "— hãy nâng lên" % (rel(path), number, claimed, total))
 
 
+# ------------------------------------------- 4bi. id trùng trong một ảnh
+RE_SVG_ID = re.compile(r'\bid="([^"]+)"')
+
+
+def check_duplicate_ids(root=None):
+    """Một file SVG không được có hai phần tử cùng `id`.
+
+    Trình duyệt không báo gì: `url(#halo)` chỉ trỏ tới phần tử ĐẦU TIÊN, còn
+    phần tử thứ hai lặng lẽ mất hiệu ứng. Lỗi chỉ hiện ra khi ai đó soi ảnh
+    bằng trình vẽ khắt khe hơn, hoặc khi màu hiển thị khác dự kiến.
+    """
+    root = root or ROOT
+    for path in sorted(glob.glob(os.path.join(root, "assets", "*.svg"))):
+        seen = set()
+        for ident in RE_SVG_ID.findall(read(path)):
+            if ident in seen:
+                err("%s: id %r xuất hiện hai lần" % (rel(path), ident))
+            seen.add(ident)
+
+
 # -------------------------------------------- 4bh. Không dùng 'font' viết tắt
 RE_FONT_SHORTHAND = re.compile(r"\bfont:\s*\d")
 
@@ -1221,6 +1241,7 @@ def main(argv=None):
     check_markdown_tables()
     check_svg_safety()
     check_font_shorthand()
+    check_duplicate_ids()
     check_doc_titles()
     check_svg_budget()
     check_python()
