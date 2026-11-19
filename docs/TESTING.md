@@ -181,6 +181,17 @@ File lớn nhất, vì CLI là nơi mọi thứ gặp nhau:
 - `--check`: 7/7 hợp lệ; file hỏng → mã thoát 1; thư mục rỗng → mã thoát 1.
 - Chạy như **tiến trình con** (`subprocess`) để bắt lỗi thứ tự khai báo hàm.
 
+## `test_api_time.py`
+
+`api.to_vn()` chỉ là phép cộng bảy tiếng, nhưng sai ở đây thì *mọi* thẻ in
+sai giờ, và triệu chứng ("ảnh lệch bảy tiếng") không chỉ thẳng vào hàm này:
+
+- Giờ UTC cộng bảy tiếng ra đúng giờ Việt Nam, kể cả qua nửa đêm và nửa năm.
+- Datetime đã có múi giờ được quy về UTC trước khi cộng, không cộng chồng.
+- `now_vn()` trả datetime **naive** — toàn bộ svgkit giả định vậy; trả kèm
+  `tzinfo` là mọi phép so sánh phía sau đổ.
+- Ngày cuối tháng, năm nhuận, và mốc `00:00` đều có ca riêng.
+
 ## `test_workflow_gate.py`
 
 Cổng thông minh của `profile-3d.yml` là shell nằm trong YAML — loại code dễ hỏng mà không ai thấy. Test này:
