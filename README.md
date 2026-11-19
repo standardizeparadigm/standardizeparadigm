@@ -63,13 +63,7 @@ motto:      "Cứ thử đi, sai thì học được nhiều hơn"
 Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng hồ, biểu đồ 3D — đều do **GitHub Actions tự vẽ và commit ngay vào repo**: không gọi server bên thứ ba, không bao giờ bị rate-limit hay 503. Chi tiết từng bước: [docs/WORKFLOWS.md](./docs/WORKFLOWS.md)
 
 <div align="center">
-  <img src="https://img.shields.io/github/actions/workflow/status/standardizeparadigm/standardizeparadigm/profile-3d.yml?branch=main&label=3D%20Contrib&color=0EA5E9&labelColor=0D1117&style=for-the-badge" alt="3D Contrib" />
-  <img src="https://img.shields.io/github/actions/workflow/status/standardizeparadigm/standardizeparadigm/profile-cards.yml?branch=main&label=Stats%20Cards&color=38BDF8&labelColor=0D1117&style=for-the-badge" alt="Stats Cards" />
-  <img src="https://img.shields.io/github/actions/workflow/status/standardizeparadigm/standardizeparadigm/live-clock.yml?branch=main&label=Live%20Clock&color=7DD3FC&labelColor=0D1117&style=for-the-badge" alt="Live Clock" />
-  <img src="https://img.shields.io/github/actions/workflow/status/standardizeparadigm/standardizeparadigm/readme-tend.yml?branch=main&label=README%20Garden&color=0369A1&labelColor=0D1117&style=for-the-badge" alt="README Garden" />
-  <img src="https://img.shields.io/github/actions/workflow/status/standardizeparadigm/standardizeparadigm/health.yml?branch=main&label=Health&color=0EA5E9&labelColor=0D1117&style=for-the-badge" alt="Health" />
-  <img src="https://img.shields.io/github/actions/workflow/status/standardizeparadigm/standardizeparadigm/welcome.yml?branch=main&label=Welcome&color=38BDF8&labelColor=0D1117&style=for-the-badge" alt="Welcome" />
-
+  <img src="./assets/status.svg" width="100%" alt="Trạng thái 7 workflow — tự vẽ từ Actions API và commit mỗi 15 phút" />
 </div>
 
 <br />
@@ -78,32 +72,38 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
   <tr>
     <td width="52"><b>🎨</b></td>
     <td><b>GitHub Profile 3D Contrib</b><br /><sub><code>.github/workflows/profile-3d.yml</code></sub></td>
-    <td width="300">Biểu đồ contribution khối 3D, 10 giao diện màu. Có cổng thông minh: chỉ vẽ lại khi phát hiện push mới.</td>
+    <td width="300">Biểu đồ contribution khối 3D, 10 giao diện màu. Có cổng thông minh: chỉ vẽ lại khi có push mới hoặc đã quá 24 giờ.</td>
     <td width="180"><b>Mỗi 5 phút</b> · <code>*/5 * * * *</code></td>
   </tr>
   <tr>
     <td><b>📊</b></td>
     <td><b>Profile Cards (LTS)</b><br /><sub><code>profile-cards.yml</code> + <code>scripts/generate_cards.py</code></sub></td>
     <td>Vẽ <code>stats.svg</code>, <code>top-langs.svg</code>, <code>hero.svg</code>, <code>activity.svg</code> bằng dữ liệu thật; chế độ <code>--smart</code> chỉ commit khi số liệu thật sự đổi.</td>
-    <td><b>Mỗi 10 phút</b> · <code>*/10 * * * *</code></td>
+    <td><b>Mỗi 3 giờ</b> · <code>15 */3 * * *</code></td>
   </tr>
   <tr>
     <td><b>⏱️</b></td>
     <td><b>Live Clock — cập nhật theo phút</b><br /><sub><code>live-clock.yml</code></sub></td>
     <td>Đồng hồ Việt Nam + tiến độ ngày, tay kim chạy mượt bằng CSS nên <b>không bao giờ đứng</b>. Vẽ lại mỗi 5 phút (chu kỳ ngắn nhất GitHub cho phép).</td>
-    <td><b>Mỗi 5 phút</b> · <code>*/5 * * * *</code></td>
+    <td><b>Mỗi 30 phút</b> · <code>*/30 * * * *</code></td>
   </tr>
   <tr>
     <td><b>🌱</b></td>
     <td><b>README Garden</b><br /><sub><code>readme-tend.yml</code></sub></td>
     <td>Cập nhật con dấu “lần cập nhật gần nhất” ở cuối trang và kiểm tra các thư mục ảnh còn đủ file.</td>
-    <td><b>Mỗi 3 giờ</b> · <code>0 */3 * * *</code></td>
+    <td><b>Mỗi 3 giờ</b> · <code>45 */3 * * *</code></td>
   </tr>
   <tr>
     <td><b>🩺</b></td>
     <td><b>Repo Health</b><br /><sub><code>health.yml</code> + <code>scripts/check_repo.py</code></sub></td>
-    <td>hơn 100 unit test + kiểm tra SVG, ký tự hỏng, link chết, action thiếu phiên bản, và thử vẽ lại cả 6 bảng màu × 2 ngôn ngữ.</td>
+    <td>hơn 160 unit test + kiểm tra SVG, ký tự hỏng, link chết, action thiếu phiên bản, và thử vẽ lại cả 6 bảng màu × 2 ngôn ngữ.</td>
     <td><b>Mỗi push / PR</b> + 06:00 (giờ VN)</td>
+  </tr>
+  <tr>
+    <td><b>📊</b></td>
+    <td><b>Workflow Status</b><br /><sub><code>status.yml</code> → <code>assets/status.svg</code></sub></td>
+    <td>Đọc Actions API rồi vẽ dải trạng thái ngay trong repo. Thay cho badge shields.io — thứ không thấy được workflow còn nằm ở nhánh khác.</td>
+    <td><b>Mỗi 15 phút</b> · <code>*/15 * * * *</code></td>
   </tr>
   <tr>
     <td><b>👋</b></td>
