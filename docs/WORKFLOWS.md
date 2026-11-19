@@ -114,7 +114,13 @@ trắng thì thêm `--fix` để nó tự sửa — cờ này chỉ đụng th�
 - Vệ sinh file: BOM, CRLF, ký tự điều khiển, UTF-8 hỏng, khoảng trắng thừa,
   dấu merge còn sót
 - Ảnh: XML hợp lệ, có `<title>`, dưới 40 KB, không có ảnh chết trong `assets/`
-- Tài liệu: không mồ côi, README dưới 360 dòng, Markdown đúng hình thức
+- Ảnh (tiếp): mọi `<text>` có `class`, `id` không trùng, không có `None`/`NaN`
+  lọt vào chữ, không gọi URL ngoài, không mang `<script>` hay thuộc tính `on*`
+- Tài liệu: không mồ côi, README dưới 360 dòng, Markdown đúng hình thức —
+  tiêu đề không nhảy cấp, bảng thẳng cột, mỗi tài liệu mở bằng một `#`
+- Địa danh: không còn chuỗi "Long Xuyên" / "An Giang" ở bất kỳ file nào
+- Code: không còn `TODO`/`FIXME`, mọi workflow có `workflow_dispatch`, không
+  dùng badge trạng thái của shields, cron không dày hơn 5 phút
 - Mọi file Python biên dịch được và mở đầu bằng docstring
 
 Chạy tay: `python3 scripts/check_repo.py`
