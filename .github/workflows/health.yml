@@ -19,6 +19,7 @@ on:
       - "assets/stats.svg"
       - "assets/top-langs.svg"
       - "assets/hero.svg"
+      - "assets/status.svg"
       - "profile-3d-contrib/**"
   pull_request:
   schedule:
