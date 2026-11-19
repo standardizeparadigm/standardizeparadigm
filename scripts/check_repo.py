@@ -62,6 +62,12 @@ def read(path):
 
 # --------------------------------------------------------------- 1. SVG
 def check_svg():
+    """Mọi file `.svg` phải parse được XML, có thẻ `<svg>` và có `<title>`.
+
+    `<title>` là thứ trình đọc màn hình đọc thay cho "graphic"; ảnh trang trí
+    thuần tuý được miễn nếu tự khai `role="presentation"` — đó là cách đúng
+    để nói "đừng đọc ảnh này", chứ không phải bỏ trống.
+    """
     import xml.dom.minidom as md
     for path in sorted(glob.glob(os.path.join(ROOT, "**", "*.svg"),
                                 recursive=True)):
