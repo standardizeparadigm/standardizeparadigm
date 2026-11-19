@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Test thẻ đồng hồ."""
 
+import re
 import unittest
 from datetime import datetime, timezone
 
@@ -11,6 +12,18 @@ from svgkit.clock import _greeting_key
 from svgkit.palette import get_palette
 
 DT = datetime(2026, 11, 19, 15, 4, 5)
+
+RE_NOW_HOUR = re.compile(r'class="clockTime nowSlot" x="308"[^>]*>(\d+)<')
+RE_NOW_MIN = re.compile(r'class="clockTime nowSlot" x="324"[^>]*>(\d+)<')
+
+
+def now_slots(svg):
+    """(giờ, phút) đang hiện sẵn — tức giờ của ảnh chụp.
+
+    Sau khi tách thành 24 ô giờ + 60 ô phút, không còn một chuỗi "16:00"
+    duy nhất để so; phải đọc đúng hai ô được đánh dấu nowSlot.
+    """
+    return (RE_NOW_HOUR.search(svg).group(1), RE_NOW_MIN.search(svg).group(1))
 
 
 class TestClock(unittest.TestCase):
@@ -66,12 +79,12 @@ class TestVietnamTime(unittest.TestCase):
     def test_utc_becomes_vietnam_time(self):
         utc = datetime(2026, 11, 19, 9, 0, tzinfo=timezone.utc)
         svg = self._svg(utc)
-        self.assertIn(">16:00<", svg)
-        self.assertNotIn(">09:00<", svg)
+        self.assertEqual(now_slots(svg), ("16", "00"))
+        self.assertNotIn(">09<", svg.split('x="308"')[1][:40])
 
     def test_naive_is_taken_as_vietnam_time(self):
         svg = self._svg(datetime(2026, 11, 19, 15, 4))
-        self.assertIn(">15:04<", svg)
+        self.assertEqual(now_slots(svg), ("15", "04"))
 
     def test_greeting_follows_converted_hour(self):
         # 09:00 UTC = 16:00 giờ VN -> "Chào buổi chiều", không phải buổi sáng
@@ -87,7 +100,7 @@ class TestVietnamTime(unittest.TestCase):
         # 17:30 UTC ngày 19 = 00:30 ngày 20 giờ VN
         utc = datetime(2026, 11, 19, 17, 30, tzinfo=timezone.utc)
         svg = self._svg(utc)
-        self.assertIn(">00:30<", svg)
+        self.assertEqual(now_slots(svg), ("00", "30"))
         self.assertIn("20/11/2026", svg)
 
 
@@ -102,9 +115,10 @@ class TestSnapshotStamp(unittest.TestCase):
         svg = clock_card(get_palette(), DT, i18n.get("vi"))
         self.assertIn('x="616" y="74" text-anchor="end"', svg)
 
-    def test_footer_no_longer_repeats_the_time(self):
+    def test_stamp_is_the_only_place_holding_the_full_time(self):
+        # giờ lớn giờ là 24 ô + 60 ô riêng, nên chuỗi "15:04" chỉ còn ở tem
         svg = clock_card(get_palette(), DT, i18n.get("vi"))
-        self.assertEqual(svg.count("15:04"), 2)      # một ở đồng hồ, một ở tem
+        self.assertEqual(svg.count("15:04"), 1)
 
     def test_english_stamp(self):
         svg = clock_card(get_palette(), DT, i18n.get("en"))
