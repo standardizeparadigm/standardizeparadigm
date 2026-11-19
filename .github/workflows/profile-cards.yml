@@ -1,18 +1,20 @@
 # =====================================================================
 #  profile-cards.yml — Thẻ thống kê, ngôn ngữ, ảnh bìa, hoạt động
 #
-#  Chạy mỗi 30 phút: số liệu GitHub đổi không nhanh bằng đồng hồ, nhưng
-#  cập nhật nửa tiếng một lần thì trang luôn "tươi" mà vẫn nhẹ.
+#  Chạy mỗi 10 phút, nhưng chỉ commit khi CÓ GÌ ĐỔI (--smart):
+#   - stats / top-langs / activity: ghi lại khi số liệu khác lần trước
+#   - hero / divider / footer: mỗi giờ một lần (ảnh thiết kế, không phải số liệu)
+#  Nhờ vậy trang tươi theo phút mà không sinh 144 commit rỗng mỗi ngày.
 #
-#  Bước 1: --cards --hero --strict   (lỗi API là báo đỏ ngay)
-#  Bước 2: --activity               (GraphQL; lỗi thì giữ ảnh cũ, không đỏ)
+#  Bước 1: --cards --hero --strict --smart
+#  Bước 2: --activity --smart       (GraphQL; lỗi thì giữ ảnh cũ, không đỏ)
 #  Bước 3: kiểm tra XML từng ảnh trước khi commit
 # =====================================================================
 name: Profile Cards (LTS)
 
 on:
   schedule:
-    - cron: "*/30 * * * *"       # mỗi 30 phút
+    - cron: "*/10 * * * *"       # mỗi 10 phút, phần lớn lượt chạy không ghi gì
   workflow_dispatch:
   push:
     branches: [main, master]
@@ -52,7 +54,7 @@ jobs:
           GH_USER: ${{ github.repository_owner }}
           DISPLAY_NAME: Standardize Paradigm
           OUT_DIR: assets
-        run: python3 scripts/generate_cards.py --cards --hero --strict
+        run: python3 scripts/generate_cards.py --cards --hero --strict --smart
 
       - name: Vẽ thẻ hoạt động (không chặn workflow)
         env:
@@ -60,7 +62,7 @@ jobs:
           GH_USER: ${{ github.repository_owner }}
           OUT_DIR: assets
         run: |
-          python3 scripts/generate_cards.py --activity \
+          python3 scripts/generate_cards.py --activity --smart \
             || echo "(bỏ qua) không lấy được lịch contribution — giữ ảnh cũ"
 
       - name: Kiểm tra ảnh vừa ghi
