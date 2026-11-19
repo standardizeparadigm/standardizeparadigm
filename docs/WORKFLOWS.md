@@ -99,6 +99,8 @@ Vẽ lại `assets/live-clock.svg`: đồng hồ Việt Nam (UTC+7), lời chào
   Vì vậy cron 5 phút **không** làm con số đứng yên — nó chỉ làm phần thứ/ngày
   và vòng cung tiến độ ngày được vẽ lại.
 - **Vòng cung ngoài cùng** = hôm nay đã trôi bao nhiêu: một vòng mỗi 24 giờ.
+- Muốn xem ảnh ở một khung giờ khác (đêm, sáng sớm) mà không phải chờ:
+  `python3 scripts/generate_cards.py --clock --at 2026-11-19T23:50 --out /tmp/thu`.
 
 ## 4. README Garden — `readme-tend.yml`
 
