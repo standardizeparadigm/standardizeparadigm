@@ -96,6 +96,30 @@ Hai công cụ, chọn theo tình huống:
 
 Nguyên tắc: **nếu hoạt ảnh làm khung đầu tiên xấu, đổi sang SMIL hoặc đổi trạng thái mặc định**.
 
+## Thời gian trong một file tĩnh
+
+Một file SVG không chạy được code, nên "đồng hồ sống" phải giải bằng dữ liệu:
+thay vì một chuỗi `15:04`, `clock.py` phát ra **84 ô chữ chồng lên nhau** —
+24 ô giờ ở `x=308`, 60 ô phút ở `x=324`, tất cả cùng `y=124`.
+
+```
+.liveHour text, .liveMin text { opacity: 0; animation: slotMin 3600s linear infinite }
+.liveHour text                { animation-name: slotHour; animation-duration: 86400s }
+.nowSlot                      { opacity: 1 }
+```
+
+- Mỗi ô có `animation-delay` âm bằng `((v - hiện_tại) mod chu_kỳ) * bước - giây_đã_trôi`,
+  nên ô của phút hiện tại đang ở đúng đầu chu kỳ tại thời điểm tải (không lệch
+  theo lúc mở trang).
+- Ô `nowSlot` khai báo `opacity: 1` **trước** để trình xem tĩnh — vốn không
+  chạy CSS — hiện đúng giờ của ảnh chụp.
+- `prefers-reduced-motion` tắt cả 84 ô: người bật "giảm chuyển động" thấy
+  đúng giờ của ảnh chụp, đứng yên, không thấy số nhảy.
+
+Đánh đổi: file to thêm ~12 KB. Chấp nhận được — nó mua được việc số phút
+đúng **mỗi phút** dù GitHub chỉ cho cron 5 phút một lần, và dù người xem mất
+mạng hay mở file offline.
+
 ## Ghi file: atomic + vân tay
 
 **Atomic:** ghi ra `.tmp-xxxx.svg` cùng thư mục rồi `os.replace()`. Mất mạng hay bị kill giữa chừng thì file cũ vẫn nguyên — không bao giờ có ảnh nửa vời.
