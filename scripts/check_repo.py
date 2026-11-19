@@ -620,9 +620,12 @@ def check_job_timeouts(root=None):
             continue
         path = os.path.join(root, ".github", "workflows", name)
         text = read(path)
-        if "\njobs:" not in text:
+        if text.startswith("jobs:"):
+            block = text.split("jobs:", 1)[1]
+        elif "\njobs:" in text:
+            block = text.split("\njobs:", 1)[1]
+        else:
             continue
-        block = text.split("\njobs:", 1)[1]
         # Khoá job nằm ở đúng hai dấu cách; bước bên trong thì sâu hơn.
         jobs = RE_JOB.findall(block)
         if jobs and len(RE_TIMEOUT.findall(block)) < len(jobs):
