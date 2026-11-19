@@ -154,7 +154,10 @@ Ba hàm này đều là hàm thuần (trừ `write`) nên test được mà khô
 - `STATE_STYLE` ánh xạ trạng thái → màu + khoá i18n. Màu cố định theo nghĩa
   (xanh/đỏ/hổ phách/xám) chứ không theo theme, vì "đỏ = lỗi" phải đúng ở cả
   6 bảng màu.
-- `api.workflow_states(owner, repo, token)` trả `[(tên_ngắn, trạng_thái)]`; nó gọi
+- `human_age(phút, t)` gộp tuổi về ba mốc — phút (<1 giờ), giờ (<1 ngày),
+  ngày — vì "3 ngày trước" đúng bản chất hơn "71 giờ trước".
+- `api.workflow_states(owner, repo, token)` trả
+  `[(tên_ngắn, trạng_thái, số_phút_từ_lần_chạy)]`; nó gọi
   `api.api_status()` một lần cho mỗi workflow, không thử lại, và coi 404 là
   "chưa có trên nhánh mặc định" thay vì lỗi.
 - Việc phân biệt 404 với lỗi mạng nằm ở `api.api_status()` — trả mã HTTP để
