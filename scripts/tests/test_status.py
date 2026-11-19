@@ -15,6 +15,9 @@ from svgkit.palette import get_palette  # noqa: E402
 from svgkit.status import (GAP, MARGIN, PILL_W, STATE_STYLE, STRIP_H,  # noqa: E402
                            WORKFLOWS, status_strip, width_for)
 
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(
+    os.path.abspath(__file__))))
+
 DT = datetime.datetime(2026, 11, 19, 15, 44, tzinfo=datetime.timezone(
     datetime.timedelta(hours=7)))
 
@@ -137,6 +140,22 @@ class TestContent(unittest.TestCase):
         for theme in ("sky", "emerald", "violet", "sunset", "ocean", "mono"):
             for lang in ("vi", "en"):
                 minidom.parseString(render(theme=theme, lang=lang))
+
+
+
+    def test_every_workflow_file_is_on_the_strip(self):
+        """Chốt chặn cho đúng lỗi của vòng 4: thêm workflow mà quên dải."""
+        folder = os.path.join(ROOT, ".github", "workflows")
+        on_disk = {name for name in os.listdir(folder) if name.endswith(".yml")}
+        listed = {filename for filename, _short in WORKFLOWS}
+        self.assertEqual(on_disk - listed, set(), "workflow thiếu trên dải")
+        self.assertEqual(listed - on_disk, set(), "dải trỏ tới file không có")
+
+    def test_strip_order_matches_workflow_list(self):
+        rows = [(short, "passing") for _f, short in WORKFLOWS]
+        svg = status_strip(get_palette(), rows, DT, i18n.get("vi"))
+        positions = [svg.index(">%s<" % short) for short, _s in rows]
+        self.assertEqual(positions, sorted(positions))
 
 
 if __name__ == "__main__":
