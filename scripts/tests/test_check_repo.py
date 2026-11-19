@@ -1508,6 +1508,41 @@ class TestStatusWorkflowList(unittest.TestCase):
         check_repo.check_status_workflow_list()
         self.assertEqual(check_repo.errors, [])
 
+
+
+class TestBadNumbersIgnoresComments(unittest.TestCase):
+    """Chú thích và mã màu không phải toạ độ."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="cmt-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _svg(self, body):
+        with open(os.path.join(self.tmp, "assets", "a.svg"), "w",
+                  encoding="utf-8") as handle:
+            handle.write(body)
+
+    def test_hex_data_mark_is_not_a_number(self):
+        # 'a698e1461f3e' trông như lệnh cung 'a' kèm số mũ.
+        self._svg('<svg><!-- data:a698e1461f3e --></svg>')
+        check_repo.check_bad_numbers(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_comment_with_real_nan_is_still_ignored(self):
+        self._svg('<svg><!-- ghi chú: d="MNaN 0" --></svg>')
+        check_repo.check_bad_numbers(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_attribute_message_survives(self):
+        self._svg('<path d="MNaN 12"/>')
+        check_repo.check_bad_numbers(self.tmp)
+        self.assertTrue(any("NaN" in e for e in check_repo.errors))
+
 if __name__ == "__main__":
     unittest.main()
 
