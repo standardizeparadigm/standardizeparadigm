@@ -58,3 +58,10 @@ python3 scripts/generate_cards.py --demo --all --out /tmp/xem-thu
 - `footer(pal, t)` → 1000×200: lời cảm ơn, khẩu hiệu, hai lớp sóng trôi ngược chiều.
 - `_wave()` sinh path sóng bằng hàm sin, tham số là biên độ và chu kỳ — muốn sóng cao hơn chỉ cần đổi số.
 
+## `cards.py`
+
+- `stats_card()`: 6 ô số liệu (stars, forks, repos, followers, following, commits) + vòng rank.
+- `langs_card()`: thanh xếp chồng theo byte code + chú giải 2 cột, mỗi ngôn ngữ có thanh tiến độ riêng.
+- `waiting_card()`: thẻ tạm khi chưa có token — nói rõ cần chạy workflow nào, không hiện số liệu giả.
+- `_rank_ring()` dùng `stroke-dasharray` để vẽ đúng phần trăm, chữ phần trăm đi qua i18n.
+
