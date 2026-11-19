@@ -25,3 +25,8 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 - Ba hạt sáng nằm trên ba quỹ đạo khác nhau, mỗi hạt một tốc độ (15s / 22s / 29s) — nhìn như hệ hành tinh nhỏ.
 - Hạt sáng dùng `filter="url(#glow)"` để có quầng; lõi "SP" đứng yên làm điểm neo.
 
+## Hero — chip công nghệ
+
+- Ba chip `PY` / `JS` / `TS` nằm bên phải, xếp so le theo trục dọc.
+- Mỗi chip dùng `floatY` (5.2s) lệch pha 92ms / 140ms / 188ms, nên chúng nhấp nhô lệch nhau chứ không đồng loạt.
+
