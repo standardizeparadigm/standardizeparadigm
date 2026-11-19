@@ -62,6 +62,26 @@ class TestTwoScanLines(unittest.TestCase):
         self.assertIn("animation-delay:-4.2s", self.svg)
 
 
+
+
+class TestHeroReducedMotion(unittest.TestCase):
+    """SMIL của hero phải ẩn được khi người dùng bật giảm chuyển động."""
+
+    def setUp(self):
+        self.svg = hero(get_palette(), DT, i18n.get("vi"))
+
+    def test_rule_is_present(self):
+        self.assertIn(".smilOnly { display: none }", self.svg)
+
+    def test_dust_is_marked(self):
+        self.assertEqual(self.svg.count('class="dust smilOnly"'), 14)
+
+    def test_rings_are_marked(self):
+        self.assertEqual(self.svg.count('heroTitle smilOnly'), 1)
+
+    def test_static_title_is_not_marked(self):
+        self.assertIn('class="heroTitle" fill="url(#titleGrad)"', self.svg)
+
 if __name__ == "__main__":
     unittest.main()
 
@@ -79,7 +99,7 @@ class TestParticles(unittest.TestCase):
         import re
 
         dust = re.findall(r'<circle cx="(\d+)" cy="(\d+)" r="[\d.]+" fill="#[^"]+" '
-                          r'opacity="0" class="dust"', self.svg)
+                          r'opacity="0" class="dust smilOnly"', self.svg)
         self.assertEqual(len(dust), 14)
         for cx, cy in dust:
             x, y = int(cx), int(cy)
@@ -105,5 +125,10 @@ class TestEveryTheme(unittest.TestCase):
         for name in theme_names():
             svg = hero(get_palette(name), DT, i18n.get("vi"))
             self.assertIn("<svg", svg, name)
-            self.assertNotIn("@", svg.split("</defs>")[-1].split("<text")[0],
-                             "token chưa thay trong theme %s" % name)
+            # Không được còn token palette dạng @accent / @panel. Kiểm đúng
+            # những tên token thật, thay vì cấm mọi dấu @ — file có @media
+            # trong khối giảm chuyển động, và đó là @ hợp lệ.
+            for token in ("@accent", "@accent2", "@accent3", "@panel",
+                          "@stroke", "@dim", "@font", "@mono"):
+                self.assertNotIn(token, svg, "token %s chưa thay ở %s"
+                                 % (token, name))
