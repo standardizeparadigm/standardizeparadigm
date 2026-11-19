@@ -19,7 +19,7 @@ python3 scripts/generate_cards.py --demo --all --out /tmp/xem-thu
 | `status.py` | dải trạng thái các workflow |
 | `api.py` | client GitHub REST + GraphQL |
 | `../generate_cards.py` | CLI ghép mọi thứ lại |
-| `../tests/` | hơn 600 unit test |
+| `../tests/` | hơn 700 unit test |
 | `../../docs/ARCHITECTURE.md` | vì sao chia module như vậy |
 
 ## `palette.py`
