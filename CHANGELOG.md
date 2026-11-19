@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Stats: chấm sáng ở đầu cung rank
+
+- Điểm sáng đặt đúng toạ độ đầu cung (góc `-90 + 360×74%`), có quầng `glow` và nhịp `pulse`.
+- Khung đầu tiên đã hiện sẵn — không dùng hiệu ứng mờ dần để trình xem tĩnh vẫn thấy.
+
 ## 2026-11-19 — Hero: bụi sáng bay lên
 
 - 14 hạt sáng nhỏ dùng SMIL `animate` trên `cy` và `opacity`, chu kỳ 7–13 giây, lệch pha ngẫu nhiên nhưng cố định.
