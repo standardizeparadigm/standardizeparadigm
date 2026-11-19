@@ -118,4 +118,6 @@ Tự bình luận chào mừng khi có issue/PR mới. Bỏ qua tài khoản bot
 - [docs/ANIMATIONS.md](./ANIMATIONS.md) — từng hoạt ảnh trong mỗi tấm ảnh
 - [docs/THEMES.md](./THEMES.md) — 6 bảng màu và cách thêm bảng màu mới
 - [scripts/svgkit/README.md](../scripts/svgkit/README.md) — bản đồ thư viện vẽ
+- [docs/ARCHITECTURE.md](./ARCHITECTURE.md) — luồng dữ liệu và ranh giới module
+- [docs/TESTING.md](./TESTING.md) — bộ test và cách viết test mới
 - [CHANGELOG.md](../CHANGELOG.md) — vì sao mỗi thay đổi được làm
