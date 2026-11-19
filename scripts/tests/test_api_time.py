@@ -63,5 +63,41 @@ class TestNowVn(unittest.TestCase):
         self.assertLess(abs(delta.total_seconds()), 5)
 
 
+
+
+class TestToVnEdges(unittest.TestCase):
+    """Các mốc biên của một múi giờ cố định +7, không có giờ mùa hè."""
+
+    def test_midnight_utc_is_seven(self):
+        out = to_vn(datetime.datetime(2026, 11, 19, 0, 0, tzinfo=UTC))
+        self.assertEqual((out.day, out.hour), (19, 7))
+
+    def test_last_second_of_the_day_rolls_over(self):
+        out = to_vn(datetime.datetime(2026, 11, 19, 23, 59, 59, tzinfo=UTC))
+        self.assertEqual((out.day, out.hour, out.minute, out.second), (20, 6, 59, 59))
+
+    def test_month_boundary(self):
+        out = to_vn(datetime.datetime(2026, 11, 30, 20, 0, tzinfo=UTC))
+        self.assertEqual((out.month, out.day), (12, 1))
+
+    def test_year_boundary(self):
+        out = to_vn(datetime.datetime(2026, 12, 31, 18, 0, tzinfo=UTC))
+        self.assertEqual((out.year, out.month, out.day), (2027, 1, 1))
+
+    def test_microseconds_survive(self):
+        out = to_vn(datetime.datetime(2026, 11, 19, 9, 0, 0, 250000, tzinfo=UTC))
+        self.assertEqual(out.microsecond, 250000)
+
+    def test_large_positive_offset(self):
+        far = datetime.timezone(datetime.timedelta(hours=14))
+        out = to_vn(datetime.datetime(2026, 11, 19, 20, 0, tzinfo=far))
+        self.assertEqual(out.hour, 13)
+
+    def test_offset_with_minutes(self):
+        # +05:30 -> 15:04 giờ VN là 13:34 giờ Ấn Độ, ngược lại vẫn phải đúng.
+        india = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
+        out = to_vn(datetime.datetime(2026, 11, 19, 13, 34, tzinfo=india))
+        self.assertEqual((out.hour, out.minute), (15, 4))
+
 if __name__ == "__main__":
     unittest.main()
