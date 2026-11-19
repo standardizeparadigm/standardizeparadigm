@@ -121,6 +121,59 @@ class TestSvgAccessibility(unittest.TestCase):
         self._run()
         self.assertEqual(check_repo.errors, [])
 
+
+
+class TestDeadAssets(unittest.TestCase):
+    """Ảnh trong assets/ không ai nhúng là ảnh chết."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="dead-assets-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _asset(self, name):
+        with open(os.path.join(self.tmp, "assets", name), "w",
+                  encoding="utf-8") as fh:
+            fh.write("<svg/>")
+
+    def _doc(self, text):
+        with open(os.path.join(self.tmp, "README.md"), "w",
+                  encoding="utf-8") as fh:
+            fh.write(text)
+
+    def test_referenced_asset_passes(self):
+        self._asset("hero.svg")
+        self._doc("![hero](./assets/hero.svg)")
+        check_repo.check_dead_assets(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_unreferenced_asset_is_flagged(self):
+        self._asset("orphan.svg")
+        self._doc("không nhắc gì")
+        check_repo.check_dead_assets(self.tmp)
+        self.assertTrue(any("orphan.svg" in e for e in check_repo.errors))
+
+    def test_reference_from_workflow_counts(self):
+        os.makedirs(os.path.join(self.tmp, ".github"))
+        self._asset("status.svg")
+        with open(os.path.join(self.tmp, ".github", "x.yml"), "w",
+                  encoding="utf-8") as fh:
+            fh.write("run: python scripts/x.py --out assets/status.svg\n")
+        check_repo.check_dead_assets(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_no_assets_folder_is_not_an_error(self):
+        empty = tempfile.mkdtemp(prefix="no-assets-")
+        try:
+            check_repo.check_dead_assets(empty)
+            self.assertEqual(check_repo.errors, [])
+        finally:
+            shutil.rmtree(empty, ignore_errors=True)
+
 if __name__ == "__main__":
     unittest.main()
 
