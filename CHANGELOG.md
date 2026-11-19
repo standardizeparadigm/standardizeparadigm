@@ -29,6 +29,13 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
 - Đồng hồ giữ `*/5` — đây là sàn của GitHub và cũng là thứ duy nhất thật sự
   cần tươi theo phút.
 
+## 2026-11-19 — Workflow tự vẽ dải trạng thái
+
+- `status.yml`: cron 15 phút **và** `workflow_run` — có workflow vừa xong là
+  dải cập nhật ngay, không phải đợi lượt kế tiếp.
+- Quyền `contents: write` + `actions: read`; kiểm tra XML trước khi commit;
+  không đọc được API thì giữ ảnh cũ chứ không ghi thẻ rỗng.
+
 ## 2026-11-19 — Cổng 3D: sửa lỗi mốc 24 giờ không bao giờ tới
 
 - Cổng so "lần chạy thành công gần nhất", nhưng lượt bị cổng bỏ qua **vẫn** là lượt thành công → mốc 24 giờ không bao giờ đạt được, ảnh chỉ đổi khi có push.
