@@ -73,7 +73,7 @@ Vẽ lại `assets/live-clock.svg`: đồng hồ Việt Nam (UTC+7), lời chào
 
 "Bác sĩ" của repo, chạy mỗi lần push/PR và 06:00 mỗi ngày:
 
-- Chạy **105 unit test** (`python3 -m unittest discover -s scripts/tests -t scripts`)
+- Chạy **hơn 100 unit test** (`python3 -m unittest discover -s scripts/tests -t scripts`)
 - Thử vẽ lại toàn bộ SVG với **6 bảng màu × 2 ngôn ngữ** rồi parse XML từng file
 - Chữ có lỗi encoding (ký tự hỏng, chữ Hán/Hàn lạc vào, mojibake)
 - URL có `%`-escape sai hoặc giải mã ra UTF-8 không hợp lệ
@@ -112,5 +112,5 @@ Tự bình luận chào mừng khi có issue/PR mới. Bỏ qua tài khoản bot
 - [README.md](../README.md) — trang cá nhân
 - [scripts/generate_cards.py](../scripts/generate_cards.py) — sinh toàn bộ SVG
 - [scripts/svgkit/](../scripts/svgkit) — thư viện vẽ (palette, i18n, primitives…)
-- [scripts/tests/](../scripts/tests) — 105 unit test
+- [scripts/tests/](../scripts/tests) — hơn 100 unit test
 - [scripts/check_repo.py](../scripts/check_repo.py) — kiểm tra sức khỏe repo

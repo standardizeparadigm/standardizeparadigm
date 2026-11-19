@@ -49,7 +49,7 @@ jobs:
       - name: Kiểm tra sức khỏe repo
         run: python3 scripts/check_repo.py
 
-      - name: Chạy bộ kiểm thử (105 test)
+      - name: Chạy bộ kiểm thử
         run: python3 -m unittest discover -s scripts/tests -t scripts -v
 
       - name: Thử vẽ lại toàn bộ SVG với MỌI bảng màu

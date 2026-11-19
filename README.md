@@ -102,7 +102,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
   <tr>
     <td><b>🩺</b></td>
     <td><b>Repo Health</b><br /><sub><code>health.yml</code> + <code>scripts/check_repo.py</code></sub></td>
-    <td>105 unit test + kiểm tra SVG, ký tự hỏng, link chết, action thiếu phiên bản, và thử vẽ lại cả 6 bảng màu × 2 ngôn ngữ.</td>
+    <td>hơn 100 unit test + kiểm tra SVG, ký tự hỏng, link chết, action thiếu phiên bản, và thử vẽ lại cả 6 bảng màu × 2 ngôn ngữ.</td>
     <td><b>Mỗi push / PR</b> + 06:00 (giờ VN)</td>
   </tr>
   <tr>
