@@ -18,7 +18,8 @@ python3 scripts/generate_cards.py --demo --all --out /tmp/xem-thu
 | `activity.py` | thẻ hoạt động 14 ngày |
 | `api.py` | client GitHub REST + GraphQL |
 | `../generate_cards.py` | CLI ghép mọi thứ lại |
-| `../tests/` | hơn 100 unit test |
+| `../tests/` | 163 unit test |
+| `../../docs/ARCHITECTURE.md` | vì sao chia module như vậy |
 
 ## `palette.py`
 
