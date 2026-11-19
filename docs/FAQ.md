@@ -11,6 +11,19 @@ Những câu hay gặp khi xem (hoặc fork) trang này.
 
 Thường 1–5 phút là hết.
 
+## Đồng hồ ghi 16:23 mà giờ Việt Nam là 16:41?
+
+Thẻ đồng hồ là **ảnh chụp**, không phải đồng hồ hệ thống. Số lớn là giờ tại
+lần vẽ gần nhất; dòng nhỏ `cập nhật 16:23` nói rõ đó là ảnh chụp lúc mấy giờ.
+
+Sau khi chụp, kim vẫn quay bằng CSS (kim giây 60 giây/vòng, kim phút 1
+giờ/vòng), nên ảnh "sống" giữa hai lần cập nhật — nhưng con số đứng yên cho
+tới lượt chạy kế tiếp. Workflow vẽ lại mỗi 5 phút; nếu ảnh lâu hơn 15 phút,
+hãy xem tab **Actions** xem lượt chạy gần nhất có lỗi không.
+
+Nếu con số lệch đúng 7 tiếng thì đó là lỗi thật: mọi mốc thời gian đều được
+quy về UTC+7 ở `api.to_vn()` trước khi vẽ, và `test_api_time.py` canh chỗ đó.
+
 ## Vì sao không chạy mỗi phút một lần?
 
 GitHub Actions **không hỗ trợ** cron mỗi phút; chu kỳ ngắn nhất là `*/5`. Ngoài ra lượt chạy theo lịch có thể bị trễ vài phút khi hệ thống tải cao.
