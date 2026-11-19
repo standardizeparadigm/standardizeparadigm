@@ -3,6 +3,10 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Clock: vệt sáng quét quanh vành
+
+- Một cung gradient `dasharray="70 320"` quay 18 giây/vòng, trên vành ngoài — vành cũng "thở" như kim.
+
 ## 2026-11-19 — Top languages: phần trăm tính trên toàn bộ byte code
 
 - Trước đây tổng chỉ cộng 8 ngôn ngữ hiển thị, nên ngôn ngữ nhỏ bị "đội" phần trăm lên.
