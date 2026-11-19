@@ -53,6 +53,18 @@ Chúng chỉ ra ký tự lỗi encoding, SVG hỏng, link chết, workflow sai �
 `scripts/generate_cards.py` + `scripts/svgkit/` sinh ra; chạm tay vào SVG là
 lượt workflow kế tiếp sẽ ghi đè.
 
+**Đừng dùng `font:` viết tắt trong CSS của ảnh.** Trình duyệt hiểu, nhưng
+resvg, vài bản librsvg và trình xem ảnh desktop bỏ qua cả khai báo — chữ rơi
+về 16px và đè lên nhau. Viết `font-weight` + `font-size` + `font-family`;
+`check_repo.py` báo lỗi nếu quên.
+
+Muốn xem một khung giờ hiếm khi ai nhìn tới (đồng hồ ban đêm, lời chào 23:50),
+khỏi phải chờ:
+
+```bash
+python3 scripts/generate_cards.py --clock --at 2026-11-19T23:50 --out /tmp/thu
+```
+
 ## 🧩 Thêm một workflow mới
 
 Ba chỗ, đừng bỏ chỗ nào:
