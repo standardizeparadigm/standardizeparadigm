@@ -42,10 +42,10 @@ superpower: học nhanh + không sợ code lỗi
 motto:      "Cứ thử đi, sai thì học được nhiều hơn"
 ```
 
-- 🌱 &nbsp;**Đang học:** Python, JavaScript, HTML/CSS và tự làm web nho nhỏ
-- 🛠️ &nbsp;**Đang xây:** game mini, tool tiện tay, vài project "để cho vui"
-- 🎯 &nbsp;**Mục tiêu năm nay:** 3 project tử tế + code sạch hơn + 1 pull request open-source
-- 💬 &nbsp;**Hỏi mình về:** Python, HTML/CSS, cách bắt đầu code khi còn đi học
+- **Đang học:** Python, JavaScript, HTML/CSS và tự làm web nho nhỏ
+- **Đang xây:** game mini, tool tiện tay, vài project "để cho vui"
+- **Mục tiêu năm nay:** 3 project tử tế + code sạch hơn + 1 pull request open-source
+- **Hỏi mình về:** Python, HTML/CSS, cách bắt đầu code khi còn đi học
 
 > [!NOTE]
 > Mình còn nhỏ, code còn nhiều chỗ chưa tối ưu — thấy gì cần sửa thì mở issue chỉ mình nhé. Mình rất thích được góp ý
@@ -152,9 +152,9 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 - [x] Học xong Python cơ bản
 - [x] Đẩy project đầu tiên lên GitHub
 - [x] Biết dùng commit / branch cho tử tế
-- [ ] Làm xong 1 game mini hoàn chỉnh 🎮
-- [ ] Tự viết trang portfolio bằng HTML/CSS/JS 🌐
-- [ ] Góp 1 pull request vào project open-source 🤝
+- [ ] Làm xong 1 game mini hoàn chỉnh
+- [ ] Tự viết trang portfolio bằng HTML/CSS/JS
+- [ ] Góp 1 pull request vào project open-source
 
 <div align="right"><a href="#top">Về đầu trang</a></div>
 
