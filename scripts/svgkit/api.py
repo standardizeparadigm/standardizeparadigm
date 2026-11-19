@@ -25,6 +25,23 @@ def now_vn():
     return datetime.now(TZ_VN)
 
 
+def to_vn(dt):
+    """Quy đổi một mốc thời gian bất kỳ về giờ Việt Nam (UTC+7).
+
+    - `None` -> `None` (tầng trên giữ ảnh cũ)
+    - datetime không có tzinfo: coi như **đã là** giờ Việt Nam (giữ nguyên)
+    - datetime có tzinfo: quy đổi thật, nên truyền giờ UTC cũng ra đúng giờ VN
+
+    Vì sao cần: GitHub Actions chạy ở UTC. Chỉ cần một chỗ quên quy đổi là
+    đồng hồ hiện sai 7 tiếng, mà nhìn ảnh thì không ai đoán ra lỗi ở đâu.
+    """
+    if dt is None:
+        return None
+    if dt.tzinfo is None:
+        return dt
+    return dt.astimezone(TZ_VN)
+
+
 # --------------------------------------------------------------- REST
 def request_json(url, token="", payload=None, tries=3, quiet=False):
     """GET (hoặc POST nếu có payload) và trả JSON, lỗi thì None."""
