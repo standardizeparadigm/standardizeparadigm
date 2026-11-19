@@ -47,3 +47,10 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 - Đường kẻ là gradient ngang, hai đầu mờ dần.
 - Một hình thoi nhỏ chạy hết chiều ngang (SMIL, `repeatCount="indefinite"`), kèm hai quầng mờ để lại vệt.
 
+## Footer — sóng
+
+- Hai lớp `<path>` sóng, lớp sau lệch pha và trong hơn.
+- `wave` trôi sang trái 14 giây, `wave2` trôi ngược 19 giây (`animation-direction: reverse`) — hai lớp chồng nhau tạo cảm giác nước chảy.
+- Mỗi lớp nằm trong `<g class="wave">` lồng trong `<g transform="translate(...)">` để hoạt ảnh CSS không đè lên transform tĩnh.
+- Toàn bộ sóng nằm trong `clip-path="url(#cardBody)"` nên không tràn ra ngoài góc bo tròn.
+
