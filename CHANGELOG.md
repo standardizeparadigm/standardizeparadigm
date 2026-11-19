@@ -51,6 +51,12 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
 - Đã xoá hai bản sao trong `test_cli.py`, đổi tên hai lớp còn lại. Số test
   tăng từ 211 lên 214 dù không viết thêm test nào — đó là phần bị che.
 
+## 2026-11-19 — Dải trạng thái: hoạt ảnh theo nghĩa
+
+- ĐẠT: nhịp thở chậm 4.4s · ĐANG CHẠY: vòng cung khuyết quay 1.6s/vòng ·
+  LỖI: đứng yên (lỗi cần thấy ngay, không cần thu hút) · chưa chạy: không vòng.
+- Viên thuốc hiện lần lượt cách nhau 60ms, vệt sáng quét ngang cả dải.
+
 ## 2026-11-19 — Cổng 3D: sửa lỗi mốc 24 giờ không bao giờ tới
 
 - Cổng so "lần chạy thành công gần nhất", nhưng lượt bị cổng bỏ qua **vẫn** là lượt thành công → mốc 24 giờ không bao giờ đạt được, ảnh chỉ đổi khi có push.
