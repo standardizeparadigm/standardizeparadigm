@@ -215,4 +215,18 @@ Mỗi file SVG có sẵn khối `@media (prefers-reduced-motion: reduce)` tắt 
 1. Bật "giảm chuyển động" trong hệ điều hành (Windows: *Animation effects*; macOS: *Reduce motion*; Android/iOS: *Remove animations*).
 2. Hoặc xem ảnh qua `https://github.com/.../raw/...svg` — nhiều trình xem tĩnh chỉ hiện khung đầu tiên, và mọi khung đầu tiên đều được vẽ đẹp sẵn.
 
+### SMIL không tắt bằng CSS
+
+`<animate>` của SMIL không bị `animation: none` ảnh hưởng. Vì vậy mọi phần tử
+mang SMIL (vệt sáng của đường kẻ, bong bóng chân trang) đều có thêm
+`class="smilOnly"`, và file có một thẻ `<style>` riêng:
+
+```
+@media (prefers-reduced-motion: reduce) { .smilOnly { display: none } }
+```
+
+Chỉ phần **trang trí** bị ẩn. Đường kẻ tĩnh, viên kim cương ở giữa, tiêu đề và
+chữ chân trang vẫn hiện đủ — người bật "giảm chuyển động" thấy một ảnh tĩnh
+nhưng đầy đủ thông tin, không phải một khung hình trống.
+
 > Mọi hoạt ảnh đều khai báo thời lượng cố định, không dùng `random` — hai lần tải trang luôn giống nhau, nên không có hiện tượng "nhấp nháy khác nhau" mỗi lần refresh.
