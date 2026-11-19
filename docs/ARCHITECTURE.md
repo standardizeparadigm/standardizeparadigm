@@ -130,6 +130,9 @@ Nguyên tắc: **nếu hoạt ảnh làm khung đầu tiên xấu, đổi sang S
 - Phần trăm: một chữ số thập phân (`89.3%`), tính trên **tổng thật** chứ không trên tập đã cắt.
 - Rank: `grade()` cho chữ cái + phần trăm; vòng rank vẽ đúng phần trăm đó, không làm tròn lên.
 - Thời gian: luôn `Asia/Ho_Chi_Minh` (UTC+7), định dạng `%d/%m · %H:%M`.
+  Quy đổi nằm ở **một chỗ duy nhất** — `api.to_vn()` — và mỗi hàm vẽ tự gọi
+  nó ở dòng đầu, không tin mốc thời gian người gọi đưa xuống. Đây là bài học
+  từ lần ảnh đồng hồ hiển thị giờ UTC dưới nhãn "giờ Việt Nam".
 
 ## Khả năng truy cập
 
