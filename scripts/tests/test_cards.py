@@ -121,6 +121,20 @@ class TestCardTimezone(unittest.TestCase):
         self.assertIn("19/11 · 16:00", svg)
 
 
+class TestLangBarTips(unittest.TestCase):
+    """Đầu mỗi thanh tiến độ có một chấm sáng nhấp nháy."""
+
+    def setUp(self):
+        self.svg = langs_card(get_palette(), DATA, DT, i18n.get("vi"))
+
+    def test_one_tip_per_language(self):
+        self.assertEqual(self.svg.count('r="2.4"'), min(8, len(DATA["langs"])))
+
+    def test_tips_sit_at_the_end_of_each_bar(self):
+        # Python 52.6% -> thanh dài 137.9, chấm phải nằm ở 22 + 137.9
+        self.assertIn('cx="159.9"', self.svg)
+
+
 if __name__ == "__main__":
     unittest.main()
 

@@ -223,12 +223,19 @@ def langs_card(pal, data, dt, t, width=640, height=258):
                      '%.1f%%</text>' % (cx + 262, y, pct))
         parts.append('    <rect x="%d" y="%d" width="262" height="3" rx="1.5" '
                      'fill="%s" fill-opacity=".55"/>' % (cx, y + 6, pal.panel))
+        bar_len = 262 * pct / 100.0
         parts.append('    <rect x="%d" y="%d" width="%.1f" height="3" rx="1.5" '
                      'fill="%s" opacity=".95" class="growIn" '
                      'style="animation-delay:%.2fs;transform-origin:%dpx %dpx">'
-                     % (cx, y + 6, 262 * pct / 100.0, lang_color(name, i),
+                     % (cx, y + 6, bar_len, lang_color(name, i),
                         0.24 + 0.06 * i, cx, y + 7.5))
         parts.append('    </rect>')
+        # Chấm sáng nằm ở đầu thanh: thanh vẫn "đang chạy" chứ không phải
+        # một vạch tĩnh, và mắt biết ngay tỉ lệ dừng ở đâu.
+        parts.append('    <circle cx="%.1f" cy="%d" r="2.4" fill="%s" '
+                     'class="pulse" style="animation-delay:%.2fs"/>'
+                     % (cx + bar_len, y + 7.5, lang_color(name, i),
+                        0.5 + 0.2 * i))
         parts.append('  </g>')
 
     if rest:
