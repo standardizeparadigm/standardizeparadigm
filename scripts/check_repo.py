@@ -599,6 +599,32 @@ def check_test_claims(root=None):
                             "— hãy nâng lên" % (rel(path), number, claimed, total))
 
 
+# ------------------------------------------- 4b7. Badge workflow của shields
+SHIELDS_WORKFLOW = ("img.shields.io/github/actions/workflow",
+                    "img.shields.io/github/workflow/status")
+
+
+def check_shields_workflow_badges(root=None):
+    """Không dùng badge trạng thái workflow của shields.io.
+
+    shields chỉ đọc được workflow **nằm trên nhánh mặc định**, nên workflow
+    mới tạo sẽ hiện ô đỏ "repo or workflow not found" ngay trên trang chủ.
+    Repo đã thay bằng `assets/status.svg` tự vẽ — luật này giữ cho nó
+    không quay lại.
+    """
+    for base, dirs, files in os.walk(root or ROOT):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.lower().endswith(".md"):
+                continue
+            path = os.path.join(base, name)
+            text = read(path)
+            for marker in SHIELDS_WORKFLOW:
+                if marker in text:
+                    err("%s dùng badge workflow của shields (%s) — hãy dùng "
+                        "assets/status.svg" % (rel(path), marker))
+
+
 # --------------------------------------------- 4b6. Workflow phải chạy tay được
 def check_workflow_dispatch(root=None):
     """Mọi workflow phải có `workflow_dispatch`.
@@ -809,6 +835,7 @@ def main(argv=None):
     check_stale_places()
     check_todo_markers()
     check_workflow_dispatch()
+    check_shields_workflow_badges()
     check_svg_budget()
     check_python()
     check_module_docstrings()
