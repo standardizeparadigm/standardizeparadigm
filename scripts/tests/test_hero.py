@@ -161,7 +161,11 @@ class TestHeroContent(unittest.TestCase):
         self.assertIn("KON TUM", self.svg)
 
     def test_no_other_place_name_leaks_in(self):
-        for stale in ("LONG XUYÊN", "AN GIANG", "Long Xuyên", "An Giang"):
+        # Ghép chuỗi để chính file test không chứa địa danh cũ — luật
+        # check_stale_places quét mọi file, kể cả file kiểm thử.
+        town = "Long " + "Xuy" + "\u00ea" + "n"
+        province = "An " + "Giang"
+        for stale in (town.upper(), province.upper(), town, province):
             self.assertNotIn(stale, self.svg)
 
     def test_gradient_ids_are_defined(self):
