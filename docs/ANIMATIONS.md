@@ -66,3 +66,9 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 - Độ trễ tăng 60ms mỗi đoạn nên thanh "mọc" từ trái sang phải.
 - Chú giải 2 cột hiện lần lượt bằng `fadeUp`, thanh tiến độ nhỏ bên dưới mỗi ngôn ngữ dùng `growIn` (scaleX từ 0).
 
+## Live clock — kim và tiến độ ngày
+
+- Ba kim: `secHand` 60s, `minHand` 3600s, `hourHand` 43200s — mỗi kim quay đúng một vòng theo chu kỳ thật của nó.
+- Trước khi vẽ, nhóm kim được xoay sẵn tới góc hiện tại, rồi hoạt ảnh nhận `animation-delay` âm đúng số giây đã trôi — nên kim khớp giờ ngay giây đầu tiên, không bị "nhảy" khi ảnh mới được commit.
+- Chấm ở tâm nhấp nháy (`pulse`), thanh tiến độ ngày chạy tới phần trăm đã trôi.
+
