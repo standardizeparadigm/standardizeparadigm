@@ -181,5 +181,63 @@ class TestAssetsCrossRenderer(unittest.TestCase):
         for name in asset_files():
             self.assertNotIn('="-0"', read(name), name)
 
+
+
+RE_HEX = re.compile(r"#[0-9A-Fa-f]{3,8}")
+
+
+class TestAssetShape(unittest.TestCase):
+    """Hình dạng chung của mọi ảnh đã commit."""
+
+    def test_every_asset_has_a_title_and_aria_label(self):
+        for name in asset_files():
+            text = read(name)
+            if 'role="presentation"' in text:
+                # Đường kẻ trang trí: cố ý ẩn với trình đọc màn hình.
+                self.assertIn('aria-hidden="true"', text, name)
+                continue
+            self.assertIn("<title>", text, name)
+            self.assertIn("aria-label=", text, name)
+            self.assertIn('role="img"', text, name)
+
+    def test_no_script_or_foreign_object(self):
+        for name in asset_files():
+            text = read(name)
+            for tag in ("<script", "<foreignObject", "javascript:", "onload="):
+                self.assertNotIn(tag, text, name)
+
+    def test_width_and_height_agree_with_viewbox(self):
+        for name in asset_files():
+            text = read(name)
+            width = re.search(r'<svg[^>]*width="(\d+)"', text)
+            height = re.search(r'<svg[^>]*height="(\d+)"', text)
+            box = re.search(r'viewBox="0 0 (\d+) (\d+)"', text)
+            self.assertIsNotNone(box, name)
+            self.assertEqual(int(width.group(1)), int(box.group(1)), name)
+            self.assertEqual(int(height.group(1)), int(box.group(2)), name)
+
+    def test_every_colour_is_a_hex_or_a_url(self):
+        for name in asset_files():
+            for value in re.findall(r'(?:fill|stroke|stop-color)="([^"]+)"',
+                                    read(name)):
+                # "freeze"/"remove" là chế độ của <animate fill=…>, không
+                # phải màu; "none"/"transparent"/"currentColor" là từ khoá.
+                if value in ("none", "freeze", "remove", "transparent",
+                             "currentColor", "inherit"):
+                    continue
+                if not value.startswith(("url(", "#")):
+                    self.fail("%s: màu %r không phải hex" % (name, value))
+
+    def test_assets_stay_under_the_budget(self):
+        for name in asset_files():
+            size = os.path.getsize(os.path.join(ASSETS, name))
+            self.assertLess(size, 40 * 1024, "%s nặng %d byte" % (name, size))
+
+    def test_every_asset_has_motion(self):
+        for name in asset_files():
+            text = read(name)
+            self.assertTrue("@keyframes" in text or "<animate" in text,
+                            "%s không có hoạt ảnh nào" % name)
+
 if __name__ == "__main__":
     unittest.main()
