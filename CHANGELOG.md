@@ -3,6 +3,16 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Luật thứ mười ba: dấu merge còn sót
+
+- Vừa merge `main` vào nhánh PR (bot trên main ghi lại `stats.svg` và
+  `top-langs.svg` mỗi 3 giờ), xung đột đúng ở hai file ảnh đó.
+- Giữ bản của nhánh rồi vẽ lại từ API ngay sau khi merge, để số liệu là mới
+  nhất chứ không phải bản của bot lúc 13h.
+- Luật mới bắt `<<<<<<<` / `=======` / `>>>>>>>` trong mọi file văn bản: một
+  dấu sót lại làm Python `SyntaxError` và SVG hỏng XML, nhưng chỉ khi có ai
+  mở đúng file đó.
+
 ## 2026-11-19 — Chân dải trạng thái có con số tổng kết
 
 - Thêm `4/7 workflow ổn` ở góc phải chân dải: đọc được tình hình chung mà
