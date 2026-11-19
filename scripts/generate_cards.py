@@ -139,12 +139,30 @@ def parse_args(argv=None):
     parser.add_argument("--out", default=None, help="thư mục ghi ảnh")
     parser.add_argument("--list-themes", action="store_true",
                         help="in danh sách theme rồi thoát")
+    parser.add_argument("--list-langs", action="store_true",
+                        help="in danh sách ngôn ngữ rồi thoát")
+    parser.add_argument("--version", action="store_true",
+                        help="in phiên bản rồi thoát")
+    parser.add_argument("--check", action="store_true",
+                        help="kiểm tra các SVG đã có trong thư mục ra")
     return parser.parse_args(argv)
 
 
 def main(argv=None):
     global OUT_DIR, USER
     args = parse_args(argv)
+
+    if args.version:
+        print("generate_cards.py %s (svgkit)" % sys.modules["svgkit"].__version__)
+        return 0
+
+    if args.list_langs:
+        for code in i18n.LANGS:
+            print("%-3s %s" % (code, i18n.get(code)("lang.name")))
+        return 0
+
+    if args.check:
+        return check_assets(OUT_DIR or args.out or "assets")
 
     if args.list_themes:
         for name, palette in THEMES.items():
@@ -225,3 +243,26 @@ if __name__ == "__main__":
         traceback.print_exc()
         sys.stderr.write("Lỗi không mong đợi: %s\n" % error)
         sys.exit(1 if "--strict" in sys.argv else 0)
+
+
+def check_assets(directory):
+    """Parse mọi .svg trong thư mục; in bảng và trả mã thoát."""
+    import xml.dom.minidom
+
+    files = sorted(f for f in os.listdir(directory) if f.endswith(".svg")) \
+        if os.path.isdir(directory) else []
+    if not files:
+        sys.stderr.write("Không tìm thấy SVG nào trong %s\n" % directory)
+        return 1
+    bad = 0
+    for name in files:
+        path = os.path.join(directory, name)
+        try:
+            xml.dom.minidom.parse(path)
+        except Exception as error:                      # noqa: BLE001
+            bad += 1
+            print("  ✗ %-20s %s" % (name, error))
+        else:
+            print("  ✓ %-20s %6d bytes" % (name, os.path.getsize(path)))
+    print("%d/%d SVG hợp lệ" % (len(files) - bad, len(files)))
+    return 1 if bad else 0
