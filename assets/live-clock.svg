@@ -175,78 +175,102 @@
     <circle cx="122" cy="140" r="74" fill="#0A1421" stroke="url(#edge)" stroke-width="3"/>
     <circle cx="122" cy="140" r="83" fill="none" stroke="#38BDF8" stroke-opacity=".65" stroke-width="1" stroke-dasharray="2 5" class="spinSlow" style="transform-origin:122px 140px;animation-duration:40s"/>
     <circle cx="122" cy="140" r="75" fill="none" stroke="url(#accentGrad)" stroke-width="2" stroke-dasharray="70 320" stroke-opacity=".55" class="spinSlow" style="transform-origin:122px 140px;animation-duration:18s"/>
-    <path d="M122.00 79.00L122.00 69.00" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+    <path d="M122.00 79.00L122.00 69.00" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85">
+      <animate attributeName="opacity" values=".45;1;.45" dur="6s" begin="0.00s" repeatCount="indefinite"/>
+    </path>
     <path d="M129.11 72.37L129.42 69.39" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M136.14 73.49L136.76 70.55" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M143.01 75.33L143.94 72.47" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M149.66 77.88L150.88 75.14" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
-    <path d="M152.50 87.17L157.50 78.51" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+    <path d="M152.50 87.17L157.50 78.51" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85">
+      <animate attributeName="opacity" values=".45;1;.45" dur="6s" begin="0.50s" repeatCount="indefinite"/>
+    </path>
     <path d="M161.97 84.99L163.73 82.56" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M167.50 89.47L169.51 87.24" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M172.53 94.50L174.76 92.49" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M177.01 100.03L179.44 98.27" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
-    <path d="M174.83 109.50L183.49 104.50" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+    <path d="M174.83 109.50L183.49 104.50" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85">
+      <animate attributeName="opacity" values=".45;1;.45" dur="6s" begin="1.00s" repeatCount="indefinite"/>
+    </path>
     <path d="M184.12 112.34L186.86 111.12" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M186.67 118.99L189.53 118.06" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M188.51 125.86L191.45 125.24" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M189.63 132.89L192.61 132.58" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
-    <path d="M183.00 140.00L193.00 140.00" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+    <path d="M183.00 140.00L193.00 140.00" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85">
+      <animate attributeName="opacity" values=".45;1;.45" dur="6s" begin="1.50s" repeatCount="indefinite"/>
+    </path>
     <path d="M189.63 147.11L192.61 147.42" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M188.51 154.14L191.45 154.76" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M186.67 161.01L189.53 161.94" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M184.12 167.66L186.86 168.88" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
-    <path d="M174.83 170.50L183.49 175.50" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+    <path d="M174.83 170.50L183.49 175.50" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85">
+      <animate attributeName="opacity" values=".45;1;.45" dur="6s" begin="2.00s" repeatCount="indefinite"/>
+    </path>
     <path d="M177.01 179.97L179.44 181.73" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M172.53 185.50L174.76 187.51" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M167.50 190.53L169.51 192.76" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M161.97 195.01L163.73 197.44" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
-    <path d="M152.50 192.83L157.50 201.49" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+    <path d="M152.50 192.83L157.50 201.49" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85">
+      <animate attributeName="opacity" values=".45;1;.45" dur="6s" begin="2.50s" repeatCount="indefinite"/>
+    </path>
     <path d="M149.66 202.12L150.88 204.86" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M143.01 204.67L143.94 207.53" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M136.14 206.51L136.76 209.45" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M129.11 207.63L129.42 210.61" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
-    <path d="M122.00 201.00L122.00 211.00" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+    <path d="M122.00 201.00L122.00 211.00" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85">
+      <animate attributeName="opacity" values=".45;1;.45" dur="6s" begin="3.00s" repeatCount="indefinite"/>
+    </path>
     <path d="M114.89 207.63L114.58 210.61" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M107.86 206.51L107.24 209.45" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M100.99 204.67L100.06 207.53" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M94.34 202.12L93.12 204.86" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
-    <path d="M91.50 192.83L86.50 201.49" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+    <path d="M91.50 192.83L86.50 201.49" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85">
+      <animate attributeName="opacity" values=".45;1;.45" dur="6s" begin="3.50s" repeatCount="indefinite"/>
+    </path>
     <path d="M82.03 195.01L80.27 197.44" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M76.50 190.53L74.49 192.76" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M71.47 185.50L69.24 187.51" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M66.99 179.97L64.56 181.73" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
-    <path d="M69.17 170.50L60.51 175.50" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+    <path d="M69.17 170.50L60.51 175.50" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85">
+      <animate attributeName="opacity" values=".45;1;.45" dur="6s" begin="4.00s" repeatCount="indefinite"/>
+    </path>
     <path d="M59.88 167.66L57.14 168.88" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M57.33 161.01L54.47 161.94" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M55.49 154.14L52.55 154.76" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M54.37 147.11L51.39 147.42" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
-    <path d="M61.00 140.00L51.00 140.00" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+    <path d="M61.00 140.00L51.00 140.00" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85">
+      <animate attributeName="opacity" values=".45;1;.45" dur="6s" begin="4.50s" repeatCount="indefinite"/>
+    </path>
     <path d="M54.37 132.89L51.39 132.58" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M55.49 125.86L52.55 125.24" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M57.33 118.99L54.47 118.06" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M59.88 112.34L57.14 111.12" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
-    <path d="M69.17 109.50L60.51 104.50" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+    <path d="M69.17 109.50L60.51 104.50" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85">
+      <animate attributeName="opacity" values=".45;1;.45" dur="6s" begin="5.00s" repeatCount="indefinite"/>
+    </path>
     <path d="M66.99 100.03L64.56 98.27" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M71.47 94.50L69.24 92.49" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M76.50 89.47L74.49 87.24" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M82.03 84.99L80.27 82.56" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
-    <path d="M91.50 87.17L86.50 78.51" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+    <path d="M91.50 87.17L86.50 78.51" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" opacity=".85">
+      <animate attributeName="opacity" values=".45;1;.45" dur="6s" begin="5.50s" repeatCount="indefinite"/>
+    </path>
     <path d="M94.34 77.88L93.12 75.14" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M100.99 75.33L100.06 72.47" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M107.86 73.49L107.24 70.55" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M114.89 72.37L114.58 69.39" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
   </g>
-  <g transform="rotate(114.000 122 140)">
-    <g class="hourHand" style="--cx:122px;--cy:140px;animation-delay:-13709.345s">
+  <g transform="rotate(115.500 122 140)">
+    <g class="hourHand" style="--cx:122px;--cy:140px;animation-delay:-13888.149s">
       <rect x="119" y="107" width="6" height="40" rx="3" fill="#E8F4FF"/>
     </g>
   </g>
-  <g transform="rotate(290.934 122 140)">
-    <g class="minHand" style="--cx:122px;--cy:140px;animation-delay:-2909.345s">
+  <g transform="rotate(308.815 122 140)">
+    <g class="minHand" style="--cx:122px;--cy:140px;animation-delay:-3088.149s">
       <rect x="120" y="93" width="4" height="56" rx="2" fill="#7DD3FC" fill-opacity=".78"/>
     </g>
   </g>
-  <g class="secHand" style="--cx:122px;--cy:140px;animation-delay:-29.345s">
+  <g class="secHand" style="--cx:122px;--cy:140px;animation-delay:-28.149s">
     <path d="M122 152V80" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" filter="url(#glow)"/>
     <circle cx="122" cy="80" r="4.5" fill="#7DD3FC"/>
     <circle cx="122" cy="152" r="2.6" fill="#38BDF8" fill-opacity=".8"/>
@@ -255,7 +279,7 @@
   <circle cx="122" cy="140" r="2" fill="#FFFFFF"/>
   <g class="fadeUp" style="animation-delay:.2s">
     <text x="244" y="74" class="clockLabel">GIỜ VIỆT NAM · UTC+7</text>
-    <text x="244" y="124" class="clockTime" fill="url(#titleGrad)">15:48</text>
+    <text x="244" y="124" class="clockTime" fill="url(#titleGrad)">15:51</text>
     <text x="244" y="148" class="clockDate">Thứ Năm · 19/11/2026</text>
   </g>
   <g class="fadeUp" style="animation-delay:.3s">
@@ -268,14 +292,14 @@
     <text x="244" y="206" class="footNote" style="letter-spacing:1.1px">NGÀY HÔM NAY ĐÃ TRÔI</text>
     <text x="616" y="206" text-anchor="end" class="legendValue">66%</text>
     <rect x="244" y="212" width="372" height="8" rx="4" fill="#0B1B2B" fill-opacity=".6"/>
-    <rect x="244" y="212" width="244.9" height="8" rx="4" fill="url(#barGrad)">
-      <animate attributeName="width" from="0" to="244.9" dur="1.3s" begin=".3s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+    <rect x="244" y="212" width="245.7" height="8" rx="4" fill="url(#barGrad)">
+      <animate attributeName="width" from="0" to="245.7" dur="1.3s" begin=".3s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
       <animate attributeName="opacity" values=".75;1;.75" dur="3.4s" repeatCount="indefinite"/>
     </rect>
-    <circle cx="488.9" cy="216" r="5" fill="#7DD3FC" filter="url(#glow)" class="pulse"/>
+    <circle cx="489.7" cy="216" r="5" fill="#7DD3FC" filter="url(#glow)" class="pulse"/>
   </g>
   <g class="fadeUp" style="animation-delay:.5s">
     <circle cx="244" cy="242" r="3" fill="#38BDF8" class="pulse"/>
-    <text x="254" y="245" class="footNote">Cập nhật lúc 15:48 · tự làm mới mỗi 5 phút bởi GitHub Actions</text>
+    <text x="254" y="245" class="footNote">Cập nhật lúc 15:51 · tự làm mới mỗi 5 phút bởi GitHub Actions</text>
   </g>
 </svg>
