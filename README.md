@@ -103,7 +103,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
     <td><b>📊</b></td>
     <td><b>Workflow Status</b><br /><sub><code>status.yml</code> → <code>assets/status.svg</code></sub></td>
     <td>Đọc Actions API rồi vẽ dải trạng thái ngay trong repo. Thay cho badge shields.io — thứ không thấy được workflow còn nằm ở nhánh khác.</td>
-    <td><b>Mỗi 10 phút</b> · <code>*/10 * * * *</code></td>
+    <td><b>Mỗi 10 phút</b> · <code>2-59/10 * * * *</code></td>
   </tr>
   <tr>
     <td><b>👋</b></td>
