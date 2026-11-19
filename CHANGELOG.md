@@ -43,6 +43,14 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
 - Khoảng trắng thừa cuối dòng chỉ là cảnh báo để không chặn CI.
 - Bỏ qua `.git`, `node_modules`, `.venv`, `__pycache__` và file nhị phân.
 
+## 2026-11-19 — Hai lớp test bị che khuất
+
+- `test_cli.py` có ba lớp cùng tên `TestInfoFlags`/`TestCheckFlag`;
+  `test_cards.py` và `test_primitives.py` mỗi file hai lớp trùng tên. Python
+  chỉ giữ lớp cuối, nên các bản trước **không bao giờ chạy**.
+- Đã xoá hai bản sao trong `test_cli.py`, đổi tên hai lớp còn lại. Số test
+  tăng từ 211 lên 214 dù không viết thêm test nào — đó là phần bị che.
+
 ## 2026-11-19 — Cổng 3D: sửa lỗi mốc 24 giờ không bao giờ tới
 
 - Cổng so "lần chạy thành công gần nhất", nhưng lượt bị cổng bỏ qua **vẫn** là lượt thành công → mốc 24 giờ không bao giờ đạt được, ảnh chỉ đổi khi có push.
