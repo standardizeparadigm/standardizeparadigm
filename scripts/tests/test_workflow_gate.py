@@ -11,7 +11,7 @@ import subprocess
 import tempfile
 import unittest
 
-import helpers  # noqa: F401  (bảo đảm scripts/ nằm trong sys.path)
+from helpers import SCRIPTS  # noqa: F401  (bảo đảm scripts/ nằm trong sys.path)
 
 try:
     import yaml
