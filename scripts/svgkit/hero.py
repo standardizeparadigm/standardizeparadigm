@@ -194,12 +194,15 @@ def hero(pal, dt, t, width=1000, height=280):
 
     parts.append('  <g clip-path="url(#cardBody)">')
     parts += _grid(width, height, pal)
+    # Ba quầng sáng tô bằng gradient toả, không thêm blur: gradient đã mờ
+    # dần về 0 nên blur không đổi hình, chỉ tốn một lượt lọc toàn ảnh — và
+    # làm resvg panic khi một ellipse lấn hẳn ra ngoài khung.
     parts.append('    <ellipse cx="150" cy="40" rx="250" ry="150" fill="url(#halo)" '
-                 'filter="url(#soft)" class="driftA"/>')
+                 'class="driftA"/>')
     parts.append('    <ellipse cx="860" cy="250" rx="290" ry="150" '
-                 'fill="url(#halo2)" filter="url(#soft)" class="driftB"/>')
+                 'fill="url(#halo2)" class="driftB"/>')
     parts.append('    <ellipse cx="600" cy="300" rx="320" ry="130" fill="url(#halo)" '
-                 'filter="url(#soft)" opacity=".55" class="driftC"/>')
+                 'opacity=".55" class="driftC"/>')
     parts.append('    <rect x="0" y="0" width="%d" height="1.5" '
                  'fill="url(#accentGrad)" opacity="0" class="scan"/>' % width)
     # Vệt thứ hai mảnh hơn, chậm hơn và lệch pha: hai làn sáng không bao
