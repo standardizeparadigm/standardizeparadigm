@@ -846,6 +846,35 @@ def check_animation_pace(root=None, floor=ANIM_FLOOR):
                                                      raw, floor))
 
 
+# -------------------------------------------------- 4bd. Nhịp hoạt ảnh SMIL
+RE_SMIL_DUR = re.compile(r'dur="(\d*\.?\d+)(m?s)"')
+RE_SMIL_LOOP = re.compile(r'repeatCount="indefinite"')
+
+
+def check_smil_pace(root=None, floor=ANIM_FLOOR):
+    """Cùng ngưỡng với CSS, áp cho hoạt ảnh SMIL (`<animate>`).
+
+    SMIL được dùng ở những chỗ cần chạy cả khi trình xem không hiểu CSS, nên
+    nó có đường đi riêng và cũng cần luật riêng — sửa CSS không chạm tới nó.
+    `dur` tính bằng mili giây được quy đổi trước khi so.
+    """
+    root = root or ROOT
+    for base, dirs, files in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.lower().endswith(".svg"):
+                continue
+            path = os.path.join(base, name)
+            for number, line in enumerate(read(path).split("\n"), 1):
+                if not RE_SMIL_LOOP.search(line):
+                    continue
+                for raw, unit in RE_SMIL_DUR.findall(line):
+                    seconds = float(raw) / (1000.0 if unit == "ms" else 1.0)
+                    if seconds < floor:
+                        err("%s:%d SMIL lặp %s%s quá nhanh (tối thiểu %gs)"
+                            % (rel(path), number, raw, unit, floor))
+
+
 # ---------------------------------------------------- 4bf. Không dùng emoji
 # Khoảng mã của emoji (pictograph) và ký hiệu một-màu. Dấu tick `✓` và dấu
 # chéo `✗` cố tình nằm ngoài: chúng là ký tự đánh dấu trong output terminal,
@@ -1520,6 +1549,7 @@ def main(argv=None):
     check_url_targets()
     check_keyframes()
     check_animation_pace()
+    check_smil_pace()
     check_doc_titles()
     check_svg_budget()
     check_svg_viewbox()
