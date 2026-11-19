@@ -1543,6 +1543,48 @@ class TestBadNumbersIgnoresComments(unittest.TestCase):
         check_repo.check_bad_numbers(self.tmp)
         self.assertTrue(any("NaN" in e for e in check_repo.errors))
 
+
+
+class TestNoGradeClaim(unittest.TestCase):
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="grade-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _file(self, name, body):
+        with open(os.path.join(self.tmp, name), "w", encoding="utf-8") as handle:
+            handle.write(body)
+
+    def test_vietnamese_variant_is_flagged(self):
+        self._file("README.md", "Mình là học sinh lớp 7.")
+        check_repo.check_no_grade_claim(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_uppercase_variant_is_flagged(self):
+        self._file("a.svg", "<text>LỚP 7</text>")
+        check_repo.check_no_grade_claim(self.tmp)
+        self.assertTrue(check_repo.errors)
+
+    def test_english_variant_is_flagged(self):
+        for body in ("Grade 7 student", "GRADE-7", "grade7"):
+            check_repo.errors = []
+            self._file("b.md", body)
+            check_repo.check_no_grade_claim(self.tmp)
+            self.assertTrue(check_repo.errors, body)
+
+    def test_other_numbers_are_fine(self):
+        self._file("c.md", "Cấp 2, lớp 8, 7 ngôn ngữ, UTC+7")
+        check_repo.check_no_grade_claim(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_real_repo_is_clean(self):
+        check_repo.check_no_grade_claim()
+        self.assertEqual(check_repo.errors, [])
+
 if __name__ == "__main__":
     unittest.main()
 
