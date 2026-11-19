@@ -57,6 +57,10 @@
                 transform-box: view-box; transform-origin: var(--cx) var(--cy); }
   /* Nét đứt chạy dọc theo chính nó: dùng cho đường trung bình, đường dóng */
   .dashFlow   { animation: dashFlow 2.6s linear infinite; }
+  /* Vệt sáng chạy ngang trong thanh xếp chồng (thẻ ngôn ngữ) */
+  .barSweep   { animation: barSweep 4.6s ease-in-out infinite; }
+  /* Icon nhích lên xuống 1.6px: đủ để mắt thấy sống, không đủ để phân tâm */
+  .bob        { animation: bob 4.8s ease-in-out infinite; }
   .wave       { animation: wave 14s linear infinite; }
   .wave2      { animation: wave 19s linear infinite reverse; }
 
@@ -76,13 +80,19 @@
                          88% { opacity: .55 } 100% { transform: translateY(300px); opacity: 0 } }
   @keyframes dashFlow  { to { stroke-dashoffset: -10 } }
   @keyframes wave      { to { transform: translateX(-500px) } }
+  @keyframes barSweep  { 0% { transform: translateX(0); opacity: 0 }
+                         12% { opacity: .5 }
+                         88% { opacity: .5 }
+                         100% { transform: translateX(760px); opacity: 0 } }
+  @keyframes bob       { 0%,100% { transform: translateY(0) }
+                         50% { transform: translateY(-1.6px) } }
 
   /* Ai bật "giảm chuyển động" trong hệ điều hành thì thấy ảnh tĩnh,
      vẫn đẹp và vẫn đủ thông tin — không phải hy sinh nội dung. */
   @media (prefers-reduced-motion: reduce) {
     .pulse, .pulseSlow, .blink, .spinSlow, .spinRev, .driftA, .driftB,
     .driftC, .floatY, .twinkle, .fadeUp, .growIn, .sheen, .scan, .spinDot,
-    .dashFlow,
+    .dashFlow, .barSweep, .bob,
     .liveHour text, .liveMin text,
     .secHand, .minHand, .hourHand, .wave, .wave2 { animation: none !important; }
   }
@@ -170,7 +180,7 @@
   <g class="fadeUp">
     <rect x="22" y="22" width="4" height="18" rx="2" fill="url(#accentGrad)"/>
     <text x="36" y="37" class="cardTitle">GITHUB STATS</text>
-    <text x="618" y="36" text-anchor="end" class="cardSub">CẬP NHẬT 19/11 · 19:26</text>
+    <text x="618" y="36" text-anchor="end" class="cardSub">CẬP NHẬT 19/11 · 19:34</text>
   </g>
   <g clip-path="url(#cardBody)">
     <rect x="0" y="-40" width="640" height="30" fill="url(#sheenGrad)" opacity=".26" class="scan" style="animation-duration:9s"/>
@@ -178,42 +188,54 @@
   <g class="fadeUp" style="animation-delay:0.08s">
     <rect x="22" y="62" width="180" height="50" rx="12" fill="#0B1B2B" stroke="#17334F" stroke-opacity=".85"/>
     <rect x="30" y="70" width="34" height="34" rx="10" fill="#38BDF8" fill-opacity=".14" stroke="#38BDF8" stroke-opacity=".45"/>
+    <g class="bob" style="animation-delay:-0.00s">
 <g transform="translate(37.5 77.5) scale(0.8)" fill="none" stroke="#7DD3FC" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.9l2.9 5.9 6.5.95-4.72 4.6 1.12 6.49L12 17.8l-5.8 3.04 1.12-6.49L2.6 9.75l6.5-.95z"/></g>
+    </g>
     <text x="74" y="89" class="tileValue">2</text>
     <text x="74" y="103" class="tileLabel">STARS</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.15s">
     <rect x="216" y="62" width="180" height="50" rx="12" fill="#0B1B2B" stroke="#17334F" stroke-opacity=".85"/>
     <rect x="224" y="70" width="34" height="34" rx="10" fill="#38BDF8" fill-opacity=".14" stroke="#38BDF8" stroke-opacity=".45"/>
+    <g class="bob" style="animation-delay:-0.60s">
 <g transform="translate(231.5 77.5) scale(0.8)" fill="none" stroke="#7DD3FC" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="5" r="2.4"/><circle cx="6" cy="19" r="2.4"/><circle cx="18" cy="7" r="2.4"/><path d="M6 7.4v9.2"/><path d="M18 9.4c0 4.2-4 4.6-8 5.4"/></g>
+    </g>
     <text x="268" y="89" class="tileValue">0</text>
     <text x="268" y="103" class="tileLabel">FORKS</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.22s">
     <rect x="22" y="120" width="180" height="50" rx="12" fill="#0B1B2B" stroke="#17334F" stroke-opacity=".85"/>
     <rect x="30" y="128" width="34" height="34" rx="10" fill="#38BDF8" fill-opacity=".14" stroke="#38BDF8" stroke-opacity=".45"/>
+    <g class="bob" style="animation-delay:-1.20s">
 <g transform="translate(37.5 135.5) scale(0.8)" fill="none" stroke="#7DD3FC" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4.4" y="4.4" width="15.2" height="15.2" rx="3"/><path d="M8.4 9h7.2"/><path d="M8.4 12.6h5"/></g>
+    </g>
     <text x="74" y="147" class="tileValue">2</text>
     <text x="74" y="161" class="tileLabel">REPOS</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.29s">
     <rect x="216" y="120" width="180" height="50" rx="12" fill="#0B1B2B" stroke="#17334F" stroke-opacity=".85"/>
     <rect x="224" y="128" width="34" height="34" rx="10" fill="#38BDF8" fill-opacity=".14" stroke="#38BDF8" stroke-opacity=".45"/>
+    <g class="bob" style="animation-delay:-1.80s">
 <g transform="translate(231.5 135.5) scale(0.8)" fill="none" stroke="#7DD3FC" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9.2" cy="8.4" r="3.1"/><circle cx="17.2" cy="9.8" r="2.3"/><path d="M3.4 19.2c.5-3.3 2.8-5.2 5.8-5.2s5.3 1.9 5.8 5.2"/><path d="M15.6 14.4c2.2.2 3.9 1.9 4.4 4.4"/></g>
+    </g>
     <text x="268" y="147" class="tileValue">3</text>
     <text x="268" y="161" class="tileLabel">FOLLOWERS</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.36s">
     <rect x="22" y="178" width="180" height="50" rx="12" fill="#0B1B2B" stroke="#17334F" stroke-opacity=".85"/>
     <rect x="30" y="186" width="34" height="34" rx="10" fill="#38BDF8" fill-opacity=".14" stroke="#38BDF8" stroke-opacity=".45"/>
+    <g class="bob" style="animation-delay:-2.40s">
 <g transform="translate(37.5 193.5) scale(0.8)" fill="none" stroke="#7DD3FC" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2.6 12S6.1 6.4 12 6.4 21.4 12 21.4 12 17.9 17.6 12 17.6 2.6 12 2.6 12z"/><circle cx="12" cy="12" r="2.7"/></g>
+    </g>
     <text x="74" y="205" class="tileValue">5</text>
     <text x="74" y="219" class="tileLabel">FOLLOWING</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.43s">
     <rect x="216" y="178" width="180" height="50" rx="12" fill="#0B1B2B" stroke="#17334F" stroke-opacity=".85"/>
     <rect x="224" y="186" width="34" height="34" rx="10" fill="#38BDF8" fill-opacity=".14" stroke="#38BDF8" stroke-opacity=".45"/>
+    <g class="bob" style="animation-delay:-3.00s">
 <g transform="translate(231.5 193.5) scale(0.8)" fill="none" stroke="#7DD3FC" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.5"/><path d="M2.4 12h6.1"/><path d="M15.5 12h6.1"/></g>
+    </g>
     <text x="268" y="205" class="tileValue">4.1k</text>
     <text x="268" y="219" class="tileLabel">COMMITS</text>
   </g>
