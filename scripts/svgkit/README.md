@@ -27,3 +27,10 @@ python3 scripts/generate_cards.py --demo --all --out /tmp/xem-thu
 - `LANG_COLORS` giữ mã màu chính thức của GitHub Linguist; `lang_color(name, i)` trả màu đã biết, ngôn ngữ lạ lấy màu từ `RAMP` theo thứ hạng.
 - `grade(stats)` → `("B+", 74)` để vẽ vòng rank.
 
+## `i18n.py`
+
+- `LANGS = ("vi", "en")`; mọi chuỗi nằm trong `STRINGS[lang]`.
+- `get("vi")` trả một `Translator`; gọi `t("hero.sub")` hoặc `t("stats.progress", pct=74)` — có `{}` format.
+- Khoá thiếu thì trả chính tên khoá (dễ thấy trong ảnh), không ném lỗi giữa workflow.
+- `t.weekday(3)` → `"Thứ Năm"` / `"Thursday"` cho dòng ngày của đồng hồ.
+
