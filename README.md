@@ -78,31 +78,31 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
   <tr>
     <td width="52"><b>🎨</b></td>
     <td><b>GitHub Profile 3D Contrib</b><br /><sub><code>.github/workflows/profile-3d.yml</code></sub></td>
-    <td width="300">Biểu đồ contribution khối 3D, 10 giao diện màu trong <code>profile-3d-contrib/</code>.</td>
-    <td width="180"><b>Mỗi ngày</b> 01:00 (giờ VN)</td>
+    <td width="300">Biểu đồ contribution khối 3D, 10 giao diện màu. Có cổng thông minh: chỉ vẽ lại khi phát hiện push mới.</td>
+    <td width="180"><b>Mỗi 5 phút</b> · <code>*/5 * * * *</code></td>
   </tr>
   <tr>
     <td><b>📊</b></td>
     <td><b>Profile Cards (LTS)</b><br /><sub><code>profile-cards.yml</code> + <code>scripts/generate_cards.py</code></sub></td>
-    <td>Vẽ <code>stats.svg</code>, <code>top-langs.svg</code>, <code>hero.svg</code> bằng dữ liệu thật từ API — token riêng của repo, không phụ thuộc dịch vụ ngoài.</td>
-    <td><b>Mỗi ngày</b> 08:00 (giờ VN)</td>
+    <td>Vẽ <code>stats.svg</code>, <code>top-langs.svg</code>, <code>hero.svg</code>, <code>activity.svg</code> bằng dữ liệu thật — token riêng của repo, không phụ thuộc dịch vụ ngoài.</td>
+    <td><b>Mỗi 30 phút</b> · <code>*/30 * * * *</code></td>
   </tr>
   <tr>
     <td><b>⏱️</b></td>
     <td><b>Live Clock — cập nhật theo phút</b><br /><sub><code>live-clock.yml</code></sub></td>
-    <td>Đồng hồ Việt Nam + tiến độ ngày, vẽ lại và commit <code>assets/live-clock.svg</code> mỗi <b>5 phút</b> (chu kỳ ngắn nhất GitHub Actions cho phép).</td>
+    <td>Đồng hồ Việt Nam + tiến độ ngày, tay kim chạy mượt bằng CSS nên <b>không bao giờ đứng</b>. Vẽ lại mỗi 5 phút (chu kỳ ngắn nhất GitHub cho phép).</td>
     <td><b>Mỗi 5 phút</b> · <code>*/5 * * * *</code></td>
   </tr>
   <tr>
     <td><b>🌱</b></td>
     <td><b>README Garden</b><br /><sub><code>readme-tend.yml</code></sub></td>
     <td>Cập nhật con dấu “lần cập nhật gần nhất” ở cuối trang và kiểm tra các thư mục ảnh còn đủ file.</td>
-    <td><b>Chủ nhật</b> 14:00 (giờ VN)</td>
+    <td><b>Mỗi 3 giờ</b> · <code>0 */3 * * *</code></td>
   </tr>
   <tr>
     <td><b>🩺</b></td>
     <td><b>Repo Health</b><br /><sub><code>health.yml</code> + <code>scripts/check_repo.py</code></sub></td>
-    <td>Kiểm tra tự động: SVG có hợp lệ, chữ có bị lỗi encoding, link nội bộ có chết, action có ghi rõ phiên bản — bắt lỗi trước khi bạn nhìn thấy.</td>
+    <td>105 unit test + kiểm tra SVG, ký tự hỏng, link chết, action thiếu phiên bản, và thử vẽ lại cả 6 bảng màu × 2 ngôn ngữ.</td>
     <td><b>Mỗi push / PR</b> + 06:00 (giờ VN)</td>
   </tr>
   <tr>
@@ -169,10 +169,10 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 <div align="center">
   <img src="./assets/stats.svg" width="48%" alt="Thẻ thống kê GitHub" /> <img src="./assets/top-langs.svg" width="48%" alt="Ngôn ngữ dùng nhiều nhất" />
   <br /><br />
-  <img src="./assets/live-clock.svg" width="80%" alt="Đồng hồ Việt Nam, cập nhật mỗi 5 phút" />
+  <img src="./assets/activity.svg" width="48%" alt="Hoạt động 14 ngày gần nhất" /> <img src="./assets/live-clock.svg" width="48%" alt="Đồng hồ Việt Nam, tay kim chạy liên tục" />
 </div>
 
-<sub>⏱️ Đồng hồ tự vẽ lại mỗi 5 phút bằng GitHub Actions. GitHub cache ảnh một lúc nên có thể chậm vài phút — đó là cache, không phải lỗi.</sub>
+<sub>⏱️ Cả hai thẻ tự vẽ lại bằng GitHub Actions; tay kim đồng hồ chạy bằng CSS nên luôn nhích. GitHub cache ảnh một lúc — chậm vài phút là cache, không phải lỗi.</sub>
 
 <div align="right"><a href="#top">🔝 &nbsp;Về đầu trang</a></div>
 
@@ -334,5 +334,5 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 </div>
 
 <div align="center">
-  <a href="#top">🔝 &nbsp;Về đầu trang</a>
+  <img src="./assets/footer.svg" width="100%" alt="Standardize Paradigm — hẹn gặp lại" />
 </div>
