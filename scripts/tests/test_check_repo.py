@@ -1585,6 +1585,52 @@ class TestNoGradeClaim(unittest.TestCase):
         check_repo.check_no_grade_claim()
         self.assertEqual(check_repo.errors, [])
 
+class TestNoEmoji(unittest.TestCase):
+    """Luật không emoji: chữ thuần ở mọi nơi, trừ dấu tick của terminal."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.tmp)
+
+    def _file(self, name, text):
+        path = os.path.join(self.tmp, name)
+        os.makedirs(os.path.dirname(path) or self.tmp, exist_ok=True)
+        with open(path, "w", encoding="utf-8") as handle:
+            handle.write(text)
+
+    def _run(self):
+        check_repo.errors = []
+        check_repo.check_no_emoji(root=self.tmp)
+        return list(check_repo.errors)
+
+    def test_clean_files_pass(self):
+        self._file("README.md", "# Chào\n\nChữ thuần, không hình.\n")
+        self._file("scripts/x.py", "print('ok')\n")
+        self.assertEqual(self._run(), [])
+
+    def test_emoji_in_markdown_is_reported(self):
+        self._file("README.md", "# Chào " + chr(0x1F331) + "\n")
+        errors = self._run()
+        self.assertEqual(len(errors), 1)
+        self.assertIn("README.md:1", errors[0])
+        self.assertIn("U+1F331", errors[0])
+
+    def test_emoji_in_workflow_is_reported(self):
+        self._file(".github/workflows/a.yml", "name: " + chr(0x1F4CA) + " Dash\n")
+        self.assertEqual(len(self._run()), 1)
+
+    def test_tick_and_cross_are_allowed(self):
+        self._file("x.py", "print(' ' + chr(0x2713) + ' ' + chr(0x2717))\n")
+        self.assertEqual(self._run(), [])
+
+    def test_variation_selector_counts(self):
+        self._file("a.svg", "<text>" + chr(0x23F1) + chr(0xFE0F) + "</text>\n")
+        self.assertEqual(len(self._run()), 1)
+
+    def test_empty_tree_passes(self):
+        self.assertEqual(self._run(), [])
+
+
 if __name__ == "__main__":
     unittest.main()
 
