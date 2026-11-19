@@ -1,4 +1,4 @@
-# 🏗️ Kiến trúc
+# Kiến trúc
 
 Trang này không có server. Mọi thứ là file tĩnh sinh ra bởi GitHub Actions rồi commit lại vào repo.
 
