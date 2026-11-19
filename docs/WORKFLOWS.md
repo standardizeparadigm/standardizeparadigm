@@ -22,7 +22,7 @@ Một câu hỏi duy nhất quyết định nhịp: **ảnh này đổi nhanh đ
 
 | Loại dữ liệu | Đổi khi nào | Nhịp hợp lý |
 | :-- | :-- | :-- |
-| Giờ, lời chào, tiến độ ngày | mỗi phút | `*/5` (sàn của GitHub) |
+| Giờ, lời chào, tiến độ ngày | mỗi phút | `*/5` (sàn của GitHub) — số phút tự nhảy bằng CSS |
 | Số contribution, biểu đồ 3D | khi bạn push hoặc sang ngày mới | 30 phút + cổng 24h |
 | Star, fork, ngôn ngữ | vài ngày một lần | 3 giờ |
 | Trạng thái workflow | mỗi khi có lượt chạy xong | 10 phút + `workflow_run` |
