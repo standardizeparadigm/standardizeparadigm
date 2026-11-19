@@ -51,3 +51,13 @@ Có ba lý do chính đáng:
 
 Nếu lệch cả tháng, có thể `GITHUB_TOKEN` hết quyền — xem log của workflow `Profile Cards`.
 
+## Muốn đổi tên hiển thị hoặc bảng màu?
+
+Không sửa file SVG. Sửa chỗ sinh ra nó:
+
+- Tên: biến `DISPLAY_NAME` trong `.github/workflows/profile-cards.yml`.
+- Bảng màu: thêm `--theme ocean` vào lệnh trong workflow (hoặc đổi `DEFAULT_THEME` trong `scripts/svgkit/palette.py`).
+- Ngôn ngữ: `--lang en`.
+
+Sau đó vào tab **Actions → Profile Cards → Run workflow**.
+
