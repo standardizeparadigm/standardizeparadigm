@@ -252,6 +252,56 @@ class TestRankLabel(unittest.TestCase):
         bigger = stats_card(get_palette(), {"followers": 47}, DT, i18n.get())
         self.assertNotEqual(small, bigger)
 
+
+
+class TestLangColours(unittest.TestCase):
+    """Màu từng ngôn ngữ: đúng bảng màu chính thức, và ổn định giữa các lần."""
+
+    def test_known_language_uses_its_brand_colour(self):
+        from svgkit.palette import LANG_COLORS
+        svg = langs_card(get_palette(), DATA, DT, i18n.get())
+        self.assertIn(LANG_COLORS["Python"], svg)
+
+    def test_unknown_language_falls_back_to_the_ramp(self):
+        svg = langs_card(get_palette(), {"langs": {"Klingon": 10, "Elvish": 5}},
+                         DT, i18n.get())
+        assert_valid_svg(self, svg, "langs-unknown")
+
+    def test_same_data_gives_identical_output(self):
+        first = langs_card(get_palette(), DATA, DT, i18n.get())
+        second = langs_card(get_palette(), DATA, DT, i18n.get())
+        self.assertEqual(first, second)
+
+    def test_ties_are_broken_the_same_way_every_time(self):
+        data = {"langs": {"Rust": 100, "Go": 100, "Zig": 100}}
+        first = langs_card(get_palette(), data, DT, i18n.get())
+        second = langs_card(get_palette(), data, DT, i18n.get())
+        self.assertEqual(first, second)
+
+    def test_single_language_fills_the_bar(self):
+        svg = langs_card(get_palette(), {"langs": {"Python": 1000}}, DT,
+                         i18n.get())
+        self.assertIn("100.0%", svg)
+
+
+class TestLangsLegend(unittest.TestCase):
+    def test_legend_lists_every_language(self):
+        svg = langs_card(get_palette(), DATA, DT, i18n.get())
+        for name in DATA["langs"]:
+            self.assertIn(name, svg)
+
+    def test_eighth_place_is_the_limit(self):
+        many = {"langs": {"L%d" % i: 100 - i for i in range(12)}}
+        svg = langs_card(get_palette(), many, DT, i18n.get())
+        self.assertIn("L7", svg)
+        self.assertNotIn("L8", svg)
+
+    def test_percentages_never_exceed_a_hundred(self):
+        svg = langs_card(get_palette(), DATA, DT, i18n.get())
+        values = [float(v) for v in re.findall(r">(\d+\.\d)%<", svg)]
+        self.assertTrue(values)
+        self.assertLessEqual(sum(values), 100.5)
+
 if __name__ == "__main__":
     unittest.main()
 
