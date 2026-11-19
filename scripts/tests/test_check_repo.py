@@ -1082,6 +1082,41 @@ class TestDocTitles(unittest.TestCase):
         finally:
             shutil.rmtree(empty, ignore_errors=True)
 
+
+
+class TestExitCode(unittest.TestCase):
+    """Mã thoát là thứ CI đọc — nó phải nói đúng."""
+
+    def _main(self, argv):
+        import contextlib
+        import io
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            code = check_repo.main(argv)
+        return code, out.getvalue()
+
+    def test_clean_tree_exits_zero(self):
+        code, text = self._main([])
+        self.assertEqual(code, 0)
+        self.assertIn("KẾT LUẬN: MỌI THỨ ỔN", text)
+
+    def test_help_exits_zero(self):
+        code, text = self._main(["--help"])
+        self.assertEqual(code, 0)
+        self.assertIn("Dùng:", text)
+
+    def test_main_clears_state_from_a_previous_run(self):
+        # Lỗi của lượt trước không được làm lượt này báo đỏ.
+        check_repo.errors.append("lỗi giả từ lượt trước")
+        code, text = self._main([])
+        self.assertEqual(code, 0)
+        self.assertNotIn("lỗi giả", text)
+
+    def test_summary_counts_are_reported(self):
+        code, text = self._main([])
+        self.assertIn("SVG", text)
+        self.assertIn("workflow", text)
+        self.assertIn("script Python", text)
 if __name__ == "__main__":
     unittest.main()
 
