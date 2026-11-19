@@ -98,7 +98,7 @@ python3 scripts/generate_cards.py --demo --all --out /tmp/xem-thu
 ### Cờ CLI đáng chú ý
 
 ```bash
---all / --cards / --hero / --clock / --activity   # chọn nhóm ảnh
+--all / --cards / --hero / --clock / --activity / --status   # chọn nhóm ảnh
 --demo                                            # dữ liệu mẫu, không gọi API
 --theme sky|emerald|violet|sunset|ocean|mono      # bảng màu
 --lang vi|en                                      # ngôn ngữ
