@@ -3,6 +3,10 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Icon lạ không còn để trống
+
+- `icon()` rơi về `spark` thay vì trả chuỗi rỗng — không bao giờ có ô trống trong thẻ vì gõ sai tên icon.
+
 ## 2026-11-19 — Thẻ chờ có `<desc>`
 
 - Trước đây thẻ tạm chỉ có `aria-label`; giờ có thêm mô tả nên trình đọc màn hình đọc được cả thẻ tạm.
