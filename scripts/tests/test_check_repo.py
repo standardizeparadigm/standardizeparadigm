@@ -1763,6 +1763,49 @@ class TestSmilPace(unittest.TestCase):
         self.assertEqual(self._run(), [])
 
 
+class TestPythonFences(unittest.TestCase):
+    """Ví dụ Python trong tài liệu phải biên dịch được."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.tmp)
+
+    def _doc(self, body, name="guide.md"):
+        with open(os.path.join(self.tmp, name), "w", encoding="utf-8") as fh:
+            fh.write(body)
+
+    def _run(self):
+        check_repo.errors = []
+        check_repo.check_python_fences(root=self.tmp)
+        return list(check_repo.errors)
+
+    def test_broken_example_is_reported(self):
+        self._doc("# t\n\n```python\ndef f(:\n    pass\n```\n")
+        errors = self._run()
+        self.assertEqual(len(errors), 1)
+        self.assertIn("guide.md:4", errors[0])
+
+    def test_good_example_passes(self):
+        self._doc("```python\nfor i in range(3):\n    print(i)\n```\n")
+        self.assertEqual(self._run(), [])
+
+    def test_short_alias_is_checked(self):
+        self._doc("```py\nfor i in range(3)\n    print(i)\n```\n")
+        self.assertEqual(len(self._run()), 1)
+
+    def test_interactive_session_is_skipped(self):
+        self._doc("```python\n>>> f(:\n```\n")
+        self.assertEqual(self._run(), [])
+
+    def test_other_languages_are_skipped(self):
+        self._doc("```bash\nfor f in *; do echo $f; done\n```\n")
+        self.assertEqual(self._run(), [])
+
+    def test_indented_fence_is_recognised(self):
+        self._doc("  ```python\n  def f(:\n  ```\n")
+        self.assertEqual(len(self._run()), 1)
+
+
 if __name__ == "__main__":
     unittest.main()
 
