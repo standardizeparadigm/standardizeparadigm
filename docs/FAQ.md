@@ -20,3 +20,15 @@ Nên trang này làm hai lớp:
 - **Lớp ảnh**: workflow kiểm tra mỗi 5 phút (đồng hồ, 3D) hoặc 10 phút (thẻ số liệu, có `--smart` để không commit rỗng).
 - **Lớp hoạt ảnh**: CSS/SMIL trong file SVG làm ảnh **luôn chuyển động** giữa hai lần cập nhật. Kim đồng hồ quay liên tục, không cần workflow nào cả.
 
+## Tốn bao nhiêu phút runner mỗi ngày?
+
+| Workflow | Lượt/ngày | Thời gian mỗi lượt | Tổng |
+| :-- | --: | --: | --: |
+| `live-clock` | 288 | ~15 giây | ~72 phút |
+| `profile-3d` | 288 (phần lớn bị cổng chặn) | ~8 giây khi bị chặn | ~40 phút + vài lượt vẽ thật |
+| `profile-cards` | 144 (phần lớn `--smart` bỏ qua) | ~20 giây | ~48 phút |
+| `readme-tend` | 8 | ~12 giây | ~2 phút |
+| `health` | 1 + mỗi push | ~40 giây | ~1 phút |
+
+Với repo công khai, phút runner miễn phí — nhưng vẫn giữ ở mức này để không bị coi là lạm dụng.
+
