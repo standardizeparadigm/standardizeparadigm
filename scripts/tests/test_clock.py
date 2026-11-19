@@ -190,6 +190,40 @@ class TestLiveTimeSlots(unittest.TestCase):
         values = RE_HOUR_SLOT.findall(self.svg)
         self.assertEqual(values, ["%02d" % v for v in range(24)])
 
+
+
+class TestLiveSlotTiming(unittest.TestCase):
+    """Độ trễ phải đúng: ô hiện tại bắt đầu ngay, ô kế tiếp đúng 60 giây sau.
+
+    Sai công thức thì đồng hồ chạy nhưng lệch — kiểu lỗi tệ nhất vì nó
+    *trông* đúng."""
+
+    def setUp(self):
+        self.svg = clock_card(get_palette(), DT, i18n.get("vi"))   # 15:04:05
+
+    def _delay(self, x, value):
+        found = re.search(r'class="clockTime[^"]*" x="%d"[^>]*'
+                          r'animation-delay:(-?[\d.]+)s">%s<'
+                          % (x, value), self.svg)
+        self.assertIsNotNone(found, "không thấy ô %s" % value)
+        return float(found.group(1))
+
+    def test_current_minute_starts_immediately(self):
+        # 5 giây đã trôi qua trong phút hiện tại -> độ trễ âm đúng 5 giây
+        self.assertEqual(self._delay(324, "04"), -5.0)
+
+    def test_next_minute_waits_until_the_minute_turns(self):
+        self.assertEqual(self._delay(324, "05"), 55.0)
+
+    def test_minute_slots_cover_the_full_hour(self):
+        self.assertEqual(self._delay(324, "03"), 59 * 60 - 5)
+
+    def test_current_hour_starts_immediately(self):
+        self.assertEqual(self._delay(308, "15"), -(4 * 60 + 5))
+
+    def test_next_hour_waits_out_the_rest_of_this_one(self):
+        self.assertEqual(self._delay(308, "16"), 3600 - (4 * 60 + 5))
+
 if __name__ == "__main__":
     unittest.main()
 
