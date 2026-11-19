@@ -1213,6 +1213,78 @@ class TestCronCollisions(unittest.TestCase):
         check_repo.check_cron_minute_collisions()
         self.assertEqual([w for w in check_repo.warnings if "cùng chạy" in w], [])
 
+
+
+class TestDuplicateIds(unittest.TestCase):
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="ids-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _svg(self, body):
+        with open(os.path.join(self.tmp, "assets", "a.svg"), "w",
+                  encoding="utf-8") as handle:
+            handle.write(body)
+
+    def test_unique_ids_pass(self):
+        self._svg('<defs><linearGradient id="a"/><linearGradient id="b"/></defs>')
+        check_repo.check_duplicate_ids(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_double_id_is_reported_once(self):
+        self._svg('<circle id="halo"/><ellipse id="halo"/>')
+        check_repo.check_duplicate_ids(self.tmp)
+        self.assertEqual(len(check_repo.errors), 1)
+        self.assertIn("'halo'", check_repo.errors[0])
+
+
+class TestClassReferences(unittest.TestCase):
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="cls-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _svg(self, body):
+        with open(os.path.join(self.tmp, "assets", "a.svg"), "w",
+                  encoding="utf-8") as handle:
+            handle.write(body)
+
+    def test_defined_class_passes(self):
+        self._svg('<style>.pulse { animation: p 1s }</style>'
+                  '<circle class="pulse"/>')
+        check_repo.check_class_references(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_descendant_selector_counts(self):
+        self._svg('<style>.liveHour text { opacity: 0 }</style>'
+                  '<g class="liveHour"><text>x</text></g>')
+        check_repo.check_class_references(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_unknown_class_is_reported(self):
+        self._svg('<style>.pulse { animation: p 1s }</style>'
+                  '<circle class="pulse pulse-typo"/>')
+        check_repo.check_class_references(self.tmp)
+        self.assertTrue(any("pulse-typo" in e for e in check_repo.errors))
+
+    def test_smil_only_class_is_exempt(self):
+        self._svg('<style>.smilOnly { display: none }</style>'
+                  '<circle class="dust smilOnly"/>')
+        check_repo.check_class_references(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_real_assets_pass(self):
+        check_repo.check_class_references()
+        self.assertEqual(check_repo.errors, [])
+
 if __name__ == "__main__":
     unittest.main()
 
