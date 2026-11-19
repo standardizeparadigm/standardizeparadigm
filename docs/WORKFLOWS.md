@@ -25,7 +25,8 @@ Biểu đồ contribution dạng khối 3D, lưu vào `profile-3d-contrib/`.
 
 - **File ảnh:** `profile-3d-contrib/profile-night-rainbow.svg` (và 9 giao diện khác)
 - **Chạy:** `*/5 * * * *` (mỗi 5 phút) · `workflow_dispatch` · khi sửa chính file workflow.
-- **Cổng thông minh:** mỗi lượt, một bước shell so *lần chạy thành công gần nhất* với *PushEvent* trên GitHub. Có push mới, hoặc đã quá 24 giờ → vẽ lại; còn lại → thoát trong vài giây để không đốt hàng giờ runner mỗi ngày.
+- **Cổng thông minh:** mỗi lượt, một bước shell so *lần ảnh 3D thật sự đổi* (`git log -1 -- profile-3d-contrib`) với *PushEvent* trên GitHub. Có push mới, hoặc đã quá 24 giờ → vẽ lại; còn lại → thoát trong vài giây để không đốt hàng giờ runner mỗi ngày.
+- Vì sao không so theo "lần chạy gần nhất": một lượt bị cổng bỏ qua **vẫn tính là chạy thành công**, nên mốc 24 giờ sẽ không bao giờ tới và ảnh sẽ đứng im mãi. So theo `git log` là đo đúng thứ cần đo.
 - **Chống lỗi:** SVG sinh ra được parse XML trước khi commit; bỏ qua commit của bot để không lặp vô hạn.
 
 ## 2. Profile Cards (LTS) — `profile-cards.yml` + `scripts/generate_cards.py`
