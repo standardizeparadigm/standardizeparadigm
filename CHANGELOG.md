@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — CONTRIBUTING: nhắc không sửa tay SVG
+
+- `assets/*.svg` do máy sinh; sửa tay sẽ bị lượt workflow kế tiếp ghi đè.
+- Thêm lệnh chạy bộ test ngay trên máy.
+
 ## 2026-11-19 — README ngắn hơn, nhiều hình hơn
 
 - Thêm thẻ hoạt động và chân trang, nhưng số dòng vẫn giữ nguyên — chỗ mới lấy từ chỗ cũ rút gọn.
