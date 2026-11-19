@@ -246,17 +246,25 @@ def defs_block(pal):
     return _fill(DEFS, pal)
 
 
-def open_svg(pal, width, height, label, halo=True, radius=18):
+def open_svg(pal, width, height, label, desc=None, halo=True, radius=18):
     """Mở thẻ: SVG + CSS + defs + nền + viền gradient.
 
     Kèm clipPath "cardBody" để mọi lớp trang trí (quầng sáng, sóng, sao)
     không tràn ra ngoài bốn góc bo tròn.
+
+    `label` vào cả `aria-label` lẫn `<title>`; `desc` (nếu có) thành
+    `<desc>` — trình đọc màn hình đọc đúng nội dung thay vì "graphic".
     """
     parts = [
         '<svg width="%d" height="%d" viewBox="0 0 %d %d" '
         'xmlns="http://www.w3.org/2000/svg" role="img" aria-label="%s" '
         'preserveAspectRatio="xMidYMid meet">'
         % (width, height, width, height, esc(label)),
+        '  <title>%s</title>' % esc(label),
+    ]
+    if desc:
+        parts.append('  <desc>%s</desc>' % esc(desc))
+    parts += [
         css_block(pal),
         defs_block(pal),
         '  <clipPath id="cardBody"><rect x="0" y="0" width="%d" height="%d" '
