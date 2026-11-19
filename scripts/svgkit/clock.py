@@ -298,6 +298,16 @@ def clock_card(pal, dt, t, width=640, height=258):
     parts.append('    <circle cx="%.1f" cy="216" r="5" fill="%s" '
                  'filter="url(#glow)" class="pulse"/>'
                  % (px + bar_w * done / 100.0, pal.accent3))
+    # Quầng lan ra từ đầu thanh: một nhịp thở chậm cho biết "chỗ này đang
+    # tiến", khác hẳn chấm sáng đứng yên của một ảnh tĩnh.
+    parts.append('    <circle cx="%.1f" cy="216" r="6" fill="none" stroke="%s" '
+                 'stroke-width="1.4" opacity="0">'
+                 % (px + bar_w * done / 100.0, pal.accent3))
+    parts.append('      <animate attributeName="r" values="6;17" dur="2.9s" '
+                 'begin=".6s" repeatCount="indefinite"/>')
+    parts.append('      <animate attributeName="opacity" values=".65;0" '
+                 'dur="2.9s" begin=".6s" repeatCount="indefinite"/>')
+    parts.append('    </circle>')
     parts.append('  </g>')
 
     parts.append('  <g class="fadeUp" style="animation-delay:.5s">')
