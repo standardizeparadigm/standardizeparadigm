@@ -3,6 +3,25 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Bốn luật mới bắt những lỗi không ai báo
+
+- **`id` trùng trong một ảnh**: `url(#halo)` chỉ trỏ tới phần tử đầu tiên,
+  bản sao thứ hai lặng lẽ mất hiệu ứng.
+- **Lớp CSS không tồn tại**: `class="pulse-typo"` không làm ảnh hỏng, chỉ
+  đứng im — và mắt người không phân biệt được với "ảnh tĩnh".
+- **`url(#x)` trỏ hụt**: `filter="url(#gloww)"` khiến trình duyệt bỏ qua
+  thuộc tính và vẽ nét sắc thay vì nét phát sáng.
+- **Keyframe lẻ**: khai báo mà không dùng là byte chết; dùng mà không khai
+  báo là hoạt ảnh câm.
+- **Số không hợp lệ**: `d="MNaN 12"` là XML hợp lệ, trình duyệt bỏ cả phần
+  tử, ảnh chỉ mất một nét.
+
+## 2026-11-19 — Mỗi workflow một phút riêng
+
+`:13` cho thẻ số liệu, `:23` cho README, `:07`/`:37` cho biểu đồ 3D — không
+job nào chạm phút của job khác nên không phải rebase rồi đẩy lại. `check_repo.py`
+cảnh báo nếu sau này có lịch mới rơi vào phút đã có người giữ.
+
 ## 2026-11-19 — Chữ trong ảnh hiện đúng ở mọi trình vẽ, không chỉ trình duyệt
 
 - CSS trong ảnh dùng `font: 800 54px Arial` — cú pháp hợp lệ, trình duyệt hiểu
