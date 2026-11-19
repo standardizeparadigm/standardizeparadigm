@@ -83,6 +83,23 @@ dấu em dash và dấu giữa (`·`) đi qua nguyên vẹn, và điều đó đ
 Chạy hai lần liên tiếp thì lần thứ hai không sửa gì — nếu không, workflow sẽ
 tự đẩy một commit mỗi 5 phút.
 
+## Muốn thêm một luật mới thì làm ở đâu?
+
+Ba bước, theo đúng thứ tự:
+
+1. Viết hàm `check_…()` trong `scripts/check_repo.py`, gọi `err()` khi sai và
+   `warn()` khi chỉ đáng nhắc. Hàm nhận `root=None` để test được trên thư mục
+   tạm thay vì repo thật.
+2. Gọi nó trong `main()`, **ngay sau** hàm liên quan — để thứ tự đọc báo lỗi
+   khớp thứ tự trong đầu người sửa.
+3. Thêm một lớp vào `scripts/tests/test_check_repo.py`: một ca sạch phải im,
+   một ca hỏng phải báo. Không có ca sạch thì luật dễ báo sai; không có ca
+   hỏng thì luật có thể đã chết từ lâu mà không ai biết.
+
+Nếu luật áp cho cả repo (không chỉ thư mục tạm), thêm một dòng nữa vào
+`TestNewLawsOnRealRepo` trong `test_repo_workflows.py` — để sai quy ước là đỏ
+ngay trên máy, không phải đợi CI.
+
 ## Để tab mở qua đêm thì ảnh có còn đúng không?
 
 Tuỳ phần:
