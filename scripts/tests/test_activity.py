@@ -84,6 +84,21 @@ class TestActivityTimezone(unittest.TestCase):
         self.assertIn("19/11 · 16:00", svg)
 
 
+class TestTodayHalo(unittest.TestCase):
+    """Cột hôm nay có vòng thở phía sau chấm sáng."""
+
+    def setUp(self):
+        self.svg = activity_card(get_palette(), CONTRIB, DT, i18n.get("vi"))
+
+    def test_halo_ring_present(self):
+        self.assertIn('r="11" fill="none"', self.svg)
+        self.assertIn('class="pulseSlow"', self.svg)
+
+    def test_dot_has_glow(self):
+        self.assertIn('r="3.4" fill="', self.svg)
+        self.assertIn('filter="url(#glow)"', self.svg)
+
+
 if __name__ == "__main__":
     unittest.main()
 

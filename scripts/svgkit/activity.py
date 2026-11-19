@@ -117,8 +117,13 @@ def activity_card(pal, contrib, dt, t, width=640, height=258):
                          % (baseline, baseline - bar_h, delay))
         parts.append('    </rect>')
         if is_today:
+            # Hai lớp: vòng thở rộng phía sau + chấm sáng phía trước.
+            parts.append('    <circle cx="%.1f" cy="%.1f" r="11" fill="none" '
+                         'stroke="%s" stroke-opacity=".45" class="pulseSlow"/>'
+                         % (cx, baseline - bar_h - 10, pal.accent3))
             parts.append('    <circle cx="%.1f" cy="%.1f" r="3.4" fill="%s" '
-                         'class="pulse"/>' % (cx, baseline - bar_h - 10, pal.accent3))
+                         'filter="url(#glow)" class="pulse"/>'
+                         % (cx, baseline - bar_h - 10, pal.accent3))
         parts.append('  </g>')
         # nhãn thứ
         try:
