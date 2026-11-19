@@ -47,7 +47,7 @@ import tempfile
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from svgkit import (activity_card, api, clock_card, divider, footer, hero,  # noqa: E402
-                    i18n, langs_card, stats_card, waiting_card)
+                    i18n, langs_card, stats_card, status_strip, waiting_card)
 from svgkit.palette import THEMES, get_palette  # noqa: E402
 
 OUT_DIR = os.environ.get("OUT_DIR", "assets")
@@ -57,6 +57,7 @@ USER = (os.environ.get("GH_USER")
         or "")
 TOKEN = os.environ.get("GITHUB_TOKEN", "")
 DISPLAY_NAME = os.environ.get("DISPLAY_NAME", "")
+REPO = os.environ.get("GITHUB_REPOSITORY", "standardizeparadigm/standardizeparadigm")
 
 BAD_USER = (
     "\n!! KHÔNG BIẾT VẼ THẺ CHO AI\n"
@@ -155,6 +156,13 @@ def demo_data():
     }
 
 
+def status_demo_rows():
+    """Trạng thái mẫu cho --demo: đủ 5 loại để xem màu."""
+    return [("3D CONTRIB", "passing"), ("STATS CARDS", "passing"),
+            ("LIVE CLOCK", "running"), ("README GARDEN", "passing"),
+            ("HEALTH", "failing"), ("WELCOME", "none"), ("STATUS", "passing")]
+
+
 def demo_contrib(dt):
     """Dữ liệu contribution giả nhưng ổn định, đủ để xem thử bố cục."""
     from datetime import date, timedelta
@@ -181,6 +189,8 @@ def parse_args(argv=None):
     parser.add_argument("--hero", action="store_true", help="hero + divider + footer")
     parser.add_argument("--clock", action="store_true", help="đồng hồ")
     parser.add_argument("--activity", action="store_true", help="thẻ hoạt động")
+    parser.add_argument("--status", action="store_true",
+                        help="dải trạng thái các workflow")
     parser.add_argument("--placeholder", action="store_true", help="thẻ chờ dữ liệu")
     parser.add_argument("--demo", action="store_true", help="dùng dữ liệu mẫu")
     parser.add_argument("--strict", action="store_true",
@@ -260,7 +270,8 @@ def main(argv=None):
     if args.user:
         USER = args.user
 
-    selected = args.cards or args.hero or args.clock or args.activity
+    selected = (args.cards or args.hero or args.clock or args.activity
+                or args.status)
     want_all = args.all or not selected
 
     palette = get_palette(args.theme)
@@ -324,6 +335,15 @@ def main(argv=None):
         else:
             say("  (bỏ qua) không có dữ liệu contribution — giữ nguyên ảnh cũ")
             status = status or (1 if args.strict else 0)
+
+    if want_all or args.status:
+        if args.demo:
+            rows = status_demo_rows()
+        else:
+            owner, _, repo = REPO.partition("/")
+            rows = api.workflow_states(owner, repo, TOKEN)
+        write("status.svg", status_strip(palette, rows, dt, translator),
+              data_hash({"status": rows}))
 
     return status
 
