@@ -1041,6 +1041,35 @@ def check_cron_resolution(root=None):
                     % (rel(path), expression))
 
 
+# ------------------------ 4b6a. Danh sách workflow trên ảnh phải là thật
+def status_workflows(root=None):
+    """[(file.yml, tên_ngắn), ...] đọc từ svgkit/status.py."""
+    path = os.path.join(root or ROOT, "scripts", "svgkit", "status.py")
+    if not os.path.exists(path):
+        return []
+    block = read(path).split("WORKFLOWS = [", 1)[-1].split("]", 1)[0]
+    return re.findall(r'\(\s*"([^"]+)"\s*,\s*"([^"]+)"\s*\)', block)
+
+
+def check_status_workflow_list(root=None):
+    """Dải trạng thái chỉ được kể tên workflow có thật.
+
+    `status.WORKFLOWS` là danh sách viết tay. Xoá hay đổi tên một workflow mà
+    quên sửa danh sách thì dải sẽ hiện một viên "CHỜ MERGE" mãi mãi — API trả
+    404, ảnh vẫn đẹp, chỉ sai.
+    """
+    root = root or ROOT
+    folder = os.path.join(root, ".github", "workflows")
+    if not os.path.isdir(folder):
+        return
+    real = {name for name in os.listdir(folder)
+            if name.endswith((".yml", ".yaml"))}
+    for filename, short in status_workflows(root):
+        if filename not in real:
+            err("dải trạng thái liệt kê %r (%s) nhưng file đó không tồn tại"
+                % (short, filename))
+
+
 # ----------------------------------- 4b6b. Hai workflow không chạy cùng phút
 def _cron_minutes(field):
     """Tập phút (0-59) mà trường cron phút sẽ nổ. None nếu không hiểu."""
@@ -1350,6 +1379,7 @@ def main(argv=None):
     check_shields_workflow_badges()
     check_cron_resolution()
     check_cron_minute_collisions()
+    check_status_workflow_list()
     check_action_pins()
     check_heading_levels()
     check_job_timeouts()
