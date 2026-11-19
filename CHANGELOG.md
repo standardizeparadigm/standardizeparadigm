@@ -57,6 +57,16 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
   LỖI: đứng yên (lỗi cần thấy ngay, không cần thu hút) · chưa chạy: không vòng.
 - Viên thuốc hiện lần lượt cách nhau 60ms, vệt sáng quét ngang cả dải.
 
+## 2026-11-19 — Thêm hoạt ảnh ở bốn ảnh cũ
+
+- `stats.svg`: hạt sáng bay quanh vành rank (22s/vòng) + vệt quét dọc thẻ.
+- `top-langs.svg`: mỗi đoạn thanh "thở" nhịp riêng (fill-opacity 1→.82→1).
+- `activity.svg`: đường trung bình chạy nét đứt (`dashFlow`).
+- `divider.svg`: hạt sáng chạy dọc đường kẻ + hai chấm thở ngược pha.
+- `footer.svg`: năm ngôi sao nhấp nháy ở nửa trên.
+- `hero.svg`: làn quét thứ hai, 12.5s, lệch pha 4.2s.
+- `live-clock.svg`: 12 vạch giờ sáng lần lượt như đèn chạy, 6s/vòng.
+
 ## 2026-11-19 — Cổng 3D: sửa lỗi mốc 24 giờ không bao giờ tới
 
 - Cổng so "lần chạy thành công gần nhất", nhưng lượt bị cổng bỏ qua **vẫn** là lượt thành công → mốc 24 giờ không bao giờ đạt được, ảnh chỉ đổi khi có push.
