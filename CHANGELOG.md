@@ -3,6 +3,16 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Hero cũng tôn trọng "giảm chuyển động"
+
+- 14 hạt bụi (mỗi hạt hai `<animate>`), hai vòng lan toả quanh lõi và vệt
+  sáng quét chữ đều là SMIL — CSS không tắt được, nên người bật giảm chuyển
+  động vẫn thấy hero động đùng đùng trong khi mọi thứ khác đứng yên.
+- Cách sửa: class `smilOnly` + một thẻ `<style>` ẩn chúng. Hạt bụi và vòng
+  lan toả là trang trí thuần; tiêu đề, chip, sóng nền vẫn đủ.
+- Test cũ cấm mọi dấu `@` trong thân SVG để bắt token palette chưa thay —
+  giờ kiểm đúng tên token, vì `@media` là dấu `@` hợp lệ.
+
 ## 2026-11-19 — Luật thứ mười ba: dấu merge còn sót
 
 - Vừa merge `main` vào nhánh PR (bot trên main ghi lại `stats.svg` và
