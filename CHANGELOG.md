@@ -3,6 +3,10 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Divider: tia sáng thứ hai
+
+- Thêm một tia mảnh, mờ hơn, chạy ngược chiều 13 giây/lần — đường kẻ có chiều sâu hơn.
+
 ## 2026-11-19 — Activity: đường trung bình 14 ngày
 
 - Đường nét đứt màu nhấn, kèm nhãn `TB 196` ở góc trái — chỉ hiện khi dữ liệu có chênh lệch thật.
