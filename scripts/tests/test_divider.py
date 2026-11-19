@@ -41,3 +41,15 @@ class TestFooter(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestMotion(unittest.TestCase):
+    def test_two_sparks_travel_both_ways(self):
+        svg = divider(get_palette())
+        self.assertIn('values="-120;1020"', svg)
+        self.assertIn('values="1020;-120"', svg)
+
+    def test_footer_has_bubbles(self):
+        svg = footer(get_palette(), i18n.get("vi"))
+        self.assertEqual(svg.count('class="bubble"'), 6)
+        self.assertIn('values="0;.55;0"', svg)

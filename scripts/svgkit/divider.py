@@ -98,6 +98,20 @@ def footer(pal, t, width=1000, height=200):
     parts.append('    <g transform="translate(-%d 0)"><g class="wave2">'
                  '<path d="%s" fill="url(#accentGrad)" opacity=".22"/></g></g>'
                  % (period, fill2))
+    parts.append('    <ellipse cx="500" cy="58" rx="230" ry="70" '
+                 'fill="url(#halo)" opacity=".5" class="pulseSlow"/>')
+    for index, (bx, delay, size) in enumerate(
+            ((120, 0.0, 3.2), (250, -1.6, 2.2), (410, -3.1, 2.8),
+             (610, -0.8, 2.0), (760, -2.4, 3.6), (880, -4.2, 2.4))):
+        parts.append('    <circle cx="%d" cy="%d" r="%.1f" fill="%s" opacity="0" '
+                     'class="bubble">'
+                     '<animate attributeName="cy" values="%d;%d" dur="11s" '
+                     'begin="%.1fs" repeatCount="indefinite"/>'
+                     '<animate attributeName="opacity" values="0;.55;0" dur="11s" '
+                     'begin="%.1fs" repeatCount="indefinite"/>'
+                     '</circle>'
+                     % (bx, 186 - index * 3, size, pal.accent3,
+                        190 - index * 3, 96 - index * 4, delay, delay))
     parts.append('  </g>')
     parts += [
         '  <g class="fadeUp">',

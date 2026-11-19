@@ -216,20 +216,20 @@
   <circle cx="197" cy="31" r="1.7" fill="#E8F4FF" class="twinkle" style="animation-delay:-0.3s"/>
   <circle cx="391" cy="234" r="1.4" fill="#7DD3FC" class="twinkle" style="animation-delay:-0.1s"/>
   <g>
-    <circle cx="225" cy="60" r="1.2" fill="#38BDF8" opacity="0"><animate attributeName="cy" values="66;21" dur="9.6s" begin="-1.3s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="9.6s" begin="-1.3s" repeatCount="indefinite"/></circle>
-    <circle cx="219" cy="220" r="1.8" fill="#7DD3FC" opacity="0"><animate attributeName="cy" values="226;193" dur="10.1s" begin="-5.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="10.1s" begin="-5.5s" repeatCount="indefinite"/></circle>
-    <circle cx="148" cy="96" r="1.6" fill="#7DD3FC" opacity="0"><animate attributeName="cy" values="102;56" dur="12.2s" begin="-2.1s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="12.2s" begin="-2.1s" repeatCount="indefinite"/></circle>
-    <circle cx="155" cy="151" r="1.3" fill="#7DD3FC" opacity="0"><animate attributeName="cy" values="157;132" dur="12.6s" begin="-5.3s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="12.6s" begin="-5.3s" repeatCount="indefinite"/></circle>
-    <circle cx="194" cy="111" r="1.2" fill="#38BDF8" opacity="0"><animate attributeName="cy" values="117;73" dur="12.4s" begin="-4.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="12.4s" begin="-4.8s" repeatCount="indefinite"/></circle>
-    <circle cx="64" cy="140" r="1.8" fill="#7DD3FC" opacity="0"><animate attributeName="cy" values="146;103" dur="9.8s" begin="-2.1s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="9.8s" begin="-2.1s" repeatCount="indefinite"/></circle>
-    <circle cx="59" cy="148" r="2.0" fill="#7DD3FC" opacity="0"><animate attributeName="cy" values="154;112" dur="8.8s" begin="-2.7s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="8.8s" begin="-2.7s" repeatCount="indefinite"/></circle>
-    <circle cx="121" cy="62" r="2.0" fill="#38BDF8" opacity="0"><animate attributeName="cy" values="68;41" dur="8.3s" begin="-6.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="8.3s" begin="-6.4s" repeatCount="indefinite"/></circle>
-    <circle cx="44" cy="89" r="1.7" fill="#7DD3FC" opacity="0"><animate attributeName="cy" values="95;54" dur="8.3s" begin="-5.7s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="8.3s" begin="-5.7s" repeatCount="indefinite"/></circle>
-    <circle cx="929" cy="50" r="1.5" fill="#38BDF8" opacity="0"><animate attributeName="cy" values="56;23" dur="9.7s" begin="-4.1s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="9.7s" begin="-4.1s" repeatCount="indefinite"/></circle>
-    <circle cx="82" cy="186" r="2.1" fill="#7DD3FC" opacity="0"><animate attributeName="cy" values="192;160" dur="9.5s" begin="-8.9s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="9.5s" begin="-8.9s" repeatCount="indefinite"/></circle>
-    <circle cx="180" cy="208" r="2.1" fill="#38BDF8" opacity="0"><animate attributeName="cy" values="214;185" dur="13.0s" begin="-3.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="13.0s" begin="-3.8s" repeatCount="indefinite"/></circle>
-    <circle cx="117" cy="118" r="1.1" fill="#7DD3FC" opacity="0"><animate attributeName="cy" values="124;84" dur="9.4s" begin="-3.9s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="9.4s" begin="-3.9s" repeatCount="indefinite"/></circle>
-    <circle cx="223" cy="203" r="1.1" fill="#7DD3FC" opacity="0"><animate attributeName="cy" values="209;179" dur="10.3s" begin="-5.6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="10.3s" begin="-5.6s" repeatCount="indefinite"/></circle>
+    <circle cx="225" cy="60" r="1.2" fill="#38BDF8" opacity="0" class="dust"><animate attributeName="cy" values="66;21" dur="9.6s" begin="-1.3s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="9.6s" begin="-1.3s" repeatCount="indefinite"/></circle>
+    <circle cx="219" cy="220" r="1.8" fill="#7DD3FC" opacity="0" class="dust"><animate attributeName="cy" values="226;193" dur="10.1s" begin="-5.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="10.1s" begin="-5.5s" repeatCount="indefinite"/></circle>
+    <circle cx="148" cy="96" r="1.6" fill="#7DD3FC" opacity="0" class="dust"><animate attributeName="cy" values="102;56" dur="12.2s" begin="-2.1s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="12.2s" begin="-2.1s" repeatCount="indefinite"/></circle>
+    <circle cx="155" cy="151" r="1.3" fill="#7DD3FC" opacity="0" class="dust"><animate attributeName="cy" values="157;132" dur="12.6s" begin="-5.3s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="12.6s" begin="-5.3s" repeatCount="indefinite"/></circle>
+    <circle cx="194" cy="111" r="1.2" fill="#38BDF8" opacity="0" class="dust"><animate attributeName="cy" values="117;73" dur="12.4s" begin="-4.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="12.4s" begin="-4.8s" repeatCount="indefinite"/></circle>
+    <circle cx="64" cy="140" r="1.8" fill="#7DD3FC" opacity="0" class="dust"><animate attributeName="cy" values="146;103" dur="9.8s" begin="-2.1s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="9.8s" begin="-2.1s" repeatCount="indefinite"/></circle>
+    <circle cx="59" cy="148" r="2.0" fill="#7DD3FC" opacity="0" class="dust"><animate attributeName="cy" values="154;112" dur="8.8s" begin="-2.7s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="8.8s" begin="-2.7s" repeatCount="indefinite"/></circle>
+    <circle cx="121" cy="62" r="2.0" fill="#38BDF8" opacity="0" class="dust"><animate attributeName="cy" values="68;41" dur="8.3s" begin="-6.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="8.3s" begin="-6.4s" repeatCount="indefinite"/></circle>
+    <circle cx="44" cy="89" r="1.7" fill="#7DD3FC" opacity="0" class="dust"><animate attributeName="cy" values="95;54" dur="8.3s" begin="-5.7s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="8.3s" begin="-5.7s" repeatCount="indefinite"/></circle>
+    <circle cx="929" cy="50" r="1.5" fill="#38BDF8" opacity="0" class="dust"><animate attributeName="cy" values="56;23" dur="9.7s" begin="-4.1s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="9.7s" begin="-4.1s" repeatCount="indefinite"/></circle>
+    <circle cx="82" cy="186" r="2.1" fill="#7DD3FC" opacity="0" class="dust"><animate attributeName="cy" values="192;160" dur="9.5s" begin="-8.9s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="9.5s" begin="-8.9s" repeatCount="indefinite"/></circle>
+    <circle cx="180" cy="208" r="2.1" fill="#38BDF8" opacity="0" class="dust"><animate attributeName="cy" values="214;185" dur="13.0s" begin="-3.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="13.0s" begin="-3.8s" repeatCount="indefinite"/></circle>
+    <circle cx="117" cy="118" r="1.1" fill="#7DD3FC" opacity="0" class="dust"><animate attributeName="cy" values="124;84" dur="9.4s" begin="-3.9s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="9.4s" begin="-3.9s" repeatCount="indefinite"/></circle>
+    <circle cx="223" cy="203" r="1.1" fill="#7DD3FC" opacity="0" class="dust"><animate attributeName="cy" values="209;179" dur="10.3s" begin="-5.6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.7;0" dur="10.3s" begin="-5.6s" repeatCount="indefinite"/></circle>
   </g>
   <g>
     <circle cx="148" cy="140" r="86" fill="url(#halo)" opacity=".9"/>
@@ -278,7 +278,7 @@
     <rect x="272" y="202" width="2" height="18" rx="1" fill="#38BDF8" class="blink"/>
   </g>
   <text x="966" y="256" text-anchor="end" class="heroHint">keep learning · keep building · stay curious</text>
-  <text x="252" y="256" class="heroHint">~/standardizeparadigm · 19/11 · 15:32</text>
+  <text x="252" y="256" class="heroHint">~/standardizeparadigm · 19/11 · 15:35</text>
   <rect x="30" y="270" width="940" height="3" rx="1.5" fill="url(#accentGrad)" opacity=".55" class="pulseSlow"/>
-<!-- data:14168bef51b1 -->
+<!-- data:1a8a095ae3db -->
 </svg>

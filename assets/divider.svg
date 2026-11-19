@@ -18,6 +18,9 @@
   <rect x="-120" y="11.4" width="120" height="2.8" fill="url(#sparkLine)" filter="url(#dGlow)">
     <animate attributeName="x" values="-120;1020" dur="7s" repeatCount="indefinite"/>
   </rect>
+  <rect x="-120" y="12.2" width="60" height="1.6" fill="url(#sparkLine)" opacity=".45" filter="url(#dGlow)">
+    <animate attributeName="x" values="1020;-120" dur="13s" repeatCount="indefinite"/>
+  </rect>
   <g transform="translate(500.0 13)">
     <rect x="-4.5" y="-4.5" width="9" height="9" rx="2" transform="rotate(45)" fill="#7DD3FC" opacity=".9">
       <animateTransform attributeName="transform" type="rotate" values="45;225;45" dur="12s" repeatCount="indefinite"/>
@@ -29,5 +32,5 @@
   </g>
   <circle cx="150" cy="13" r="2" fill="#38BDF8" opacity=".55"/>
   <circle cx="850" cy="13" r="2" fill="#38BDF8" opacity=".55"/>
-<!-- data:14168bef51b1 -->
+<!-- data:1a8a095ae3db -->
 </svg>
