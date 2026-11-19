@@ -30,3 +30,9 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 - Ba chip `PY` / `JS` / `TS` nằm bên phải, xếp so le theo trục dọc.
 - Mỗi chip dùng `floatY` (5.2s) lệch pha 92ms / 140ms / 188ms, nên chúng nhấp nhô lệch nhau chứ không đồng loạt.
 
+## Hero — tiêu đề và vệt sáng
+
+- Tiêu đề dùng gradient dọc (`titleGrad`), vẽ bằng **một** phần tử `<text>`.
+- Vệt sáng là một `<text>` trắng mờ 28% bị cắt bởi `clipPath` chứa hình chữ nhật chạy ngang.
+- Chuyển động bằng SMIL: `values="-460;1012;1012"` — quét hết chữ trong 55% thời gian rồi nghỉ. Dùng SMIL vì nếu trình xem không chạy hoạt ảnh, khung đầu vẫn nằm ngoài vùng chữ (không bị mảng trắng đè lên).
+
