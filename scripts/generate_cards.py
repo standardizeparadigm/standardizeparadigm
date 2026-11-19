@@ -165,7 +165,7 @@ def status_demo_rows():
 
 def demo_contrib(dt):
     """Dữ liệu contribution giả nhưng ổn định, đủ để xem thử bố cục."""
-    from datetime import date, timedelta
+    from datetime import timedelta
     rnd = random.Random(7)
     days = []
     for offset in range(364, -1, -1):
