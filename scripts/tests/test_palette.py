@@ -6,7 +6,7 @@ import unittest
 from helpers import SCRIPTS  # noqa: F401  (đảm bảo sys.path)
 
 from svgkit.palette import (DEFAULT_THEME, THEMES, Palette, get_palette,
-                            grade, lang_color, theme_names)
+                            grade, grade_progress, lang_color, theme_names, GRADES)
 
 
 class TestThemes(unittest.TestCase):
@@ -49,7 +49,9 @@ class TestGrade(unittest.TestCase):
         for stats in ({"stars": 0}, {"stars": 10, "repos": 3},
                       {"followers": 40, "commits": 500}):
             letter, percent = grade(stats)
-            self.assertTrue(0 < percent <= 1)
+            # Phần trăm là vị trí trong khoảng giữa hai hạng, nên hạng thấp
+            # nhất có thể đúng 0% — đó là sự thật, không phải lỗi.
+            self.assertTrue(0 <= percent <= 1)
             self.assertIn(letter, ("S", "A+", "A", "B+", "B", "C+", "C"))
 
     def test_grade_missing_keys_do_not_crash(self):
@@ -164,6 +166,48 @@ class TestContrast(unittest.TestCase):
     def test_contrast_helper_bounds(self):
         self.assertAlmostEqual(_contrast("#FFFFFF", "#000000"), 21.0, places=1)
         self.assertAlmostEqual(_contrast("#777777", "#777777"), 1.0, places=1)
+
+
+
+class TestGradeProgress(unittest.TestCase):
+    """Tiến độ trong khoảng giữa hai hạng — con số phải đổi khi điểm đổi."""
+
+    def test_middle_of_band_is_half(self):
+        # B+ bắt đầu ở 220, A ở 380; 300 điểm là đúng giữa.
+        letter, percent, nxt = grade_progress({"followers": 60})
+        self.assertEqual(letter, "B+")
+        self.assertEqual(nxt, "A")
+        self.assertAlmostEqual(percent, 0.5, places=2)
+
+    def test_top_grade_is_full_and_has_no_next(self):
+        letter, percent, nxt = grade_progress({"followers": 200})
+        self.assertEqual((letter, percent, nxt), ("S", 1.0, None))
+
+    def test_lowest_grade_can_be_zero(self):
+        letter, percent, nxt = grade_progress({})
+        self.assertEqual((letter, percent), ("C", 0.0))
+        self.assertEqual(nxt, "C+")
+
+    def test_percent_never_leaves_the_band(self):
+        for followers in (1, 9, 11, 24, 45, 80, 130, 200):
+            _, percent, _ = grade_progress({"followers": followers})
+            self.assertGreaterEqual(percent, 0.0)
+            self.assertLessEqual(percent, 1.0)
+
+    def test_more_points_never_lower_the_ring(self):
+        rings = [grade_progress({"stars": n})[1] for n in range(0, 320, 7)]
+        # Trong cùng một hạng thì tăng dần; qua hạng mới vòng quay về 0.
+        self.assertEqual(rings[0], 0.0)
+        self.assertGreater(rings[-1], 0.9)
+
+    def test_next_letter_is_the_one_above(self):
+        order = [letter for _, letter in GRADES]
+        for followers in range(0, 220, 3):
+            letter, _, nxt = grade_progress({"followers": followers})
+            if nxt is None:
+                self.assertEqual(letter, "S")
+                continue
+            self.assertEqual(order.index(nxt), order.index(letter) - 1)
 
 if __name__ == "__main__":
     unittest.main()
