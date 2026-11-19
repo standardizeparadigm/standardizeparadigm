@@ -115,9 +115,9 @@ class TestTopLanguageHighlight(unittest.TestCase):
 
 class TestWaitingCard(unittest.TestCase):
     def test_guides_to_workflow(self):
+        t = i18n.get("vi")
         svg = waiting_card(get_palette(), 640, "GITHUB STATS",
-                           i18n.get("vi")("wait.line1"),
-                           i18n.get("vi")("wait.empty1"))
+                           t("wait.line1"), t("wait.empty1"), desc=t("desc.wait"))
         self.assertIn("<svg", svg)
         self.assertIn("Profile Cards", svg)
         self.assertIn("<desc>", svg)
