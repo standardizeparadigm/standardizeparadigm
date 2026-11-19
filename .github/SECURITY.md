@@ -1,4 +1,4 @@
-# 🔐 Báo lỗi bảo mật
+# Báo lỗi bảo mật
 
 Trang này là một trang cá nhân tĩnh: HTML/SVG + GitHub Actions. Không có server,
 không có cơ sở dữ liệu, không có tài khoản người dùng.
