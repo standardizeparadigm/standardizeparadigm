@@ -209,6 +209,60 @@ class TestGradeProgress(unittest.TestCase):
                 continue
             self.assertEqual(order.index(nxt), order.index(letter) - 1)
 
+
+
+def _rgb(color):
+    text = color.lstrip("#")
+    if len(text) == 3:
+        text = "".join(c * 2 for c in text)
+    return tuple(int(text[i:i + 2], 16) / 255.0 for i in (0, 2, 4))
+
+
+def _lum(color):
+    def channel(value):
+        return value / 12.92 if value <= 0.03928 else ((value + 0.055) / 1.055) ** 2.4
+    r, g, b = (channel(v) for v in _rgb(color))
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+
+def contrast(front, back):
+    """Tỉ số tương phản WCAG 2.1 giữa hai màu."""
+    a, b = sorted((_lum(front), _lum(back)), reverse=True)
+    return (a + 0.05) / (b + 0.05)
+
+
+class TestContrast(unittest.TestCase):
+    """Chữ trên thẻ phải đọc được ở cả sáu bảng màu, không chỉ bảng mặc định."""
+
+    def test_title_is_readable_on_background(self):
+        for name, pal in THEMES.items():
+            with self.subTest(theme=name):
+                self.assertGreater(contrast(pal.title, pal.bg_bot), 4.5)
+
+    def test_body_text_is_readable_on_panel(self):
+        for name, pal in THEMES.items():
+            with self.subTest(theme=name):
+                self.assertGreater(contrast(pal.text, pal.panel), 4.5)
+
+    def test_dim_labels_are_still_above_three_to_one(self):
+        # Nhãn phụ (tuổi workflow, chú thích) nhỏ nhưng vẫn phải đọc được.
+        for name, pal in THEMES.items():
+            with self.subTest(theme=name):
+                self.assertGreater(contrast(pal.dim, pal.panel), 2.6)
+
+    def test_accent_is_visible_on_background(self):
+        for name, pal in THEMES.items():
+            with self.subTest(theme=name):
+                self.assertGreater(contrast(pal.accent3, pal.bg_top), 5.0)
+
+    def test_no_two_themes_are_identical(self):
+        seen = {}
+        for name, pal in THEMES.items():
+            key = (pal.bg_top, pal.accent, pal.accent3)
+            self.assertNotIn(key, seen, "%s trùng bảng màu với %s"
+                             % (name, seen.get(key)))
+            seen[key] = name
+
 if __name__ == "__main__":
     unittest.main()
 
