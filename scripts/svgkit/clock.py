@@ -66,12 +66,21 @@ def _dial(pal, cx, cy, radius):
         inner = radius - (13 if major else 6)
         x1, y1 = cx + inner * math.cos(angle), cy + inner * math.sin(angle)
         x2, y2 = cx + (radius - 3) * math.cos(angle), cy + (radius - 3) * math.sin(angle)
-        parts.append('    <path d="M%.2f %.2fL%.2f %.2f" stroke="%s" '
-                     'stroke-width="%s" stroke-linecap="round" opacity="%s"/>'
-                     % (x1, y1, x2, y2,
-                        pal.accent3 if major else pal.stroke,
-                        "2" if major else "1",
-                        ".85" if major else ".55"))
+        path = ('M%.2f %.2fL%.2f %.2f' % (x1, y1, x2, y2))
+        if major:
+            # 12 vạch giờ sáng lần lượt như đèn chạy: một làn sóng đi vòng
+            # quanh mặt đồng hồ 6 giây/lượt, lệch pha theo đúng vị trí vạch.
+            parts.append('    <path d="%s" stroke="%s" stroke-width="2" '
+                         'stroke-linecap="round" opacity=".85">'
+                         % (path, pal.accent3))
+            parts.append('      <animate attributeName="opacity" '
+                         'values=".45;1;.45" dur="6s" begin="%.2fs" '
+                         'repeatCount="indefinite"/>' % (i / 10.0))
+            parts.append('    </path>')
+        else:
+            parts.append('    <path d="%s" stroke="%s" stroke-width="1" '
+                         'stroke-linecap="round" opacity=".55"/>'
+                         % (path, pal.stroke))
     parts.append('  </g>')
     return parts
 

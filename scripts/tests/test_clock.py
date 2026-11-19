@@ -71,3 +71,20 @@ class TestDialDetails(unittest.TestCase):
 
     def test_sixty_tick_marks(self):
         self.assertEqual(self.svg.count('stroke-linecap="round" opacity='), 60)
+
+class TestTickChase(unittest.TestCase):
+    """12 vạch giờ sáng lần lượt như đèn chạy."""
+
+    def setUp(self):
+        self.svg = clock_card(get_palette(), DT, i18n.get("vi"))
+
+    def test_twelve_major_ticks_animate(self):
+        self.assertEqual(self.svg.count('values=".45;1;.45"'), 12)
+
+    def test_phases_are_spread_around_the_dial(self):
+        for begin in ("0.00s", "1.50s", "3.00s", "5.50s"):
+            self.assertIn('begin="%s"' % begin, self.svg)
+
+    def test_minor_ticks_stay_still(self):
+        self.assertEqual(self.svg.count('stroke-width="1" stroke-linecap="round" opacity=".55"'),
+                         48)
