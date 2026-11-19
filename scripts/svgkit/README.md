@@ -145,5 +145,8 @@ Ba hàm này đều là hàm thuần (trừ `write`) nên test được mà khô
 - `STATE_STYLE` ánh xạ trạng thái → màu + khoá i18n. Màu cố định theo nghĩa
   (xanh/đỏ/hổ phách/xám) chứ không theo theme, vì "đỏ = lỗi" phải đúng ở cả
   6 bảng màu.
+- `api.workflow_states(owner, repo, token)` trả `[(tên_ngắn, trạng_thái)]`; nó gọi
+  `api.api_status()` một lần cho mỗi workflow, không thử lại, và coi 404 là
+  "chưa có trên nhánh mặc định" thay vì lỗi.
 - Việc phân biệt 404 với lỗi mạng nằm ở `api.api_status()` — trả mã HTTP để
   `api.workflow_states()` biết một workflow còn nằm ở nhánh khác.
