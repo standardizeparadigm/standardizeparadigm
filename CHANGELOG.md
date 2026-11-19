@@ -3,6 +3,18 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Bốn luật mới cho repo tự canh mình
+
+- **Tài liệu mồ côi**: bài trong `docs/` mà không bài nào dẫn tới thì người
+  mới sẽ không bao giờ đọc. README và CHANGELOG được miễn.
+- **Ngân sách ảnh**: `assets/*.svg` phải dưới 40 KB. Ảnh được tải mọi lần mở
+  trang; vượt ngưỡng đó thường là dấu hiệu nhúng dữ liệu lớn vào file.
+  `profile-3d-contrib/` nằm ngoài phạm vi — action khác sinh ra.
+- **Docstring đầu file**: thứ duy nhất nói *vì sao* module tồn tại.
+- Cùng với luật "hơn N unit test" ở trên, cả bốn đều được test bằng fixture
+  tạm trong `test_check_repo.py` và chạy lại trên repo thật trong
+  `test_repo_workflows.py`.
+
 ## 2026-11-19 — `check_repo.py --fix` và luật "số test trong tài liệu"
 
 - `--fix` chuẩn hoá BOM/CRLF/khoảng trắng/dòng trống cuối file. Chỉ đụng
