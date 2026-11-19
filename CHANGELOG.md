@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Activity: đường trung bình 14 ngày
+
+- Đường nét đứt màu nhấn, kèm nhãn `TB 196` ở góc trái — chỉ hiện khi dữ liệu có chênh lệch thật.
+- Mọi ngày bằng nhau thì ẩn đi, vì đường trung bình lúc đó chẳng nói gì.
+
 ## 2026-11-19 — Clock: đuôi kim giây
 
 - Kim giây có thêm chấm đối trọng phía sau trục, đúng kiểu đồng hồ cơ.
