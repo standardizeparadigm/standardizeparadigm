@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — svgkit 2.0 — tách thư viện vẽ
+
+- `scripts/generate_cards.py` từ 1 file dài thành gói `scripts/svgkit/`: palette, i18n, primitives, hero, divider, cards, clock, activity, api.
+- Thêm thẻ mới giờ chỉ là thêm một module, không phải sửa file khổng lồ.
+
 ## 2026-11-19 — Bộ kiểm thử tự động đầu tiên
 
 - 105 unit test phủ palette, i18n, từng thẻ SVG, CLI và `check_repo.py`.
