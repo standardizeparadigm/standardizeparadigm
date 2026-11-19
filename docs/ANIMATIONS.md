@@ -93,3 +93,10 @@ Mỗi file SVG có sẵn khối `@media (prefers-reduced-motion: reduce)` tắt 
 - Hạt nào rơi vào vùng chữ (x 250–840, y 40–220) sẽ bị đẩy sang trái; có test khoá lại điều này.
 - **Vòng lan toả**: hai vòng tròn quanh lõi "SP", bán kính `26 → 86`, `opacity .55 → 0`, chu kỳ 5.2 giây, lệch pha 2.6 giây — như nhịp thở.
 
+## Stats — chấm sáng ở đầu cung
+
+- Vòng tiến độ vẽ bằng `stroke-dasharray` = chu vi và `stroke-dashoffset` = phần còn thiếu, chạy 1.6s khi ảnh mới xuất hiện.
+- Điểm sáng đặt tại toạ độ cực: `góc = -90° + 360° × phần_trăm`, `x = cx + r·cos(góc)`, `y = cy + r·sin(góc)`.
+- Điểm sáng có `filter="url(#glow)"` và nhịp `pulse`; quanh nó là một vòng `pulseSlow` mờ.
+- Cố ý **không** dùng hiệu ứng mờ dần: khung đầu tiên phải đã có điểm sáng, nếu không trình xem tĩnh sẽ không thấy gì.
+
