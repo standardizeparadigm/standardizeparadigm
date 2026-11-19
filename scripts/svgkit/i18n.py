@@ -34,7 +34,7 @@ STRINGS = {
         "clock.label": "GIỜ VIỆT NAM",
         "clock.left": "còn {h}g{m:02d}",
         "clock.day": "NGÀY HÔM NAY ĐÃ TRÔI",
-        "clock.foot": "Kim tự quay bằng CSS giữa hai lần cập nhật · workflow vẽ lại mỗi 5 phút",
+        "clock.foot": "Kim và số phút tự chạy bằng CSS giữa hai lần cập nhật · workflow vẽ lại mỗi 5 phút",
         "clock.greet.morning": "Chào buổi sáng",
         "clock.greet.noon": "Chào buổi trưa",
         "clock.greet.afternoon": "Chào buổi chiều",
