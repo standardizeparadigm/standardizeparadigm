@@ -7,7 +7,7 @@
 <div align="center">
   <img src="https://img.shields.io/badge/Grade-7-38BDF8?style=for-the-badge&labelColor=0D1117&logo=googlescholar&logoColor=white" alt="Lớp 7" />
   <img src="https://img.shields.io/badge/Based%20in-Vi%E1%BB%87t%20Nam-7DD3FC?style=for-the-badge&labelColor=0D1117&logo=googlemaps&logoColor=white" alt="Việt Nam" />
-  <img src="https://img.shields.io/badge/City-Long%20Xuy%C3%AAn-0284C7?style=for-the-badge&labelColor=0D1117&logo=homeassistant&logoColor=white" alt="Long Xuyên" />
+  <img src="https://img.shields.io/badge/Ward-Kon%20Tum-0284C7?style=for-the-badge&labelColor=0D1117&logo=homeassistant&logoColor=white" alt="Phường Kon Tum" />
   <img src="https://img.shields.io/badge/Build-LTS%20v6-0EA5E9?style=for-the-badge&labelColor=0D1117&logo=checkmarx&logoColor=white" alt="LTS v6" />
 </div>
 
