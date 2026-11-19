@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """Test cửa vào dòng lệnh: xuất file, chế độ demo, theme, ngôn ngữ."""
 
+import contextlib
+import io
 import os
 import shutil
 import tempfile
@@ -80,3 +82,57 @@ class TestCli(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestInfoFlags(unittest.TestCase):
+    def test_version_prints_number(self):
+        import generate_cards
+
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            code = generate_cards.main(["--version"])
+        self.assertEqual(code, 0)
+        self.assertRegex(out.getvalue(), r"\d+\.\d+\.\d+")
+
+    def test_list_langs(self):
+        import generate_cards
+
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            code = generate_cards.main(["--list-langs"])
+        self.assertEqual(code, 0)
+        text = out.getvalue()
+        self.assertIn("vi", text)
+        self.assertIn("en", text)
+
+
+class TestCheckFlag(unittest.TestCase):
+    def test_check_reports_good_files(self):
+        import generate_cards
+
+        with tempfile.TemporaryDirectory() as tmp:
+            generate_cards.OUT_DIR = tmp
+            generate_cards.main(["--demo", "--cards", "--out", tmp])
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                code = generate_cards.main(["--check", "--out", tmp])
+            self.assertEqual(code, 0)
+            self.assertIn("hợp lệ", out.getvalue())
+
+    def test_check_reports_broken_file(self):
+        import generate_cards
+
+        with tempfile.TemporaryDirectory() as tmp:
+            with open(os.path.join(tmp, "broken.svg"), "w", encoding="utf-8") as handle:
+                handle.write("<svg><rect</svg>")
+            with contextlib.redirect_stdout(io.StringIO()):
+                code = generate_cards.main(["--check", "--out", tmp])
+            self.assertEqual(code, 1)
+
+    def test_check_empty_dir(self):
+        import generate_cards
+
+        with tempfile.TemporaryDirectory() as tmp:
+            with contextlib.redirect_stderr(io.StringIO()):
+                code = generate_cards.main(["--check", "--out", tmp])
+            self.assertEqual(code, 1)

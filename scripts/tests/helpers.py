@@ -23,3 +23,26 @@ def assert_valid_svg(testcase, svg_text, label="svg"):
     dom = parse(svg_text)
     testcase.assertEqual(dom.documentElement.tagName, "svg")
     return dom
+
+
+def render_demo_all():
+    """Vẽ toàn bộ thẻ ở chế độ demo, trả dict {tên file: nội dung}."""
+    import shutil
+    import tempfile
+
+    import generate_cards
+
+    tmp = tempfile.mkdtemp(prefix="cards-demo-")
+    try:
+        old = generate_cards.OUT_DIR
+        generate_cards.OUT_DIR = tmp
+        generate_cards.main(["--demo", "--all", "--out", tmp])
+        generate_cards.OUT_DIR = old
+        result = {}
+        for name in sorted(os.listdir(tmp)):
+            if name.endswith(".svg"):
+                with open(os.path.join(tmp, name), encoding="utf-8") as handle:
+                    result[name] = handle.read()
+        return result
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
