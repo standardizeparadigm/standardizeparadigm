@@ -1456,7 +1456,7 @@ def main(argv=None):
             print("   ✗ " + e)
         print("\n KẾT LUẬN: CÓ LỖI")
         return 1
-    print("\n KẾT LUẬN: MỌI THỨ ỔN ✅")
+    print("\n KẾT LUẬN: MỌI THỨ ỔN")
     return 0
 
 
