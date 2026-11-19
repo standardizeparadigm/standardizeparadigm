@@ -39,7 +39,11 @@ WORKFLOWS = [
     ("status.yml", "STATUS"),
 ]
 
-PILL_W = 150
+# 162 chứ không phải 150: nhãn trạng thái dài nhất ("ĐANG CHẠY", 9 ký tự
+# đậm 10px) rộng ~56px tính từ x+30, còn nhãn tuổi dài nhất ("12 ngày
+# trước") rộng ~56px neo vào mép phải. 150 để lại đúng 6px khe — đủ để hai
+# nhãn chạm nhau khi phông dự phòng rộng hơn phông dự kiến.
+PILL_W = 162
 GAP = 8
 MARGIN = 18
 STRIP_H = 74

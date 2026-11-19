@@ -10,7 +10,7 @@ import xml.dom.minidom as minidom
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from svgkit import i18n  # noqa: E402
+from svgkit import status, i18n  # noqa: E402
 from svgkit.palette import get_palette  # noqa: E402
 from svgkit.status import (GAP, MARGIN, PILL_W, STATE_STYLE, STRIP_H,  # noqa: E402
                            WORKFLOWS, human_age, status_strip, width_for)
@@ -250,6 +250,47 @@ class TestSummaryCounter(unittest.TestCase):
     def test_unknown_states_are_not_ok(self):
         rows = [("A", "unknown"), ("B", "none")]
         self.assertIn("0/2 workflow ổn", self._strip(rows))
+
+
+
+class TestPillGeometry(unittest.TestCase):
+    """Hai nhãn trong một viên thuốc không được chạm nhau."""
+
+    # Ước lượng rộng: phông mono 6.8px ~4.15px/ký tự + letter-spacing .2;
+    # phông đậm 10px ~6.1px/ký tự + .4. Cố tình ước RỘNG hơn thực tế một
+    # chút — thà thừa khe còn hơn chạm nhau trên máy không có phông đẹp.
+    def _age_width(self, text):
+        return len(text) * 4.35
+
+    def _value_width(self, text):
+        return len(text) * 6.5
+
+    def test_worst_case_labels_do_not_overlap(self):
+        t = i18n.get("vi")
+        value_room = 30
+        for state in ("passing", "failing", "running", "none", "unknown"):
+            label = t(status.STATE_STYLE[state][1])
+            for minutes in (0, 59, 60, 900, 60 * 24 * 12):
+                age = status.human_age(minutes, t)
+                left_end = value_room + self._value_width(label)
+                right_start = status.PILL_W - 9 - self._age_width(age)
+                self.assertLess(left_end, right_start,
+                                "%s + %s" % (label, age))
+
+    def test_pill_is_wide_enough_for_the_longest_name(self):
+        # Tên ngắn nhất trong repo là 13 ký tự ("README GARDEN").
+        name_end = 30 + 13 * 5.4
+        self.assertLess(name_end, status.PILL_W - 9)
+
+    def test_width_for_grows_linearly(self):
+        self.assertEqual(status.width_for(1), status.MARGIN * 2 + status.PILL_W)
+        self.assertEqual(status.width_for(3) - status.width_for(2),
+                         status.PILL_W + status.GAP)
+
+    def test_svg_width_matches_width_for(self):
+        rows = [("A", "passing"), ("B", "failing"), ("C", "passing")]
+        svg = status.status_strip(get_palette("sky"), rows, DT, i18n.get("vi"))
+        self.assertIn('width="%d"' % status.width_for(3), svg)
 
 if __name__ == "__main__":
     unittest.main()
