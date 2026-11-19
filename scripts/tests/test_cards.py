@@ -135,6 +135,40 @@ class TestLangBarTips(unittest.TestCase):
         self.assertIn('cx="159.9"', self.svg)
 
 
+
+
+class TestWaitingCardStructure(unittest.TestCase):
+    """Thẻ tạm: hiện khi API chưa trả số liệu, và không bao giờ đè ảnh thật."""
+
+    def setUp(self):
+        self.svg = waiting_card(get_palette("sky"), 640, "Đang tải",
+                                "Chưa có số liệu", "thử lại sau", desc="mô tả")
+
+    def test_is_valid_svg(self):
+        assert_valid_svg(self, self.svg, "waiting")
+
+    def test_carries_both_lines(self):
+        self.assertIn("Chưa có số liệu", self.svg)
+        self.assertIn("thử lại sau", self.svg)
+
+    def test_three_pulsing_dots(self):
+        self.assertEqual(self.svg.count('class="pulse"'), 3)
+
+    def test_dots_are_staggered(self):
+        self.assertIn("animation-delay:0.00s", self.svg)
+        self.assertIn("animation-delay:0.60s", self.svg)
+
+    def test_dots_are_centred(self):
+        for offset in (-18, 0, 18):
+            self.assertIn('cx="%d"' % (320 + offset), self.svg)
+
+    def test_desc_is_optional(self):
+        plain = waiting_card(get_palette("sky"), 640, "t", "a", "b")
+        self.assertNotIn("<desc>", plain)
+
+    def test_title_reaches_the_root_element(self):
+        self.assertIn("<title>Đang tải</title>", self.svg)
+
 if __name__ == "__main__":
     unittest.main()
 
