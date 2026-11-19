@@ -245,10 +245,11 @@ class TestContrast(unittest.TestCase):
                 self.assertGreater(contrast(pal.text, pal.panel), 4.5)
 
     def test_dim_labels_are_still_above_three_to_one(self):
-        # Nhãn phụ (tuổi workflow, chú thích) nhỏ nhưng vẫn phải đọc được.
+        # Nhãn phụ (tuổi workflow, chú thích) nhỏ nhưng vẫn phải đọc được —
+        # ngưỡng 3:1 là lời hứa đã ghi trong docs/THEMES.md.
         for name, pal in THEMES.items():
             with self.subTest(theme=name):
-                self.assertGreater(contrast(pal.dim, pal.panel), 2.6)
+                self.assertGreaterEqual(contrast(pal.dim, pal.panel), 3.0)
 
     def test_accent_is_visible_on_background(self):
         for name, pal in THEMES.items():
