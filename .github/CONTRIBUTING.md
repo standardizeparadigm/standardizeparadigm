@@ -45,6 +45,10 @@ python3 -m unittest discover -s scripts/tests -t scripts   # hơn 100 unit test
 
 Chúng chỉ ra ký tự lỗi encoding, SVG hỏng, link chết, workflow sai — đúng những gì CI của repo kiểm tra.
 
+`check_repo.py` còn kiểm tra **vệ sinh file**: BOM UTF-8, xuống dòng CRLF, ký tự
+điều khiển dưới U+0020, file không phải UTF-8 hợp lệ, khoảng trắng thừa cuối dòng
+(mức cảnh báo). Editor nào tự thêm BOM thì tắt đi — CI sẽ đỏ.
+
 **Sửa ảnh thì sửa code, đừng sửa tay file SVG.** Toàn bộ `assets/*.svg` do
 `scripts/generate_cards.py` + `scripts/svgkit/` sinh ra; chạm tay vào SVG là
 lượt workflow kế tiếp sẽ ghi đè.
