@@ -3,6 +3,15 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Lịch chạy so le để không giành `git push`
+
+- Sáu workflow cùng ghi vào một nhánh. `*/5` (đồng hồ) và `*/10` (trạng thái)
+  trùng nhau ở phút 0, 10, 20… — hai lượt chạy có thể push cùng lúc.
+- `status.yml` chuyển sang `2-59/10` (phút 2, 12, 22, 32, 42, 52): lệch 2
+  phút, đủ để đồng hồ (~40 giây/lượt) chạy xong trước.
+- `docs/WORKFLOWS.md` có thêm bảng "Ai push lúc nào" và ba lớp bảo hiểm:
+  `concurrency` riêng từng workflow, `git pull --rebase` trước khi push, và
+  dải trạng thái là thứ chịu thiệt sau cùng nếu có lượt trượt.
 ## 2026-11-19 — Hai luật tài liệu, và một luật ảnh
 
 - `check_workflow_docs()` bắt cả hai chiều: bảng ghi sai cron, **và**
