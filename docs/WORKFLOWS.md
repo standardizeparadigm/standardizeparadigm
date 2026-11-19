@@ -87,6 +87,10 @@ Vẽ lại `assets/live-clock.svg`: đồng hồ Việt Nam (UTC+7), lời chào
 
 - Cập nhật con dấu `<!-- TENDED_AT: ... -->` ở cuối README (ngày **và giờ phút**, giờ Việt Nam).
 - Kiểm tra `assets/` và `profile-3d-contrib/` còn đủ file.
+
+> `health.yml` bỏ qua **cả thư mục** `assets/` và `profile-3d-contrib/` khi
+t> có push: hai thư mục đó do bot vẽ lại liên tục, và bản thân test đã chạy
+> ở nhịp 06:00 hằng ngày cùng mọi push có sửa code.
 - **Chạy:** `0 */3 * * *` (mỗi 3 giờ) · `workflow_dispatch` · khi README thay đổi. Con dấu vì thế không bao giờ cũ quá 3 giờ mà chỉ tốn 8 lượt/ngày.
 
 ## 5. Repo Health — `health.yml` + `scripts/check_repo.py`
