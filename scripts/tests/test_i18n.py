@@ -153,6 +153,36 @@ class TestNoDeadStrings(unittest.TestCase):
                       if ('"%s"' % key) not in corpus)
         self.assertEqual(dead, [])
 
+class TestNormalize(unittest.TestCase):
+    """Mã ngôn ngữ người thật gõ: hoa, có vùng, có tên đầy đủ."""
+
+    def test_plain_codes_pass_through(self):
+        for tag in ("vi", "en", " vi ", "VI", "En"):
+            self.assertIn(i18n.normalize(tag), i18n.STRINGS)
+
+    def test_region_is_dropped(self):
+        self.assertEqual(i18n.normalize("vi-VN"), "vi")
+        self.assertEqual(i18n.normalize("en_GB"), "en")
+        self.assertEqual(i18n.normalize("en-US"), "en")
+
+    def test_full_names_are_understood(self):
+        self.assertEqual(i18n.normalize("Vietnamese"), "vi")
+        self.assertEqual(i18n.normalize("english"), "en")
+        self.assertEqual(i18n.normalize("vn"), "vi")
+
+    def test_empty_falls_back_to_default(self):
+        self.assertEqual(i18n.normalize(""), i18n.DEFAULT_LANG)
+        self.assertEqual(i18n.normalize(None), i18n.DEFAULT_LANG)
+
+    def test_unknown_is_kept_for_the_error_message(self):
+        self.assertEqual(i18n.normalize(" Klingon "), "klingon")
+
+    def test_translator_uses_it(self):
+        self.assertEqual(i18n.get("VI").lang, "vi")
+        self.assertEqual(i18n.get("en-GB").lang, "en")
+        self.assertEqual(i18n.get("klingon").lang, i18n.DEFAULT_LANG)
+
+
 if __name__ == "__main__":
     unittest.main()
 
