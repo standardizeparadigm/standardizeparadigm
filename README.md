@@ -165,7 +165,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
   <img src="./assets/activity.svg" width="48%" alt="Hoạt động 14 ngày gần nhất" /> <img src="./assets/live-clock.svg" width="48%" alt="Đồng hồ Việt Nam, tay kim chạy liên tục" />
 </div>
 
-<sub>⏱️ Cả hai thẻ tự vẽ lại bằng GitHub Actions; kim đồng hồ quay và <b>số phút tự nhảy mỗi phút</b> bằng CSS. GitHub cache ảnh một lúc — chậm vài phút là cache, không phải lỗi.</sub>
+<sub>Cả hai thẻ tự vẽ lại bằng GitHub Actions; kim đồng hồ quay và <b>số phút tự nhảy mỗi phút</b> bằng CSS. GitHub cache ảnh một lúc — chậm vài phút là cache, không phải lỗi.</sub>
 
 <div align="right"><a href="#top">Về đầu trang</a></div>
 
@@ -236,7 +236,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 | Thời gian | Học được |
 | :-- | :-- |
 | Tháng này | Hàm, vòng lặp lồng nhau, chia code thành file nhỏ |
-| Tháng trước | Flexbox — cuối cùng cũng căn giữa được cái `div` 😂 |
+| Tháng trước | Flexbox — cuối cùng cũng căn giữa được cái `div` |
 | 3 tháng trước | Git: commit, branch, và cách sửa khi push sai |
 | 6 tháng trước | Python cơ bản: biến, `if/else`, list, dict |
 
@@ -271,11 +271,11 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 
 <br />
 
-- 🐞 Fix được bug đầu tiên sau 3 tiếng mò mẫm — và vẫn nhớ bài học đó
-- 📦 Đẩy project đầu tiên lên GitHub với commit rõ ràng
-- 🌿 Tự làm quen với branch và pull request
-- 📚 Đọc tài liệu tiếng Anh dù phải tra từ điển từng câu
-- 🤝 Muốn tìm bạn cùng tuổi làm project chung, học lẫn nhau
+- Fix được bug đầu tiên sau 3 tiếng mò mẫm — và vẫn nhớ bài học đó
+- Đẩy project đầu tiên lên GitHub với commit rõ ràng
+- Tự làm quen với branch và pull request
+- Đọc tài liệu tiếng Anh dù phải tra từ điển từng câu
+- Muốn tìm bạn cùng tuổi làm project chung, học lẫn nhau
 
 </details>
 
@@ -306,7 +306,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 
   <br />
 
-  <sub>Mình rất thích nói chuyện về code — cứ nhắn nhé 💙</sub>
+  <sub>Mình rất thích nói chuyện về code — cứ nhắn nhé</sub>
 
 </div>
 
@@ -314,7 +314,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 
 <div align="center">
 
-  ### ⭐ &nbsp;Thấy project nào hay thì cho mình 1 star nhé — động lực của mình đó!
+  ### Thấy project nào hay thì cho mình 1 star nhé — động lực của mình đó!
 
   <img src="https://img.shields.io/badge/Made%20with-%F0%9F%92%99%20v%C3%A0%20Python-0D1117?style=for-the-badge&labelColor=0EA5E9" alt="Made with" />
   <img src="https://img.shields.io/badge/Still-Learning-0D1117?style=for-the-badge&labelColor=7DD3FC" alt="Still learning" />
@@ -322,7 +322,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 
   <br />
 
-  <sub>🌱 Trang được nuôi dưỡng tự động — lần cập nhật gần nhất: <!-- TENDED_AT: 19/11/2026 15:01 --></sub>
+  <sub>Trang được nuôi dưỡng tự động — lần cập nhật gần nhất: <!-- TENDED_AT: 19/11/2026 15:01 --></sub>
 
 </div>
 
