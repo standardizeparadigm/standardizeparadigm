@@ -3,6 +3,13 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Mọi thẻ đều quy về giờ Việt Nam
+
+- Thẻ số liệu, ngôn ngữ, hoạt động và dải trạng thái cũng in mốc thời gian;
+  nếu chỉ sửa đồng hồ thì bốn thẻ còn lại vẫn lệch 7 tiếng trên máy chủ CI.
+- `to_vn()` được gọi ở **đầu mỗi hàm vẽ thẻ**, không phải ở chỗ gọi: hàm vẽ
+  tự chịu trách nhiệm về giờ của chính nó, không tin người gọi.
+- Test riêng cho từng thẻ: đầu vào 09:00 UTC phải ra chuỗi 16:00.
 ## 2026-11-19 — Đồng hồ sai giờ: hai lỗi chồng lên nhau
 
 - Ảnh đồng hồ cũ hiển thị **giờ UTC** dưới nhãn "giờ Việt Nam": renderer
