@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Ba cờ CLI mới
+
+- `--version`, `--list-langs` và `--check` (parse mọi SVG trong thư mục ra rồi báo cáo).
+- `--check` tiện cho người mới: vẽ xong, kiểm tra ngay, khỏi mở trình duyệt.
+
 ## 2026-11-19 — Tôn trọng `prefers-reduced-motion`
 
 - Người bật “giảm chuyển động” trong hệ điều hành sẽ thấy ảnh tĩnh — không còn hoạt ảnh nào quay cuồng.
