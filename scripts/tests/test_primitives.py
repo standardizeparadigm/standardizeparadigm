@@ -95,3 +95,21 @@ class TestOpenSvg(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestReducedMotion(unittest.TestCase):
+    def test_css_disables_animation_when_requested(self):
+        from svgkit import primitives
+
+        self.assertIn("prefers-reduced-motion", primitives.CSS)
+        self.assertIn("animation: none !important", primitives.CSS)
+
+    def test_every_animated_class_is_covered(self):
+        import re
+
+        from svgkit import primitives
+
+        block = primitives.CSS.split("prefers-reduced-motion")[1]
+        declared = set(re.findall(r"^\s*\.(\w+)\s*\{ animation:", primitives.CSS, re.M))
+        for name in declared:
+            self.assertIn("." + name, block, "thiếu %s trong khối giảm chuyển động" % name)
