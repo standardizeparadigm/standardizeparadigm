@@ -137,6 +137,29 @@ nằm cùng repo, cùng CDN với các ảnh khác, không bao giờ "not found"
 > định**. Đó cũng là lý do badge lẫn nút "Run workflow" cùng "mất tích" với
 > một workflow còn nằm ở nhánh khác.
 
+## Ai `git push` lúc nào
+
+Sáu workflow đều ghi vào cùng một nhánh, nên lịch chạy được xếp so le —
+không phải cho đẹp bảng, mà để hai lượt chạy không cùng push một lúc:
+
+| Phút trong giờ | Workflow | Ghi gì |
+| :-- | :-- | :-- |
+| 0, 5, 10, … (mọi phút chia hết cho 5) | `live-clock.yml` | `assets/live-clock.svg` |
+| 2, 12, 22, 32, 42, 52 | `status.yml` | `assets/status.svg` |
+| 0 và 30 | `profile-3d.yml` | `profile-3d-contrib/*.svg` (khi cổng cho qua) |
+| phút 15 (0h, 3h, 6h…) | `profile-cards.yml` | bốn thẻ + hero |
+| phút 45 (0h, 3h, 6h…) | `readme-tend.yml` | con dấu `TENDED_AT` |
+| 23:00 UTC | `health.yml` | không ghi, chỉ kiểm tra |
+
+Ba lớp bảo hiểm khi vẫn trùng giờ:
+
+1. **`concurrency`** riêng cho từng workflow — một workflow không bao giờ
+   chạy hai lượt cùng lúc, nhưng *hai workflow khác nhau* thì vẫn có thể.
+2. Mỗi lượt `git pull --rebase` trước khi push, nên bên tới sau vẫn đẩy
+   được thay vì bị từ chối.
+3. `status.yml` là thứ duy nhất cần tươi theo phút, nên nó đứng sau cùng:
+   nếu một lượt trạng thái thất bại, nó chỉ cũ hơn 10 phút — không mất gì.
+
 ## Chạy lại ngay
 
 1. Vào repo → tab **Actions**.
