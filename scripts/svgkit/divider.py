@@ -14,8 +14,12 @@ def divider(pal, width=1000, height=26):
     """Đường kẻ mảnh, có vệt sáng chạy ngang và viên kim cương ở giữa."""
     mid = width / 2.0
     parts = [
+        # Đường kẻ thuần trang trí: role="presentation" để trình đọc màn
+        # hình bỏ qua, nhưng vẫn phải aria-hidden — một số trình đọc không
+        # hiểu role của SVG và sẽ đọc "graphic" vô nghĩa.
         f'<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" '
-        'xmlns="http://www.w3.org/2000/svg" role="presentation">',
+        'xmlns="http://www.w3.org/2000/svg" role="presentation" '
+        'aria-hidden="true">',
         '  <defs>',
         '    <linearGradient id="ln" x1="0" y1="0" x2="1" y2="0">',
         f'      <stop offset="0%" stop-color="{pal.accent}" stop-opacity="0"/>',

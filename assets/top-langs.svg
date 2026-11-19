@@ -83,6 +83,7 @@
     .pulse, .pulseSlow, .blink, .spinSlow, .spinRev, .driftA, .driftB,
     .driftC, .floatY, .twinkle, .fadeUp, .growIn, .sheen, .scan, .spinDot,
     .dashFlow,
+    .liveHour text, .liveMin text,
     .secHand, .minHand, .hourHand, .wave, .wave2 { animation: none !important; }
   }
 
@@ -272,7 +273,7 @@
   </g>
   <g class="fadeUp" style="animation-delay:.62s">
     <circle cx="26" cy="242" r="3" fill="#38BDF8" class="pulse"/>
-    <text x="36" y="245" class="footNote">Tính theo số byte code thật trong các repo công khai · cập nhật 19/11 · 16:43</text>
+    <text x="36" y="245" class="footNote">Tính theo số byte code thật trong các repo công khai · cập nhật 19/11 · 17:05</text>
   </g>
 <!-- data:928a1a75b184 -->
 </svg>

@@ -83,6 +83,7 @@
     .pulse, .pulseSlow, .blink, .spinSlow, .spinRev, .driftA, .driftB,
     .driftC, .floatY, .twinkle, .fadeUp, .growIn, .sheen, .scan, .spinDot,
     .dashFlow,
+    .liveHour text, .liveMin text,
     .secHand, .minHand, .hourHand, .wave, .wave2 { animation: none !important; }
   }
 
@@ -169,7 +170,7 @@
   <g class="fadeUp">
     <rect x="22" y="22" width="4" height="18" rx="2" fill="url(#accentGrad)"/>
     <text x="36" y="37" class="cardTitle">GITHUB STATS</text>
-    <text x="618" y="36" text-anchor="end" class="cardSub">CẬP NHẬT 19/11 · 16:43</text>
+    <text x="618" y="36" text-anchor="end" class="cardSub">CẬP NHẬT 19/11 · 17:05</text>
   </g>
   <g clip-path="url(#cardBody)">
     <rect x="0" y="-40" width="640" height="30" fill="url(#sheenGrad)" opacity=".26" class="scan" style="animation-duration:9s"/>

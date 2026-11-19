@@ -1,4 +1,4 @@
-<svg width="1000" height="26" viewBox="0 0 1000 26" xmlns="http://www.w3.org/2000/svg" role="presentation">
+<svg width="1000" height="26" viewBox="0 0 1000 26" xmlns="http://www.w3.org/2000/svg" role="presentation" aria-hidden="true">
   <defs>
     <linearGradient id="ln" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0%" stop-color="#38BDF8" stop-opacity="0"/>
@@ -41,5 +41,5 @@
   <circle class="smilOnly" cx="850" cy="13" r="2" fill="#38BDF8" opacity=".55">
     <animate attributeName="opacity" values=".75;.15;.75" dur="5.5s" repeatCount="indefinite"/>
   </circle>
-<!-- data:1a9766cc806a -->
+<!-- data:690987ec97e7 -->
 </svg>
