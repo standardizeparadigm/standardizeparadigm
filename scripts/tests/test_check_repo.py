@@ -959,6 +959,43 @@ class TestSvgArtifacts(unittest.TestCase):
         check_repo.check_svg_artifacts(self.tmp)
         self.assertTrue(any("Traceback" in e for e in check_repo.errors))
 
+
+
+class TestMarkdownTables(unittest.TestCase):
+    """Bảng lệch cột: GitHub vẫn hiện, chỉ là hiện sai."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="tables-")
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _md(self, text):
+        with open(os.path.join(self.tmp, "d.md"), "w", encoding="utf-8") as handle:
+            handle.write(text)
+
+    def test_aligned_table_passes(self):
+        self._md("| a | b |\n| :-- | :-- |\n| 1 | 2 |\n")
+        check_repo.check_markdown_tables(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_missing_cell_is_flagged(self):
+        self._md("| a | b |\n| :-- | :-- |\n| 1 |\n")
+        check_repo.check_markdown_tables(self.tmp)
+        self.assertTrue(any("cột" in e for e in check_repo.errors))
+
+    def test_text_after_table_is_not_a_row(self):
+        self._md("| a | b |\n| :-- | :-- |\n| 1 | 2 |\n\nĐoạn văn.\n")
+        check_repo.check_markdown_tables(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_table_without_divider_is_ignored(self):
+        self._md("| chỉ là chữ | có gạch |\n")
+        check_repo.check_markdown_tables(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
 if __name__ == "__main__":
     unittest.main()
 
