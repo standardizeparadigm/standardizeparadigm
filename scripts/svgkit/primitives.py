@@ -141,6 +141,10 @@ CSS = """
                 transform-box: view-box; transform-origin: var(--cx) var(--cy); }
   /* Nét đứt chạy dọc theo chính nó: dùng cho đường trung bình, đường dóng */
   .dashFlow   { animation: dashFlow 2.6s linear infinite; }
+  /* Vệt sáng chạy ngang trong thanh xếp chồng (thẻ ngôn ngữ) */
+  .barSweep   { animation: barSweep 4.6s ease-in-out infinite; }
+  /* Icon nhích lên xuống 1.6px: đủ để mắt thấy sống, không đủ để phân tâm */
+  .bob        { animation: bob 4.8s ease-in-out infinite; }
   .wave       { animation: wave 14s linear infinite; }
   .wave2      { animation: wave 19s linear infinite reverse; }
 
@@ -160,13 +164,19 @@ CSS = """
                          88% { opacity: .55 } 100% { transform: translateY(300px); opacity: 0 } }
   @keyframes dashFlow  { to { stroke-dashoffset: -10 } }
   @keyframes wave      { to { transform: translateX(-500px) } }
+  @keyframes barSweep  { 0% { transform: translateX(0); opacity: 0 }
+                         12% { opacity: .5 }
+                         88% { opacity: .5 }
+                         100% { transform: translateX(760px); opacity: 0 } }
+  @keyframes bob       { 0%,100% { transform: translateY(0) }
+                         50% { transform: translateY(-1.6px) } }
 
   /* Ai bật "giảm chuyển động" trong hệ điều hành thì thấy ảnh tĩnh,
      vẫn đẹp và vẫn đủ thông tin — không phải hy sinh nội dung. */
   @media (prefers-reduced-motion: reduce) {
     .pulse, .pulseSlow, .blink, .spinSlow, .spinRev, .driftA, .driftB,
     .driftC, .floatY, .twinkle, .fadeUp, .growIn, .sheen, .scan, .spinDot,
-    .dashFlow,
+    .dashFlow, .barSweep, .bob,
     .liveHour text, .liveMin text,
     .secHand, .minHand, .hourHand, .wave, .wave2 { animation: none !important; }
   }
