@@ -83,6 +83,7 @@
     .pulse, .pulseSlow, .blink, .spinSlow, .spinRev, .driftA, .driftB,
     .driftC, .floatY, .twinkle, .fadeUp, .growIn, .sheen, .scan, .spinDot,
     .dashFlow,
+    .liveHour text, .liveMin text,
     .secHand, .minHand, .hourHand, .wave, .wave2 { animation: none !important; }
   }
 
@@ -171,6 +172,12 @@
     <text x="36" y="37" class="cardTitle">LIVE CLOCK</text>
     <text x="618" y="36" text-anchor="end" class="cardSub">UTC+7 · LÀM MỚI MỖI 5 PHÚT</text>
   </g>
+  <style>.liveHour text, .liveMin text { opacity: 0;
+      animation: slotMin 3600s linear infinite; }
+    .liveHour text { animation-name: slotHour; animation-duration: 86400s; }
+    .liveHour text.nowSlot, .liveMin text.nowSlot { opacity: 1; }
+    @keyframes slotMin  { 0%, 1.666% { opacity: 1 } 1.667%, 100% { opacity: 0 } }
+    @keyframes slotHour { 0%, 4.166% { opacity: 1 } 4.167%, 100% { opacity: 0 } }</style>
   <g class="fadeUp" style="animation-delay:.12s">
     <circle cx="122" cy="140" r="104" fill="url(#halo)"/>
     <circle cx="122" cy="140" r="74" fill="#0A1421" stroke="url(#edge)" stroke-width="3"/>
@@ -261,17 +268,17 @@
     <path d="M107.86 73.49L107.24 70.55" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
     <path d="M114.89 72.37L114.58 69.39" stroke="#17334F" stroke-width="1" stroke-linecap="round" opacity=".55"/>
   </g>
-  <g transform="rotate(141.500 122 140)">
-    <g class="hourHand" style="--cx:122px;--cy:140px;animation-delay:-17035.649s">
+  <g transform="rotate(150.500 122 140)">
+    <g class="hourHand" style="--cx:122px;--cy:140px;animation-delay:-18085.635s">
       <rect x="119" y="107" width="6" height="40" rx="3" fill="#E8F4FF"/>
     </g>
   </g>
-  <g transform="rotate(263.565 122 140)">
-    <g class="minHand" style="--cx:122px;--cy:140px;animation-delay:-2635.649s">
+  <g transform="rotate(8.563 122 140)">
+    <g class="minHand" style="--cx:122px;--cy:140px;animation-delay:-85.635s">
       <rect x="120" y="93" width="4" height="56" rx="2" fill="#7DD3FC" fill-opacity=".78"/>
     </g>
   </g>
-  <g class="secHand" style="--cx:122px;--cy:140px;animation-delay:-55.649s">
+  <g class="secHand" style="--cx:122px;--cy:140px;animation-delay:-25.635s">
     <path d="M122 152V80" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" filter="url(#glow)"/>
     <circle cx="122" cy="80" r="4.5" fill="#7DD3FC"/>
     <circle cx="122" cy="152" r="2.6" fill="#38BDF8" fill-opacity=".8"/>
@@ -280,8 +287,98 @@
   <circle cx="122" cy="140" r="2" fill="#FFFFFF"/>
   <g class="fadeUp" style="animation-delay:.2s">
     <text x="244" y="74" class="clockLabel">GIỜ VIỆT NAM</text>
-    <text x="616" y="74" text-anchor="end" class="cardSub">cập nhật 16:43</text>
-    <text x="244" y="124" class="clockTime" fill="url(#titleGrad)">16:43</text>
+    <text x="616" y="74" text-anchor="end" class="cardSub">cập nhật 17:01</text>
+  <g class="fadeUp" style="animation-delay:.2s">
+    <g class="liveHour" text-anchor="end" fill="url(#titleGrad)">
+      <text class="clockTime" x="308" y="124" style="animation-delay:25114.4s">00</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:28714.4s">01</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:32314.4s">02</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:35914.4s">03</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:39514.4s">04</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:43114.4s">05</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:46714.4s">06</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:50314.4s">07</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:53914.4s">08</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:57514.4s">09</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:61114.4s">10</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:64714.4s">11</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:68314.4s">12</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:71914.4s">13</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:75514.4s">14</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:79114.4s">15</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:82714.4s">16</text>
+      <text class="clockTime nowSlot" x="308" y="124" style="animation-delay:-85.6s">17</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:3514.4s">18</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:7114.4s">19</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:10714.4s">20</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:14314.4s">21</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:17914.4s">22</text>
+      <text class="clockTime" x="308" y="124" style="animation-delay:21514.4s">23</text>
+    </g>
+    <text class="clockTime" x="316" y="124" text-anchor="middle" fill="url(#accentGrad)">:</text>
+    <g class="liveMin" text-anchor="start" fill="url(#titleGrad)">
+      <text class="clockTime" x="324" y="124" style="animation-delay:3514.4s">00</text>
+      <text class="clockTime nowSlot" x="324" y="124" style="animation-delay:-25.6s">01</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:34.4s">02</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:94.4s">03</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:154.4s">04</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:214.4s">05</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:274.4s">06</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:334.4s">07</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:394.4s">08</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:454.4s">09</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:514.4s">10</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:574.4s">11</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:634.4s">12</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:694.4s">13</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:754.4s">14</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:814.4s">15</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:874.4s">16</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:934.4s">17</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:994.4s">18</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:1054.4s">19</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:1114.4s">20</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:1174.4s">21</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:1234.4s">22</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:1294.4s">23</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:1354.4s">24</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:1414.4s">25</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:1474.4s">26</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:1534.4s">27</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:1594.4s">28</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:1654.4s">29</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:1714.4s">30</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:1774.4s">31</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:1834.4s">32</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:1894.4s">33</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:1954.4s">34</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:2014.4s">35</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:2074.4s">36</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:2134.4s">37</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:2194.4s">38</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:2254.4s">39</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:2314.4s">40</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:2374.4s">41</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:2434.4s">42</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:2494.4s">43</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:2554.4s">44</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:2614.4s">45</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:2674.4s">46</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:2734.4s">47</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:2794.4s">48</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:2854.4s">49</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:2914.4s">50</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:2974.4s">51</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:3034.4s">52</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:3094.4s">53</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:3154.4s">54</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:3214.4s">55</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:3274.4s">56</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:3334.4s">57</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:3394.4s">58</text>
+      <text class="clockTime" x="324" y="124" style="animation-delay:3454.4s">59</text>
+    </g>
+  </g>
     <text x="244" y="148" class="clockDate">Thứ Năm · 19/11/2026</text>
   </g>
   <g class="fadeUp" style="animation-delay:.3s">
@@ -292,17 +389,17 @@
   </g>
   <g class="fadeUp" style="animation-delay:.4s">
     <text x="244" y="206" class="footNote" style="letter-spacing:1.1px">NGÀY HÔM NAY ĐÃ TRÔI</text>
-    <text x="616" y="206" text-anchor="end" class="legendValue">70%</text>
-    <text x="570" y="206" text-anchor="end" class="footNote" style="letter-spacing:.6px;fill:#5C7590">còn 7g17</text>
+    <text x="616" y="206" text-anchor="end" class="legendValue">71%</text>
+    <text x="570" y="206" text-anchor="end" class="footNote" style="letter-spacing:.6px;fill:#5C7590">còn 6g59</text>
     <rect x="244" y="212" width="372" height="8" rx="4" fill="#0B1B2B" fill-opacity=".6"/>
-    <rect x="244" y="212" width="259.1" height="8" rx="4" fill="url(#barGrad)">
-      <animate attributeName="width" from="0" to="259.1" dur="1.3s" begin=".3s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+    <rect x="244" y="212" width="263.8" height="8" rx="4" fill="url(#barGrad)">
+      <animate attributeName="width" from="0" to="263.8" dur="1.3s" begin=".3s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
       <animate attributeName="opacity" values=".75;1;.75" dur="3.4s" repeatCount="indefinite"/>
     </rect>
-    <circle cx="503.1" cy="216" r="5" fill="#7DD3FC" filter="url(#glow)" class="pulse"/>
+    <circle cx="507.8" cy="216" r="5" fill="#7DD3FC" filter="url(#glow)" class="pulse"/>
   </g>
   <g class="fadeUp" style="animation-delay:.5s">
     <circle cx="244" cy="242" r="3" fill="#38BDF8" class="pulse"/>
-    <text x="254" y="245" class="footNote">Kim tự quay bằng CSS giữa hai lần cập nhật · workflow vẽ lại mỗi 5 phút</text>
+    <text x="254" y="245" class="footNote">Kim và số phút tự chạy bằng CSS giữa hai lần cập nhật · workflow vẽ lại mỗi 5 phút</text>
   </g>
 </svg>
