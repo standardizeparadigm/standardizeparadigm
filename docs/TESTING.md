@@ -134,3 +134,13 @@ Cổng thông minh của `profile-3d.yml` là shell nằm trong YAML — loại 
 
 Nếu PyYAML không có, 5 test này tự skip chứ không làm đỏ bộ test — CI thì luôn cài PyYAML.
 
+## Viết test mới
+
+1. Chọn file theo bảng ở trên; chưa có thì tạo `test_<module>.py`.
+2. `from helpers import SCRIPTS, parse, assert_valid_svg`.
+3. Dựng dữ liệu giả **trong test** — không gọi mạng.
+4. Gọi hàm vẽ, rồi khẳng định trên **chuỗi SVG** (dễ đọc hơn so sánh cả file).
+5. Chạy `python3 -m unittest discover -s scripts/tests -t scripts -v`.
+
+Quy ước: mỗi test một hành vi; tên test nói rõ hành vi đó; không test phần trang trí mà không có lý do (ví dụ: toạ độ hạt bụi thì có lý do — để không đè chữ).
+
