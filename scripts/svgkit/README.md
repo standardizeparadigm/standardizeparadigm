@@ -34,3 +34,12 @@ python3 scripts/generate_cards.py --demo --all --out /tmp/xem-thu
 - Khoá thiếu thì trả chính tên khoá (dễ thấy trong ảnh), không ném lỗi giữa workflow.
 - `t.weekday(3)` → `"Thứ Năm"` / `"Thursday"` cho dòng ngày của đồng hồ.
 
+## `primitives.py`
+
+- `esc()` thoát `& < > " '` — mọi chuỗi trước khi vào SVG đều phải qua đây.
+- `human()` → `1.2k`, `3.5k`, `12.3k`; `num()` cắt số thực cho gọn thuộc tính.
+- `ICONS`: 12 icon vẽ bằng path (star, fork, repo, people, eye, commit, flame, trophy, target, clock…), `icon(name, x, y, color)` chèn vào toạ độ.
+- `CSS` + `DEFS`: khai báo một lần cho mỗi file, chứa token `@…@` được `css_block()` / `defs_block()` thay bằng màu thật.
+- `open_svg()` mở thẻ: `<svg>` + CSS + defs + nền + viền gradient + `clipPath#cardBody` để lớp trang trí không tràn góc bo.
+- Có khối `@media (prefers-reduced-motion: reduce)` tắt hết hoạt ảnh khi người xem yêu cầu.
+
