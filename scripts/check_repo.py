@@ -76,6 +76,14 @@ def check_svg():
         raw = read(path)
         if "<svg" not in raw:
             err("SVG thiếu thẻ <svg>: %s" % rel(path))
+        elif "<title>" not in raw:
+            # <title> là thứ trình đọc màn hình đọc thay cho "graphic".
+            # Ảnh trang trí thuần tuý (đường kẻ) được miễn nếu tự khai báo
+            # là trình diễn — đó là cách đúng để nói "đừng đọc ảnh này".
+            decorative = ('aria-hidden="true"' in raw
+                          or 'role="presentation"' in raw)
+            if not decorative:
+                err("SVG thiếu <title> (ảnh không có tên đọc lên): %s" % rel(path))
 
 
 # --------------------------------------------------------------- 2. chữ
@@ -433,6 +441,30 @@ def check_asset_refs():
                     err("%s: trỏ tới file không tồn tại: %s" % (rel(path), ref))
 
 
+def check_dead_assets(root=None):
+    """Mọi ảnh trong assets/ phải được nhắc tới ở đâu đó.
+
+    Ảnh không ai nhúng là ảnh đã chết: nó vẫn được workflow vẽ lại mỗi
+    ngày, vẫn nằm trong lịch sử git, nhưng không xuất hiện ở đâu cả.
+    Hoặc là xoá nó, hoặc là nhúng nó — không có lựa chọn thứ ba.
+    """
+    root = root or ROOT
+    folder = os.path.join(root, "assets")
+    if not os.path.isdir(folder):
+        return
+    names = sorted(n for n in os.listdir(folder) if n.lower().endswith(".svg"))
+    corpus = []
+    for base, dirs, files in os.walk(root):
+        dirs[:] = [d for d in dirs if d not in (".git", "node_modules", ".venv")]
+        for name in files:
+            if name.lower().endswith((".md", ".yml", ".yaml", ".py")):
+                corpus.append(read(os.path.join(base, name)))
+    blob = "\n".join(corpus)
+    for name in names:
+        if name not in blob:
+            err("assets/%s không được nhúng ở đâu (ảnh chết)" % name)
+
+
 # --------------------------------------------------------------- 5. Python
 def check_python():
     """Biên dịch MỌI file .py trong scripts/ (kể cả svgkit/ và tests/)."""
@@ -463,6 +495,7 @@ def main():
     check_workflow_hygiene()
     check_workflows()
     check_asset_refs()
+    check_dead_assets()
     check_python()
     # Mọi file Markdown trong repo (README, docs, CONTRIBUTING, mẫu issue...).
     # Dùng os.walk vì glob không đi vào thư mục ẩn như .github/.
