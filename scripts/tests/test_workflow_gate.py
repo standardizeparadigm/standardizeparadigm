@@ -47,7 +47,7 @@ class TestGate(unittest.TestCase):
     def setUpClass(cls):
         cls.script = _gate_script()
 
-    def _run(self, last, new):
+    def _run(self, last, new, cwd=None):
         with tempfile.TemporaryDirectory() as tmp:
             stub = os.path.join(tmp, "gh")
             with open(stub, "w", encoding="utf-8") as handle:
@@ -63,7 +63,8 @@ class TestGate(unittest.TestCase):
                        GITHUB_REPOSITORY="standardizeparadigm/standardizeparadigm",
                        GITHUB_REPOSITORY_OWNER="standardizeparadigm",
                        FAKE_LAST=last, FAKE_NEW=new)
-            subprocess.run(["bash", script], env=env, capture_output=True, check=True)
+            subprocess.run(["bash", script], env=env, capture_output=True, check=True,
+                           cwd=cwd or tmp)
             with open(out, encoding="utf-8") as handle:
                 text = handle.read()
         return "run=1" in text
@@ -84,6 +85,37 @@ class TestGate(unittest.TestCase):
         self.assertFalse(self._run(recent(10), "not-a-number"))
 
 
+    def test_git_age_triggers_daily_refresh(self):
+        """Ảnh 30 giờ tuổi, không có push nào -> vẫn phải vẽ lại."""
+        with tempfile.TemporaryDirectory() as repo:
+            self._make_repo(repo, hours_ago=30)
+            self.assertTrue(self._run("", "0", cwd=repo))
+
+    def test_fresh_image_skips(self):
+        """Ảnh vừa đổi xong, không push -> bỏ qua."""
+        with tempfile.TemporaryDirectory() as repo:
+            self._make_repo(repo, hours_ago=1)
+            self.assertFalse(self._run("", "0", cwd=repo))
+
+    @staticmethod
+    def _make_repo(path, hours_ago):
+        import datetime
+
+        stamp = (datetime.datetime.now(datetime.timezone.utc)
+                 - datetime.timedelta(hours=hours_ago)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        os.makedirs(os.path.join(path, "profile-3d-contrib"), exist_ok=True)
+        with open(os.path.join(path, "profile-3d-contrib", "a.svg"), "w",
+                  encoding="utf-8") as handle:
+            handle.write("<svg/>")
+        env = dict(os.environ, GIT_AUTHOR_DATE=stamp, GIT_COMMITTER_DATE=stamp,
+                   GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@example.com",
+                   GIT_COMMITTER_NAME="t", GIT_COMMITTER_EMAIL="t@example.com")
+        subprocess.run(["git", "init", "-q", path], check=True)
+        subprocess.run(["git", "-C", path, "add", "-A"], check=True)
+        subprocess.run(["git", "-C", path, "commit", "-q", "-m", "c"],
+                       check=True, env=env)
+
+
 def recent(minutes):
     """Mốc thời gian ISO-8601 trong quá khứ, dùng cho gh giả."""
     import datetime
@@ -91,3 +123,4 @@ def recent(minutes):
     moment = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(
         minutes=minutes)
     return moment.strftime("%Y-%m-%dT%H:%M:%SZ")
+
