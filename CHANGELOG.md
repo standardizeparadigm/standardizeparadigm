@@ -3,6 +3,10 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Footer: bong bóng sáng
+
+- Sáu bong bóng bay từ đáy lên với chu kỳ 11 giây, lệch pha; thêm quầng sáng nhấp nháy sau tiêu đề.
+
 ## 2026-11-19 — Divider: tia sáng thứ hai
 
 - Thêm một tia mảnh, mờ hơn, chạy ngược chiều 13 giây/lần — đường kẻ có chiều sâu hơn.
