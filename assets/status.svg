@@ -190,7 +190,7 @@
     <circle cx="351" cy="29" r="4.4" fill="#34D399" filter="url(#glow)"/>
     <text x="364" y="25" class="fMono" style="font:600 7.5px 'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">LIVE CLOCK</text>
     <text x="364" y="39" class="fSans" style="font:800 10px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#34D399;letter-spacing:.4px">ĐẠT</text>
-    <text x="475" y="39" text-anchor="end" class="fMono" style="font:600 6.8px 'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">18 phút trước</text>
+    <text x="475" y="39" text-anchor="end" class="fMono" style="font:600 6.8px 'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">19 phút trước</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.18s">
     <rect x="492" y="9" width="150" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
@@ -233,5 +233,5 @@
     <text x="32" y="65" class="footNote">Workflow tự vẽ và commit dải này · cập nhật 19/11 · 19:44</text>
     <text x="1116" y="65" text-anchor="end" class="footNote" style="fill:#0EA5E9">7/7 workflow ổn</text>
   </g>
-<!-- data:604f3b8b75e0 -->
+<!-- data:6a0908bf71fa -->
 </svg>
