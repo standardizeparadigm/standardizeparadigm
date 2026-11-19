@@ -100,3 +100,10 @@ Mỗi file SVG có sẵn khối `@media (prefers-reduced-motion: reduce)` tắt 
 - Điểm sáng có `filter="url(#glow)"` và nhịp `pulse`; quanh nó là một vòng `pulseSlow` mờ.
 - Cố ý **không** dùng hiệu ứng mờ dần: khung đầu tiên phải đã có điểm sáng, nếu không trình xem tĩnh sẽ không thấy gì.
 
+## Activity — đường trung bình và nhãn cao nhất
+
+- **Đường trung bình**: nét đứt `4 6`, `opacity .38`, vẽ từ x=22 tới x=618 tại `y = đáy − (trung_bình / cao_nhất) × chiều_cao`.
+- Chỉ hiện khi `0 < trung_bình < cao_nhất`. Mọi ngày bằng nhau thì đường này vô nghĩa nên ẩn.
+- Nhãn `TB 196` nằm ở đầu trái, phía trên đường.
+- **Nhãn cao nhất**: đặt trên đỉnh cột cao nhất, chữ nhỏ màu nhấn. Nếu hôm nay chính là ngày cao nhất thì bỏ nhãn — chỗ đó đã có chấm nhấp nháy của "hôm nay".
+
