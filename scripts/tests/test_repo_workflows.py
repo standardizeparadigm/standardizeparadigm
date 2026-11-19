@@ -42,6 +42,22 @@ class TestRepoWorkflows(unittest.TestCase):
         check_repo.check_workflow_docs(ROOT)
         self.assertEqual(check_repo.errors, [])
 
+    def test_no_orphan_docs(self):
+        check_repo.check_orphan_docs(ROOT)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_svg_budget_holds(self):
+        check_repo.check_svg_budget(ROOT)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_test_claims_are_current(self):
+        check_repo.check_test_claims(ROOT)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_every_module_has_a_docstring(self):
+        check_repo.check_module_docstrings(ROOT)
+        self.assertEqual(check_repo.errors, [])
+
     def test_every_workflow_has_a_name(self):
         for name in workflow_files():
             match = re.search(r"^name:\s*(.+)$", read(name), flags=re.M)
