@@ -202,6 +202,29 @@ nên ai bật "giảm chuyển động" sẽ thấy một dải tĩnh nhưng v�
 - Thanh tĩnh trả lời "bao nhiêu phần trăm"; chấm sáng trả lời "thanh này
   vừa được vẽ lại" và cho mắt một điểm bám khi quét nhanh cả cột.
 
+## Live clock — số phút tự nhảy, không cần JavaScript
+
+- Con số giờ và phút là **84 ô chồng lên nhau**: 24 ô giờ + 60 ô phút, mỗi ô
+  chỉ hiện trong đúng khoảng thời gian của nó. Không có script nào chạy —
+  trình duyệt tự đổi số theo phút, kể cả khi không có mạng.
+- Ô của ảnh chụp được vẽ sẵn `opacity: 1`, nên trình xem tĩnh thấy đúng giờ
+  của lần vẽ cuối; các ô còn lại ẩn cho tới lượt mình.
+- Chu kỳ: ô phút `slotMin 3600s`, ô giờ `slotHour 86400s` (dùng
+  `animation-duration` riêng vì `animation` viết tắt của ô phút sẽ ghi đè).
+- Độ trễ âm đúng số giây đã trôi trong phút/giờ hiện tại, nên số đổi đúng
+  giây thứ 0 chứ không lệch theo lúc tải trang.
+- Workflow chỉ cần vẽ lại mỗi 5 phút (hạn mức cron của GitHub) để phần
+  *ngày tháng* và *vòng cung* khớp lại; phần phút thì CSS tự lo.
+
+## Live clock — vòng cung tiến độ ngày
+
+- Vòng cung ngoài cùng (`r = bán kính + 21`) đi đúng một vòng mỗi 24 giờ:
+  06:00 là một phần tư, 12:00 là nửa vòng ở đáy, 18:00 là ba phần tư.
+- Chấm ở đầu cung có SMIL `animate` trên `r` (2,6 → 4,4 → 2,6, 3,2 giây) để
+  mắt bắt được chỗ đang tiến, không phải một đầu cung chết.
+- Ngay sau nửa đêm, cung chỉ dài vài phần nghìn độ — vẽ ra chỉ thành một
+  chấm méo ở đỉnh, nên dưới 0,4° thì bỏ hẳn phần cung.
+
 ## Activity — vòng thở quanh cột hôm nay
 
 - Sau lưng chấm sáng có thêm vòng `stroke` bán kính 11, `pulseSlow`
