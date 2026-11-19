@@ -203,6 +203,12 @@ def langs_card(pal, data, dt, t, width=640, height=258):
     parts.append('    <rect x="-160" y="%d" width="150" height="%d" '
                  'fill="url(#sheenGrad)" class="sheen" '
                  'style="animation-duration:5.5s"/>' % (by - 6, bh + 12))
+    # Vệt thứ hai mảnh hơn chạy chậm hơn, lệch pha: thanh xếp chồng không
+    # bao giờ đứng yên, mà cũng không nhấp nháy đều như đèn báo.
+    parts.append('    <rect x="-70" y="%d" width="64" height="%d" '
+                 'fill="url(#sheenGrad)" opacity=".8" class="barSweep" '
+                 'style="animation-delay:.9s" clip-path="url(#barClip)"/>'
+                 % (by, bh))
     parts.append('  </g>')
 
     col_x = [22, 330]
