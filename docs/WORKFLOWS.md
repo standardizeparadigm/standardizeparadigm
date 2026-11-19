@@ -9,7 +9,7 @@ Tài liệu mô tả các GitHub Actions đang chạy trong repo `standardizepar
 | Workflow | Lịch (UTC) | Giờ Việt Nam | Việc làm |
 | :-- | :-- | :-- | :-- |
 | `live-clock.yml` | `*/5 * * * *` | mỗi 5 phút | `assets/live-clock.svg` |
-| `profile-3d.yml` | `7-59/30 * * * *` + cổng 24h | mỗi 30 phút kiểm tra | `profile-3d-contrib/*.svg` khi có push mới |
+| `profile-3d.yml` | `8-59/10 * * * *` + cổng 24h | mỗi 10 phút kiểm tra | `profile-3d-contrib/*.svg` khi có push mới |
 | `profile-cards.yml` | `13 */3 * * *` | 8 lần/ngày | `stats`, `top-langs`, `hero`, `activity` (chỉ ghi khi đổi) |
 | `readme-tend.yml` | `23 */3 * * *` | 8 lần/ngày | con dấu `TENDED_AT` |
 | `status.yml` | `2-59/10 * * * *` + `workflow_run` | phút 2,12,22,32,42,52 | `assets/status.svg` |
@@ -51,7 +51,7 @@ Cơ chế push có sẵn vòng thử lại 3 lần, nhưng phòng tránh từ đ
 Biểu đồ contribution dạng khối 3D, lưu vào `profile-3d-contrib/`.
 
 - **File ảnh:** `profile-3d-contrib/profile-night-rainbow.svg` (và 9 giao diện khác)
-- **Chạy:** `7-59/30 * * * *` (mỗi 30 phút, phút :07 và :37) · `workflow_dispatch` · khi sửa chính file workflow
+- **Chạy:** `8-59/10 * * * *` (mỗi 10 phút, phút :08 :18 :28 :38 :48 :58) · `workflow_dispatch` · khi sửa chính file workflow
   hoặc `scripts/fetch_contributions.py`.
 - **Cổng thông minh:** mỗi lượt, một bước shell so *lần ảnh 3D thật sự đổi* (`git log -1 -- profile-3d-contrib`) với *PushEvent* trên GitHub. Có push mới, hoặc đã quá 24 giờ → vẽ lại; còn lại → thoát trong vài giây để không đốt hàng giờ runner mỗi ngày.
 - Vì sao không so theo "lần chạy gần nhất": một lượt bị cổng bỏ qua **vẫn tính là chạy thành công**, nên mốc 24 giờ sẽ không bao giờ tới và ảnh sẽ đứng im mãi. So theo `git log` là đo đúng thứ cần đo.

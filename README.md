@@ -73,7 +73,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
     <td width="52"><b>🎨</b></td>
     <td><b>GitHub Profile 3D Contrib</b><br /><sub><code>.github/workflows/profile-3d.yml</code></sub></td>
     <td width="300">Biểu đồ contribution khối 3D, 10 giao diện màu. Có cổng thông minh: chỉ vẽ lại khi có push mới hoặc đã quá 24 giờ.</td>
-    <td width="180"><b>Mỗi 30 phút</b> · <code>7-59/30 * * * *</code></td>
+    <td width="180"><b>Mỗi 10 phút</b> · <code>8-59/10 * * * *</code></td>
   </tr>
   <tr>
     <td><b>📊</b></td>
