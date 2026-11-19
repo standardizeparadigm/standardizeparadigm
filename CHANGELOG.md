@@ -67,6 +67,13 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
 - `hero.svg`: làn quét thứ hai, 12.5s, lệch pha 4.2s.
 - `live-clock.svg`: 12 vạch giờ sáng lần lượt như đèn chạy, 6s/vòng.
 
+## 2026-11-19 — Trạng thái "đang chạy" có vòng cung quay
+
+- Nhấp nháy không nói rõ "đang chạy" bằng một vòng cung khuyết xoay tròn.
+- Lớp CSS mới `.spinDot` dùng `transform-box: fill-box` để quay quanh tâm
+  của chính nó thay vì tâm cả ảnh; có mặt trong danh sách tắt của
+  `prefers-reduced-motion`.
+
 ## 2026-11-19 — Cổng 3D: sửa lỗi mốc 24 giờ không bao giờ tới
 
 - Cổng so "lần chạy thành công gần nhất", nhưng lượt bị cổng bỏ qua **vẫn** là lượt thành công → mốc 24 giờ không bao giờ đạt được, ảnh chỉ đổi khi có push.
