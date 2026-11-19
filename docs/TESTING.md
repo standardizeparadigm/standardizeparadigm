@@ -1,4 +1,4 @@
-# 🧪 Kiểm thử
+# Kiểm thử
 
 Bộ test chạy bằng `unittest` của Python — không cần `pytest`, không cần mạng, không cần token. Toàn bộ dữ liệu GitHub trong test là dữ liệu giả dựng sẵn.
 
