@@ -26,3 +26,12 @@ Hiện có **159 test** trên 11 file, chạy xong trong chưa tới 1 giây.
 | `test_cli.py` | 39 | cờ CLI, `--smart`, `--dry-run`, chạy như script con |
 | `test_workflow_gate.py` | 5 | cổng thông minh của `profile-3d.yml` |
 
+## `helpers.py`
+
+Hai file test không tự thêm `scripts/` vào `sys.path` được — `tests/__init__.py` làm việc đó, còn `helpers.py` là nơi ở chung:
+
+- `SCRIPTS`: đường dẫn tuyệt đối tới `scripts/`.
+- `parse(svg)` — `minidom.parseString` bọc lại, ném lỗi nếu XML hỏng.
+- `assert_valid_svg(testcase, svg, label)` — kiểm tra 4 thứ tối thiểu: có `<svg`, có `</svg>`, có `xmlns`, gốc là `svg`.
+- `render_demo_all()` — vẽ cả 7 thẻ ở chế độ demo ra thư mục tạm rồi trả về `{tên: nội dung}`.
+
