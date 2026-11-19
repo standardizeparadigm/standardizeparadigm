@@ -3,28 +3,28 @@
   <desc>Thẻ ngôn ngữ lập trình dùng nhiều nhất, tính theo byte code</desc>
   <style>
 
-  .fSans { font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; }
-  .fMono { font-family: 'Fira Code',Consolas,'SF Mono',monospace; }
-  .cardTitle   { font: 800 14px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #E8F4FF; letter-spacing: 2.2px; }
-  .cardSub     { font: 600 9.5px 'Fira Code',Consolas,'SF Mono',monospace; fill: #5C7590; letter-spacing: .8px; }
-  .tileValue   { font: 800 19px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #E8F4FF; }
-  .tileLabel   { font: 600 9.5px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #8CA4BD; letter-spacing: .7px; }
-  .legendName  { font: 700 11.5px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #C6D8EA; }
-  .legendValue { font: 800 11.5px 'Fira Code',Consolas,'SF Mono',monospace; fill: #7DD3FC; }
-  .footNote    { font: 500 9px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #5C7590; letter-spacing: .3px; }
-  .bigValue    { font: 800 22px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #E8F4FF; }
-  .midLabel    { font: 700 8.5px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #8CA4BD; letter-spacing: 1.3px; }
-  .heroTitle   { font: 800 46px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; letter-spacing: -1.2px; }
-  .heroSub     { font: 600 14.5px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #8CA4BD; letter-spacing: .2px; }
-  .heroPill    { font: 700 10.5px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #7DD3FC; letter-spacing: .5px; }
-  .heroType    { font: 600 13px 'Fira Code',Consolas,'SF Mono',monospace; fill: #7DD3FC; }
-  .heroHint    { font: 500 10px 'Fira Code',Consolas,'SF Mono',monospace; fill: #5C7590; letter-spacing: .6px; }
-  .clockTime   { font: 800 54px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; letter-spacing: -1.5px; }
-  .clockDate   { font: 600 13px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #C6D8EA; }
-  .clockLabel  { font: 700 9px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #5C7590; letter-spacing: 1.6px; }
-  .clockBig    { font: 700 11px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #C6D8EA; }
-  .footTitle   { font: 800 24px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #E8F4FF; letter-spacing: .4px; }
-  .footSub     { font: 600 11px 'Fira Code',Consolas,'SF Mono',monospace; fill: #7DD3FC; letter-spacing: 1px; }
+  .fSans       { font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; }
+  .fMono       { font-family: 'Fira Code',Consolas,'SF Mono',monospace; }
+  .cardTitle   { font-weight: 800; font-size: 14px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #E8F4FF; letter-spacing: 2.2px; }
+  .cardSub     { font-weight: 600; font-size: 9.5px; font-family: 'Fira Code',Consolas,'SF Mono',monospace; fill: #5C7590; letter-spacing: .8px; }
+  .tileValue   { font-weight: 800; font-size: 19px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #E8F4FF; }
+  .tileLabel   { font-weight: 600; font-size: 9.5px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #8CA4BD; letter-spacing: .7px; }
+  .legendName  { font-weight: 700; font-size: 11.5px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #C6D8EA; }
+  .legendValue { font-weight: 800; font-size: 11.5px; font-family: 'Fira Code',Consolas,'SF Mono',monospace; fill: #7DD3FC; }
+  .footNote    { font-weight: 500; font-size: 9px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #5C7590; letter-spacing: .3px; }
+  .bigValue    { font-weight: 800; font-size: 22px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #E8F4FF; }
+  .midLabel    { font-weight: 700; font-size: 8.5px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #8CA4BD; letter-spacing: 1.3px; }
+  .heroTitle   { font-weight: 800; font-size: 46px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; letter-spacing: -1.2px; }
+  .heroSub     { font-weight: 600; font-size: 14.5px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #8CA4BD; letter-spacing: .2px; }
+  .heroPill    { font-weight: 700; font-size: 10.5px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #7DD3FC; letter-spacing: .5px; }
+  .heroType    { font-weight: 600; font-size: 13px; font-family: 'Fira Code',Consolas,'SF Mono',monospace; fill: #7DD3FC; }
+  .heroHint    { font-weight: 500; font-size: 10px; font-family: 'Fira Code',Consolas,'SF Mono',monospace; fill: #5C7590; letter-spacing: .6px; }
+  .clockTime   { font-weight: 800; font-size: 54px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; letter-spacing: -1.5px; }
+  .clockDate   { font-weight: 600; font-size: 13px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #C6D8EA; }
+  .clockLabel  { font-weight: 700; font-size: 9px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #5C7590; letter-spacing: 1.6px; }
+  .clockBig    { font-weight: 700; font-size: 11px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #C6D8EA; }
+  .footTitle   { font-weight: 800; font-size: 24px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #E8F4FF; letter-spacing: .4px; }
+  .footSub     { font-weight: 600; font-size: 11px; font-family: 'Fira Code',Consolas,'SF Mono',monospace; fill: #7DD3FC; letter-spacing: 1px; }
 
   .pulse      { animation: pulse 2.6s ease-in-out infinite; }
   .pulseSlow  { animation: pulse 4.4s ease-in-out infinite; }
@@ -273,7 +273,7 @@
   </g>
   <g class="fadeUp" style="animation-delay:.62s">
     <circle cx="26" cy="242" r="3" fill="#38BDF8" class="pulse"/>
-    <text x="36" y="245" class="footNote">Tính theo số byte code thật trong các repo công khai · cập nhật 19/11 · 17:14</text>
+    <text x="36" y="245" class="footNote">Tính theo số byte code thật trong các repo công khai · cập nhật 19/11 · 19:03</text>
   </g>
-<!-- data:928a1a75b184 -->
+<!-- data:144ec1128d06 -->
 </svg>

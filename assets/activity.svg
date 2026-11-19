@@ -3,28 +3,28 @@
   <desc>Biểu đồ contribution 14 ngày gần nhất</desc>
   <style>
 
-  .fSans { font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; }
-  .fMono { font-family: 'Fira Code',Consolas,'SF Mono',monospace; }
-  .cardTitle   { font: 800 14px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #E8F4FF; letter-spacing: 2.2px; }
-  .cardSub     { font: 600 9.5px 'Fira Code',Consolas,'SF Mono',monospace; fill: #5C7590; letter-spacing: .8px; }
-  .tileValue   { font: 800 19px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #E8F4FF; }
-  .tileLabel   { font: 600 9.5px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #8CA4BD; letter-spacing: .7px; }
-  .legendName  { font: 700 11.5px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #C6D8EA; }
-  .legendValue { font: 800 11.5px 'Fira Code',Consolas,'SF Mono',monospace; fill: #7DD3FC; }
-  .footNote    { font: 500 9px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #5C7590; letter-spacing: .3px; }
-  .bigValue    { font: 800 22px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #E8F4FF; }
-  .midLabel    { font: 700 8.5px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #8CA4BD; letter-spacing: 1.3px; }
-  .heroTitle   { font: 800 46px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; letter-spacing: -1.2px; }
-  .heroSub     { font: 600 14.5px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #8CA4BD; letter-spacing: .2px; }
-  .heroPill    { font: 700 10.5px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #7DD3FC; letter-spacing: .5px; }
-  .heroType    { font: 600 13px 'Fira Code',Consolas,'SF Mono',monospace; fill: #7DD3FC; }
-  .heroHint    { font: 500 10px 'Fira Code',Consolas,'SF Mono',monospace; fill: #5C7590; letter-spacing: .6px; }
-  .clockTime   { font: 800 54px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; letter-spacing: -1.5px; }
-  .clockDate   { font: 600 13px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #C6D8EA; }
-  .clockLabel  { font: 700 9px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #5C7590; letter-spacing: 1.6px; }
-  .clockBig    { font: 700 11px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #C6D8EA; }
-  .footTitle   { font: 800 24px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #E8F4FF; letter-spacing: .4px; }
-  .footSub     { font: 600 11px 'Fira Code',Consolas,'SF Mono',monospace; fill: #7DD3FC; letter-spacing: 1px; }
+  .fSans       { font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; }
+  .fMono       { font-family: 'Fira Code',Consolas,'SF Mono',monospace; }
+  .cardTitle   { font-weight: 800; font-size: 14px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #E8F4FF; letter-spacing: 2.2px; }
+  .cardSub     { font-weight: 600; font-size: 9.5px; font-family: 'Fira Code',Consolas,'SF Mono',monospace; fill: #5C7590; letter-spacing: .8px; }
+  .tileValue   { font-weight: 800; font-size: 19px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #E8F4FF; }
+  .tileLabel   { font-weight: 600; font-size: 9.5px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #8CA4BD; letter-spacing: .7px; }
+  .legendName  { font-weight: 700; font-size: 11.5px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #C6D8EA; }
+  .legendValue { font-weight: 800; font-size: 11.5px; font-family: 'Fira Code',Consolas,'SF Mono',monospace; fill: #7DD3FC; }
+  .footNote    { font-weight: 500; font-size: 9px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #5C7590; letter-spacing: .3px; }
+  .bigValue    { font-weight: 800; font-size: 22px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #E8F4FF; }
+  .midLabel    { font-weight: 700; font-size: 8.5px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #8CA4BD; letter-spacing: 1.3px; }
+  .heroTitle   { font-weight: 800; font-size: 46px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; letter-spacing: -1.2px; }
+  .heroSub     { font-weight: 600; font-size: 14.5px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #8CA4BD; letter-spacing: .2px; }
+  .heroPill    { font-weight: 700; font-size: 10.5px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #7DD3FC; letter-spacing: .5px; }
+  .heroType    { font-weight: 600; font-size: 13px; font-family: 'Fira Code',Consolas,'SF Mono',monospace; fill: #7DD3FC; }
+  .heroHint    { font-weight: 500; font-size: 10px; font-family: 'Fira Code',Consolas,'SF Mono',monospace; fill: #5C7590; letter-spacing: .6px; }
+  .clockTime   { font-weight: 800; font-size: 54px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; letter-spacing: -1.5px; }
+  .clockDate   { font-weight: 600; font-size: 13px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #C6D8EA; }
+  .clockLabel  { font-weight: 700; font-size: 9px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #5C7590; letter-spacing: 1.6px; }
+  .clockBig    { font-weight: 700; font-size: 11px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #C6D8EA; }
+  .footTitle   { font-weight: 800; font-size: 24px; font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; fill: #E8F4FF; letter-spacing: .4px; }
+  .footSub     { font-weight: 600; font-size: 11px; font-family: 'Fira Code',Consolas,'SF Mono',monospace; fill: #7DD3FC; letter-spacing: 1px; }
 
   .pulse      { animation: pulse 2.6s ease-in-out infinite; }
   .pulseSlow  { animation: pulse 4.4s ease-in-out infinite; }
@@ -168,12 +168,12 @@
   <g class="fadeUp">
     <rect x="22" y="22" width="4" height="18" rx="2" fill="url(#accentGrad)"/>
     <text x="36" y="37" class="cardTitle">CONTRIBUTION ACTIVITY</text>
-    <text x="618" y="36" text-anchor="end" class="cardSub">365 NGÀY · 19/11 · 17:14</text>
+    <text x="618" y="36" text-anchor="end" class="cardSub">365 NGÀY · 19/11 · 19:03</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.10s">
     <rect x="22" y="58" width="184" height="52" rx="12" fill="#0B1B2B" stroke="#17334F" stroke-opacity=".8"/>
 <g transform="translate(34 71) scale(0.8)" fill="none" stroke="#7DD3FC" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2v4.4"/><path d="M12 16.4v4.4"/><path d="M3.2 12h4.4"/><path d="M16.4 12h4.4"/><circle cx="12" cy="12" r="2.2"/></g>
-    <text x="66" y="86" class="bigValue">2.8k</text>
+    <text x="66" y="86" class="bigValue">3.4k</text>
     <text x="66" y="101" class="midLabel">CẢ NĂM</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.18s">
@@ -190,15 +190,15 @@
   </g>
   <g class="fadeUp" style="animation-delay:.32s">
     <text x="22" y="128" class="footNote" style="letter-spacing:1.2px">14 NGÀY GẦN NHẤT</text>
-    <text x="618" y="128" text-anchor="end" class="footNote">HÔM NAY +1</text>
+    <text x="618" y="128" text-anchor="end" class="footNote">HÔM NAY +595</text>
   </g>
     <path d="M22 144H618" stroke="#8CA4BD" stroke-opacity=".10" stroke-width="1"/>
     <path d="M22 165H618" stroke="#8CA4BD" stroke-opacity=".10" stroke-width="1"/>
     <path d="M22 186H618" stroke="#8CA4BD" stroke-opacity=".10" stroke-width="1"/>
     <path d="M22 208H618" stroke="#8CA4BD" stroke-opacity=".10" stroke-width="1"/>
   <g class="fadeUp" style="animation-delay:.3s">
-    <path d="M22 197.6H618" stroke="#7DD3FC" stroke-opacity=".38" stroke-width="1" stroke-dasharray="4 6" class="dashFlow"/>
-    <text x="24" y="192.6" class="footNote" style="fill:#7DD3FC">TB 196</text>
+    <path d="M22 195.4H618" stroke="#7DD3FC" stroke-opacity=".38" stroke-width="1" stroke-dasharray="4 6" class="dashFlow"/>
+    <text x="24" y="190.4" class="footNote" style="fill:#7DD3FC">TB 239</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.10s">
     <rect x="30.3" y="204" width="26.0" height="4.0" rx="6.0" fill="#17334F" opacity=".7">
@@ -280,12 +280,12 @@
   </g>
   <text x="554.1" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T4</text>
   <g class="fadeUp" style="animation-delay:0.46s">
-    <rect x="583.7" y="203" width="26.0" height="4.1" rx="6.0" fill="url(#barGradV)" opacity="1" filter="url(#glowSoft)">
-      <animate attributeName="height" from="0" to="4.1" dur=".9s" begin="0.58s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
-      <animate attributeName="y" from="208" to="203.9" dur=".9s" begin="0.58s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+    <rect x="583.7" y="172" width="26.0" height="35.5" rx="6.0" fill="url(#barGradV)" opacity="1" filter="url(#glowSoft)">
+      <animate attributeName="height" from="0" to="35.5" dur=".9s" begin="0.58s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+      <animate attributeName="y" from="208" to="172.5" dur=".9s" begin="0.58s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
     </rect>
-    <circle cx="596.7" cy="193.9" r="11" fill="none" stroke="#7DD3FC" stroke-opacity=".45" class="pulseSlow"/>
-    <circle cx="596.7" cy="193.9" r="3.4" fill="#7DD3FC" filter="url(#glow)" class="pulse"/>
+    <circle cx="596.7" cy="162.5" r="11" fill="none" stroke="#7DD3FC" stroke-opacity=".45" class="pulseSlow"/>
+    <circle cx="596.7" cy="162.5" r="3.4" fill="#7DD3FC" filter="url(#glow)" class="pulse"/>
   </g>
   <text x="596.7" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#7DD3FC;letter-spacing:.3px">T5</text>
   <g class="fadeUp" style="animation-delay:.55s">
@@ -293,7 +293,7 @@
   </g>
   <g class="fadeUp" style="animation-delay:.7s">
     <circle cx="26" cy="242" r="3" fill="#38BDF8" class="pulse"/>
-    <text x="36" y="245" class="footNote">Đếm từ lịch contribution thật của GitHub · cập nhật 19/11 · 17:14</text>
+    <text x="36" y="245" class="footNote">Đếm từ lịch contribution thật của GitHub · cập nhật 19/11 · 19:03</text>
   </g>
-<!-- data:5fecbdb6dfa7 -->
+<!-- data:d3d8d04afbd9 -->
 </svg>
