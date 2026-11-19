@@ -22,6 +22,22 @@ python3 scripts/generate_cards.py --list-themes        # xem danh sách + mã m�
 | `ocean` | `#22D3EE` | xanh biển, lạnh và sắc |
 | `mono` | `#E5E5E5` | đen trắng, in ra vẫn đẹp |
 
+## Ngưỡng tương phản
+
+Mỗi bảng màu được đo bằng công thức WCAG 2.1 chứ không bằng mắt, và bộ test
+giữ ngưỡng đó cho bảng màu thêm sau:
+
+| Token | Vai trò | Ngưỡng | Thấp nhất hiện tại |
+| :-- | :-- | :-- | :-- |
+| `title` | tên thẻ, số lớn | ≥ 4.5 | 16.4 |
+| `text` | chữ nội dung | ≥ 4.5 | 12.2 |
+| `label` | nhãn in hoa | ≥ 4.5 | 6.8 |
+| `dim` | chú thích nhỏ | ≥ 3.0 | 3.3 |
+| `accent` | nét, viền, vòng cung | ≥ 3.0 | — |
+
+Lý do có ngưỡng riêng cho `dim`: nó cố tình mờ để không tranh với số liệu,
+nhưng dưới 3:1 thì trên điện thoại ngoài trời nó biến mất hẳn.
+
 ## `sky` — mặc định
 
 - Nền `#07111D → #0A1421`, nhấn `#38BDF8`, nhấn phụ `#0EA5E9`, nhấn nhạt `#7DD3FC`.
