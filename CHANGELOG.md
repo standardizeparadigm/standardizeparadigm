@@ -3,6 +3,10 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Stats: phần trăm rank theo i18n
+
+- Chuỗi `74% tiến độ` trước đây hard-code `%d%%`, giờ đi qua khoá dịch `stats.progress`.
+
 ## 2026-11-19 — Đồng hồ: kim quay bằng CSS
 
 - Ba kim dùng `animation-delay` âm để khớp giờ thật ngay sau khi commit, không cần chờ.
