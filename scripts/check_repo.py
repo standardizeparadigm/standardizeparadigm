@@ -599,6 +599,28 @@ def check_test_claims(root=None):
                             "— hãy nâng lên" % (rel(path), number, claimed, total))
 
 
+# ------------------------------------------------- 4bd. Dấu vết của dữ liệu hỏng
+PY_ARTIFACTS = ("None", "NaN", "Traceback", "KeyError")
+
+
+def check_svg_artifacts(root=None):
+    """Ảnh đã commit không được chứa dấu vết rác của Python.
+
+    Khi một khoá thiếu, f-string in ra chữ `None` ngay giữa thẻ; khi chia
+    cho 0, nó in `NaN` hoặc `inf`. Trình duyệt vẽ những thứ đó như chữ bình
+    thường, nên ảnh vẫn "trông ổn" cho tới khi có người đọc kỹ.
+    """
+    root = root or ROOT
+    for path in sorted(glob.glob(os.path.join(root, "assets", "*.svg"))):
+        text = read(path)
+        for token in PY_ARTIFACTS:
+            if token in text:
+                err("%s chứa dấu vết dữ liệu hỏng: %r" % (rel(path), token))
+        for bad in ("nan", "inf%"):
+            if bad in text:
+                err("%s chứa số hỏng: %r" % (rel(path), bad))
+
+
 # ------------------------------------------------ 4bc. Chữ trong SVG có class
 RE_TEXT = re.compile(r"<text\b[^>]*>")
 RE_ID = re.compile(r'\bid="([^"]+)"')
@@ -1019,6 +1041,7 @@ def main(argv=None):
     check_job_timeouts()
     check_svg_text_classes()
     check_svg_duplicate_ids()
+    check_svg_artifacts()
     check_svg_budget()
     check_python()
     check_module_docstrings()
