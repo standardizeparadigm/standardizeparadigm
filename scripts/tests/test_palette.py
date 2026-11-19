@@ -264,6 +264,26 @@ class TestContrast(unittest.TestCase):
                              % (name, seen.get(key)))
             seen[key] = name
 
+
+
+class TestLangColourFallback(unittest.TestCase):
+    """Ngôn ngữ lạ lấy màu từ dải màu dự phòng, theo vòng tròn."""
+
+    def test_known_language_is_case_exact(self):
+        self.assertEqual(lang_color("Python"), "#3572A5")
+
+    def test_unknown_walks_the_ramp(self):
+        colours = [lang_color("NgonNgu%d" % i, i) for i in range(6)]
+        self.assertEqual(len(set(colours)), 6)
+
+    def test_ramp_wraps_around(self):
+        from svgkit.palette import RAMP
+        self.assertEqual(lang_color("NgonNguLa", 0), RAMP[0])
+        self.assertEqual(lang_color("NgonNguLa", len(RAMP)), RAMP[0])
+
+    def test_index_zero_default(self):
+        self.assertEqual(lang_color("NgonNguLa"), lang_color("Khac", 0))
+
 if __name__ == "__main__":
     unittest.main()
 
