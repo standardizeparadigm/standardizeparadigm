@@ -599,6 +599,35 @@ def check_test_claims(root=None):
                             "— hãy nâng lên" % (rel(path), number, claimed, total))
 
 
+# ---------------------------------------------- 4b9. Action phải ghim phiên bản
+RE_USES = re.compile(r"^\s*(?:-\s*)?uses:\s*(\S+)\s*$", re.M)
+RE_PINNED = re.compile(r"@v\d+(\.\d+)*$|@[0-9a-f]{40}$")
+
+
+def check_action_pins(root=None):
+    """Mọi `uses:` phải ghim phiên bản, không chạy theo nhánh.
+
+    `@main` nghĩa là workflow của bạn hôm nay chạy code khác hôm qua, và
+    không ai biết lúc nào nó đổi. Repo đã hứa "ghim phiên bản" trong
+    docs/WORKFLOWS.md — luật này giữ lời hứa đó.
+    """
+    root = root or ROOT
+    folder = os.path.join(root, ".github", "workflows")
+    if not os.path.isdir(folder):
+        return
+    for name in sorted(os.listdir(folder)):
+        if not name.lower().endswith((".yml", ".yaml")):
+            continue
+        path = os.path.join(folder, name)
+        for action in RE_USES.findall(read(path)):
+            action = action.strip("'\"")
+            if action.startswith("./"):
+                continue                      # action tự viết trong repo
+            if not RE_PINNED.search(action):
+                err("%s: '%s' không ghim phiên bản (dùng @vN hoặc SHA)"
+                    % (rel(path), action))
+
+
 # ------------------------------------------------ 4b8. Nhịp cron hợp lệ
 RE_CRON = re.compile(r"^\s*-\s*cron:\s*[\"']([^\"']+)[\"']", re.M)
 RE_CRON_STEP = re.compile(r"^\*/(\d+)$")
@@ -879,6 +908,7 @@ def main(argv=None):
     check_workflow_dispatch()
     check_shields_workflow_badges()
     check_cron_resolution()
+    check_action_pins()
     check_svg_budget()
     check_python()
     check_module_docstrings()
