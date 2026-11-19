@@ -143,7 +143,7 @@ STRINGS = {
         "hero.pill1": "GRADE 7",
         "hero.pill2": "UTC+7",
         "hero.pill3": "SELF-TAUGHT",
-        "hero.pill4": "LONG XUYEN",
+        "hero.pill4": "KON TUM",
         "hero.status": "coding now",
         "hero.type1": "print(\"Hello World\")",
         "hero.type2": "learn one thing → unlock ten more",
