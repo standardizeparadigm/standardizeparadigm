@@ -14,3 +14,20 @@ Ba câu để nhớ:
 2. **Lỗi thì giữ ảnh cũ** — không bao giờ ghi đè bằng thẻ rỗng.
 3. **Hoạt ảnh nằm trong file** — ảnh đứng yên vẫn đẹp, trình duyệt thì thấy nó chạy.
 
+## Luồng dữ liệu
+
+```
+api.collect_user(login, token)
+   ├── /users/{login}            → name, followers, following, public_repos
+   ├── /users/{login}/repos      → stars, forks, ngôn ngữ từng repo
+   └── /search/commits           → tổng commit
+        ↓
+   dict phẳng: {name, stars, forks, repos, followers, following, commits, langs{}}
+        ↓
+   stats_card(...) / langs_card(...)   ← chỉ nhận dict, không biết gì về HTTP
+        ↓
+   write("stats.svg", nội dung, vân_tay)
+```
+
+Nhờ vậy `cards.py` test được bằng dữ liệu giả, và `api.py` thay được bằng bản khác mà không sửa gì phần vẽ.
+
