@@ -113,3 +113,15 @@ Mỗi file SVG có sẵn khối `@media (prefers-reduced-motion: reduce)` tắt 
 - **Vành**: một cung gradient `stroke-dasharray="70 320"` quay 18 giây/vòng trên vành ngoài, cùng vòng nét đứt quay 40 giây ở ngoài xa hơn — hai tốc độ khác nhau nên mắt không thấy "đều đều".
 - **Kim giây** có đối trọng: một chấm nhỏ phía sau trục, giống đồng hồ cơ thật.
 
+## Divider — hai tia sáng
+
+- Tia chính: dải gradient trắng, rộng 120, chạy `-120 → 1020` trong 7 giây, có `filter` làm mờ viền.
+- Tia phụ: rộng 60, chạy ngược `1020 → -120` trong 13 giây, `opacity .45` — tạo chiều sâu, không tranh mắt với tia chính.
+- Viên kim cương ở giữa tự xoay 45° → 225° → 45° trong 12 giây, quanh nó là vòng tròn giãn ra rồi biến mất.
+
+## Footer — bong bóng
+
+- Sáu bong bóng, `cy` chạy từ đáy lên ~90px trong 11 giây, `opacity 0 → .55 → 0`.
+- Mỗi bong bóng lệch pha (0, −1.6, −3.1, −0.8, −2.4, −4.2 giây) nên nhìn như nước đang lăn tăn chứ không phải "đồng loạt bật lên".
+- Toàn bộ nằm trong `clip-path="url(#cardBody)"`.
+
