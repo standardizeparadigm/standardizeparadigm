@@ -82,3 +82,16 @@ Chỉ `generate_cards.py` chạm vào đĩa. Đó là lý do toàn bộ phần v
 
 Nhờ bước 4, mọi lớp trang trí (sóng, sao, bụi, halo) không bao giờ tràn ra ngoài góc bo tròn.
 
+## Chiến lược hoạt ảnh
+
+Hai công cụ, chọn theo tình huống:
+
+**CSS keyframes** — khi chỉ cần lặp vô hạn một kiểu biến đổi: `pulse`, `twinkle`, `floatY`, `spin`, `sheen`, `wave`. Ngắn, dễ đọc, trình duyệt tối ưu tốt.
+
+**SMIL (`<animate>`)** — khi cần chạy đúng một lần rồi dừng, hoặc khi **khung đầu tiên phải sạch**:
+
+- Vệt sáng hero: `values="-460;1012;1012"` — ở t=0 hình chữ nhật nằm ngoài vùng chữ, nên trình xem tĩnh không thấy mảng trắng.
+- Kim đồng hồ: CSS vì cần chạy mãi; nhưng nhóm kim được xoay sẵn bằng `transform` tĩnh trước.
+
+Nguyên tắc: **nếu hoạt ảnh làm khung đầu tiên xấu, đổi sang SMIL hoặc đổi trạng thái mặc định**.
+
