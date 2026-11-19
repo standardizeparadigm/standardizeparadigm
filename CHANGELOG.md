@@ -3,6 +3,10 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Test tự soi mã nguồn
+
+- Test mới quét `svgkit/*.py` để chắc mọi khoá `t("…")` đều có trong `STRINGS`, và mọi token `@…@` trong CSS đều có giá trị trong `Palette`.
+
 ## 2026-11-19 — docs/FAQ.md
 
 - Tám câu hỏi hay gặp: cache ảnh, vì sao không chạy mỗi phút, tốn bao nhiêu phút runner, vì sao SVG, số liệu lệch, đổi theme, dùng lại code.
