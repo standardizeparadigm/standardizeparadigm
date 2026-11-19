@@ -82,28 +82,28 @@ def icon(name, x, y, color, scale=0.78, width=1.9):
 
 # --------------------------------------------------------------- CSS
 CSS = """
-  .fSans { font-family: @FONT@; }
-  .fMono { font-family: @MONO@; }
-  .cardTitle   { font: 800 14px @FONT@; fill: @TITLE@; letter-spacing: 2.2px; }
-  .cardSub     { font: 600 9.5px @MONO@; fill: @DIM@; letter-spacing: .8px; }
-  .tileValue   { font: 800 19px @FONT@; fill: @TITLE@; }
-  .tileLabel   { font: 600 9.5px @FONT@; fill: @LABEL@; letter-spacing: .7px; }
-  .legendName  { font: 700 11.5px @FONT@; fill: @TEXT@; }
-  .legendValue { font: 800 11.5px @MONO@; fill: @ACCENT3@; }
-  .footNote    { font: 500 9px @FONT@; fill: @DIM@; letter-spacing: .3px; }
-  .bigValue    { font: 800 22px @FONT@; fill: @TITLE@; }
-  .midLabel    { font: 700 8.5px @FONT@; fill: @LABEL@; letter-spacing: 1.3px; }
-  .heroTitle   { font: 800 46px @FONT@; letter-spacing: -1.2px; }
-  .heroSub     { font: 600 14.5px @FONT@; fill: @LABEL@; letter-spacing: .2px; }
-  .heroPill    { font: 700 10.5px @FONT@; fill: @ACCENT3@; letter-spacing: .5px; }
-  .heroType    { font: 600 13px @MONO@; fill: @ACCENT3@; }
-  .heroHint    { font: 500 10px @MONO@; fill: @DIM@; letter-spacing: .6px; }
-  .clockTime   { font: 800 54px @FONT@; letter-spacing: -1.5px; }
-  .clockDate   { font: 600 13px @FONT@; fill: @TEXT@; }
-  .clockLabel  { font: 700 9px @FONT@; fill: @DIM@; letter-spacing: 1.6px; }
-  .clockBig    { font: 700 11px @FONT@; fill: @TEXT@; }
-  .footTitle   { font: 800 24px @FONT@; fill: @TITLE@; letter-spacing: .4px; }
-  .footSub     { font: 600 11px @MONO@; fill: @ACCENT3@; letter-spacing: 1px; }
+  .fSans       { font-family: @FONT@; }
+  .fMono       { font-family: @MONO@; }
+  .cardTitle   { font-weight: 800; font-size: 14px; font-family: @FONT@; fill: @TITLE@; letter-spacing: 2.2px; }
+  .cardSub     { font-weight: 600; font-size: 9.5px; font-family: @MONO@; fill: @DIM@; letter-spacing: .8px; }
+  .tileValue   { font-weight: 800; font-size: 19px; font-family: @FONT@; fill: @TITLE@; }
+  .tileLabel   { font-weight: 600; font-size: 9.5px; font-family: @FONT@; fill: @LABEL@; letter-spacing: .7px; }
+  .legendName  { font-weight: 700; font-size: 11.5px; font-family: @FONT@; fill: @TEXT@; }
+  .legendValue { font-weight: 800; font-size: 11.5px; font-family: @MONO@; fill: @ACCENT3@; }
+  .footNote    { font-weight: 500; font-size: 9px; font-family: @FONT@; fill: @DIM@; letter-spacing: .3px; }
+  .bigValue    { font-weight: 800; font-size: 22px; font-family: @FONT@; fill: @TITLE@; }
+  .midLabel    { font-weight: 700; font-size: 8.5px; font-family: @FONT@; fill: @LABEL@; letter-spacing: 1.3px; }
+  .heroTitle   { font-weight: 800; font-size: 46px; font-family: @FONT@; letter-spacing: -1.2px; }
+  .heroSub     { font-weight: 600; font-size: 14.5px; font-family: @FONT@; fill: @LABEL@; letter-spacing: .2px; }
+  .heroPill    { font-weight: 700; font-size: 10.5px; font-family: @FONT@; fill: @ACCENT3@; letter-spacing: .5px; }
+  .heroType    { font-weight: 600; font-size: 13px; font-family: @MONO@; fill: @ACCENT3@; }
+  .heroHint    { font-weight: 500; font-size: 10px; font-family: @MONO@; fill: @DIM@; letter-spacing: .6px; }
+  .clockTime   { font-weight: 800; font-size: 54px; font-family: @FONT@; letter-spacing: -1.5px; }
+  .clockDate   { font-weight: 600; font-size: 13px; font-family: @FONT@; fill: @TEXT@; }
+  .clockLabel  { font-weight: 700; font-size: 9px; font-family: @FONT@; fill: @DIM@; letter-spacing: 1.6px; }
+  .clockBig    { font-weight: 700; font-size: 11px; font-family: @FONT@; fill: @TEXT@; }
+  .footTitle   { font-weight: 800; font-size: 24px; font-family: @FONT@; fill: @TITLE@; letter-spacing: .4px; }
+  .footSub     { font-weight: 600; font-size: 11px; font-family: @MONO@; fill: @ACCENT3@; letter-spacing: 1px; }
 
   .pulse      { animation: pulse 2.6s ease-in-out infinite; }
   .pulseSlow  { animation: pulse 4.4s ease-in-out infinite; }
