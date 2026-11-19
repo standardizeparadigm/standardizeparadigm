@@ -181,3 +181,68 @@ class TestFileHygiene(unittest.TestCase):
         self._write("image.png", b"\x89PNG\r\n\x1a\n\xff")
         check_repo.check_file_hygiene(self.tmp)
         self.assertEqual(check_repo.errors, [])
+
+
+class TestWorkflowDocDrift(unittest.TestCase):
+    """Bảng lịch chạy trong tài liệu phải khớp cron thật."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="cron-doc-")
+        os.makedirs(os.path.join(self.tmp, ".github", "workflows"))
+        os.makedirs(os.path.join(self.tmp, "docs"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _workflow(self, name, cron):
+        path = os.path.join(self.tmp, ".github", "workflows", name)
+        with open(path, "w", encoding="utf-8") as handle:
+            handle.write("name: x\non:\n  schedule:\n    - cron: \"%s\"\n" % cron)
+
+    def _doc(self, text):
+        with open(os.path.join(self.tmp, "docs", "WORKFLOWS.md"), "w",
+                  encoding="utf-8") as handle:
+            handle.write(text)
+
+    def _readme(self, text):
+        with open(os.path.join(self.tmp, "README.md"), "w",
+                  encoding="utf-8") as handle:
+            handle.write(text)
+
+    def test_matching_cron_passes(self):
+        self._workflow("a.yml", "*/5 * * * *")
+        self._doc("| `a.yml` | `*/5 * * * *` | mỗi 5 phút |\n")
+        check_repo.check_workflow_docs(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_stale_cron_is_flagged(self):
+        self._workflow("a.yml", "*/30 * * * *")
+        self._doc("| `a.yml` | `*/5 * * * *` | mỗi 5 phút |\n")
+        check_repo.check_workflow_docs(self.tmp)
+        self.assertTrue(any("*/5 * * * *" in e for e in check_repo.errors))
+
+    def test_unknown_workflow_in_docs_is_flagged(self):
+        self._workflow("a.yml", "*/5 * * * *")
+        self._doc("| `khong-co.yml` | `*/5 * * * *` | x |\n")
+        check_repo.check_workflow_docs(self.tmp)
+        self.assertTrue(any("không tồn tại" in e for e in check_repo.errors))
+
+    def test_readme_cron_must_exist_somewhere(self):
+        self._workflow("a.yml", "*/5 * * * *")
+        self._readme("<code>*/10 * * * *</code>\n")
+        check_repo.check_workflow_docs(self.tmp)
+        self.assertTrue(any("README.md" in e for e in check_repo.errors))
+
+    def test_readme_cron_that_exists_passes(self):
+        self._workflow("a.yml", "*/5 * * * *")
+        self._readme("<code>*/5 * * * *</code>\n")
+        check_repo.check_workflow_docs(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_cron_detection(self):
+        self.assertTrue(check_repo.looks_like_cron("*/5 * * * *"))
+        self.assertTrue(check_repo.looks_like_cron("0 23 * * *"))
+        self.assertFalse(check_repo.looks_like_cron("mỗi 5 phút"))
+        self.assertFalse(check_repo.looks_like_cron("*/5 * *"))
