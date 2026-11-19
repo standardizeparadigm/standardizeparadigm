@@ -304,7 +304,7 @@ def _pick_theme(name):
 def _pick_language(lang):
     """Ngôn ngữ theo mã; mã lạ thì cảnh báo rồi dùng mặc định."""
     translator = i18n.get(lang)
-    if (lang or "").strip() not in i18n.STRINGS:
+    if i18n.normalize(lang) not in i18n.STRINGS:
         hint = _suggest(lang, list(i18n.STRINGS))
         say("  ! ngôn ngữ %r không có — dùng %r%s"
             % (lang, translator.lang,
