@@ -123,6 +123,9 @@ Nguyên tắc: **nếu hoạt ảnh làm khung đầu tiên xấu, đổi sang S
 - **Token**: chỉ nằm trong `secrets.GITHUB_TOKEN`, không ghi ra file, không in ra log.
 - **Không chạy mã lạ**: không `eval`, không render HTML từ dữ liệu ngoài; SVG sinh ra là văn bản do ta kiểm soát.
 - **Action bên thứ ba duy nhất**: `github-profile-3d-contrib`, ghim `v0.9.3`.
+- **Cổng chặn vòng lặp**: mọi workflow có `git push` đều kiểm
+  `github.actor != 'github-actions[bot]'`, nếu không commit của bot lại kích
+  hoạt chính nó. `check_repo.check_workflow_hygiene()` bắt buộc điều này.
 
 ## Quy ước số
 
