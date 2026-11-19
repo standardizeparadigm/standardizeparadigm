@@ -86,6 +86,38 @@ def _dial(pal, cx, cy, radius):
     return parts
 
 
+def _day_arc(pal, cx, cy, radius, hour, minute, second):
+    """Vòng cung ngoài cùng: hôm nay đã trôi qua bao nhiêu phần.
+
+    Đây là thứ mặt đồng hồ thường không nói được. Nhìn kim thì biết mấy
+    giờ; nhìn vòng cung thì biết ngày còn dài hay đã gần hết — một vòng
+    đầy 360° ứng với tròn 24 giờ, nên 6 giờ sáng là đúng một phần tư.
+    """
+    sweep = 360.0 * (hour * 3600 + minute * 60 + second) / 86400.0
+    ring = radius + 21
+    parts = ['  <g class="fadeUp" style="animation-delay:.24s">']
+    parts.append('    <circle cx="%d" cy="%d" r="%d" fill="none" stroke="%s" '
+                 'stroke-opacity=".16" stroke-width="3"/>'
+                 % (cx, cy, ring, pal.accent))
+    # Ngay sau nửa đêm cung chỉ còn vài phần nghìn độ: vẽ ra chỉ thành một
+    # chấm méo, nên bỏ hẳn cho sạch.
+    if sweep > 0.4:
+        end = math.radians(sweep - 90.0)
+        large = 1 if sweep > 180.0 else 0
+        x, y = cx + ring * math.cos(end), cy + ring * math.sin(end)
+        parts.append('    <path d="M%d %dA%d %d 0 %d 1 %.2f %.2f" fill="none" '
+                     'stroke="url(#accentGrad)" stroke-width="3" '
+                     'stroke-linecap="round" stroke-opacity=".8"/>'
+                     % (cx, cy - ring, ring, ring, large, x, y))
+        parts.append('    <circle cx="%.2f" cy="%.2f" r="3.4" fill="%s">'
+                     % (x, y, pal.accent3))
+        parts.append('      <animate attributeName="r" values="2.6;4.4;2.6" '
+                     'dur="3.2s" repeatCount="indefinite"/>')
+        parts.append('    </circle>')
+    parts.append('  </g>')
+    return parts
+
+
 def _hands(pal, cx, cy, hour, minute, second):
     hour_angle = ((hour % 12) + minute / 60.0) * 30.0
     minute_angle = (minute + second / 60.0) * 6.0
@@ -118,6 +150,57 @@ def _hands(pal, cx, cy, hour, minute, second):
     ]
 
 
+# Số giờ/phút tự nhảy mỗi phút, không cần JavaScript và không cần workflow
+# chạy lại: 24 ô giờ + 60 ô phút xếp chồng đúng một chỗ, mỗi ô chỉ hiện trong
+# khoảng thời gian của nó. Ô của ảnh chụp hiện sẵn (opacity 1) nên trình xem
+# tĩnh — và người bật "giảm chuyển động" — vẫn thấy đúng giờ của ảnh chụp.
+LIVE_TIME_CSS = """
+    .liveHour text, .liveMin text { opacity: 0;
+      animation: slotMin 3600s linear infinite; }
+    .liveHour text { animation-name: slotHour; animation-duration: 86400s; }
+    .liveHour text.nowSlot, .liveMin text.nowSlot { opacity: 1; }
+    @keyframes slotMin  { 0%, 1.666% { opacity: 1 } 1.667%, 100% { opacity: 0 } }
+    @keyframes slotHour { 0%, 4.166% { opacity: 1 } 4.167%, 100% { opacity: 0 } }
+""".strip()
+
+HOUR_X, COLON_X, MIN_X = 308, 316, 324
+TIME_Y = 124
+
+
+def _live_time(pal, px, hour, minute, second):
+    """Ba khối: ô giờ, dấu hai chấm, ô phút.
+
+    Độ trễ của mỗi ô = thời điểm ô đó bắt đầu hiện, tính từ lúc trang tải.
+    Ô hiện tại nhận độ trễ âm (đang trong khung của nó) nên hiện ngay.
+    """
+    parts = ['  <g class="fadeUp" style="animation-delay:.2s">']
+    parts.append('    <g class="liveHour" text-anchor="end" '
+                 'fill="url(#titleGrad)">')
+    for value in range(24):
+        step = (value - hour) % 24
+        delay = step * 3600 - (minute * 60 + second)
+        parts.append('      <text class="clockTime%s" x="%d" y="%d" '
+                     'style="animation-delay:%.1fs">%02d</text>'
+                     % (" nowSlot" if value == hour else "", HOUR_X, TIME_Y,
+                        delay, value))
+    parts.append('    </g>')
+    parts.append('    <text class="clockTime" x="%d" y="%d" '
+                 'text-anchor="middle" fill="url(#accentGrad)">:</text>'
+                 % (COLON_X, TIME_Y))
+    parts.append('    <g class="liveMin" text-anchor="start" '
+                 'fill="url(#titleGrad)">')
+    for value in range(60):
+        step = (value - minute) % 60
+        delay = step * 60 - second
+        parts.append('      <text class="clockTime%s" x="%d" y="%d" '
+                     'style="animation-delay:%.1fs">%02d</text>'
+                     % (" nowSlot" if value == minute else "", MIN_X, TIME_Y,
+                        delay, value))
+    parts.append('    </g>')
+    parts.append('  </g>')
+    return parts
+
+
 def clock_card(pal, dt, t, width=640, height=258):
     # Mọi mốc thời gian đều quy về giờ Việt Nam, kể cả khi nơi gọi truyền UTC.
     dt = to_vn(dt)
@@ -144,7 +227,10 @@ def clock_card(pal, dt, t, width=640, height=258):
                  % esc(t("clock.sub")))
     parts.append('  </g>')
 
+    parts.append('  <style>%s</style>' % LIVE_TIME_CSS)
+
     parts += _dial(pal, cx, cy, radius)
+    parts += _day_arc(pal, cx, cy, radius, hour, minute, second)
     parts += _hands(pal, cx, cy, hour, minute, second)
 
     # bảng số bên phải
@@ -154,8 +240,7 @@ def clock_card(pal, dt, t, width=640, height=258):
     # Mốc thời gian đã vẽ, để không ai nhầm ảnh tĩnh là "giờ hiện tại".
     parts.append('    <text x="%d" y="74" text-anchor="end" class="cardSub">%s</text>'
                  % (px + bar_w, esc(t("clock.updated", hhmm=dt.strftime("%H:%M")))))
-    parts.append('    <text x="%d" y="124" class="clockTime" fill="url(#titleGrad)">'
-                 '%s</text>' % (px, dt.strftime("%H:%M")))
+    parts += _live_time(pal, px, hour, minute, second)
     parts.append('    <text x="%d" y="148" class="clockDate">%s · %s</text>'
                  % (px, esc(t.weekday(dt.weekday())), dt.strftime("%d/%m/%Y")))
     parts.append('  </g>')
