@@ -10,7 +10,7 @@
 #    - chạy lại ngay khi BẤT KỲ workflow nào vừa kết thúc (workflow_run)
 #    - không đọc được API thì giữ nguyên ảnh cũ, không ghi thẻ rỗng
 # =====================================================================
-name: 📊 Workflow Status
+name: Workflow Status
 
 on:
   schedule:
