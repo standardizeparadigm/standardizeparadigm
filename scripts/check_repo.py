@@ -405,6 +405,12 @@ def check_workflow_docs(root=None):
                         err("docs/WORKFLOWS.md:%d ghi lịch %r cho %s, nhưng file "
                             "thật là %s" % (number, quoted, name,
                                             ", ".join(crons[name]) or "không có schedule"))
+        # Chiều ngược lại: workflow mới thêm mà không có dòng nào trong bảng
+        # thì người đọc không bao giờ biết nó tồn tại.
+        doc_text = read(doc)
+        for name in sorted(crons):
+            if "`%s`" % name not in doc_text:
+                err("docs/WORKFLOWS.md: không có dòng nào cho %s" % name)
 
     readme = os.path.join(root, "README.md")
     if os.path.exists(readme):
