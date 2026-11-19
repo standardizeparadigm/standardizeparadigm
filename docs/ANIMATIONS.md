@@ -42,3 +42,8 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 - Chu kỳ 25.2 giây: câu hiện dần ~1.5s, giữ ~3.9s, xoá, nghỉ — rồi tới câu kế.
 - Con trỏ `|` nhấp nháy bằng `blink` (1.05s, `steps(1, end)`) để giống terminal thật.
 
+## Divider — tia sáng
+
+- Đường kẻ là gradient ngang, hai đầu mờ dần.
+- Một hình thoi nhỏ chạy hết chiều ngang (SMIL, `repeatCount="indefinite"`), kèm hai quầng mờ để lại vệt.
+
