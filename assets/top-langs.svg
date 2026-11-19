@@ -189,6 +189,7 @@
     <rect x="-160" y="48" width="150" height="28" fill="url(#sheenGrad)" class="sheen" style="animation-duration:5.5s"/>
   </g>
   <g class="fadeUp" style="animation-delay:0.18s">
+    <circle cx="27" cy="100" r="9" fill="none" stroke="#3178C6" stroke-opacity=".35" class="pulseSlow"/>
     <circle cx="27" cy="100" r="5" fill="#3178C6"/>
     <text x="40" y="104" class="legendName">TypeScript</text>
     <text x="284" y="104" text-anchor="end" class="legendValue">89.3%</text>
@@ -246,7 +247,7 @@
   </g>
   <g class="fadeUp" style="animation-delay:.62s">
     <circle cx="26" cy="242" r="3" fill="#38BDF8" class="pulse"/>
-    <text x="36" y="245" class="footNote">Tính theo số byte code thật trong các repo công khai · cập nhật 19/11 · 15:35</text>
+    <text x="36" y="245" class="footNote">Tính theo số byte code thật trong các repo công khai · cập nhật 19/11 · 15:36</text>
   </g>
 <!-- data:928a1a75b184 -->
 </svg>

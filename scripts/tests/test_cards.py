@@ -99,3 +99,15 @@ class TestAccessibility(unittest.TestCase):
             if name == "divider.svg":
                 continue
             self.assertIn("<desc>", svg, "thiếu <desc> trong %s" % name)
+
+
+class TestTopLanguageHighlight(unittest.TestCase):
+    def test_first_language_has_ring(self):
+        pal = get_palette()
+        svg = langs_card(pal, {"langs": {"Python": 900, "Go": 100}}, DT, i18n.get("vi"))
+        self.assertIn('r="9" fill="none"', svg)
+
+    def test_other_languages_have_no_ring(self):
+        pal = get_palette()
+        svg = langs_card(pal, {"langs": {"Python": 900, "Go": 100}}, DT, i18n.get("vi"))
+        self.assertEqual(svg.count('class="pulseSlow"'), 1)

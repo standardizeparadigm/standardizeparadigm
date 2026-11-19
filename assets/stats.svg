@@ -161,7 +161,7 @@
   <g class="fadeUp">
     <rect x="22" y="22" width="4" height="18" rx="2" fill="url(#accentGrad)"/>
     <text x="36" y="37" class="cardTitle">GITHUB STATS</text>
-    <text x="618" y="36" text-anchor="end" class="cardSub">CẬP NHẬT 19/11 · 15:35</text>
+    <text x="618" y="36" text-anchor="end" class="cardSub">CẬP NHẬT 19/11 · 15:36</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.08s">
     <rect x="22" y="62" width="180" height="50" rx="12" fill="#0B1B2B" stroke="#17334F" stroke-opacity=".85"/>

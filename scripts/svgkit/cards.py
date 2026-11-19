@@ -183,6 +183,10 @@ def langs_card(pal, data, dt, t, width=640, height=258):
         label = name if len(name) <= 14 else name[:13] + "…"
         parts.append('  <g class="fadeUp" style="animation-delay:%.2fs">'
                      % (0.18 + 0.06 * i))
+        if i == 0:
+            parts.append('    <circle cx="%d" cy="%d" r="9" fill="none" '
+                         'stroke="%s" stroke-opacity=".35" class="pulseSlow"/>'
+                         % (cx + 5, y - 4, lang_color(name, i)))
         parts.append('    <circle cx="%d" cy="%d" r="5" fill="%s"/>'
                      % (cx + 5, y - 4, lang_color(name, i)))
         parts.append('    <text x="%d" y="%d" class="legendName">%s</text>'
