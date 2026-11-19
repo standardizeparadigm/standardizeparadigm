@@ -39,9 +39,16 @@ def _sun_moon(pal, hour, x, y):
                             x + 10 * math.cos(angle), y + 10 * math.sin(angle)))
         parts.append('</g>')
         return "".join(parts)
-    return ('<path d="M%s %sa4.6 4.6 0 106.4 6.4 5.6 5.6 0 01-%s -%s" '
+    # Trăng khuyết: hai đường cong bậc hai cùng hai đầu, đường ngoài phình
+    # 5.4 về bên phải, đường trong phình 2.0. Bản cũ dùng cung tròn có bán
+    # kính tính bằng "0" nên mọi trình vẽ đều ra một cục méo — không trình
+    # nào báo lỗi, chỉ là hình trăng không giống trăng.
+    return ('<path d="M%.2f %.2fQ%.2f %.2f %.2f %.2fQ%.2f %.2f %.2f %.2fZ" '
             'fill="%s"/>'
-            % (x, y - 5, 0, 0, pal.accent3))
+            % (x, y - 5.0,
+               x + 5.4, y - 2.4, x + 5.4, y,
+               x + 2.0, y + 2.2, x, y + 5.0,
+               pal.accent3))
 
 
 def _dial(pal, cx, cy, radius):
