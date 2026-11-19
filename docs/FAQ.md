@@ -79,6 +79,14 @@ Nhớ đổi tên, tiểu sử và liên hệ — đừng để hai trang giốn
 Đúng thiết kế: cổng thông minh bỏ qua lượt chạy khi chưa có push mới và ảnh chưa quá 24 giờ. Muốn vẽ ngay: **Actions → GitHub Profile 3D Contrib → Run workflow** — `workflow_dispatch` luôn đi qua cổng ở trạng thái "chưa có mốc", nên vẽ lại ngay.
 
 
+## Dải trạng thái báo `CHỜ MERGE` nghĩa là gì?
+
+Nghĩa là file workflow đó **chưa có trên nhánh mặc định**. Dải đọc Actions API
+bằng tên file; API trả 404 thì dải ghi `CHỜ MERGE` thay vì đoán bừa.
+
+Merge xong, lượt chạy kế tiếp của `status.yml` sẽ đổi nó thành `ĐẠT` (hoặc
+`LỖI` nếu workflow đỏ). Đây là trạng thái tạm, không phải lỗi cấu hình.
+
 ## Badge trên trang báo `repo or workflow not found`?
 
 Badge shields.io đọc trạng thái qua API `.../actions/workflows/<file>`, và
