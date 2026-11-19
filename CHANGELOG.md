@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Footer: nâng chữ khỏi sóng
+
+- Dòng “Làm bằng Python…” nằm đúng ngọn sóng nên chìm vào nền.
+- Khối chữ nâng lên 14px, hai lớp sóng hạ xuống — chữ luôn nổi.
+
 ## 2026-11-19 — Hero: dấu nhắc vẽ bằng path
 
 - Ký tự `›` phụ thuộc font, máy thiếu font sẽ ra ô vuông.
