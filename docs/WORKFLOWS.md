@@ -91,6 +91,10 @@ Vẽ lại `assets/live-clock.svg`: đồng hồ Việt Nam (UTC+7), lời chào
 
 ## 5. Repo Health — `health.yml` + `scripts/check_repo.py`
 
+Chạy tay trên máy: `python3 scripts/check_repo.py`. Có lỗi vệ sinh kiểu BOM/CRLF/khoảng
+trắng thì thêm `--fix` để nó tự sửa — cờ này chỉ đụng thứ vô hình với người đọc, không
+đổi một ký tự nội dung nào.
+
 "Bác sĩ" của repo, chạy mỗi lần push/PR và 06:00 mỗi ngày:
 
 - Chạy **hơn 100 unit test** (`python3 -m unittest discover -s scripts/tests -t scripts`)
