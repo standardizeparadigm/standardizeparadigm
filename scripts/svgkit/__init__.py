@@ -19,7 +19,7 @@ Dùng:
     from svgkit import get_palette, i18n, hero, divider
 """
 
-__version__ = "2.0.0"
+__version__ = "2.1.0"
 
 from . import api, i18n  # noqa: F401
 from .activity import activity_card  # noqa: F401
