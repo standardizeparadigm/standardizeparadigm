@@ -14,6 +14,10 @@ on:
     types: [opened]
   pull_request_target:
     types: [opened]
+  # Nút "Run workflow": hữu ích khi cần kiểm tra workflow mà không phải chờ
+  # một issue/PR thật. Lượt chạy tay dừng ngay ở bước đầu (không có số
+  # issue/PR để chào).
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -30,7 +34,12 @@ jobs:
     timeout-minutes: 5
     if: github.event.sender.type != 'Bot'
     steps:
+      - name: Bỏ qua khi chạy tay
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          echo "Chạy tay: không có issue/PR để chào — kết thúc bình thường."
       - name: Chào mừng thành viên mới
+        if: github.event_name != 'workflow_dispatch'
         uses: actions/github-script@v9
         with:
           script: |
