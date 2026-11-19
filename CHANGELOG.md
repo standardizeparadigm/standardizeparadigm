@@ -3,6 +3,13 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Nhãn "còn 7g37" trong thẻ đồng hồ
+
+- Thanh tiến độ ngày chỉ nói *đã trôi bao nhiêu*; lúc 23h cái người ta cần
+  biết là *còn bao lâu*. Nhãn `còn 7g37` nằm ngay cạnh phần trăm.
+- Khoá i18n `clock.left` ở cả hai ngôn ngữ; phút luôn hai chữ số để nhãn
+  không nhảy bề rộng giữa 23:55 (`còn 1g05`) và 23:05 (`còn 1g55`).
+
 ## 2026-11-19 — Lịch chạy so le để không giành `git push`
 
 - Sáu workflow cùng ghi vào một nhánh. `*/5` (đồng hồ) và `*/10` (trạng thái)
