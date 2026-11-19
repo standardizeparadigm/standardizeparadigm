@@ -104,3 +104,15 @@ Nguyên tắc: **nếu hoạt ảnh làm khung đầu tiên xấu, đổi sang S
 - khác → ghi và commit,
 - giống → bỏ qua, không tạo commit rỗng.
 
+## Xử lý lỗi
+
+| Tình huống | Hành vi |
+| :-- | :-- |
+| Mạng lỗi / 5xx | thử lại 3 lần, backoff tăng dần |
+| 403 rate limit | đọc `Retry-After`, chờ rồi thử lại |
+| 404 sai user | trả `None`, in hướng dẫn sửa `GH_USER` |
+| Thiếu token | dùng quota công khai; thẻ chờ thay vì số liệu giả |
+| GraphQL lỗi | `activity_card` trả `None`, ảnh cũ được giữ |
+
+`--strict` đổi "im lặng giữ ảnh cũ" thành mã thoát 1, để workflow báo đỏ khi bạn muốn biết.
+
