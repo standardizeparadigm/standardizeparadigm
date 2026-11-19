@@ -3,6 +3,11 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Hero: dấu nhắc vẽ bằng path
+
+- Ký tự `›` phụ thuộc font, máy thiếu font sẽ ra ô vuông.
+- Thay bằng một path chevron 2 nét — hiển thị giống nhau ở mọi nơi.
+
 ## 2026-11-19 — Hero: vệt sáng chuyển sang SMIL
 
 - Vệt sáng quét qua tiêu đề trước đây dùng `clip-path` + CSS: trình xem nào đứng yên ở khung đầu sẽ thấy một mảng trắng đè nửa tiêu đề.
