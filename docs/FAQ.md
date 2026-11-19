@@ -65,6 +65,20 @@ một khung giờ hiếm khi ai nhìn tới.
 - Không có nhãn — API không trả mốc thời gian. Thà thiếu nhãn còn hơn in một
   con số sai; `api.age_minutes()` trả `None` thay vì `0` trong trường hợp đó.
 
+## Ảnh đẹp trong Chrome nhưng vỡ trong app GitHub?
+
+Vì SVG không phải một chuẩn được hiểu giống nhau ở mọi nơi. Trình duyệt hiểu
+`font: 800 54px Arial`; resvg và vài bản librsvg bỏ qua **cả khai báo** và
+kéo chữ về 16px — số giờ teo lại, nhãn trên dải trạng thái chèn lên nhau.
+
+Ba quy ước giữ cho ảnh đọc được ở mọi trình:
+
+- **Không dùng `font:` viết tắt.** Viết `font-weight`, `font-size`,
+  `font-family`. `check_repo.py` báo lỗi nếu quên.
+- **Hoạt ảnh phải có trạng thái tĩnh đẹp sẵn.** Nhiều trình xem chỉ vẽ khung
+  hình đầu tiên — nếu khung đó là `opacity: 0` thì người xem thấy ảnh trống.
+- **`prefers-reduced-motion` tắt mọi chuyển động**, nhưng nội dung vẫn đủ.
+
 ## Dải trạng thái cần thêm quyền gì?
 
 `actions: read` để đọc trạng thái các lần chạy, và `contents: write` để commit
