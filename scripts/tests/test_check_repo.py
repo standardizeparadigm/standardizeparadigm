@@ -412,6 +412,47 @@ class TestSvgBudget(unittest.TestCase):
     def test_default_budget_is_forty_kilobytes(self):
         self.assertEqual(check_repo.SVG_BUDGET, 40 * 1024)
 
+
+
+class TestModuleDocstrings(unittest.TestCase):
+    """Luật docstring đầu file."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="docstring-")
+        os.makedirs(os.path.join(self.tmp, "scripts", "svgkit"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _py(self, name, text):
+        with open(os.path.join(self.tmp, "scripts", name), "w",
+                  encoding="utf-8") as handle:
+            handle.write(text)
+
+    def test_docstring_passes(self):
+        self._py("a.py", '"""Vì sao file này tồn tại."""\nimport os\n')
+        check_repo.check_module_docstrings(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_shebang_then_docstring_passes(self):
+        self._py("a.py", '#!/usr/bin/env python3\n"""doc"""\n')
+        check_repo.check_module_docstrings(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_missing_docstring_is_flagged(self):
+        self._py("a.py", "import os\n")
+        check_repo.check_module_docstrings(self.tmp)
+        self.assertTrue(any("docstring" in e for e in check_repo.errors))
+
+    def test_nested_package_files_are_checked(self):
+        path = os.path.join(self.tmp, "scripts", "svgkit", "b.py")
+        with open(path, "w", encoding="utf-8") as handle:
+            handle.write("x = 1\n")
+        check_repo.check_module_docstrings(self.tmp)
+        self.assertTrue(any("svgkit/b.py" in e for e in check_repo.errors))
+
 if __name__ == "__main__":
     unittest.main()
 
