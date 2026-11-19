@@ -49,6 +49,18 @@ Chúng chỉ ra ký tự lỗi encoding, SVG hỏng, link chết, workflow sai �
 `scripts/generate_cards.py` + `scripts/svgkit/` sinh ra; chạm tay vào SVG là
 lượt workflow kế tiếp sẽ ghi đè.
 
+## 🧩 Thêm một workflow mới
+
+Ba chỗ, đừng bỏ chỗ nào:
+
+1. `.github/workflows/ten-moi.yml`
+2. `WORKFLOWS` trong `scripts/svgkit/status.py` — thiếu chỗ này thì dải trạng
+   thái lặng lẽ bỏ sót workflow của bạn (đã có test bắt lỗi).
+3. Bảng lịch chạy trong `README.md` và `docs/WORKFLOWS.md`
+
+Nhớ thêm `workflow_dispatch` nếu muốn chạy tay — nút đó chỉ hiện khi file đã có
+trên nhánh mặc định.
+
 ## 🐛 Báo lỗi & yêu cầu tính năng
 
 - Mở issue theo mẫu có sẵn trong `.github/ISSUE_TEMPLATE/`.
