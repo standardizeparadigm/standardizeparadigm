@@ -188,6 +188,62 @@ class TestNum(unittest.TestCase):
         for value in (0, 0.0, -0.04, 1000000):
             self.assertNotIn(".", num(value).rstrip("."), num(value))
 
+
+
+class TestEscEdgeCases(unittest.TestCase):
+    """`esc` bảo vệ XML — nhưng không được làm hỏng dấu tiếng Việt."""
+
+    def test_ampersand_first_then_brackets(self):
+        # Thứ tự sai sẽ biến "<" thành "&amp;lt;".
+        self.assertEqual(primitives.esc("<a & b>"), "&lt;a &amp; b&gt;")
+
+    def test_quotes_are_escaped_for_attributes(self):
+        self.assertEqual(primitives.esc('say "hi"'), "say &quot;hi&quot;")
+
+    def test_vietnamese_is_untouched(self):
+        text = "Quảng Ngãi · ĐẠT"
+        self.assertEqual(primitives.esc(text), text)
+
+    def test_numbers_become_strings(self):
+        self.assertEqual(primitives.esc(42), "42")
+
+    def test_no_double_escaping_of_entities_text(self):
+        # Chuỗi đã có sẵn "&amp;" sẽ thành "&amp;amp;" — chấp nhận được, vì
+        # esc chỉ nhận văn bản thô, chưa từng qua esc.
+        self.assertEqual(primitives.esc("&amp;"), "&amp;amp;")
+
+
+class TestNumFormatting(unittest.TestCase):
+    def test_trims_trailing_zeros(self):
+        self.assertEqual(num(12.0), "12")
+        self.assertEqual(num(12.5), "12.5")
+        self.assertEqual(num(12.34), "12.3")
+
+    def test_zero_and_negative(self):
+        self.assertEqual(num(0), "0")
+        self.assertEqual(num(-3.0), "-3")
+
+    def test_never_emits_negative_zero(self):
+        self.assertNotEqual(num(-0.04), "-0")
+
+
+class TestHumanFormatting(unittest.TestCase):
+    def test_small_numbers_stay_whole(self):
+        self.assertEqual(human(0), "0")
+        self.assertEqual(human(999), "999")
+
+    def test_thousands_and_millions(self):
+        self.assertEqual(human(1284), "1.3k")
+        self.assertEqual(human(2400000), "2.4M")
+
+    def test_round_numbers_drop_the_decimal(self):
+        self.assertEqual(human(3000), "3k")
+
+    def test_junk_becomes_a_dash(self):
+        for junk in (None, "abc", "", [], {}):
+            self.assertEqual(human(junk), "-", repr(junk))
+
+
 if __name__ == "__main__":
     unittest.main()
 
@@ -241,14 +297,14 @@ class TestEscape(unittest.TestCase):
     def test_special_characters(self):
         from svgkit.primitives import esc
 
-        self.assertEqual(esc("a & b"), "a &amp; b")
-        self.assertEqual(esc("<b>"), "&lt;b&gt;")
-        self.assertEqual(esc('nói "xin chào"'), "nói &quot;xin chào&quot;")
+        self.assertEqual(primitives.esc("a & b"), "a &amp; b")
+        self.assertEqual(primitives.esc("<b>"), "&lt;b&gt;")
+        self.assertEqual(primitives.esc('nói "xin chào"'), "nói &quot;xin chào&quot;")
 
     def test_vietnamese_untouched(self):
         from svgkit.primitives import esc
 
-        self.assertEqual(esc("Lập trình viên tự học"), "Lập trình viên tự học")
+        self.assertEqual(primitives.esc("Lập trình viên tự học"), "Lập trình viên tự học")
 
     def test_escaped_text_stays_parseable(self):
         from helpers import parse
