@@ -72,3 +72,8 @@ Sau đó vào tab **Actions → Profile Cards → Run workflow**.
 
 Nhớ đổi tên, tiểu sử và liên hệ — đừng để hai trang giống hệt nhau.
 
+
+## Ảnh 3D đứng im dù workflow vẫn chạy xanh?
+
+Đúng thiết kế: cổng thông minh bỏ qua lượt chạy khi chưa có push mới và ảnh chưa quá 24 giờ. Muốn vẽ ngay: **Actions → GitHub Profile 3D Contrib → Run workflow** — `workflow_dispatch` luôn đi qua cổng ở trạng thái "chưa có mốc", nên vẽ lại ngay.
+
