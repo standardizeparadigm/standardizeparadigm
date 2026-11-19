@@ -3,6 +3,10 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — docs/ARCHITECTURE.md
+
+- Giải thích luồng dữ liệu, ranh giới module, vì sao chỉ dùng thư viện chuẩn, chiến lược hoạt ảnh, cách ghi file, xử lý lỗi và checklist thêm thẻ mới.
+
 ## 2026-11-19 — Hero: hai vòng lan toả quanh lõi
 
 - Bán kính 26 → 86, mờ dần, chu kỳ 5.2 giây, lệch pha nửa chu kỳ — như nhịp thở của monogram.
