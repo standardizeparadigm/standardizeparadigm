@@ -599,6 +599,41 @@ def check_test_claims(root=None):
                             "— hãy nâng lên" % (rel(path), number, claimed, total))
 
 
+# ------------------------------------------------- 4ba. Cấp tiêu đề Markdown
+RE_HEADING = re.compile(r"^(#{1,6})\s+\S", re.M)
+
+
+def check_heading_levels(root=None):
+    """Tiêu đề không được nhảy cấp (## rồi ####).
+
+    Mục lục của GitHub dựng theo cấp tiêu đề; nhảy cấp làm mục lục lệch
+    một bậc và không có công cụ nào báo. Đây là lỗi chỉ mắt người thấy, và
+    chỉ thấy khi cuộn đúng chỗ đó.
+    """
+    root = root or ROOT
+    for base, dirs, files in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.lower().endswith(".md"):
+                continue
+            path = os.path.join(base, name)
+            previous = 0
+            in_code = False
+            for number, line in enumerate(read(path).split("\n"), 1):
+                # Bỏ qua khối mã: dòng '#' trong ``` là comment Python, và
+                # comment Ruby/Python cấp 1 chen giữa h2/h3 sẽ báo lỗi sai.
+                if line.lstrip().startswith("```"):
+                    in_code = not in_code
+                    continue
+                if in_code or not RE_HEADING.match(line):
+                    continue
+                level = len(line) - len(line.lstrip("#"))
+                if previous and level > previous + 1:
+                    err("%s:%d tiêu đề nhảy cấp (h%d ngay sau h%d)"
+                        % (rel(path), number, level, previous))
+                previous = level
+
+
 # ---------------------------------------------- 4b9. Action phải ghim phiên bản
 RE_USES = re.compile(r"^\s*(?:-\s*)?uses:\s*(\S+)\s*$", re.M)
 RE_PINNED = re.compile(r"@v\d+(\.\d+)*$|@[0-9a-f]{40}$")
@@ -909,6 +944,7 @@ def main(argv=None):
     check_shields_workflow_badges()
     check_cron_resolution()
     check_action_pins()
+    check_heading_levels()
     check_svg_budget()
     check_python()
     check_module_docstrings()
