@@ -15,6 +15,7 @@
    assets/divider.svg      đường kẻ động        (không cần API)
    assets/footer.svg       chân trang động      (không cần API)
    assets/live-clock.svg   đồng hồ Việt Nam     (không cần API)
+   assets/status.svg       dải trạng thái      (cần token + quyền actions:read)
    assets/stats.svg        thẻ thống kê         (cần API)
    assets/top-langs.svg    thẻ ngôn ngữ         (cần API)
    assets/activity.svg     lịch contribution    (cần GraphQL + token)
