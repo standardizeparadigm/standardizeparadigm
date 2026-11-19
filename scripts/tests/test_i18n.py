@@ -61,6 +61,46 @@ class TestTranslator(unittest.TestCase):
         self.assertEqual(i18n.get("vi").weekday(6), "Chủ Nhật")
 
 
+
+
+class TestStringHygiene(unittest.TestCase):
+    """Chuỗi trong i18n phải sạch — người dùng thấy chúng nguyên văn."""
+
+    def _strings(self):
+        for lang, table in i18n.STRINGS.items():
+            for key, value in table.items():
+                yield lang, key, value
+
+    def test_no_trailing_spaces(self):
+        for lang, key, value in self._strings():
+            self.assertEqual(value, value.strip(), "%s/%s" % (lang, key))
+
+    def test_no_double_spaces(self):
+        for lang, key, value in self._strings():
+            self.assertNotIn("  ", value, "%s/%s" % (lang, key))
+
+    def test_all_vietnamese_diacritics_are_precomposed(self):
+        # Dấu rời (NFD) hiện thành ô vuông trong vài font hệ thống.
+        import unicodedata
+        for lang, key, value in self._strings():
+            self.assertEqual(value, unicodedata.normalize("NFC", value),
+                             "%s/%s" % (lang, key))
+
+    def test_keys_never_start_or_end_with_a_dot(self):
+        for lang, key, value in self._strings():
+            self.assertFalse(key.startswith(".") or key.endswith("."), key)
+
+    def test_no_placeholder_without_a_name(self):
+        for lang, key, value in self._strings():
+            self.assertNotIn("{}", value, "%s/%s" % (lang, key))
+
+    def test_english_strings_have_no_vietnamese_letters(self):
+        vietnamese = "ăâđêôơưạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ"
+        for key, value in i18n.STRINGS["en"].items():
+            lowered = value.lower()
+            for letter in vietnamese:
+                self.assertNotIn(letter, lowered, "en/%s" % key)
+
 if __name__ == "__main__":
     unittest.main()
 
