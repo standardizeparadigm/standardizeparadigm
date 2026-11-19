@@ -76,7 +76,8 @@ jobs:
           required = ["assets/stats.svg", "assets/top-langs.svg",
                       "assets/hero.svg", "assets/divider.svg",
                       "assets/footer.svg"]
-          optional = ["assets/activity.svg", "assets/live-clock.svg"]
+          optional = ["assets/activity.svg", "assets/live-clock.svg",
+                      "assets/status.svg"]
 
           for path in required + [p for p in optional if os.path.exists(p)]:
               try:
