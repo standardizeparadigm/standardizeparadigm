@@ -87,3 +87,12 @@ Phần lớn test nằm ở đây vì `primitives` là nền của mọi thẻ:
 - Tiến độ ngày: 12:00 → 50%, 00:00 → 0%, 23:59 → ~100%.
 - Đủ 60 vạch phút; vành có vệt sáng quét 18 giây/vòng; kim giây có đối trọng.
 
+## `test_activity.py`
+
+- Chỉ lấy 14 ngày cuối, đúng thứ tự cũ → mới.
+- Ba ô số: tổng năm, chuỗi hiện tại, chuỗi dài nhất khớp dữ liệu.
+- Hôm nay chưa có contribution → chuỗi hiện tại = 0 (không phải 1).
+- Ngày 0 vẫn vẽ vạch mờ, không biến mất.
+- Đường trung bình chỉ hiện khi dữ liệu lệch; nhãn `cao nhất` ẩn khi hôm nay là cao nhất.
+- `contrib is None` → trả `None` để CLI giữ ảnh cũ.
+
