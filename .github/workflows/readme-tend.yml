@@ -64,10 +64,13 @@ jobs:
             fi
             echo "OK  $d có $(find "$d" -type f | wc -l) file"
           done
-          if [ ! -f assets/live-clock.svg ]; then
-            echo "!! Thiếu assets/live-clock.svg" >&2
-            exit 1
-          fi
+          for name in live-clock stats top-langs hero divider footer status; do
+            if [ ! -f "assets/$name.svg" ]; then
+              echo "!! Thiếu assets/$name.svg" >&2
+              exit 1
+            fi
+          done
+          echo "OK  đủ 7 ảnh bắt buộc"
 
       - name: Commit + push
         run: |
