@@ -191,10 +191,33 @@ WEEKDAYS = {
 }
 
 
+ALIASES = {
+    "vn": "vi", "vietnamese": "vi", "tieng-viet": "vi",
+    "us": "en", "uk": "en", "english": "en",
+}
+
+
+def normalize(lang):
+    """`VI`, `vi-VN`, `Vietnamese` ... đều về `vi`.
+
+    Dấu gạch và phần vùng bị bỏ (`en-GB` → `en`) vì bảng chữ chỉ khác nhau ở
+    ngôn ngữ, không khác ở vùng. Mã lạ được trả nguyên (đã bỏ khoảng trắng và
+    hạ chữ) để thông báo lỗi nói đúng thứ người dùng gõ.
+    """
+    tag = (lang or "").strip().lower().replace("_", "-")
+    if not tag:
+        return DEFAULT_LANG
+    head = tag.split("-")[0]
+    if head in STRINGS:
+        return head
+    return ALIASES.get(tag, ALIASES.get(head, tag))
+
+
 class Translator:
     """Tra cứu chuỗi theo khóa, tự điền tham số, thiếu khóa thì trả khóa."""
 
     def __init__(self, lang=DEFAULT_LANG):
+        lang = normalize(lang)
         self.lang = lang if lang in STRINGS else DEFAULT_LANG
         self.table = STRINGS[DEFAULT_LANG].copy()
         self.table.update(STRINGS[self.lang])
