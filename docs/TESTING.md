@@ -49,6 +49,25 @@ python3 scripts/check_repo.py --fix    # tự sửa lỗi vô hình rồi báo l
 `test_repo_workflows.py` chạy lại các luật đó **trên repo thật**, nên sai quy
 ước là đỏ ngay khi chạy test trên máy chứ không phải đợi CI.
 
+### Những luật chỉ máy thấy
+
+Mỗi luật ở đây ra đời từ một lỗi đã xảy ra thật, và đều thuộc loại **không
+công cụ nào báo**: trình duyệt vẫn vẽ, GitHub vẫn hiện, chỉ có người đọc mới
+chịu.
+
+| Luật | Lỗi đã xảy ra |
+| :-- | :-- |
+| Địa danh cũ | ảnh bìa vẫn ghi chỗ ở cũ sau khi đã chuyển nhà |
+| Chuỗi 'en' còn tiếng Việt | dải trạng thái hiện `CHỜ MERGE` với người chọn tiếng Anh |
+| Chữ SVG thiếu `class` | một nhãn rơi về Times New Roman 16px giữa thẻ |
+| `id` trùng trong một ảnh | nửa số hình dùng sai gradient, trông vẫn "có vẻ đúng" |
+| Dòng chữ quá dài | chân thẻ đồng hồ bị cắt thành "mỗi 5 p…" |
+| Tiêu đề nhảy cấp | mục lục GitHub lệch bậc cả một nhánh tài liệu |
+| Cron dày hơn 5 phút | `* * * * *` chỉ chạy mỗi 5 phút, không ai báo |
+| Action không ghim | `@main` chạy code khác mỗi ngày |
+| Job thiếu `timeout-minutes` | một bước treo giữ runner 6 tiếng |
+| Badge shields workflow | ô đỏ "repo or workflow not found" trên trang chủ |
+
 ## `helpers.py`
 
 Hai file test không tự thêm `scripts/` vào `sys.path` được — `tests/__init__.py` làm việc đó, còn `helpers.py` là nơi ở chung:
