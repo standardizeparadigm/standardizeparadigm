@@ -151,6 +151,9 @@ nằm cùng repo, cùng CDN với các ảnh khác, không bao giờ "not found"
 | Workflow đỏ ở bước API | Token thiếu quyền hoặc hết quota | Kiểm tra `permissions: contents: write`, chạy lại sau vài phút |
 | Ảnh không hiện | Thiếu file trong `assets/` | Chạy `health.yml` để xem lỗi cụ thể |
 | Push thất bại | Hai workflow commit cùng lúc | Workflow đã tự thử lại 3 lần; nếu vẫn lỗi thì chạy lại |
+| Badge shields báo `repo or workflow not found` | Workflow chưa nằm trên nhánh mặc định | Merge, hoặc dùng `assets/status.svg` (mục 7) |
+| Badge shields báo `no status` | Workflow có nhưng chưa chạy xong lần nào | Chạy một lần, hoặc dùng `assets/status.svg` |
+| Bấm `Run workflow` không thấy workflow | File chỉ có ở nhánh khác | Merge vào nhánh mặc định trước |
 
 ## Tham khảo
 
