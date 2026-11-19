@@ -249,3 +249,45 @@ class TestAsScript(unittest.TestCase):
             result = self._run("--demo", "--all", "--out", tmp)
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertEqual(len([f for f in os.listdir(tmp) if f.endswith(".svg")]), 7)
+
+
+class TestSmartMode(unittest.TestCase):
+    def setUp(self):
+        self.out = tempfile.mkdtemp(prefix="cards-smart-")
+
+    def tearDown(self):
+        shutil.rmtree(self.out, ignore_errors=True)
+
+    def _run(self):
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            generate_cards.main(["--demo", "--cards", "--activity",
+                                 "--smart", "--out", self.out])
+        return out.getvalue()
+
+    def test_second_run_writes_nothing(self):
+        import time
+
+        first = self._run()
+        self.assertNotIn("không đổi", first)
+        before = {name: os.path.getmtime(os.path.join(self.out, name))
+                  for name in os.listdir(self.out)}
+        time.sleep(0.01)
+        second = self._run()
+        self.assertIn("không đổi", second)
+        after = {name: os.path.getmtime(os.path.join(self.out, name))
+                 for name in os.listdir(self.out)}
+        self.assertEqual(before, after)
+
+    def test_without_smart_always_writes(self):
+        self._run()
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            generate_cards.main(["--demo", "--cards", "--out", self.out])
+        self.assertNotIn("không đổi", out.getvalue())
+
+    def test_data_marker_present(self):
+        self._run()
+        with open(os.path.join(self.out, "stats.svg"), encoding="utf-8") as handle:
+            text = handle.read()
+        self.assertRegex(text, r"<!-- data:[0-9a-f]{12} -->")
