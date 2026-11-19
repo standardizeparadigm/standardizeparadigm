@@ -146,5 +146,43 @@ class TestAnimationsDoc(unittest.TestCase):
             self.assertIn("`%s.svg`" % name, self.text)
 
 
+
+
+class TestTestingDoc(unittest.TestCase):
+    """Bài TESTING.md phải khớp bộ test thật.
+
+    Trước đây bảng trong bài có cột "số test" và nó lệch ngay sau lần thêm
+    test đầu tiên. Giờ bài chỉ ghi tổng số — và chính test này đếm lại.
+    """
+
+    def setUp(self):
+        self.path = os.path.join(DOCS_DIR, "TESTING.md")
+        self.text = read(self.path)
+
+    def _real_total(self):
+        loader = unittest.defaultTestLoader
+        suite = loader.discover(os.path.join(ROOT, "scripts", "tests"),
+                                top_level_dir=os.path.join(ROOT, "scripts"))
+        return suite.countTestCases()
+
+    def test_stated_total_matches_reality(self):
+        match = re.search(r"Hiện có \*\*(\d+) test\*\*", self.text)
+        self.assertIsNotNone(match, "TESTING.md thiếu câu 'Hiện có **N test**'")
+        self.assertEqual(int(match.group(1)), self._real_total())
+
+    def test_stated_file_count_matches_reality(self):
+        match = re.search(r"Hiện có \*\*\d+ test\*\* trên (\d+) file", self.text)
+        self.assertIsNotNone(match)
+        real = len([n for n in os.listdir(os.path.join(ROOT, "scripts", "tests"))
+                    if n.startswith("test_") and n.endswith(".py")])
+        self.assertEqual(int(match.group(1)), real)
+
+    def test_every_test_file_is_listed(self):
+        folder = os.path.join(ROOT, "scripts", "tests")
+        for name in sorted(os.listdir(folder)):
+            if name.startswith("test_") and name.endswith(".py"):
+                self.assertIn("`%s`" % name, self.text,
+                              "%s chưa có trong bảng bản đồ" % name)
+
 if __name__ == "__main__":
     unittest.main()
