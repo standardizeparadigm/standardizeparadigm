@@ -21,6 +21,10 @@ def human(number):
         number = int(number)
     except (TypeError, ValueError):
         return "-"
+    if number < 0:
+        # Không có "âm 5 follower". Số âm nghĩa là dữ liệu hỏng, và một dấu
+        # gạch nói đúng điều đó hơn là in ra "-5".
+        return "-"
     if number >= 1000000:
         return str(round(number / 1000000.0, 1)).replace(".0", "") + "M"
     if number >= 1000:
