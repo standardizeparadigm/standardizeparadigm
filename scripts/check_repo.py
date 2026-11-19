@@ -511,7 +511,9 @@ def check_readme_length(root=None, limit=README_BUDGET):
     path = os.path.join(root, "README.md")
     if not os.path.exists(path):
         return
-    lines = len(read(path).split("\n"))
+    # splitlines: `split("\n")` đếm thêm một dòng rỗng do newline cuối,
+    # khiến README đúng 360 dòng bị báo là 361.
+    lines = len(read(path).splitlines())
     if lines > limit:
         err("README.md dài %d dòng, vượt ngân sách %d — chuyển bớt vào docs/"
             % (lines, limit))
