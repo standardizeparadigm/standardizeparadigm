@@ -148,6 +148,29 @@ def parse_args(argv=None):
     return parser.parse_args(argv)
 
 
+def check_assets(directory):
+    """Parse mọi .svg trong thư mục; in bảng và trả mã thoát."""
+    import xml.dom.minidom
+
+    files = sorted(f for f in os.listdir(directory) if f.endswith(".svg")) \
+        if os.path.isdir(directory) else []
+    if not files:
+        sys.stderr.write("Không tìm thấy SVG nào trong %s\n" % directory)
+        return 1
+    bad = 0
+    for name in files:
+        path = os.path.join(directory, name)
+        try:
+            xml.dom.minidom.parse(path)
+        except Exception as error:                      # noqa: BLE001
+            bad += 1
+            print("  ✗ %-20s %s" % (name, error))
+        else:
+            print("  ✓ %-20s %6d bytes" % (name, os.path.getsize(path)))
+    print("%d/%d SVG hợp lệ" % (len(files) - bad, len(files)))
+    return 1 if bad else 0
+
+
 def main(argv=None):
     global OUT_DIR, USER
     args = parse_args(argv)
@@ -243,26 +266,3 @@ if __name__ == "__main__":
         traceback.print_exc()
         sys.stderr.write("Lỗi không mong đợi: %s\n" % error)
         sys.exit(1 if "--strict" in sys.argv else 0)
-
-
-def check_assets(directory):
-    """Parse mọi .svg trong thư mục; in bảng và trả mã thoát."""
-    import xml.dom.minidom
-
-    files = sorted(f for f in os.listdir(directory) if f.endswith(".svg")) \
-        if os.path.isdir(directory) else []
-    if not files:
-        sys.stderr.write("Không tìm thấy SVG nào trong %s\n" % directory)
-        return 1
-    bad = 0
-    for name in files:
-        path = os.path.join(directory, name)
-        try:
-            xml.dom.minidom.parse(path)
-        except Exception as error:                      # noqa: BLE001
-            bad += 1
-            print("  ✗ %-20s %s" % (name, error))
-        else:
-            print("  ✓ %-20s %6d bytes" % (name, os.path.getsize(path)))
-    print("%d/%d SVG hợp lệ" % (len(files) - bad, len(files)))
-    return 1 if bad else 0
