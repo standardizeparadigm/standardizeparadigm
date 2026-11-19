@@ -1095,6 +1095,11 @@ def check_python():
 
 # --------------------------------------------------------------- main
 def main(argv=None):
+    # Dọn trạng thái cũ: khi hàm này được gọi từ trong test (hoặc gọi hai lần
+    # trong một tiến trình), lỗi của lượt trước còn nằm trong danh sách và
+    # làm lượt này báo đỏ vô cớ.
+    del errors[:]
+    del warnings[:]
     argv = list(sys.argv[1:] if argv is None else argv)
     if "--help" in argv or "-h" in argv:
         print("Dùng: python3 scripts/check_repo.py [--fix]")
