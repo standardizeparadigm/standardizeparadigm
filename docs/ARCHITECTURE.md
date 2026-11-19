@@ -95,3 +95,12 @@ Hai công cụ, chọn theo tình huống:
 
 Nguyên tắc: **nếu hoạt ảnh làm khung đầu tiên xấu, đổi sang SMIL hoặc đổi trạng thái mặc định**.
 
+## Ghi file: atomic + vân tay
+
+**Atomic:** ghi ra `.tmp-xxxx.svg` cùng thư mục rồi `os.replace()`. Mất mạng hay bị kill giữa chừng thì file cũ vẫn nguyên — không bao giờ có ảnh nửa vời.
+
+**Vân tay:** mỗi ảnh mang `<!-- data:0123456789ab -->` = SHA-256 của dữ liệu đã dùng (12 ký tự đầu, không gồm thời gian). Chế độ `--smart` đọc dấu này trước khi ghi:
+
+- khác → ghi và commit,
+- giống → bỏ qua, không tạo commit rỗng.
+
