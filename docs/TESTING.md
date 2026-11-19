@@ -8,7 +8,10 @@ python3 -m unittest discover -s scripts/tests -t scripts -v     # in tên từng
 python3 -m unittest tests.test_clock -v                          # chỉ một file
 ```
 
-Hiện có **226 test** trên 13 file, chạy xong trong chưa tới 1 giây.
+Hiện có **hơn 230 test** trên 13 file, chạy xong trong chưa tới 1 giây.
+
+Con số ghi theo kiểu "hơn N" để tài liệu không lệch mỗi lần thêm một test;
+muốn con số chính xác thì chạy lệnh ở mục cuối trang.
 
 ## Bản đồ
 
