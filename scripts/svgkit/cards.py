@@ -173,6 +173,11 @@ def langs_card(pal, data, dt, t, width=640, height=258):
                      'dur="1.1s" begin="%.2fs" fill="freeze" calcMode="spline" '
                      'keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>'
                      % (segment + 0.6, 0.1 + 0.06 * i))
+        # Mỗi đoạn "thở" một nhịp riêng, lệch nhau -> thanh không bao giờ tĩnh
+        parts.append('      <animate attributeName="fill-opacity" '
+                     'values="1;0.82;1" dur="%ds" begin="%.2fs" '
+                     'repeatCount="indefinite"/>'
+                     % (5 + i, 0.6 + 0.35 * i))
         parts.append('    </rect>')
         x += segment
     parts.append('    <rect x="%d" y="%d" width="%d" height="%.1f" fill="url(#gloss)"/>'

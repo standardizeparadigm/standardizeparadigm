@@ -89,6 +89,24 @@ class TestRankRingOrbit(unittest.TestCase):
         # vành mặc định ở (528, 144); hạt phải quay quanh đúng tâm đó
         self.assertIn('from="0 528 144" to="360 528 144"', self.svg)
 
+class TestLangBarBreathing(unittest.TestCase):
+    """Mỗi đoạn thanh ngôn ngữ có nhịp "thở" riêng."""
+
+    def setUp(self):
+        self.svg = langs_card(get_palette(), DATA, DT, i18n.get("vi"))
+
+    def test_every_segment_breathes(self):
+        segments = min(8, len(DATA["langs"]))
+        self.assertEqual(self.svg.count('attributeName="fill-opacity"'),
+                         segments)
+
+    def test_breathing_is_staggered(self):
+        self.assertIn('begin="0.60s"', self.svg)
+        self.assertIn('begin="0.95s"', self.svg)
+
+    def test_breathing_is_subtle(self):
+        self.assertIn('values="1;0.82;1"', self.svg)
+
 if __name__ == "__main__":
     unittest.main()
 
