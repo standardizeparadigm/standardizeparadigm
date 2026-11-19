@@ -1372,6 +1372,38 @@ def check_shields_workflow_badges(root=None):
                         "assets/status.svg" % (rel(path), marker))
 
 
+# ------------------------------------------- 4b5b. pip cũng phải ghim phiên bản
+RE_PIP_INSTALL = re.compile(r"pip\s+install[^\n|]*")
+RE_PINNED_PKG = re.compile(r"[A-Za-z0-9_.-]+==\d")
+
+
+def check_pip_pins(root=None):
+    """Lệnh `pip install` trong workflow phải ghim phiên bản.
+
+    Mọi action đã ghim ở một tag; để pip thì mỗi ngày cài một bản khác. Một
+    bản PyYAML đổi cách đọc cũng đủ để bộ test workflow chuyển từ "chạy" sang
+    "skip" mà không ai biết — bộ test vẫn xanh, chỉ là nó không còn kiểm gì.
+    """
+    root = root or ROOT
+    folder = os.path.join(root, ".github", "workflows")
+    if not os.path.isdir(folder):
+        return
+    for name in sorted(os.listdir(folder)):
+        if not name.lower().endswith((".yml", ".yaml")):
+            continue
+        path = os.path.join(folder, name)
+        for number, line in enumerate(read(path).split("\n"), 1):
+            stripped = line.strip()
+            if stripped.startswith("#") or "echo " in line:
+                continue
+            for command in RE_PIP_INSTALL.findall(line):
+                if command.strip() == "pip install":
+                    continue
+                if not RE_PINNED_PKG.search(command):
+                    err("%s:%d 'pip install' không ghim phiên bản — hãy "
+                        "thêm ==x.y.z" % (rel(path), number))
+
+
 # --------------------------------------------- 4b6. Workflow phải chạy tay được
 def check_workflow_dispatch(root=None):
     """Mọi workflow phải có `workflow_dispatch`.
@@ -1587,6 +1619,7 @@ def main(argv=None):
     check_stale_places()
     check_todo_markers()
     check_workflow_dispatch()
+    check_pip_pins()
     check_shields_workflow_badges()
     check_cron_resolution()
     check_cron_minute_collisions()
