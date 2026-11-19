@@ -3,6 +3,10 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — docs/FAQ.md
+
+- Tám câu hỏi hay gặp: cache ảnh, vì sao không chạy mỗi phút, tốn bao nhiêu phút runner, vì sao SVG, số liệu lệch, đổi theme, dùng lại code.
+
 ## 2026-11-19 — Mọi thứ đều tất định
 
 - Sao, bụi sáng, dữ liệu demo đều dùng `random.Random(seed)` cố định — hai lần build cho ra file giống hệt (trừ thời gian), nên `--smart` đáng tin và test khẳng định được toạ độ chính xác.
