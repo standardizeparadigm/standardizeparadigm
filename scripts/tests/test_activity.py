@@ -71,6 +71,12 @@ class TestStreaks(unittest.TestCase):
         self.assertEqual(_streaks(series([2, 2, 2, 2])), (4, 4))
 
 
+class TestAverageLineFlow(unittest.TestCase):
+    def test_average_line_flows(self):
+        svg = activity_card(get_palette("sky"), CONTRIB, DT, i18n.get("vi"))
+        self.assertIn("dashFlow", svg)
+        self.assertIn("stroke-dasharray", svg)
+
 if __name__ == "__main__":
     unittest.main()
 
