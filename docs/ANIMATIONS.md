@@ -54,3 +54,9 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 - Mỗi lớp nằm trong `<g class="wave">` lồng trong `<g transform="translate(...)">` để hoạt ảnh CSS không đè lên transform tĩnh.
 - Toàn bộ sóng nằm trong `clip-path="url(#cardBody)"` nên không tràn ra ngoài góc bo tròn.
 
+## Stats — vòng rank
+
+- Vòng nền mờ + vòng tiến độ có `stroke-dasharray`/`stroke-dashoffset` chạy từ 0% tới đúng phần trăm (74% với rank B+).
+- Sáu ô số liệu và nhãn dùng `fadeUp` (0.72s) với độ trễ tăng dần 60ms mỗi ô.
+- Một vệt sáng mảnh (`sheen`, 6.5s) quét ngang giữa thẻ mỗi chu kỳ.
+
