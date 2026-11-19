@@ -35,6 +35,20 @@ với chữ trong file bạn đang đọc, nên nó không thể lệch âm th�
 | `test_docs.py` | quy ước Markdown, đếm test, mục lục tài liệu |
 | `test_repo_assets.py` | ảnh đã commit: XML, viewBox, ngân sách, dấu dữ liệu, giảm chuyển động |
 
+## Kiểm tra vệ sinh repo
+
+Bộ test không kiểm được mọi thứ — BOM, CRLF, link chết, bảng lịch chạy lệch
+cron thì `scripts/check_repo.py` lo. Hai lớp này bổ sung cho nhau và cùng chạy
+trong `health.yml`:
+
+```
+python3 scripts/check_repo.py          # chỉ báo lỗi
+python3 scripts/check_repo.py --fix    # tự sửa lỗi vô hình rồi báo lỗi còn lại
+```
+
+`test_repo_workflows.py` chạy lại các luật đó **trên repo thật**, nên sai quy
+ước là đỏ ngay khi chạy test trên máy chứ không phải đợi CI.
+
 ## `helpers.py`
 
 Hai file test không tự thêm `scripts/` vào `sys.path` được — `tests/__init__.py` làm việc đó, còn `helpers.py` là nơi ở chung:
