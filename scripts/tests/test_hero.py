@@ -82,6 +82,28 @@ class TestHeroReducedMotion(unittest.TestCase):
     def test_static_title_is_not_marked(self):
         self.assertIn('class="heroTitle" fill="url(#titleGrad)"', self.svg)
 
+
+
+class TestLocationPill(unittest.TestCase):
+    """Pill nơi ở phải trông 'có chủ ý', không phải ô chưa điền."""
+
+    def setUp(self):
+        self.svg = hero(get_palette("sky"), DT, i18n.get())
+
+    def test_no_dashed_outline(self):
+        self.assertNotIn('stroke-dasharray="4 4"', self.svg)
+
+    def test_has_a_pin_glyph(self):
+        self.assertIn("a3.4 3.4 0 016.8 0", self.svg)
+
+    def test_pin_pulses(self):
+        # Ghim nằm trong nhóm fadeUp của pill, mang class pulse.
+        index = self.svg.index("a3.4 3.4 0 016.8 0")
+        self.assertIn('class="pulse"', self.svg[index:index + 120])
+
+    def test_pill_is_filled_not_hollow(self):
+        self.assertIn('fill-opacity=".5" stroke=', self.svg)
+
 if __name__ == "__main__":
     unittest.main()
 
