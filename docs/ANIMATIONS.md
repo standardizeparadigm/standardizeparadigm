@@ -57,7 +57,9 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 
 ## Stats — vòng rank
 
-- Vòng nền mờ + vòng tiến độ có `stroke-dasharray`/`stroke-dashoffset` chạy từ 0% tới đúng phần trăm (74% với rank B+).
+- Vòng nền mờ + vòng tiến độ có `stroke-dasharray`/`stroke-dashoffset` chạy từ 0%
+  tới đúng phần trăm còn cách hạng kế (B+ 279 điểm → 36% tới A). Con số này
+  đổi mỗi lần số liệu đổi, không phải hằng số của hạng.
 - Sáu ô số liệu và nhãn dùng `fadeUp` (0.72s) với độ trễ tăng dần 60ms mỗi ô.
 - Một vệt sáng mảnh (`sheen`, 6.5s) quét ngang giữa thẻ mỗi chu kỳ.
 
