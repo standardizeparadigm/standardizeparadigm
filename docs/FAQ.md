@@ -83,6 +83,27 @@ dấu em dash và dấu giữa (`·`) đi qua nguyên vẹn, và điều đó đ
 Chạy hai lần liên tiếp thì lần thứ hai không sửa gì — nếu không, workflow sẽ
 tự đẩy một commit mỗi 5 phút.
 
+## Để tab mở qua đêm thì ảnh có còn đúng không?
+
+Tuỳ phần:
+
+- **Số giờ:phút** — vẫn đúng. Nó là 84 ô chữ chồng nhau, trình duyệt tự đổi
+  ô hiện mỗi phút, không cần mạng và không cần tải lại.
+- **Kim đồng hồ** — vẫn đúng, chúng quay bằng CSS với chu kỳ thật.
+- **Thứ, ngày tháng, vòng cung tiến độ ngày, lời chào** — đứng ở lúc ảnh được
+  vẽ. Đó là lý do có dấu `cập nhật HH:MM`: bạn luôn biết mình đang xem ảnh
+  chụp lúc nào. Tải lại trang là có bản mới (workflow vẽ lại mỗi 5 phút).
+
+## Vì sao ảnh đồng hồ nặng thêm khoảng 12 KB?
+
+Vì 84 ô số. Mỗi ô là một thẻ `<text>` kèm một `animation-delay`, cộng thêm
+hai khối `@keyframes`. Đổi lại: con số đúng **mỗi phút** dù GitHub chỉ cho
+cron 5 phút một lần, và đúng cả khi bạn mở file offline.
+
+12 KB với ảnh đã có ~30 KB là mức đáng trả. Nếu cần nhẹ hơn, xoá
+`_live_time()` trong `clock.py` là quay lại con số tĩnh — nhưng khi đó ảnh
+sẽ "sai" trong khoảng 5 phút giữa hai lần vẽ.
+
 ## Vì sao là SVG mà không phải PNG?
 
 - **Nhẹ**: thẻ 640×258 chỉ ~16 KB, PNG cùng kích thước dễ vượt 100 KB.
