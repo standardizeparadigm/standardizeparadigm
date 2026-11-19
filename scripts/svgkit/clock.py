@@ -10,6 +10,7 @@ nên nhìn như đồng hồ thật giữa hai lần workflow cập nhật.
 
 import math
 
+from .api import to_vn
 from .primitives import esc, open_svg
 
 
@@ -118,6 +119,8 @@ def _hands(pal, cx, cy, hour, minute, second):
 
 
 def clock_card(pal, dt, t, width=640, height=258):
+    # Mọi mốc thời gian đều quy về giờ Việt Nam, kể cả khi nơi gọi truyền UTC.
+    dt = to_vn(dt)
     hour, minute = dt.hour, dt.minute
     second = dt.second + dt.microsecond / 1000000.0
     cx, cy, radius = 122, 140, 74

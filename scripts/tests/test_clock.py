@@ -2,7 +2,7 @@
 """Test thẻ đồng hồ."""
 
 import unittest
-from datetime import datetime
+from datetime import datetime, timezone
 
 from helpers import SCRIPTS, assert_valid_svg  # noqa: F401
 
@@ -51,6 +51,44 @@ class TestGreeting(unittest.TestCase):
     def test_every_hour_maps(self):
         for hour in range(24):
             self.assertTrue(_greeting_key(hour).startswith("clock.greet."))
+
+
+class TestVietnamTime(unittest.TestCase):
+    """Đồng hồ phải luôn hiện giờ Việt Nam, kể cả khi nhận mốc UTC.
+
+    Đây là lỗi từng làm ảnh hiện sai 7 tiếng: GitHub Actions chạy ở UTC, chỉ
+    cần một chỗ quên quy đổi là sai cả ngày lẫn lời chào.
+    """
+
+    def _svg(self, dt, lang="vi"):
+        return clock_card(get_palette(), dt, i18n.get(lang))
+
+    def test_utc_becomes_vietnam_time(self):
+        utc = datetime(2026, 11, 19, 9, 0, tzinfo=timezone.utc)
+        svg = self._svg(utc)
+        self.assertIn(">16:00<", svg)
+        self.assertNotIn(">09:00<", svg)
+
+    def test_naive_is_taken_as_vietnam_time(self):
+        svg = self._svg(datetime(2026, 11, 19, 15, 4))
+        self.assertIn(">15:04<", svg)
+
+    def test_greeting_follows_converted_hour(self):
+        # 09:00 UTC = 16:00 giờ VN -> "Chào buổi chiều", không phải buổi sáng
+        svg = self._svg(datetime(2026, 11, 19, 9, 0, tzinfo=timezone.utc))
+        self.assertIn("Chào buổi chiều", svg)
+
+    def test_day_progress_uses_converted_time(self):
+        # 09:00 UTC = 16:00 VN -> 2/3 ngày = 67%
+        svg = self._svg(datetime(2026, 11, 19, 9, 0, tzinfo=timezone.utc))
+        self.assertIn("67%", svg)
+
+    def test_date_not_shifted_backwards(self):
+        # 17:30 UTC ngày 19 = 00:30 ngày 20 giờ VN
+        utc = datetime(2026, 11, 19, 17, 30, tzinfo=timezone.utc)
+        svg = self._svg(utc)
+        self.assertIn(">00:30<", svg)
+        self.assertIn("20/11/2026", svg)
 
 
 if __name__ == "__main__":
