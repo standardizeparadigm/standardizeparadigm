@@ -139,7 +139,7 @@ STRINGS = {
         "wait.line2": "Actions → Profile Cards (LTS) → Run workflow",
         "wait.empty1": "No data yet",
         "wait.empty2": "This card fills itself the first time the workflow runs",
-        "hero.sub": "Grade 7 student · self-taught developer · Long Xuyen, An Giang",
+        "hero.sub": "Grade 7 student · self-taught developer · Kon Tum, Quang Ngai",
         "hero.pill1": "GRADE 7",
         "hero.pill2": "UTC+7",
         "hero.pill3": "SELF-TAUGHT",
