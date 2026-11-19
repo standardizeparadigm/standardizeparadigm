@@ -1,6 +1,6 @@
 <svg width="1134" height="74" viewBox="0 0 1134 74" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TRẠNG THÁI WORKFLOW" preserveAspectRatio="xMidYMid meet">
   <title>TRẠNG THÁI WORKFLOW</title>
-  <desc>Trạng thái lần chạy gần nhất của từng workflow · cập nhật 19/11 · 18:48</desc>
+  <desc>Trạng thái lần chạy gần nhất của từng workflow · cập nhật 19/11 · 18:49</desc>
   <style>
 
   .fSans { font-family: 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif; }
@@ -177,10 +177,10 @@
   <g class="fadeUp" style="animation-delay:0.06s">
     <rect x="176" y="9" width="150" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
     <rect x="176" y="9" width="150" height="20" rx="10" fill="url(#gloss)" opacity=".5"/>
-    <circle cx="193" cy="29" r="9" fill="none" stroke="#FBBF24" stroke-width="1.7" stroke-opacity=".8" stroke-dasharray="13 44" stroke-linecap="round" class="spinDot"/>
-    <circle cx="193" cy="29" r="4.4" fill="#FBBF24" filter="url(#glow)"/>
+    <circle cx="193" cy="29" r="9" fill="none" stroke="#34D399" stroke-opacity=".35" class="pulseSlow"/>
+    <circle cx="193" cy="29" r="4.4" fill="#34D399" filter="url(#glow)"/>
     <text x="206" y="25" class="fMono" style="font:600 7.5px 'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">STATS CARDS</text>
-    <text x="206" y="39" class="fSans" style="font:800 10px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#FBBF24;letter-spacing:.4px">ĐANG CHẠY</text>
+    <text x="206" y="39" class="fSans" style="font:800 10px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#34D399;letter-spacing:.4px">ĐẠT</text>
     <text x="317" y="39" text-anchor="end" class="fMono" style="font:600 6.8px 'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">0 phút trước</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.12s">
@@ -195,19 +195,19 @@
   <g class="fadeUp" style="animation-delay:0.18s">
     <rect x="492" y="9" width="150" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
     <rect x="492" y="9" width="150" height="20" rx="10" fill="url(#gloss)" opacity=".5"/>
-    <circle cx="509" cy="29" r="9" fill="none" stroke="#FBBF24" stroke-width="1.7" stroke-opacity=".8" stroke-dasharray="13 44" stroke-linecap="round" class="spinDot"/>
-    <circle cx="509" cy="29" r="4.4" fill="#FBBF24" filter="url(#glow)"/>
+    <circle cx="509" cy="29" r="9" fill="none" stroke="#34D399" stroke-opacity=".35" class="pulseSlow"/>
+    <circle cx="509" cy="29" r="4.4" fill="#34D399" filter="url(#glow)"/>
     <text x="522" y="25" class="fMono" style="font:600 7.5px 'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">README GARDEN</text>
-    <text x="522" y="39" class="fSans" style="font:800 10px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#FBBF24;letter-spacing:.4px">ĐANG CHẠY</text>
+    <text x="522" y="39" class="fSans" style="font:800 10px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#34D399;letter-spacing:.4px">ĐẠT</text>
     <text x="633" y="39" text-anchor="end" class="fMono" style="font:600 6.8px 'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">0 phút trước</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.24s">
     <rect x="650" y="9" width="150" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
     <rect x="650" y="9" width="150" height="20" rx="10" fill="url(#gloss)" opacity=".5"/>
-    <circle cx="667" cy="29" r="9" fill="none" stroke="#FBBF24" stroke-width="1.7" stroke-opacity=".8" stroke-dasharray="13 44" stroke-linecap="round" class="spinDot"/>
-    <circle cx="667" cy="29" r="4.4" fill="#FBBF24" filter="url(#glow)"/>
+    <circle cx="667" cy="29" r="9" fill="none" stroke="#34D399" stroke-opacity=".35" class="pulseSlow"/>
+    <circle cx="667" cy="29" r="4.4" fill="#34D399" filter="url(#glow)"/>
     <text x="680" y="25" class="fMono" style="font:600 7.5px 'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">HEALTH</text>
-    <text x="680" y="39" class="fSans" style="font:800 10px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#FBBF24;letter-spacing:.4px">ĐANG CHẠY</text>
+    <text x="680" y="39" class="fSans" style="font:800 10px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#34D399;letter-spacing:.4px">ĐẠT</text>
     <text x="791" y="39" text-anchor="end" class="fMono" style="font:600 6.8px 'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">0 phút trước</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.30s">
@@ -222,16 +222,15 @@
   <g class="fadeUp" style="animation-delay:0.36s">
     <rect x="966" y="9" width="150" height="40" rx="11" fill="#0B1B2B" fill-opacity=".85" stroke="#17334F" stroke-opacity=".55"/>
     <rect x="966" y="9" width="150" height="20" rx="10" fill="url(#gloss)" opacity=".5"/>
-    <circle cx="983" cy="29" r="9" fill="none" stroke="#FBBF24" stroke-width="1.7" stroke-opacity=".8" stroke-dasharray="13 44" stroke-linecap="round" class="spinDot"/>
-    <circle cx="983" cy="29" r="4.4" fill="#FBBF24" filter="url(#glow)"/>
+    <circle cx="983" cy="29" r="4.4" fill="#7A8CA3"/>
     <text x="996" y="25" class="fMono" style="font:600 7.5px 'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.9px">STATUS</text>
-    <text x="996" y="39" class="fSans" style="font:800 10px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#FBBF24;letter-spacing:.4px">ĐANG CHẠY</text>
+    <text x="996" y="39" class="fSans" style="font:800 10px 'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#7A8CA3;letter-spacing:.4px">KHÔNG RÕ</text>
     <text x="1107" y="39" text-anchor="end" class="fMono" style="font:600 6.8px 'Fira Code',Consolas,'SF Mono',monospace;fill:#5C7590;letter-spacing:.2px">0 phút trước</text>
   </g>
   <g class="fadeUp" style="animation-delay:.5s">
     <circle cx="22" cy="62" r="3" fill="#38BDF8" class="pulse"/>
-    <text x="32" y="65" class="footNote">Workflow tự vẽ và commit dải này · cập nhật 19/11 · 18:48</text>
-    <text x="1116" y="65" text-anchor="end" class="footNote" style="fill:#0EA5E9">7/7 workflow ổn</text>
+    <text x="32" y="65" class="footNote">Workflow tự vẽ và commit dải này · cập nhật 19/11 · 18:49</text>
+    <text x="1116" y="65" text-anchor="end" class="footNote" style="fill:#0EA5E9">6/7 workflow ổn</text>
   </g>
-<!-- data:86aadcce8d2a -->
+<!-- data:fe2e8e6b5f22 -->
 </svg>
