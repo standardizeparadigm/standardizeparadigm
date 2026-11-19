@@ -16,6 +16,7 @@ python3 scripts/generate_cards.py --demo --all --out /tmp/xem-thu
 | `cards.py` | thẻ stats, top-langs, thẻ chờ |
 | `clock.py` | đồng hồ sống 640×258 |
 | `activity.py` | thẻ hoạt động 14 ngày |
+| `status.py` | dải trạng thái các workflow |
 | `api.py` | client GitHub REST + GraphQL |
 | `../generate_cards.py` | CLI ghép mọi thứ lại |
 | `../tests/` | 163 unit test |
