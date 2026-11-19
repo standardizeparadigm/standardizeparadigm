@@ -103,6 +103,12 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
 - `docs/ARCHITECTURE.md`, `docs/TESTING.md`, `scripts/svgkit/README.md`: thêm
   `status.py` vào bản đồ module và bản đồ test.
 
+## 2026-11-19 — Thêm workflow mới: ba chỗ phải sửa
+
+- `.github/workflows/`, `WORKFLOWS` trong `scripts/svgkit/status.py`, và bảng lịch
+  chạy trong README + docs. Quên chỗ thứ hai thì dải trạng thái bỏ sót workflow
+  mới mà không báo gì (đã có test so hai chiều).
+
 ## 2026-11-19 — Cổng 3D: sửa lỗi mốc 24 giờ không bao giờ tới
 
 - Cổng so "lần chạy thành công gần nhất", nhưng lượt bị cổng bỏ qua **vẫn** là lượt thành công → mốc 24 giờ không bao giờ đạt được, ảnh chỉ đổi khi có push.
