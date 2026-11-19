@@ -12,14 +12,12 @@ name: 🩺 Repo Health
 on:
   push:
     branches: [main, master]
-    # Ảnh do bot vẽ lại liên tục -> bỏ qua để không chạy 300+ lần/ngày
+    # Ảnh do bot vẽ lại liên tục -> bỏ qua cả thư mục để không chạy 300+
+    # lần/ngày. Liệt kê từng file thì file mới sinh ra (footer.svg,
+    # divider.svg) lọt lưới và mỗi commit của bot lại đánh thức một lượt
+    # chạy tốn 40 giây.
     paths-ignore:
-      - "assets/live-clock.svg"
-      - "assets/activity.svg"
-      - "assets/stats.svg"
-      - "assets/top-langs.svg"
-      - "assets/hero.svg"
-      - "assets/status.svg"
+      - "assets/**"
       - "profile-3d-contrib/**"
   pull_request:
   schedule:
