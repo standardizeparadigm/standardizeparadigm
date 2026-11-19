@@ -75,6 +75,7 @@ chịu.
 | Rác Python trong ảnh | chữ `None` hay `NaN` in giữa thẻ khi khoá thiếu |
 | Bảng Markdown lệch cột | bảng "gãy" trên GitHub, không có lỗi cú pháp |
 | Ảnh gọi ra ngoài | ảnh README gọi một URL có thể chết bất cứ lúc nào |
+| Không dùng emoji | máy thiếu font emoji hiện ô vuông, máy có thì ảnh bị đẩy cao hơn |
 
 ## `helpers.py`
 
