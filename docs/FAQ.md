@@ -44,6 +44,17 @@ Nên trang này làm hai lớp:
 Nói cách khác: thứ duy nhất cần workflow là phần *ngày tháng* và *vòng cung
 tiến độ ngày*; phần "mấy giờ rồi" thì trình duyệt tự lo.
 
+## Muốn xem đồng hồ lúc nửa đêm mà không phải chờ?
+
+```bash
+python3 scripts/generate_cards.py --clock --at 2026-11-19T23:50 --out /tmp/thu
+```
+
+`--at` nhận `2026-11-19T23:50`, `2026-11-19 23:50` hoặc `2026-11-19T23`, hiểu
+theo giờ Việt Nam. Lệch múi giờ, cung tiến độ ngày, lời chào, icon mặt trăng —
+tất cả vẽ theo đúng thời điểm đó. Dùng để chụp ảnh tài liệu, hoặc để kiểm tra
+một khung giờ hiếm khi ai nhìn tới.
+
 ## Nhãn `9 giờ trước` trên dải trạng thái nghĩa là gì?
 
 Đó là tuổi của **lần chạy gần nhất** của workflow đó, tính từ lúc dải được vẽ.
