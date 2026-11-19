@@ -1368,6 +1368,50 @@ class TestUrlTargets(unittest.TestCase):
         check_repo.check_url_targets()
         self.assertEqual(check_repo.errors, [])
 
+
+
+class TestKeyframes(unittest.TestCase):
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="kf-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _svg(self, style):
+        with open(os.path.join(self.tmp, "assets", "a.svg"), "w",
+                  encoding="utf-8") as handle:
+            handle.write("<svg><style>%s</style></svg>" % style)
+
+    def test_matched_pair_passes(self):
+        self._svg(".a { animation: pulse 2s infinite }"
+                  "@keyframes pulse { to { opacity: 0 } }")
+        check_repo.check_keyframes(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_animation_name_form_counts(self):
+        self._svg(".a { animation-name: spin; animation-duration: 3s }"
+                  "@keyframes spin { to { transform: rotate(360deg) } }")
+        check_repo.check_keyframes(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_missing_keyframes_is_reported(self):
+        self._svg(".a { animation: pulsee 2s }")
+        check_repo.check_keyframes(self.tmp)
+        self.assertTrue(any("pulsee" in e for e in check_repo.errors))
+
+    def test_unused_keyframes_is_reported(self):
+        self._svg("@keyframes ghost { to { opacity: 0 } }")
+        check_repo.check_keyframes(self.tmp)
+        self.assertTrue(any("ghost" in e for e in check_repo.errors))
+
+    def test_animation_none_is_not_a_name(self):
+        self._svg(".a { animation: none }")
+        check_repo.check_keyframes(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
 if __name__ == "__main__":
     unittest.main()
 
