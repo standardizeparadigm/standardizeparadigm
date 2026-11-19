@@ -178,7 +178,7 @@
   <g class="fadeUp">
     <rect x="22" y="22" width="4" height="18" rx="2" fill="url(#accentGrad)"/>
     <text x="36" y="37" class="cardTitle">CONTRIBUTION ACTIVITY</text>
-    <text x="618" y="36" text-anchor="end" class="cardSub">365 NGÀY · 19/11 · 19:54</text>
+    <text x="618" y="36" text-anchor="end" class="cardSub">365 NGÀY · 20/11 · 04:28</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.10s">
     <rect x="22" y="58" width="184" height="52" rx="12" fill="#0B1B2B" stroke="#17334F" stroke-opacity=".8"/>
@@ -200,7 +200,7 @@
   </g>
   <g class="fadeUp" style="animation-delay:.32s">
     <text x="22" y="128" class="footNote" style="letter-spacing:1.2px">14 NGÀY GẦN NHẤT</text>
-    <text x="618" y="128" text-anchor="end" class="footNote">HÔM NAY +809</text>
+    <text x="618" y="128" text-anchor="end" class="footNote">HÔM NAY +807</text>
   </g>
     <path d="M22 144H618" stroke="#8CA4BD" stroke-opacity=".10" stroke-width="1"/>
     <path d="M22 165H618" stroke="#8CA4BD" stroke-opacity=".10" stroke-width="1"/>
@@ -290,12 +290,12 @@
   </g>
   <text x="554.1" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T4</text>
   <g class="fadeUp" style="animation-delay:0.46s">
-    <rect x="583.7" y="161" width="26.0" height="46.8" rx="6.0" fill="url(#barGradV)" opacity="1" filter="url(#glowSoft)">
-      <animate attributeName="height" from="0" to="46.8" dur=".9s" begin="0.58s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
-      <animate attributeName="y" from="208" to="161.2" dur=".9s" begin="0.58s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+    <rect x="583.7" y="161" width="26.0" height="46.7" rx="6.0" fill="url(#barGradV)" opacity="1" filter="url(#glowSoft)">
+      <animate attributeName="height" from="0" to="46.7" dur=".9s" begin="0.58s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+      <animate attributeName="y" from="208" to="161.3" dur=".9s" begin="0.58s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
     </rect>
-    <circle cx="596.7" cy="151.2" r="11" fill="none" stroke="#7DD3FC" stroke-opacity=".45" class="pulseSlow"/>
-    <circle cx="596.7" cy="151.2" r="3.4" fill="#7DD3FC" filter="url(#glow)" class="pulse"/>
+    <circle cx="596.7" cy="151.3" r="11" fill="none" stroke="#7DD3FC" stroke-opacity=".45" class="pulseSlow"/>
+    <circle cx="596.7" cy="151.3" r="3.4" fill="#7DD3FC" filter="url(#glow)" class="pulse"/>
   </g>
   <text x="596.7" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#7DD3FC;letter-spacing:.3px">T5</text>
   <g class="fadeUp" style="animation-delay:.55s">
@@ -303,7 +303,7 @@
   </g>
   <g class="fadeUp" style="animation-delay:.7s">
     <circle cx="26" cy="242" r="3" fill="#38BDF8" class="pulse"/>
-    <text x="36" y="245" class="footNote">Đếm từ lịch contribution thật của GitHub · cập nhật 19/11 · 19:54</text>
+    <text x="36" y="245" class="footNote">Đếm từ lịch contribution thật của GitHub · cập nhật 20/11 · 04:28</text>
   </g>
-<!-- data:a407da9f2dc7 -->
+<!-- data:ebf0abc24205 -->
 </svg>
