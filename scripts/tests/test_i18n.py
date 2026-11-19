@@ -65,6 +65,28 @@ if __name__ == "__main__":
     unittest.main()
 
 
+class TestStatusStrings(unittest.TestCase):
+    """Chuỗi của dải trạng thái phải có đủ ở cả hai ngôn ngữ."""
+
+    KEYS = ("status.title", "status.desc", "status.foot", "status.passing",
+            "status.failing", "status.running", "status.none", "status.missing",
+            "status.unknown")
+
+    def test_all_keys_in_both_languages(self):
+        for lang in ("vi", "en"):
+            t = i18n.get(lang)
+            for key in self.KEYS:
+                self.assertNotEqual(t(key), key, "%s thiếu ở %s" % (key, lang))
+
+    def test_labels_are_uppercase(self):
+        t = i18n.get("vi")
+        for key in ("status.passing", "status.failing", "status.running"):
+            self.assertEqual(t(key), t(key).upper())
+
+    def test_desc_accepts_stamp(self):
+        text = i18n.get("vi")("status.desc", stamp="19/11 · 15:44")
+        self.assertIn("19/11", text)
+
 class TestFallbacks(unittest.TestCase):
     def test_unknown_key_returns_key(self):
         from svgkit import i18n
