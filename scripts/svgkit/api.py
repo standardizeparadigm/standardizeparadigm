@@ -208,11 +208,32 @@ CONCLUSION_MAP = {
 }
 
 
+def age_minutes(iso, now=None):
+    """Số phút đã trôi qua kể từ mốc ISO-8601 của GitHub ("2026-11-19T09:04:11Z").
+
+    Trả None khi không đọc được chuỗi — thà thiếu nhãn còn hơn in một con
+    số sai (ví dụ "0 phút trước" cho một lần chạy từ hôm qua).
+    """
+    if not iso:
+        return None
+    try:
+        moment = datetime.strptime(iso, "%Y-%m-%dT%H:%M:%SZ")
+    except (TypeError, ValueError):
+        return None
+    moment = moment.replace(tzinfo=timezone.utc)
+    now = now or datetime.now(timezone.utc)
+    if now.tzinfo is None:
+        now = now.replace(tzinfo=timezone.utc)
+    minutes = int((now - moment).total_seconds() // 60)
+    return max(0, minutes)
+
+
 def workflow_states(owner, repo, token="", files=None):
     """Trạng thái lần chạy gần nhất của từng workflow.
 
-    Trả về [(tên_file, trạng_thái)] với trạng thái là một trong
-    passing / failing / running / none / unknown. Không có token hoặc
+    Trả về [(tên_ngắn, trạng_thái, số_phút_từ_lần_chạy)] với trạng thái là
+    một trong passing / failing / running / none / unknown. Phần tử thứ ba
+    là None khi không xác định được — dải trạng thái khi đó bỏ trống nhãn. Không có token hoặc
     workflow chưa tồn tại trên nhánh mặc định -> "none" (chưa chạy),
     chứ không ném lỗi.
     """
@@ -222,27 +243,29 @@ def workflow_states(owner, repo, token="", files=None):
     rows = []
     for filename, short in wanted:
         if not token:
-            rows.append((short, "unknown"))
+            rows.append((short, "unknown", None))
             continue
         code, info = api_status(
             "/repos/%s/%s/actions/workflows/%s/runs?per_page=1&exclude_pull_requests=true"
             % (owner, repo, filename), token)
         if code == 404:
             # workflow chưa nằm trên nhánh mặc định -> đúng lý do shields báo đỏ
-            rows.append((short, "missing"))
+            rows.append((short, "missing", None))
             continue
         runs = ((info or {}).get("workflow_runs") or [])
         if code != 200:
-            rows.append((short, "unknown"))
+            rows.append((short, "unknown", None))
             continue
         if not runs:
-            rows.append((short, "none"))
+            rows.append((short, "none", None))
             continue
         run = runs[0]
+        age = age_minutes(run.get("updated_at") or run.get("created_at"))
         if run.get("status") in ("in_progress", "queued", "requested", "waiting"):
-            rows.append((short, "running"))
+            rows.append((short, "running", age))
         else:
-            rows.append((short, CONCLUSION_MAP.get(run.get("conclusion"), "unknown")))
+            rows.append((short, CONCLUSION_MAP.get(run.get("conclusion"), "unknown"),
+                         age))
     return rows
 
 
