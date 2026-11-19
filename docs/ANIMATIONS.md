@@ -60,3 +60,9 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 - Sáu ô số liệu và nhãn dùng `fadeUp` (0.72s) với độ trễ tăng dần 60ms mỗi ô.
 - Một vệt sáng mảnh (`sheen`, 6.5s) quét ngang giữa thẻ mỗi chu kỳ.
 
+## Top languages — thanh xếp chồng
+
+- Mỗi đoạn ngôn ngữ là một `<rect>`, chiều rộng chạy từ 0 tới đúng tỉ lệ bằng SMIL `animate` với `calcMode="spline"` (nảy nhẹ ở cuối).
+- Độ trễ tăng 60ms mỗi đoạn nên thanh "mọc" từ trái sang phải.
+- Chú giải 2 cột hiện lần lượt bằng `fadeUp`, thanh tiến độ nhỏ bên dưới mỗi ngôn ngữ dùng `growIn` (scaleX từ 0).
+
