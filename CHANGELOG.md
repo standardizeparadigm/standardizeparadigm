@@ -20,6 +20,15 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
 - Màu cố định theo nghĩa (xanh/đỏ/hổ phách/xám/xanh dương) chứ không theo
   theme: "đỏ = lỗi" phải đúng ở cả 6 bảng màu.
 
+## 2026-11-19 — Nhịp chạy: giãn chỗ thừa, giữ chỗ cần
+
+- 3D: `*/5` → `*/30` (ảnh chỉ đổi khi có push hoặc sang ngày; push đã có
+  trigger riêng nên lịch 5 phút chỉ tạo 288 lượt chạy rỗng/ngày).
+- Thẻ số liệu: `*/10` → `15 */3 * * *` (star/fork/ngôn ngữ đổi vài ngày/lần).
+- README Garden dời sang phút 45 để hai workflow không giành `git push`.
+- Đồng hồ giữ `*/5` — đây là sàn của GitHub và cũng là thứ duy nhất thật sự
+  cần tươi theo phút.
+
 ## 2026-11-19 — Cổng 3D: sửa lỗi mốc 24 giờ không bao giờ tới
 
 - Cổng so "lần chạy thành công gần nhất", nhưng lượt bị cổng bỏ qua **vẫn** là lượt thành công → mốc 24 giờ không bao giờ đạt được, ảnh chỉ đổi khi có push.
