@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Test đường kẻ và chân trang."""
 
+import re
 import unittest
 
 from helpers import SCRIPTS, assert_valid_svg  # noqa: F401
@@ -129,6 +130,50 @@ class TestFooterCard(unittest.TestCase):
         # Gradient đã mờ sẵn; thêm blur chỉ tốn một lượt lọc toàn ảnh, và
         # làm resvg panic khi ellipse lấn ra ngoài khung.
         self.assertNotIn('filter="url(#soft)"', self.svg)
+
+
+
+class TestDividerCard(unittest.TestCase):
+    """Đường kẻ mảnh: phải vừa khung, không tràn, và tất định."""
+
+    def setUp(self):
+        self.svg = divider(get_palette("sky"))
+
+    def test_valid(self):
+        assert_valid_svg(self, self.svg, "divider")
+
+    def test_is_decorative(self):
+        # Đường kẻ không mang thông tin: ẩn với trình đọc màn hình.
+        self.assertIn('role="presentation"', self.svg)
+
+    def test_height_is_thin(self):
+        self.assertIn('height="26"', self.svg)
+
+    def test_deterministic(self):
+        self.assertEqual(self.svg, divider(get_palette("sky")))
+
+    def test_every_theme_renders(self):
+        from svgkit.palette import theme_names
+        for name in theme_names():
+            assert_valid_svg(self, divider(get_palette(name)),
+                             "divider-" + name)
+
+    def test_beam_uses_gradient_not_solid(self):
+        # Nét kẻ tô bằng gradient để hai đầu mờ dần, không cắt cụt.
+        self.assertRegex(self.svg, r'<rect[^>]*fill="url\(#[^)]+\)"')
+
+
+class TestFooterLanguages(unittest.TestCase):
+    def test_vietnamese_and_english_differ(self):
+        vi = footer(get_palette("sky"), i18n.get("vi"))
+        en = footer(get_palette("sky"), i18n.get("en"))
+        self.assertNotEqual(vi, en)
+
+    def test_english_has_no_vietnamese_diacritics(self):
+        # Chỉ xét chữ hiển thị: khối CSS dùng chung có ghi chú tiếng Việt.
+        en = footer(get_palette("sky"), i18n.get("en"))
+        shown = " ".join(re.findall(r"<text[^>]*>(.*?)</text>", en, re.S))
+        self.assertNotRegex(shown, r"[ăâđêôơưĂÂĐÊÔƠƯ]")
 
 if __name__ == "__main__":
     unittest.main()
