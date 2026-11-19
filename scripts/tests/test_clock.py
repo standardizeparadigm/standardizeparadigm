@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from helpers import SCRIPTS, assert_valid_svg  # noqa: F401
 
 from svgkit import clock_card, i18n
-from svgkit.clock import _day_arc, _greeting_key
+from svgkit.clock import _day_arc, _greeting_key, _sun_moon
 from svgkit.palette import get_palette
 
 DT = datetime(2026, 11, 19, 15, 4, 5)
@@ -304,6 +304,48 @@ class TestDayArc(unittest.TestCase):
 
     def test_tip_dot_pulses(self):
         self.assertIn('attributeName="r"', self._arc(9))
+
+
+
+class TestSunMoon(unittest.TestCase):
+    """Mặt trời ban ngày, trăng khuyết ban đêm — cả hai đều là hình vẽ tay."""
+
+    def test_daytime_draws_a_sun(self):
+        svg = _sun_moon(get_palette("sky"), 9, 100, 100)
+        self.assertIn("<circle", svg)
+        self.assertEqual(svg.count("<path"), 8)      # 8 tia
+
+    def test_night_draws_a_moon_with_a_mask(self):
+        svg = _sun_moon(get_palette("sky"), 21, 100, 100)
+        self.assertIn('<mask id="moonBite"', svg)
+        self.assertIn('mask="url(#moonBite)"', svg)
+
+    def test_moon_bite_is_black_on_white(self):
+        svg = _sun_moon(get_palette("sky"), 21, 100, 100)
+        self.assertIn('fill="#000000"', svg)
+        self.assertIn('fill="#FFFFFF"', svg)
+
+    def test_moon_has_no_degenerate_arc(self):
+        # Bản cũ có 'a4.6 4.6 0 106.4 6.4 5.6 5.6 0 01-0 -0': bán kính 0.
+        svg = _sun_moon(get_palette("sky"), 21, 100, 100)
+        self.assertNotIn("-0 -0", svg)
+        self.assertNotIn("a4.6", svg)
+
+    def test_six_am_is_already_sun(self):
+        self.assertIn("<path", _sun_moon(get_palette("sky"), 6, 0, 0))
+
+    def test_six_pm_is_already_moon(self):
+        self.assertIn("moonBite", _sun_moon(get_palette("sky"), 18, 0, 0))
+
+    def test_icon_is_positioned_at_the_given_point(self):
+        svg = _sun_moon(get_palette("sky"), 12, 300, 170)
+        self.assertIn('cx="300"', svg)
+        self.assertIn('cy="170"', svg)
+
+    def test_icon_uses_the_palette_not_a_fixed_colour(self):
+        for theme in ("sky", "sunset", "mono"):
+            svg = _sun_moon(get_palette(theme), 21, 10, 10)
+            self.assertIn(get_palette(theme).accent3, svg, theme)
 
 if __name__ == "__main__":
     unittest.main()
