@@ -63,3 +63,22 @@ class TestTranslator(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestFallbacks(unittest.TestCase):
+    def test_unknown_key_returns_key(self):
+        from svgkit import i18n
+
+        self.assertEqual(i18n.get("vi")("khong.co.khoa.nay"), "khong.co.khoa.nay")
+
+    def test_unknown_lang_falls_back(self):
+        from svgkit import i18n
+
+        self.assertEqual(i18n.get("xx").lang, i18n.DEFAULT_LANG)
+
+    def test_placeholder_substitution(self):
+        from svgkit import i18n
+
+        text = i18n.get("vi")("stats.progress", pct=74)
+        self.assertIn("74", text)
+        self.assertNotIn("{pct}", text)
