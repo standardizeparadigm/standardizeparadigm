@@ -48,6 +48,20 @@ class TestHero(unittest.TestCase):
         self.assertNotIn("✨", self.svg)
 
 
+class TestTwoScanLines(unittest.TestCase):
+    """Hai làn sáng quét nền, lệch tốc độ và lệch pha."""
+
+    def setUp(self):
+        self.svg = hero(get_palette(), DT, i18n.get("vi"))
+
+    def test_two_scan_bands(self):
+        self.assertEqual(self.svg.count('class="scan"'), 2)
+
+    def test_second_band_is_slower_and_offset(self):
+        self.assertIn("animation-duration:12.5s", self.svg)
+        self.assertIn("animation-delay:-4.2s", self.svg)
+
+
 if __name__ == "__main__":
     unittest.main()
 

@@ -191,6 +191,11 @@ def hero(pal, dt, t, width=1000, height=280):
                  'filter="url(#soft)" opacity=".55" class="driftC"/>')
     parts.append('    <rect x="0" y="0" width="%d" height="1.5" '
                  'fill="url(#accentGrad)" opacity="0" class="scan"/>' % width)
+    # Vệt thứ hai mảnh hơn, chậm hơn và lệch pha: hai làn sáng không bao
+    # giờ trùng nhau nên nền luôn có chuyển động, không bị "nhịp đều" nhàm.
+    parts.append('    <rect x="0" y="0" width="%d" height="1" fill="%s" '
+                 'opacity="0" class="scan" style="animation-duration:12.5s;'
+                 'animation-delay:-4.2s"/>' % (width, pal.accent3))
     parts.append('  </g>')
 
     parts += _stars(width, height, pal)
