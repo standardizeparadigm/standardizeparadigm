@@ -6,7 +6,7 @@
 #  workflow chưa từng chạy -> "no status". Nhìn vào trang là hai ô đỏ.
 #
 #  Dải này tự đọc Actions API rồi vẽ assets/status.svg:
-#    - chạy mỗi 15 phút (đủ tươi, không spam lịch sử git)
+#    - chạy mỗi 10 phút (đủ tươi, không spam lịch sử git)
 #    - chạy lại ngay khi BẤT KỲ workflow nào vừa kết thúc (workflow_run)
 #    - không đọc được API thì giữ nguyên ảnh cũ, không ghi thẻ rỗng
 # =====================================================================
@@ -14,7 +14,7 @@ name: 📊 Workflow Status
 
 on:
   schedule:
-    - cron: "*/15 * * * *"        # mỗi 15 phút
+    - cron: "*/10 * * * *"        # mỗi 10 phút; mỗi lượt chỉ ~10 giây
   workflow_run:
     # Một workflow vừa xong -> cập nhật dải trạng thái ngay
     workflows:
