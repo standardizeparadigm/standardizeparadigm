@@ -130,3 +130,10 @@ Nguyên tắc: **nếu hoạt ảnh làm khung đầu tiên xấu, đổi sang S
 - Rank: `grade()` cho chữ cái + phần trăm; vòng rank vẽ đúng phần trăm đó, không làm tròn lên.
 - Thời gian: luôn `Asia/Ho_Chi_Minh` (UTC+7), định dạng `%d/%m · %H:%M`.
 
+## Khả năng truy cập
+
+- `role="img"` + `aria-label` + `<title>` + `<desc>` cho mọi thẻ nội dung.
+- `divider.svg` là `role="presentation"` — trang trí thì im lặng.
+- Khối `@media (prefers-reduced-motion: reduce)` tắt toàn bộ hoạt ảnh CSS cho người cần.
+- Tương phản: chữ chính trên nền đậm đạt ≥ 7:1 ở cả 6 theme (đo bằng mã màu trong `palette.py`).
+
