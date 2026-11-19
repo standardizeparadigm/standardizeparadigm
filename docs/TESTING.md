@@ -218,6 +218,18 @@ từ phiên bản cũ của renderer và không ai vẽ lại:
 - Dấu `<!-- data:hex -->` ở dòng áp chót khớp nội dung file — sửa tay một
   chữ là dấu lệch.
 
+## `test_repo_workflows.py`
+
+`test_check_repo.py` kiểm thử *hàm* bằng thư mục tạm; file này chạy chính các
+luật đó **trên repo thật**:
+
+- Bảy workflow: có `workflow_dispatch`, `concurrency`, `timeout-minutes`,
+  `permissions` tối thiểu, action ghim phiên bản.
+- Danh sách `workflow_run.workflows` trong `status.yml` khớp tên thật của
+  từng workflow (lệch một chữ là lượt chạy đó không kích hoạt dải trạng thái).
+- Lịch chạy: không hai job nào cùng phút; không job nào dày hơn 5 phút.
+- Nhịp chạy trong workflow khớp bảng trong `docs/WORKFLOWS.md` và README.
+
 ## `test_workflow_gate.py`
 
 Cổng thông minh của `profile-3d.yml` là shell nằm trong YAML — loại code dễ hỏng mà không ai thấy. Test này:
