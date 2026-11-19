@@ -31,3 +31,11 @@ api.collect_user(login, token)
 
 Nhờ vậy `cards.py` test được bằng dữ liệu giả, và `api.py` thay được bằng bản khác mà không sửa gì phần vẽ.
 
+## Vì sao chỉ dùng thư viện chuẩn
+
+- `pip install` trong CI là chỗ hay hỏng nhất (wheel thiếu, mạng chậm, version xung đột).
+- SVG chỉ là văn bản — không cần thư viện đồ hoạ nào để ghép chuỗi.
+- Máy nào có Python 3.8+ là chạy được, kể cả máy của bạn cùng lớp không có mạng.
+
+Đổi lại: phải tự viết `esc()`, tự tính toạ độ, tự quản lý màu. Đó là cái giá đã trả và đã có test.
+
