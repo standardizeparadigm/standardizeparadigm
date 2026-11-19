@@ -41,3 +41,13 @@ Với repo công khai, phút runner miễn phí — nhưng vẫn giữ ở mức
 
 Đổi lại: SVG cần trình duyệt để render, và một số nơi (email, một số trình xem markdown) chặn hoạt ảnh — nên mọi khung hình đầu tiên đều được vẽ đẹp sẵn.
 
+## Số liệu trên thẻ khác số trên GitHub?
+
+Có ba lý do chính đáng:
+
+1. **Thời điểm**: thẻ được vẽ lúc workflow chạy, GitHub hiện tại có thể mới hơn vài phút.
+2. **Phạm vi**: `stars` và `langs` chỉ tính repo **công khai**; repo private không được tính.
+3. **Ngôn ngữ**: tính theo **byte code** (GitHub Linguist), không theo số file hay số dòng.
+
+Nếu lệch cả tháng, có thể `GITHUB_TOKEN` hết quyền — xem log của workflow `Profile Cards`.
+
