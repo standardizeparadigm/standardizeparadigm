@@ -3,6 +3,16 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Đồng hồ sai giờ: hai lỗi chồng lên nhau
+
+- Ảnh đồng hồ cũ hiển thị **giờ UTC** dưới nhãn "giờ Việt Nam": renderer
+  không hề quy đổi múi giờ, cứ thế vẽ nguyên `datetime` nhận được.
+- Và ảnh trong repo đã nguội 25 phút, nên dù giờ đúng thì nhìn vẫn "lệch".
+  Sửa một trong hai lỗi thì vẫn thấy sai — nên phải sửa cả hai.
+- `api.to_vn()`: `None` → `None`, giờ không kèm múi (naive) coi như đã là giờ
+  Việt Nam, giờ có múi thì `astimezone(TZ_VN)`.
+- Thêm dòng `cập nhật HH:MM` ngay trong thẻ và ghi chú dưới đáy: kim tự quay
+  bằng CSS giữa hai lần vẽ lại, nên đọc thẻ là biết ảnh chụp lúc nào.
 ## 2026-11-19 — Dải trạng thái workflow thay cho badge shields.io
 
 - Ba badge trong ảnh chụp bị hỏng: `live-clock` và `health` trả *repo or
