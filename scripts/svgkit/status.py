@@ -133,6 +133,12 @@ def status_strip(pal, rows, dt, t, width=None):
                  % (MARGIN + 4, STRIP_H - 12, pal.accent))
     parts.append('    <text x="%d" y="%d" class="footNote">%s</text>'
                  % (MARGIN + 14, STRIP_H - 9, esc(t("status.foot", stamp=stamp))))
+    # "6/7 ổn" ở góc phải: đọc được tình hình chung mà không phải đếm màu.
+    ok = sum(1 for row in rows if row[1] in ("passing", "running"))
+    parts.append('    <text x="%d" y="%d" text-anchor="end" class="footNote" '
+                 'style="fill:%s">%s</text>'
+                 % (width - MARGIN, STRIP_H - 9, pal.accent2,
+                    esc(t("status.summary", ok=ok, total=len(rows)))))
     parts.append('  </g>')
     parts.append("</svg>")
     return "\n".join(parts)
