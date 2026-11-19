@@ -72,6 +72,11 @@ python3 scripts/generate_cards.py --demo --all --out /tmp/xem-thu
 - `_dial()`: 60 vạch phút + 12 vạch giờ; vạch giờ dài và sáng hơn.
 - `_hands()`: xoay sẵn nhóm kim tới góc hiện tại rồi gắn `animation-delay` âm → kim khớp giờ ngay khung đầu.
 - `_greeting_key()`: chia ngày thành sáng / trưa / chiều / tối / đêm; `_sun_moon()` đổi icon theo giờ.
+- `_live_time()` + `LIVE_TIME_CSS`: 24 ô số giờ + 60 ô số phút chồng lên nhau,
+  mỗi ô có `animation-delay` âm để trình duyệt tự đổi số mỗi phút — không
+  JavaScript, không cron phút. Ô `nowSlot` hiện sẵn để trình xem tĩnh đúng giờ.
+- `_day_arc()`: vòng cung ngoài cùng, một vòng mỗi 24 giờ; chấm ở đầu cung
+  thở bằng SMIL. Dưới 0,4° thì không vẽ.
 - Thanh tiến độ ngày = số phút đã trôi / 1440.
 - Dấu `cập nhật HH:MM` ở góc phải: ảnh là ảnh chụp, kim vẫn quay bằng CSS
   giữa hai lần cập nhật — không có dấu này thì người xem tưởng workflow treo.
