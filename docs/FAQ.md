@@ -219,3 +219,12 @@ bằng token của chính nó, nên không có khái niệm "không tìm thấy"
 run` trên một workflow chỉ có ở nhánh phụ sẽ trả HTTP 404.
 
 Merge trước, chạy sau.
+
+## Sao không dùng emoji cho đẹp?
+
+Vì emoji là thứ **duy nhất** trên trang phụ thuộc font của máy người đọc.
+Máy có font màu thì hiện hình cao gấp đôi chữ; máy không có thì hiện ô vuông.
+Cùng một README vì thế cao thấp khác nhau, bảng lệch hàng, và trình đọc màn
+hình đọc tên bieu tượng thành lời ngay giữa câu.
+
+Chữ thuần thì mọi nơi giống mọi nơi. Luật `check_no_emoji` giữ điều đó.
