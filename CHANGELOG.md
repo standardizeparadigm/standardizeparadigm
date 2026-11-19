@@ -3,6 +3,15 @@
 Những thay đổi đáng kể của trang cá nhân này, mới nhất ở trên cùng.
 Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi.
 
+## 2026-11-19 — Hiệu ứng mới, vẫn tắt được bằng một dòng CSS
+
+- Vệt sáng chạy dọc mép trên mọi thẻ (130px, 8-12 giây, lệch nhịp theo bề
+  rộng) — nằm trong clip-path nên không tràn qua góc bo.
+- Chấm sáng nhấp nháy ở đầu mỗi thanh tiến độ ngôn ngữ: thanh không còn là
+  vạch tĩnh, mắt bám được điểm dừng.
+- Cột hôm nay trong thẻ hoạt động có thêm vòng thở `r=11` phía sau chấm sáng.
+- Tất cả dùng lại keyframe sẵn có (`sheen`, `pulse`, `pulseSlow`) nên
+  `prefers-reduced-motion` tắt sạch, không phải thêm ngoại lệ.
 ## 2026-11-19 — Bốn quy ước an toàn cho workflow
 
 - `check_workflow_hygiene()` bắt bốn thứ mà thiếu là sinh sự cố khó lần:
