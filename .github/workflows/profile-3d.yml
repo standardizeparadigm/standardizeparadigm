@@ -1,21 +1,22 @@
 # =====================================================================
-#  profile-3d.yml — Biểu đồ contribution 3D, kiểm tra mỗi 5 phút
+#  profile-3d.yml — Biểu đồ contribution 3D, kiểm tra mỗi 30 phút
 #
-#  GitHub Actions KHÔNG hỗ trợ cron mỗi phút; chu kỳ ngắn nhất là 5 phút.
-#  Vì vậy workflow này thức dậy mỗi 5 phút nhưng CỔNG THÔNG MINH sẽ quyết
-#  định có vẽ lại hay không:
+#  Ảnh 3D chỉ đổi khi (a) có push mới hoặc (b) sang ngày mới, nên không
+#  cần thức dậy mỗi 5 phút. Workflow thức mỗi 30 phút, còn CỔNG THÔNG MINH
+#  quyết định có vẽ lại hay không:
 #
 #    - có PushEvent mới kể từ lần chạy thành công trước  -> vẽ lại
 #    - đã quá 24 giờ kể từ lần chạy trước                -> vẽ lại (bắt mốc ngày mới)
 #    - còn lại                                           -> bỏ qua, thoát trong vài giây
 #
-#  Nhờ vậy ảnh vẫn "theo phút" mà không đốt hàng giờ runner mỗi ngày.
+#  Push vẫn được bắt ngay (trigger push bên dưới), nên ảnh không bao giờ
+#  chậm quá nửa giờ mà mỗi ngày chỉ tốn 1–2 commit thật.
 # =====================================================================
 name: GitHub Profile 3D Contrib
 
 on:
   schedule:
-    - cron: "*/5 * * * *"        # mỗi 5 phút (GitHub không cho ngắn hơn)
+    - cron: "*/30 * * * *"       # mỗi 30 phút; cổng 24h bên dưới tự bỏ qua
   workflow_dispatch:
   push:
     branches: [main]
