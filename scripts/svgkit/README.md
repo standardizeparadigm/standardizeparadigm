@@ -65,3 +65,10 @@ python3 scripts/generate_cards.py --demo --all --out /tmp/xem-thu
 - `waiting_card()`: thẻ tạm khi chưa có token — nói rõ cần chạy workflow nào, không hiện số liệu giả.
 - `_rank_ring()` dùng `stroke-dasharray` để vẽ đúng phần trăm, chữ phần trăm đi qua i18n.
 
+## `clock.py`
+
+- `_dial()`: 60 vạch phút + 12 vạch giờ; vạch giờ dài và sáng hơn.
+- `_hands()`: xoay sẵn nhóm kim tới góc hiện tại rồi gắn `animation-delay` âm → kim khớp giờ ngay khung đầu.
+- `_greeting_key()`: chia ngày thành sáng / trưa / chiều / tối / đêm; `_sun_moon()` đổi icon theo giờ.
+- Thanh tiến độ ngày = số phút đã trôi / 1440.
+
