@@ -166,6 +166,27 @@ class TestEscape(unittest.TestCase):
         self.assertIn("<", node.firstChild.data)
 
 
+class TestNewCssTokens(unittest.TestCase):
+    """Hai lớp CSS mới của vòng 4 phải có mặt và phải tắt được khi cần."""
+
+    def setUp(self):
+        self.css = primitives.CSS
+
+    def test_spin_dot_definition(self):
+        self.assertIn(".spinDot", self.css)
+        self.assertIn("transform-box: fill-box", self.css)
+
+    def test_dash_flow_definition(self):
+        self.assertIn(".dashFlow", self.css)
+        self.assertIn("@keyframes dashFlow", self.css)
+        self.assertIn("stroke-dashoffset", self.css)
+
+    def test_both_are_disabled_by_reduced_motion(self):
+        block = self.css[self.css.index("prefers-reduced-motion"):]
+        for token in (".spinDot", ".dashFlow"):
+            self.assertIn(token, block, "%s chưa được tắt" % token)
+
+
 class TestIconFallback(unittest.TestCase):
     def test_unknown_icon_falls_back_to_spark(self):
         from svgkit.primitives import ICONS, icon
