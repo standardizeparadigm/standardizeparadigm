@@ -808,8 +808,9 @@ def check_font_shorthand(root=None):
 
 
 # ------------------------------------------------- 4be. Nhịp hoạt ảnh an toàn
-RE_ANIM_DECL = re.compile(r"\b(?:animation|animation-duration)\s*:\s*([^;}]+)")
-RE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)s\b")
+RE_CSS_BLOCK = re.compile(r"\{([^{}]*)\}")
+RE_ANIM_DECL = re.compile(r"animation(?:-duration)?\s*:\s*([^;}]*)")
+RE_SECONDS = re.compile(r"(\d*\.?\d+)s\b")
 ANIM_FLOOR = 1.0
 
 
@@ -817,9 +818,12 @@ def check_animation_pace(root=None, floor=ANIM_FLOOR):
     """Hoạt ảnh lặp vô hạn không được nhanh hơn một chu kỳ mỗi giây.
 
     WCAG 2.3.1 đặt ngưỡng an toàn ở ba lần nháy mỗi giây; một chu kỳ mỗi
-    giây là biên an toàn rộng hơn ba lần, đủ để không ai phải nheo mắt. Chu
-    kỳ dài (kim đồng hồ quay một vòng mỗi giờ) thì không sao — luật chỉ chặn
-    phía nhanh.
+    giây là biên rộng gấp ba, đủ để không ai phải nheo mắt. Chu kỳ dài (kim
+    đồng hồ quay một vòng mỗi giờ) thì không sao — luật chỉ chặn phía nhanh.
+
+    Đọc theo từng khối khai báo chứ không theo từng dòng: `animation-duration`
+    và `animation-iteration-count: infinite` viết tách hai dòng vẫn là một
+    hoạt ảnh lặp, và cách viết tách dòng là cách dễ lọt lưới nhất.
     """
     root = root or ROOT
     for base, dirs, files in os.walk(root):
@@ -828,14 +832,17 @@ def check_animation_pace(root=None, floor=ANIM_FLOOR):
             if not name.lower().endswith(".svg"):
                 continue
             path = os.path.join(base, name)
-            for number, line in enumerate(read(path).split("\n"), 1):
-                for decl in RE_ANIM_DECL.findall(line):
-                    if "infinite" not in decl:
-                        continue
+            text = read(path)
+            for match in RE_CSS_BLOCK.finditer(text):
+                body = match.group(1)
+                if "infinite" not in body:
+                    continue
+                line = text.count("\n", 0, match.start()) + 1
+                for decl in RE_ANIM_DECL.findall(body):
                     for raw in RE_SECONDS.findall(decl):
                         if float(raw) < floor:
                             err("%s:%d hoạt ảnh lặp %ss quá nhanh "
-                                "(tối thiểu %gs)" % (rel(path), number,
+                                "(tối thiểu %gs)" % (rel(path), line,
                                                      raw, floor))
 
 

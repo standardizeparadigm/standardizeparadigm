@@ -1672,6 +1672,57 @@ class TestSvgViewBox(unittest.TestCase):
         self.assertEqual(self._run(), [])
 
 
+class TestAnimationPace(unittest.TestCase):
+    """Hoạt ảnh lặp quá nhanh là vấn đề sức khỏe, không phải thẩm mỹ."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.tmp)
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def _svg(self, css):
+        with open(os.path.join(self.tmp, "assets", "a.svg"), "w",
+                  encoding="utf-8") as handle:
+            handle.write('<svg viewBox="0 0 10 10"><style>%s</style></svg>'
+                         % css)
+
+    def _run(self):
+        check_repo.errors = []
+        check_repo.check_animation_pace(root=self.tmp)
+        return list(check_repo.errors)
+
+    def test_fast_loop_is_reported(self):
+        self._svg(".a { animation: blink .2s linear infinite; }")
+        errors = self._run()
+        self.assertEqual(len(errors), 1)
+        self.assertIn(".2s", errors[0])
+
+    def test_slow_loop_is_fine(self):
+        self._svg(".a { animation: drift 26s ease-in-out infinite; }")
+        self.assertEqual(self._run(), [])
+
+    def test_hour_long_loop_is_fine(self):
+        self._svg(".a { animation: hand 3600s linear infinite; }")
+        self.assertEqual(self._run(), [])
+
+    def test_one_shot_transition_is_not_checked(self):
+        self._svg(".a { animation: fadeUp .3s ease-out both; }")
+        self.assertEqual(self._run(), [])
+
+    def test_split_declarations_are_checked(self):
+        # Cach viet tach dong la cach de lot luoi nhat: chu ky o mot khai
+        # bao, "infinite" o khai bao khac, trong cung mot khoi.
+        self._svg(".a { animation-duration: .4s;\n  animation-iteration-count:"
+                  " infinite; }")
+        errors = self._run()
+        self.assertEqual(len(errors), 1)
+        self.assertIn(".4s", errors[0])
+
+    def test_fraction_without_leading_zero(self):
+        self._svg(".a { animation: blink .25s steps(1) infinite; }")
+        self.assertEqual(len(self._run()), 1)
+
+
 if __name__ == "__main__":
     unittest.main()
 
