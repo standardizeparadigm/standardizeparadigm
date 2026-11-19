@@ -57,6 +57,18 @@ def _rank_ring(pal, percent, letter, label, progress_text,
                  'calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>'
                  % (circumference, offset))
     parts.append('    </circle>')
+    # Điểm sáng nằm đúng đầu cung tiến độ — mắt bám vào đó là biết rank tới đâu.
+    angle = math.radians(-90 + 360 * percent)
+    tip_x = cx + radius * math.cos(angle)
+    tip_y = cy + radius * math.sin(angle)
+    parts.append('    <g>')
+    parts.append('      <circle cx="%.1f" cy="%.1f" r="10" fill="none" '
+                 'stroke="%s" stroke-opacity=".45" class="pulseSlow"/>'
+                 % (tip_x, tip_y, pal.accent3))
+    parts.append('      <circle cx="%.1f" cy="%.1f" r="4.6" fill="%s" '
+                 'filter="url(#glow)" class="pulse"/>'
+                 % (tip_x, tip_y, pal.accent3))
+    parts.append('    </g>')
     parts.append('    <text x="%d" y="%d" text-anchor="middle" class="fSans" '
                  'style="font:800 32px %s;fill:%s">%s</text>'
                  % (cx, cy + 6, pal.font, pal.title, esc(letter)))
