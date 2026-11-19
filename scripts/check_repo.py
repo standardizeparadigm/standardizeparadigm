@@ -807,6 +807,42 @@ def check_font_shorthand(root=None):
                     "font-weight/font-size/font-family" % (rel(path), number))
 
 
+# ------------------------------------------------- 4bc. Ví dụ Python phải chạy
+RE_FENCE = re.compile(r"^(\s*)```(\w*)\s*$(.*?)^\1```\s*$", re.M | re.S)
+
+
+def check_python_fences(root=None):
+    """Khối ```python trong tài liệu phải biên dịch được.
+
+    Ví dụ trong tài liệu là thứ người mới copy nguyên si. Một dấu hai chấm
+    thiếu hay thụt lề lệch ở đó không làm test nào đỏ, nhưng làm người copy
+    mất mười phút đầu tiên — đúng mười phút mà ví dụ sinh ra để tiết kiệm.
+    Khối có `>>>` là phiên làm việc, không phải module, nên được bỏ qua.
+    """
+    root = root or ROOT
+    for base, dirs, files in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.lower().endswith(".md"):
+                continue
+            path = os.path.join(base, name)
+            text = read(path)
+            for match in RE_FENCE.finditer(text):
+                if match.group(2) not in ("python", "py"):
+                    continue
+                code = match.group(3)
+                if code.startswith("\n"):
+                    code = code[1:]
+                if ">>>" in code:
+                    continue
+                line = text.count("\n", 0, match.start()) + 2
+                try:
+                    compile(code, str(path), "exec")
+                except SyntaxError as exc:
+                    err("%s:%d ví dụ Python không biên dịch được: %s"
+                        % (rel(path), line + (exc.lineno or 1) - 1, exc.msg))
+
+
 # ------------------------------------------------- 4be. Nhịp hoạt ảnh an toàn
 RE_CSS_BLOCK = re.compile(r"\{([^{}]*)\}")
 RE_ANIM_DECL = re.compile(r"animation(?:-duration)?\s*:\s*([^;}]*)")
@@ -1551,6 +1587,7 @@ def main(argv=None):
     check_animation_pace()
     check_smil_pace()
     check_doc_titles()
+    check_python_fences()
     check_svg_budget()
     check_svg_viewbox()
     check_python()
