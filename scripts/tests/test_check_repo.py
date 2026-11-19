@@ -241,6 +241,46 @@ class TestFixableText(unittest.TestCase):
     def test_indentation_is_preserved(self):
         self.assertEqual(check_repo.fixable_text("  a\n    b\n"), "  a\n    b\n")
 
+
+
+class TestFixTextFiles(unittest.TestCase):
+    """fix_text_files() chạy trên thư mục thật, bỏ qua file nhị phân."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp(prefix="fix-files-")
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _put(self, name, text, mode="w"):
+        path = os.path.join(self.tmp, name)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, mode, encoding=None if "b" in mode else "utf-8",
+                  newline="" if "b" not in mode else None) as handle:
+            handle.write(text)
+        return path
+
+    def test_dirty_file_is_rewritten(self):
+        path = self._put("a.md", "dòng  \r\ncuối")
+        changed = check_repo.fix_text_files(self.tmp)
+        self.assertEqual(len(changed), 1)
+        with open(path, encoding="utf-8", newline="") as handle:
+            self.assertEqual(handle.read(), "dòng\ncuối\n")
+
+    def test_clean_repo_reports_nothing(self):
+        self._put("a.md", "sạch\n")
+        self.assertEqual(check_repo.fix_text_files(self.tmp), [])
+
+    def test_second_run_is_a_no_op(self):
+        self._put("a.md", "x  \r\n")
+        check_repo.fix_text_files(self.tmp)
+        self.assertEqual(check_repo.fix_text_files(self.tmp), [])
+
+    def test_binary_and_skipped_dirs_are_ignored(self):
+        self._put("image.png", b"\x89PNG\r\n", mode="wb")
+        self._put(".git/config", "a\r\n")
+        self.assertEqual(check_repo.fix_text_files(self.tmp), [])
+
 if __name__ == "__main__":
     unittest.main()
 
