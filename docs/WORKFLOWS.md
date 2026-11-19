@@ -185,6 +185,7 @@ Ba lớp bảo hiểm khi vẫn trùng giờ:
 | Badge shields báo `repo or workflow not found` | Workflow chưa nằm trên nhánh mặc định | Merge, hoặc dùng `assets/status.svg` (mục 7) |
 | Badge shields báo `no status` | Workflow có nhưng chưa chạy xong lần nào | Chạy một lần, hoặc dùng `assets/status.svg` |
 | Bấm `Run workflow` không thấy workflow | File chỉ có ở nhánh khác | Merge vào nhánh mặc định trước |
+| Dải trạng thái ghi `24 ngày trước` | Workflow chưa chạy trên nhánh mặc định | Merge, hoặc bỏ qua — đó là sự thật, không phải lỗi |
 | Dải trạng thái ghi `CHỜ MERGE` | Workflow chưa có trên nhánh mặc định | Merge; lượt chạy sau tự đổi sang `ĐẠT` |
 
 ## Tham khảo
