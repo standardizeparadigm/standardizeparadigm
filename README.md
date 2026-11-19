@@ -138,12 +138,12 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 
 | Kỹ năng | Tiến độ | Mục tiêu gần nhất |
 | :-- | :-- | :-- |
-| 🐍 &nbsp;**Python** | `████████░░` &nbsp;`80%` | Hoàn thiện 1 game Pygame |
-| 🌐 &nbsp;**HTML / CSS** | `███████░░░` &nbsp;`70%` | Tự thiết kế portfolio |
-| 🔧 &nbsp;**Git / GitHub** | `██████░░░░` &nbsp;`60%` | Làm quen pull request |
-| ⚡ &nbsp;**JavaScript** | `█████░░░░░` &nbsp;`50%` | Web có tương tác thật |
-| 🎮 &nbsp;**Pygame** | `████░░░░░░` &nbsp;`45%` | Thêm âm thanh + điểm cao |
-| 🤖 &nbsp;**AI / Chatbot** | `███░░░░░░░` &nbsp;`30%` | Viết chatbot đầu tiên |
+| **Python** | `████████░░` &nbsp;`80%` | Hoàn thiện 1 game Pygame |
+| **HTML / CSS** | `███████░░░` &nbsp;`70%` | Tự thiết kế portfolio |
+| **Git / GitHub** | `██████░░░░` &nbsp;`60%` | Làm quen pull request |
+| **JavaScript** | `█████░░░░░` &nbsp;`50%` | Web có tương tác thật |
+| **Pygame** | `████░░░░░░` &nbsp;`45%` | Thêm âm thanh + điểm cao |
+| **AI / Chatbot** | `███░░░░░░░` &nbsp;`30%` | Viết chatbot đầu tiên |
 
 </div>
 
