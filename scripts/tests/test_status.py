@@ -385,5 +385,34 @@ class TestAgeTint(unittest.TestCase):
         svg = status.status_strip(get_palette("sky"), rows, DT, i18n.get("vi"))
         self.assertNotIn("trước", svg)
 
+
+
+class TestHumanAge(unittest.TestCase):
+    """Ba mốc: phút, giờ, ngày — và mốc chuyển phải đúng chỗ."""
+
+    def setUp(self):
+        self.t = i18n.get("vi")
+
+    def test_zero_minutes(self):
+        self.assertEqual(status.human_age(0, self.t), "0 phút trước")
+
+    def test_fifty_nine_minutes_is_still_minutes(self):
+        self.assertEqual(status.human_age(59, self.t), "59 phút trước")
+
+    def test_sixty_minutes_becomes_one_hour(self):
+        self.assertEqual(status.human_age(60, self.t), "1 giờ trước")
+
+    def test_last_minute_before_a_day_is_still_hours(self):
+        self.assertEqual(status.human_age(60 * 24 - 1, self.t), "23 giờ trước")
+
+    def test_a_full_day_becomes_one_day(self):
+        self.assertEqual(status.human_age(60 * 24, self.t), "1 ngày trước")
+
+    def test_none_gives_no_label(self):
+        self.assertIsNone(status.human_age(None, self.t))
+
+    def test_english_wording(self):
+        self.assertIn("min", status.human_age(5, i18n.get("en")))
+
 if __name__ == "__main__":
     unittest.main()
