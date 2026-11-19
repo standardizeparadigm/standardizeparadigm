@@ -123,6 +123,52 @@ class TestUnknownFlags(unittest.TestCase):
         for argv in (["--theme", "sky"], ["--lang", "en"]):
             self.assertNotIn("không có", self._run(argv))
 
+
+
+class TestAtFlag(unittest.TestCase):
+    """`--at`: vẽ như thể đang là một thời điểm khác."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp(prefix="at-")
+        self.addCleanup(shutil.rmtree, self.tmp, True)
+
+    def test_parses_three_shapes(self):
+        for text in ("2026-11-19T23:50", "2026-11-19 23:50",
+                     "2026-11-19T23:50:07"):
+            moment = generate_cards.parse_moment(text)
+            self.assertIsNotNone(moment, text)
+            self.assertEqual((moment.hour, moment.minute), (23, 50))
+
+    def test_hour_only(self):
+        self.assertEqual(generate_cards.parse_moment("2026-11-19T07").hour, 7)
+
+    def test_bad_input_is_none(self):
+        for text in ("", "hôm qua", "2026-13-40", "19/11/2026"):
+            self.assertIsNone(generate_cards.parse_moment(text), text)
+
+    def test_clock_uses_the_given_moment(self):
+        code = generate_cards.main(["--clock", "--at", "2026-11-19T23:50",
+                                    "--out", self.tmp, "--quiet"])
+        self.assertEqual(code, 0)
+        with open(os.path.join(self.tmp, "live-clock.svg"), encoding="utf-8") as f:
+            svg = f.read()
+        self.assertIn("23:50", svg)
+        minidom.parseString(svg)
+
+    def test_bad_moment_exits_two(self):
+        self.assertEqual(generate_cards.main(["--clock", "--at", "hôm qua",
+                                              "--quiet"]), 2)
+
+    def test_moment_does_not_leak_into_the_next_run(self):
+        generate_cards.main(["--clock", "--at", "2026-11-19T07:05",
+                             "--out", self.tmp, "--quiet"])
+        generate_cards.main(["--clock", "--at", "2026-11-19T21:05",
+                             "--out", self.tmp, "--quiet"])
+        with open(os.path.join(self.tmp, "live-clock.svg"), encoding="utf-8") as f:
+            svg = f.read()
+        self.assertIn("21:05", svg)
+        self.assertNotIn("07:05", svg)
+
 if __name__ == "__main__":
     unittest.main()
 
