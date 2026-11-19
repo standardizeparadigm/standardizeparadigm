@@ -996,6 +996,45 @@ class TestMarkdownTables(unittest.TestCase):
         check_repo.check_markdown_tables(self.tmp)
         self.assertEqual(check_repo.errors, [])
 
+
+
+class TestSvgSafety(unittest.TestCase):
+    """Ảnh tự vẽ: không gọi ra ngoài, không mang mã chạy."""
+
+    def setUp(self):
+        check_repo.errors = []
+        check_repo.warnings = []
+        self.tmp = tempfile.mkdtemp(prefix="safety-")
+        os.makedirs(os.path.join(self.tmp, "assets"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _svg(self, body):
+        with open(os.path.join(self.tmp, "assets", "a.svg"), "w",
+                  encoding="utf-8") as handle:
+            handle.write(body)
+
+    def test_namespace_is_allowed(self):
+        self._svg('<svg xmlns="http://www.w3.org/2000/svg"><title>t</title></svg>')
+        check_repo.check_svg_safety(self.tmp)
+        self.assertEqual(check_repo.errors, [])
+
+    def test_external_image_is_flagged(self):
+        self._svg('<image href="https://example.com/a.png"/>')
+        check_repo.check_svg_safety(self.tmp)
+        self.assertTrue(any("gọi ra ngoài" in e for e in check_repo.errors))
+
+    def test_script_is_flagged(self):
+        self._svg("<script>alert(1)</script>")
+        check_repo.check_svg_safety(self.tmp)
+        self.assertTrue(any("mã chạy" in e for e in check_repo.errors))
+
+    def test_onload_is_flagged(self):
+        self._svg('<svg onload="x()"></svg>')
+        check_repo.check_svg_safety(self.tmp)
+        self.assertTrue(check_repo.errors)
+
 if __name__ == "__main__":
     unittest.main()
 
