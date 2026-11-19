@@ -256,13 +256,13 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 
 | Chặng | Học gì | Học được gì cụ thể | Trạng thái |
 | :--: | :-- | :-- | :--: |
-| `01` | 🧩 **Scratch** | Kéo thả logic, vòng lặp đầu tiên | ✅ xong |
-| `02` | 🐍 **Python** | Biến, `if/else`, list, dict, hàm | ✅ xong |
-| `03` | 🌐 **HTML + CSS** | Layout, Flexbox, responsive | 🔄 đang học |
-| `04` | 🎮 **Pygame** | Sprite, va chạm, tính điểm | 🔄 đang học |
-| `05` | ⚡ **JavaScript** | DOM, event, web tương tác | 🔄 đang học |
-| `06` | ⚛️ **React** | Component, state, props | ⏳ sắp tới |
-| `07` | 🚀 **Full-stack** | Ghép tất cả thành 1 sản phẩm thật | 🎯 2027 |
+| `01` | **Scratch** | Kéo thả logic, vòng lặp đầu tiên | xong |
+| `02` | **Python** | Biến, `if/else`, list, dict, hàm | xong |
+| `03` | **HTML + CSS** | Layout, Flexbox, responsive | đang học |
+| `04` | **Pygame** | Sprite, va chạm, tính điểm | đang học |
+| `05` | **JavaScript** | DOM, event, web tương tác | đang học |
+| `06` | **React** | Component, state, props | sắp tới |
+| `07` | **Full-stack** | Ghép tất cả thành 1 sản phẩm thật | 2027 |
 
 </div>
 
