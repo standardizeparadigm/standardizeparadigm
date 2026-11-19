@@ -170,6 +170,68 @@ class TestBarGeometry(unittest.TestCase):
         self.assertIsNotNone(svg)
         self.assertTrue(svg.rstrip().endswith("</svg>"))
 
+
+
+class TestStatBlocks(unittest.TestCase):
+    """Ba ô đầu: tổng năm, chuỗi hiện tại, chuỗi dài nhất."""
+
+    def _card(self, **changes):
+        base = {"total": 1240, "days": [(DT - timedelta(days=i), 10)
+                                        for i in range(13, -1, -1)],
+                "streak_current": 6, "streak_longest": 21}
+        base.update(changes)
+        return activity_card(get_palette("sky"), base, DT, i18n.get("vi"))
+
+    def test_three_blocks(self):
+        svg = self._card()
+        self.assertEqual(svg.count('class="bigValue"'), 3)
+
+    def test_total_is_abbreviated(self):
+        self.assertIn("1.2k", self._card(total=1240))
+
+    def test_streaks_carry_the_day_word(self):
+        svg = self._card(streak_current=6, streak_longest=21)
+        self.assertIn("6 ngày", svg)
+        self.assertIn("21 ngày", svg)
+
+    def test_zero_streak_still_renders(self):
+        svg = self._card(streak_current=0, streak_longest=0)
+        self.assertIn("0 ngày", svg)
+
+    def test_blocks_do_not_overlap(self):
+        svg = self._card()
+        xs = sorted(int(x) for x in re.findall(r'<rect x="(\d+)" y="52" '
+                                               r'width="180" height="52"', svg))
+        if xs:
+            gaps = [b - a for a, b in zip(xs, xs[1:])]
+            self.assertTrue(all(gap >= 180 for gap in gaps), gaps)
+
+
+class TestAverageLine(unittest.TestCase):
+    """Đường trung bình chỉ có nghĩa khi nó nằm giữa đáy và đỉnh."""
+
+    def _card(self, counts):
+        days = [(DT - timedelta(days=len(counts) - 1 - i), c)
+                for i, c in enumerate(counts)]
+        contrib = {"total": sum(counts), "days": days,
+                   "streak_current": 0, "streak_longest": 0}
+        return activity_card(get_palette("sky"), contrib, DT, i18n.get("vi"))
+
+    def test_average_line_appears_when_flat_is_not_the_peak(self):
+        svg = self._card([0] * 7 + [100, 0, 0, 0, 0, 0, 0])
+        self.assertIn("dashFlow", svg)
+
+    def test_no_average_line_when_every_day_is_equal(self):
+        svg = self._card([5] * 14)
+        self.assertNotIn("dashFlow", svg)
+
+    def test_no_average_line_when_all_zero(self):
+        self.assertNotIn("dashFlow", self._card([0] * 14))
+
+    def test_average_label_shows_the_rounded_number(self):
+        svg = self._card([0] * 12 + [10, 20])
+        self.assertIn(i18n.get("vi")("act.avg", n="2"), svg)
+
 if __name__ == "__main__":
     unittest.main()
 
