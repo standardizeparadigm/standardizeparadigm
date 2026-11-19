@@ -78,3 +78,11 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 - Ngày không có contribution vẫn vẽ một vạch mờ để thấy nhịp nghỉ.
 - Điểm sáng trên cột hôm nay nhấp nháy (`pulse`) — chỉ báo "số liệu đang tính tới hôm nay".
 
+## Tắt hoạt ảnh
+
+Trình duyệt tôn trọng `prefers-reduced-motion` sẽ tự bỏ qua hoạt ảnh CSS. Nếu bạn thấy chuyển động gây khó chịu:
+
+1. Bật "giảm chuyển động" trong hệ điều hành (Windows: *Animation effects*; macOS: *Reduce motion*; Android/iOS: *Remove animations*).
+2. Hoặc xem ảnh qua `https://github.com/.../raw/...svg` — nhiều trình xem tĩnh chỉ hiện khung đầu tiên, và mọi khung đầu tiên đều được vẽ đẹp sẵn.
+
+> Mọi hoạt ảnh đều khai báo thời lượng cố định, không dùng `random` — hai lần tải trang luôn giống nhau, nên không có hiện tượng "nhấp nháy khác nhau" mỗi lần refresh.
