@@ -1,7 +1,7 @@
 # =====================================================================
 #  profile-cards.yml — Thẻ thống kê, ngôn ngữ, ảnh bìa, hoạt động
 #
-#  Chạy mỗi 10 phút, nhưng chỉ commit khi CÓ GÌ ĐỔI (--smart):
+#  Chạy mỗi 3 giờ (:15), nhưng chỉ commit khi CÓ GÌ ĐỔI (--smart):
 #   - stats / top-langs / activity: ghi lại khi số liệu khác lần trước
 #   - hero / divider / footer: mỗi giờ một lần (ảnh thiết kế, không phải số liệu)
 #  Nhờ vậy trang tươi theo phút mà không sinh 144 commit rỗng mỗi ngày.
@@ -14,7 +14,7 @@ name: Profile Cards (LTS)
 
 on:
   schedule:
-    - cron: "*/10 * * * *"       # mỗi 10 phút, phần lớn lượt chạy không ghi gì
+    - cron: "15 */3 * * *"       # mỗi 3 giờ; số liệu GitHub đổi rất chậm
   workflow_dispatch:
   push:
     branches: [main, master]
