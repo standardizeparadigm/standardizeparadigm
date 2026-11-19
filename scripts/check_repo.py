@@ -20,11 +20,14 @@
    6. Workflow YAML: parse được, có name/on/jobs, job có runs-on,
       cron đủ 5 trường
    7. Script Python: biên dịch được
+   8. Vệ sinh file: không BOM, không CRLF, không ký tự điều khiển,
+      UTF-8 hợp lệ, không có khoảng trắng thừa cuối dòng
 
  Mã thoát: 0 = ổn (có thể có cảnh báo), 1 = có lỗi cần sửa.
 =====================================================================
 """
 
+import codecs
 import io
 import os
 import re
@@ -37,7 +40,7 @@ QUIET = "--quiet" in sys.argv
 
 errors = []
 warnings = []
-checked = {"svg": 0, "md": 0, "yml": 0, "py": 0}
+checked = {"svg": 0, "md": 0, "yml": 0, "py": 0, "file": 0}
 
 
 def err(msg):
@@ -106,6 +109,55 @@ def check_text_encoding(path, text):
         line = text[:m.start()].count("\n") + 1
         err("%s:%d nghi lỗi encoding (%r)" % (rel(path), line, m.group(0)))
         break
+
+
+# ------------------------------------------------- 2b. Vệ sinh file văn bản
+TEXT_SUFFIXES = (".md", ".py", ".yml", ".yaml", ".svg", ".json", ".txt",
+                 ".cfg", ".toml", ".html", ".css", ".js")
+SKIP_DIRS = {".git", "node_modules", ".venv", "__pycache__", ".mypy_cache"}
+ALLOWED_CONTROL = {"\t", "\n"}
+
+
+def check_file_hygiene(root=None):
+    """Bắt lỗi "vô hình": BOM, xuống dòng CRLF, ký tự điều khiển, UTF-8 hỏng.
+
+    Những lỗi này không hiện ra trên trình duyệt nhưng làm diff loạn, làm
+    script đọc file thất bại, và là mầm của mọi kiểu "hỏng kí tự".
+    """
+    root = root or ROOT
+    for base, dirs, files in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.lower().endswith(TEXT_SUFFIXES):
+                continue
+            path = os.path.join(base, name)
+            checked["file"] += 1
+            with open(path, "rb") as handle:
+                raw = handle.read()
+            if raw.startswith(codecs.BOM_UTF8):
+                err("%s: có BOM UTF-8 ở đầu file" % rel(path))
+                raw = raw[len(codecs.BOM_UTF8):]
+            if b"\r\n" in raw:
+                line = raw[:raw.index(b"\r\n")].count(b"\n") + 1
+                err("%s:%d dùng CRLF (hãy đổi sang LF)" % (rel(path), line))
+            try:
+                text = raw.decode("utf-8")
+            except UnicodeDecodeError as error:
+                err("%s: không phải UTF-8 hợp lệ (byte %d)"
+                    % (rel(path), error.start))
+                continue
+            for index, line in enumerate(text.split("\n"), 1):
+                for char in line:
+                    if ord(char) < 32 and char not in ALLOWED_CONTROL:
+                        err("%s:%d có ký tự điều khiển U+%04X"
+                            % (rel(path), index, ord(char)))
+                        break
+                else:
+                    if line != line.rstrip():
+                        warn("%s:%d có khoảng trắng thừa cuối dòng"
+                             % (rel(path), index))
+                    continue
+                break
 
 
 # --------------------------------------------------------------- 3. URL
@@ -306,6 +358,7 @@ def check_python():
 # --------------------------------------------------------------- main
 def main():
     check_svg()
+    check_file_hygiene()
     check_workflows()
     check_asset_refs()
     check_python()
@@ -325,6 +378,8 @@ def main():
     print("=" * 62)
     print(" Đã kiểm tra: %d SVG · %d Markdown · %d workflow · %d script Python"
           % (checked["svg"], checked["md"], checked["yml"], checked["py"]))
+    print("              + %d file văn bản (BOM, CRLF, UTF-8, ký tự lạ)"
+          % checked["file"])
     if warnings:
         print("\n CẢNH BÁO (%d)" % len(warnings))
         for w in warnings:
