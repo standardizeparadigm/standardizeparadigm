@@ -210,5 +210,56 @@ class TestDocsStructure(unittest.TestCase):
                      if line.strip()]
             self.assertFalse(lines[-1].startswith("|"), name)
 
+
+
+RE_LINK = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
+
+
+class TestInternalLinks(unittest.TestCase):
+    """Liên kết nội bộ trong tài liệu phải trỏ tới file có thật."""
+
+    def _targets(self, path):
+        for number, line in prose_lines(read(path)):
+            for target in RE_LINK.findall(line):
+                if target.startswith(("http://", "https://", "#", "mailto:")):
+                    continue
+                yield number, target.split("#")[0]
+
+    def test_every_relative_link_resolves(self):
+        for path in all_docs():
+            for number, target in self._targets(path):
+                if not target:
+                    continue
+                resolved = os.path.normpath(
+                    os.path.join(os.path.dirname(path), target))
+                self.assertTrue(os.path.exists(resolved),
+                                "%s:%d trỏ tới %r không tồn tại"
+                                % (rel(path), number, target))
+
+    def test_anchors_point_at_existing_headings(self):
+        for path in all_docs():
+            anchors = {self._slug(h) for h in
+                       re.findall(r"^#{1,6} (.+)$", read(path), re.M)}
+            for number, line in prose_lines(read(path)):
+                for target in RE_LINK.findall(line):
+                    if "#" not in target or target.startswith("http"):
+                        continue
+                    file_part, _, anchor = target.partition("#")
+                    base = path if not file_part else os.path.normpath(
+                        os.path.join(os.path.dirname(path), file_part))
+                    if not os.path.exists(base) or not anchor:
+                        continue
+                    base_anchors = {self._slug(h) for h in re.findall(
+                        r"^#{1,6} (.+)$", read(base), re.M)}
+                    self.assertIn(anchor, base_anchors,
+                                  "%s:%d mục #%s không có trong %s"
+                                  % (rel(path), number, anchor, rel(base)))
+
+    @staticmethod
+    def _slug(heading):
+        text = heading.strip().lower()
+        text = re.sub(r"[^\w\s-]", "", text)
+        return re.sub(r"\s+", "-", text).strip("-")
+
 if __name__ == "__main__":
     unittest.main()
