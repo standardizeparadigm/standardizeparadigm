@@ -89,6 +89,7 @@ STRINGS = {
         "status.none": "CHƯA CHẠY",
         "status.unknown": "KHÔNG RÕ",
         "status.foot": "Workflow tự vẽ và commit dải này · cập nhật {stamp}",
+        "status.missing": "CHỜ MERGE",
     },
     "en": {
         "stats.title": "GITHUB STATS",
@@ -161,6 +162,7 @@ STRINGS = {
         "status.none": "NO RUNS",
         "status.unknown": "UNKNOWN",
         "status.foot": "Workflow tự vẽ và commit dải này · cập nhật {stamp}",
+        "status.missing": "CHỜ MERGE",
     },
 }
 

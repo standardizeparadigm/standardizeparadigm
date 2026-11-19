@@ -23,6 +23,7 @@ STATE_STYLE = {
     "failing": ("#F87171", "status.failing"),
     "running": ("#FBBF24", "status.running"),
     "none": ("#7A8CA3", "status.none"),
+    "missing": ("#60A5FA", "status.missing"),
     "unknown": ("#7A8CA3", "status.unknown"),
 }
 
