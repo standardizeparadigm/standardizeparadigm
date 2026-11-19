@@ -174,8 +174,8 @@ STRINGS = {
         "status.ago_hr": "{n}h ago",
         "status.ago_day": "{n}d ago",
 
-        "status.foot": "Workflow tự vẽ và commit dải này · cập nhật {stamp}",
-        "status.missing": "CHỜ MERGE",
+        "status.foot": "Workflows draw and commit this strip · updated {stamp}",
+        "status.missing": "AWAIT MERGE",
         "clock.updated": "updated {hhmm}",
     },
 }
