@@ -37,6 +37,11 @@ def divider(pal, width=1000, height=26):
         f'    <animate attributeName="x" values="-120;{width + 20}" dur="7s" '
         'repeatCount="indefinite"/>',
         '  </rect>',
+        '  <rect x="-120" y="12.2" width="60" height="1.6" '
+        'fill="url(#sparkLine)" opacity=".45" filter="url(#dGlow)">',
+        f'    <animate attributeName="x" values="{width + 20};-120" dur="13s" '
+        'repeatCount="indefinite"/>',
+        '  </rect>',
         f'  <g transform="translate({mid:.1f} 13)">',
         '    <rect x="-4.5" y="-4.5" width="9" height="9" rx="2" '
         f'transform="rotate(45)" fill="{pal.accent3}" opacity=".9">',
