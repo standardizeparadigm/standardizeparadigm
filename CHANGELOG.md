@@ -12,6 +12,14 @@ Mỗi mục ghi lại *vì sao* thay đổi, không chỉ *cái gì* đã đổi
   viên một workflow, màu theo lần chạy gần nhất. Không phụ thuộc server ngoài
   nên không có khái niệm "not found".
 
+## 2026-11-19 — Năm trạng thái, không phải ba
+
+- `passing` / `failing` / `running` / `none` / `unknown` ban đầu chỉ đủ cho
+  badge. Khi đọc API thật mới thấy cần thêm `missing` (404 = workflow chưa
+  nằm trên nhánh mặc định) — đúng lý do khiến shields báo đỏ.
+- Màu cố định theo nghĩa (xanh/đỏ/hổ phách/xám/xanh dương) chứ không theo
+  theme: "đỏ = lỗi" phải đúng ở cả 6 bảng màu.
+
 ## 2026-11-19 — Cổng 3D: sửa lỗi mốc 24 giờ không bao giờ tới
 
 - Cổng so "lần chạy thành công gần nhất", nhưng lượt bị cổng bỏ qua **vẫn** là lượt thành công → mốc 24 giờ không bao giờ đạt được, ảnh chỉ đổi khi có push.
