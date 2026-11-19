@@ -96,6 +96,40 @@ class TestDividerGeometry(unittest.TestCase):
         self.assertIn('role="presentation"', svg)
         self.assertIn('aria-hidden="true"', svg)
 
+
+
+class TestFooterCard(unittest.TestCase):
+    """Chân trang: lời cảm ơn, khẩu hiệu và hai lớp sóng chạy ngược chiều."""
+
+    def setUp(self):
+        self.svg = footer(get_palette("sky"), i18n.get("vi"))
+
+    def test_valid_svg(self):
+        assert_valid_svg(self, self.svg, "footer")
+
+    def test_thanks_line_comes_from_i18n(self):
+        self.assertIn(i18n.get("vi")("footer.title"), self.svg)
+
+    def test_slogan_line_comes_from_i18n(self):
+        self.assertIn(i18n.get("vi")("footer.sub"), self.svg)
+
+    def test_two_wave_layers_run_in_opposite_directions(self):
+        self.assertEqual(self.svg.count('class="wave"'), 1)
+        self.assertEqual(self.svg.count('class="wave2"'), 1)
+
+    def test_waves_stay_inside_the_card(self):
+        # Lớp sóng dài 2000px trên khung 1000px: phải được cắt bởi clipPath.
+        self.assertIn('clip-path="url(#cardBody)"', self.svg)
+
+    def test_english_version_differs(self):
+        en = footer(get_palette("sky"), i18n.get("en"))
+        self.assertNotEqual(self.svg, en)
+
+    def test_halo_has_no_blur_filter(self):
+        # Gradient đã mờ sẵn; thêm blur chỉ tốn một lượt lọc toàn ảnh, và
+        # làm resvg panic khi ellipse lấn ra ngoài khung.
+        self.assertNotIn('filter="url(#soft)"', self.svg)
+
 if __name__ == "__main__":
     unittest.main()
 
