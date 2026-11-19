@@ -11,6 +11,7 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 | `top-langs.svg` | thanh xếp chồng lớn dần, chú giải hiện lần lượt |
 | `live-clock.svg` | ba kim quay, chấm nhấp nháy, thanh tiến độ ngày |
 | `activity.svg` | cột mọc lên, điểm hôm nay nhấp nháy |
+| `status.svg` | viên thuốc hiện lần lượt, vệt sáng quét, vòng cung quay khi đang chạy |
 
 ## Hero — lớp nền
 
