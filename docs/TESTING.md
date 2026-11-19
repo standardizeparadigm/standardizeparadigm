@@ -167,7 +167,7 @@ Divider/footer:
 - Mã màu `#1A2B3C` **không** bị nhầm là escape hỏng.
 - Tham chiếu `./assets/khong-co.svg` → báo lỗi; `#anchor` thì bỏ qua.
 
-## `test_cli.py` (39 test)
+## `test_cli.py` (44 test)
 
 File lớn nhất, vì CLI là nơi mọi thứ gặp nhau:
 
