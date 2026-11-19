@@ -82,3 +82,14 @@ class TestCorePulse(unittest.TestCase):
     def test_rings_slower_than_second_hand(self):
         svg = hero(get_palette(), DT, i18n.get("vi"))
         self.assertIn('dur="5.2s"', svg)
+
+
+class TestEveryTheme(unittest.TestCase):
+    def test_all_themes_render(self):
+        from svgkit.palette import theme_names
+
+        for name in theme_names():
+            svg = hero(get_palette(name), DT, i18n.get("vi"))
+            self.assertIn("<svg", svg, name)
+            self.assertNotIn("@", svg.split("</defs>")[-1].split("<text")[0],
+                             "token chưa thay trong theme %s" % name)
