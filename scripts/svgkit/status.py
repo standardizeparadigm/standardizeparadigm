@@ -98,11 +98,15 @@ def _pill(pal, x, name, state, t, delay, age=None):
                  % (x + 30, pal.font, color, esc(label)))
     age_label = human_age(age, t)
     if age_label:
+        # Một dấu ĐẠT xanh từ 25 ngày trước không nói lên điều gì về hôm nay.
+        # Quá một ngày thì nhãn tuổi đổi sang màu cảnh báo để mắt dừng lại.
+        stale = age is not None and age >= 60 * 24
+        age_color = STATE_STYLE["running"][0] if stale else pal.dim
         # Nhãn "cách đây bao lâu" ở góc phải: một dải trạng thái cũ 6 tiếng
         # trông y hệt một dải vừa vẽ, nên phải nói tuổi của nó ra.
         parts.append('    <text x="%d" y="39" text-anchor="end" class="fMono" '
                      'style="font-weight:600;font-size:6.8px;font-family:%s;fill:%s;letter-spacing:.2px">%s</text>'
-                     % (x + PILL_W - 9, pal.mono, pal.dim, esc(age_label)))
+                     % (x + PILL_W - 9, pal.mono, age_color, esc(age_label)))
     parts.append("  </g>")
     return parts
 
