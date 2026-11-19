@@ -134,6 +134,8 @@ CSS = """
                 transform-box: view-box; transform-origin: var(--cx) var(--cy); }
   .hourHand   { animation: spin 43200s linear infinite;
                 transform-box: view-box; transform-origin: var(--cx) var(--cy); }
+  /* Nét đứt chạy dọc theo chính nó: dùng cho đường trung bình, đường dóng */
+  .dashFlow   { animation: dashFlow 2.6s linear infinite; }
   .wave       { animation: wave 14s linear infinite; }
   .wave2      { animation: wave 19s linear infinite reverse; }
 
@@ -151,6 +153,7 @@ CSS = """
   @keyframes sheen     { 0% { transform: translateX(-460px) } 55%,100% { transform: translateX(760px) } }
   @keyframes scan      { 0% { transform: translateY(-40px); opacity: 0 } 12% { opacity: .55 }
                          88% { opacity: .55 } 100% { transform: translateY(300px); opacity: 0 } }
+  @keyframes dashFlow  { to { stroke-dashoffset: -10 } }
   @keyframes wave      { to { transform: translateX(-500px) } }
 
   /* Ai bật "giảm chuyển động" trong hệ điều hành thì thấy ảnh tĩnh,
@@ -158,6 +161,7 @@ CSS = """
   @media (prefers-reduced-motion: reduce) {
     .pulse, .pulseSlow, .blink, .spinSlow, .spinRev, .driftA, .driftB,
     .driftC, .floatY, .twinkle, .fadeUp, .growIn, .sheen, .scan, .spinDot,
+    .dashFlow,
     .secHand, .minHand, .hourHand, .wave, .wave2 { animation: none !important; }
   }
 """
