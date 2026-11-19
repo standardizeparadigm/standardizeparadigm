@@ -132,7 +132,9 @@ def write(name, content, fingerprint=None):
     fd, tmp_path = tempfile.mkstemp(dir=OUT_DIR, prefix=".tmp-", suffix=".svg")
     try:
         with os.fdopen(fd, "w", encoding="utf-8") as handle:
-            handle.write(content)
+            # File kết thúc bằng đúng một newline: git diff sạch hơn, và
+            # `check_repo.py --fix` không còn gì để sửa trên ảnh vừa vẽ.
+            handle.write(content if content.endswith("\n") else content + "\n")
         os.chmod(tmp_path, 0o644)
         os.replace(tmp_path, final_path)
     except Exception:
