@@ -184,5 +184,31 @@ class TestTestingDoc(unittest.TestCase):
                 self.assertIn("`%s`" % name, self.text,
                               "%s chưa có trong bảng bản đồ" % name)
 
+
+
+class TestDocsStructure(unittest.TestCase):
+    """Cấu trúc tài liệu: thứ người đọc thấy trước tiên."""
+
+    def _docs(self):
+        return sorted(n for n in os.listdir(DOCS_DIR) if n.endswith(".md"))
+
+    def test_every_doc_starts_with_an_h1(self):
+        for name in self._docs():
+            lines = [line for line in read(os.path.join(DOCS_DIR, name)).split("\n")
+                     if line.strip()]
+            self.assertTrue(lines[0].startswith("# "), name)
+
+    def test_no_doc_has_two_empty_sections(self):
+        for name in self._docs():
+            text = read(os.path.join(DOCS_DIR, name))
+            self.assertNotIn("\n## \n", text, name)
+
+    def test_no_doc_ends_with_orphan_table(self):
+        # Bảng ở cuối file mà không có câu dẫn thì trông như file bị cắt.
+        for name in self._docs():
+            lines = [line for line in read(os.path.join(DOCS_DIR, name)).split("\n")
+                     if line.strip()]
+            self.assertFalse(lines[-1].startswith("|"), name)
+
 if __name__ == "__main__":
     unittest.main()
