@@ -6,13 +6,14 @@
 #    2. Kiểm tra các thư mục ảnh còn đủ file
 #    3. Commit + push nếu có thay đổi
 #
-#  Lịch: 14:00 mỗi CHỦ NHẬT (giờ Việt Nam) = 07:00 UTC Chủ nhật.
+#  Lịch: mỗi 3 giờ (00:00, 03:00, ... giờ Việt Nam). Con dấu thời gian
+#  vì thế không bao giờ cũ quá 3 giờ, mà chỉ tốn 8 lượt chạy mỗi ngày.
 # =====================================================================
 name: 🌱 README Garden
 
 on:
   schedule:
-    - cron: "0 7 * * 0"         # Chủ nhật, 14:00 giờ Việt Nam
+    - cron: "0 */3 * * *"      # mỗi 3 giờ (giờ UTC)
   workflow_dispatch:
   push:
     branches: [main]
