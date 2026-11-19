@@ -614,6 +614,30 @@ def fix_text_files(root=None):
     return changed
 
 
+# ------------------------------------------------------ 4d. Docstring đầu file
+def check_module_docstrings(root=None):
+    """Mọi file Python phải mở đầu bằng docstring.
+
+    Không phải chuyện hình thức: docstring đầu file là thứ duy nhất nói
+    *vì sao* module tồn tại. File không có nó thì sáu tháng sau không ai
+    dám sửa — kể cả tác giả.
+    """
+    root = root or ROOT
+    for base, dirs, files in os.walk(os.path.join(root, "scripts")):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(files):
+            if not name.endswith(".py"):
+                continue
+            path = os.path.join(base, name)
+            for line in read(path).split("\n"):
+                stripped = line.strip()
+                if not stripped or stripped.startswith("#"):
+                    continue
+                if stripped[0] not in ("\"", "'"):
+                    err("%s: thiếu docstring đầu file" % rel(path))
+                break
+
+
 # --------------------------------------------------------------- 5. Python
 def check_python():
     """Biên dịch MỌI file .py trong scripts/ (kể cả svgkit/ và tests/)."""
@@ -659,6 +683,7 @@ def main(argv=None):
     check_orphan_docs()
     check_svg_budget()
     check_python()
+    check_module_docstrings()
     # Mọi file Markdown trong repo (README, docs, CONTRIBUTING, mẫu issue...).
     # Dùng os.walk vì glob không đi vào thư mục ẩn như .github/.
     for base, dirs, files in os.walk(ROOT):
