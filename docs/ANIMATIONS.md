@@ -80,7 +80,7 @@ Mỗi hình trong `assets/` đều có chuyển động riêng, tất cả đề
 
 ## Tắt hoạt ảnh
 
-Trình duyệt tôn trọng `prefers-reduced-motion` sẽ tự bỏ qua hoạt ảnh CSS. Nếu bạn thấy chuyển động gây khó chịu:
+Mỗi file SVG có sẵn khối `@media (prefers-reduced-motion: reduce)` tắt toàn bộ hoạt ảnh CSS. Nếu bạn thấy chuyển động gây khó chịu:
 
 1. Bật "giảm chuyển động" trong hệ điều hành (Windows: *Animation effects*; macOS: *Reduce motion*; Android/iOS: *Remove animations*).
 2. Hoặc xem ảnh qua `https://github.com/.../raw/...svg` — nhiều trình xem tĩnh chỉ hiện khung đầu tiên, và mọi khung đầu tiên đều được vẽ đẹp sẵn.
