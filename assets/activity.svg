@@ -178,7 +178,7 @@
   <g class="fadeUp">
     <rect x="22" y="22" width="4" height="18" rx="2" fill="url(#accentGrad)"/>
     <text x="36" y="37" class="cardTitle">CONTRIBUTION ACTIVITY</text>
-    <text x="618" y="36" text-anchor="end" class="cardSub">365 NGÀY · 22/11 · 18:13</text>
+    <text x="618" y="36" text-anchor="end" class="cardSub">365 NGÀY · 23/11 · 07:15</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.10s">
     <rect x="22" y="58" width="184" height="52" rx="12" fill="#0B1B2B" stroke="#17334F" stroke-opacity=".8"/>
@@ -200,7 +200,7 @@
   </g>
   <g class="fadeUp" style="animation-delay:.32s">
     <text x="22" y="128" class="footNote" style="letter-spacing:1.2px">14 NGÀY GẦN NHẤT</text>
-    <text x="618" y="128" text-anchor="end" class="footNote">HÔM NAY +3</text>
+    <text x="618" y="128" text-anchor="end" class="footNote">HÔM NAY +0</text>
   </g>
     <path d="M22 144H618" stroke="#8CA4BD" stroke-opacity=".10" stroke-width="1"/>
     <path d="M22 165H618" stroke="#8CA4BD" stroke-opacity=".10" stroke-width="1"/>
@@ -214,98 +214,98 @@
     <rect x="30.3" y="204" width="26.0" height="4.0" rx="6.0" fill="#17334F" opacity=".7">
     </rect>
   </g>
-  <text x="43.3" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T2</text>
+  <text x="43.3" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T3</text>
   <g class="fadeUp" style="animation-delay:0.12s">
     <rect x="72.9" y="204" width="26.0" height="4.0" rx="6.0" fill="#17334F" opacity=".7">
     </rect>
   </g>
-  <text x="85.9" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T3</text>
+  <text x="85.9" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T4</text>
   <g class="fadeUp" style="animation-delay:0.15s">
-    <rect x="115.4" y="204" width="26.0" height="4.0" rx="6.0" fill="#17334F" opacity=".7">
+    <rect x="115.4" y="202" width="26.0" height="5.7" rx="6.0" fill="url(#barGradV)" opacity="1">
+      <animate attributeName="height" from="0" to="5.7" dur=".9s" begin="0.19s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+      <animate attributeName="y" from="208" to="202.3" dur=".9s" begin="0.19s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
     </rect>
   </g>
-  <text x="128.4" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T4</text>
+  <text x="128.4" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T5</text>
   <g class="fadeUp" style="animation-delay:0.18s">
-    <rect x="158.0" y="202" width="26.0" height="5.7" rx="6.0" fill="url(#barGradV)" opacity="1">
-      <animate attributeName="height" from="0" to="5.7" dur=".9s" begin="0.23s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
-      <animate attributeName="y" from="208" to="202.3" dur=".9s" begin="0.23s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+    <rect x="158.0" y="179" width="26.0" height="28.5" rx="6.0" fill="url(#barGradV)" opacity="1">
+      <animate attributeName="height" from="0" to="28.5" dur=".9s" begin="0.23s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+      <animate attributeName="y" from="208" to="179.5" dur=".9s" begin="0.23s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
     </rect>
   </g>
-  <text x="171.0" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T5</text>
+  <text x="171.0" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T6</text>
   <g class="fadeUp" style="animation-delay:0.21s">
-    <rect x="200.6" y="179" width="26.0" height="28.5" rx="6.0" fill="url(#barGradV)" opacity="1">
-      <animate attributeName="height" from="0" to="28.5" dur=".9s" begin="0.26s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
-      <animate attributeName="y" from="208" to="179.5" dur=".9s" begin="0.26s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+    <rect x="200.6" y="166" width="26.0" height="41.5" rx="6.0" fill="url(#barGradV)" opacity="1">
+      <animate attributeName="height" from="0" to="41.5" dur=".9s" begin="0.26s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+      <animate attributeName="y" from="208" to="166.5" dur=".9s" begin="0.26s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
     </rect>
   </g>
-  <text x="213.6" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T6</text>
+  <text x="213.6" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T7</text>
   <g class="fadeUp" style="animation-delay:0.24s">
-    <rect x="243.1" y="166" width="26.0" height="41.5" rx="6.0" fill="url(#barGradV)" opacity="1">
-      <animate attributeName="height" from="0" to="41.5" dur=".9s" begin="0.30s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
-      <animate attributeName="y" from="208" to="166.5" dur=".9s" begin="0.30s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+    <rect x="243.1" y="144" width="26.0" height="64.0" rx="6.0" fill="url(#barGradV)" opacity="1">
+      <animate attributeName="height" from="0" to="64.0" dur=".9s" begin="0.30s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+      <animate attributeName="y" from="208" to="144.0" dur=".9s" begin="0.30s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
     </rect>
   </g>
-  <text x="256.1" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T7</text>
+  <text x="256.1" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">CN</text>
   <g class="fadeUp" style="animation-delay:0.26s">
-    <rect x="285.7" y="144" width="26.0" height="64.0" rx="6.0" fill="url(#barGradV)" opacity="1">
-      <animate attributeName="height" from="0" to="64.0" dur=".9s" begin="0.33s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
-      <animate attributeName="y" from="208" to="144.0" dur=".9s" begin="0.33s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+    <rect x="285.7" y="190" width="26.0" height="17.3" rx="6.0" fill="url(#barGradV)" opacity="1">
+      <animate attributeName="height" from="0" to="17.3" dur=".9s" begin="0.33s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+      <animate attributeName="y" from="208" to="190.7" dur=".9s" begin="0.33s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
     </rect>
   </g>
-  <text x="298.7" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">CN</text>
+  <text x="298.7" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T2</text>
   <g class="fadeUp" style="animation-delay:0.29s">
-    <rect x="328.3" y="190" width="26.0" height="17.3" rx="6.0" fill="url(#barGradV)" opacity="1">
-      <animate attributeName="height" from="0" to="17.3" dur=".9s" begin="0.36s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
-      <animate attributeName="y" from="208" to="190.7" dur=".9s" begin="0.36s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+    <rect x="328.3" y="197" width="26.0" height="10.4" rx="6.0" fill="url(#barGradV)" opacity="1">
+      <animate attributeName="height" from="0" to="10.4" dur=".9s" begin="0.36s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+      <animate attributeName="y" from="208" to="197.6" dur=".9s" begin="0.36s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
     </rect>
   </g>
-  <text x="341.3" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T2</text>
+  <text x="341.3" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T3</text>
   <g class="fadeUp" style="animation-delay:0.32s">
-    <rect x="370.9" y="197" width="26.0" height="10.4" rx="6.0" fill="url(#barGradV)" opacity="1">
-      <animate attributeName="height" from="0" to="10.4" dur=".9s" begin="0.40s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
-      <animate attributeName="y" from="208" to="197.6" dur=".9s" begin="0.40s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+    <rect x="370.9" y="202" width="26.0" height="5.8" rx="6.0" fill="url(#barGradV)" opacity="1">
+      <animate attributeName="height" from="0" to="5.8" dur=".9s" begin="0.40s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+      <animate attributeName="y" from="208" to="202.2" dur=".9s" begin="0.40s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
     </rect>
   </g>
-  <text x="383.9" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T3</text>
+  <text x="383.9" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T4</text>
   <g class="fadeUp" style="animation-delay:0.35s">
-    <rect x="413.4" y="202" width="26.0" height="5.8" rx="6.0" fill="url(#barGradV)" opacity="1">
-      <animate attributeName="height" from="0" to="5.8" dur=".9s" begin="0.44s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
-      <animate attributeName="y" from="208" to="202.2" dur=".9s" begin="0.44s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+    <rect x="413.4" y="161" width="26.0" height="46.7" rx="6.0" fill="url(#barGradV)" opacity="1">
+      <animate attributeName="height" from="0" to="46.7" dur=".9s" begin="0.44s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+      <animate attributeName="y" from="208" to="161.3" dur=".9s" begin="0.44s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
     </rect>
   </g>
-  <text x="426.4" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T4</text>
+  <text x="426.4" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T5</text>
   <g class="fadeUp" style="animation-delay:0.38s">
-    <rect x="456.0" y="161" width="26.0" height="46.7" rx="6.0" fill="url(#barGradV)" opacity="1">
-      <animate attributeName="height" from="0" to="46.7" dur=".9s" begin="0.47s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
-      <animate attributeName="y" from="208" to="161.3" dur=".9s" begin="0.47s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+    <rect x="456.0" y="204" width="26.0" height="4.0" rx="6.0" fill="#17334F" opacity=".7">
     </rect>
   </g>
-  <text x="469.0" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T5</text>
+  <text x="469.0" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T6</text>
   <g class="fadeUp" style="animation-delay:0.40s">
     <rect x="498.6" y="204" width="26.0" height="4.0" rx="6.0" fill="#17334F" opacity=".7">
     </rect>
   </g>
-  <text x="511.6" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T6</text>
+  <text x="511.6" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T7</text>
   <g class="fadeUp" style="animation-delay:0.43s">
-    <rect x="541.1" y="204" width="26.0" height="4.0" rx="6.0" fill="#17334F" opacity=".7">
+    <rect x="541.1" y="203" width="26.0" height="4.2" rx="6.0" fill="url(#barGradV)" opacity="1">
+      <animate attributeName="height" from="0" to="4.2" dur=".9s" begin="0.54s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+      <animate attributeName="y" from="208" to="203.8" dur=".9s" begin="0.54s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
     </rect>
   </g>
-  <text x="554.1" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">T7</text>
+  <text x="554.1" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#5C7590;letter-spacing:.3px">CN</text>
   <g class="fadeUp" style="animation-delay:0.46s">
-    <rect x="583.7" y="203" width="26.0" height="4.2" rx="6.0" fill="url(#barGradV)" opacity="1" filter="url(#glowSoft)">
-      <animate attributeName="height" from="0" to="4.2" dur=".9s" begin="0.58s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
-      <animate attributeName="y" from="208" to="203.8" dur=".9s" begin="0.58s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+    <rect x="583.7" y="204" width="26.0" height="4.0" rx="6.0" fill="#17334F" opacity=".7" filter="url(#glowSoft)">
     </rect>
-    <circle cx="596.7" cy="193.8" r="11" fill="none" stroke="#7DD3FC" stroke-opacity=".45" class="pulseSlow"/>
-    <circle cx="596.7" cy="193.8" r="3.4" fill="#7DD3FC" filter="url(#glow)" class="pulse"/>
+    <circle cx="596.7" cy="194.0" r="11" fill="none" stroke="#7DD3FC" stroke-opacity=".45" class="pulseSlow"/>
+    <circle cx="596.7" cy="194.0" r="3.4" fill="#7DD3FC" filter="url(#glow)" class="pulse"/>
   </g>
-  <text x="596.7" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#7DD3FC;letter-spacing:.3px">CN</text>
+  <text x="596.7" y="224" text-anchor="middle" class="fMono" style="font-size:8px;fill:#7DD3FC;letter-spacing:.3px">T2</text>
   <g class="fadeUp" style="animation-delay:.55s">
-    <text x="298.7" y="136" text-anchor="middle" class="footNote" style="fill:#7DD3FC">cao nhất 1.1k</text>
+    <text x="256.1" y="136" text-anchor="middle" class="footNote" style="fill:#7DD3FC">cao nhất 1.1k</text>
   </g>
   <g class="fadeUp" style="animation-delay:.7s">
     <circle cx="26" cy="242" r="3" fill="#38BDF8" class="pulse"/>
-    <text x="36" y="245" class="footNote">Đếm từ lịch contribution thật của GitHub · cập nhật 22/11 · 18:13</text>
+    <text x="36" y="245" class="footNote">Đếm từ lịch contribution thật của GitHub · cập nhật 23/11 · 07:15</text>
   </g>
-<!-- data:21a755eb9e22 -->
+<!-- data:b0e3817c5ae7 -->
 </svg>
