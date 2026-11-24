@@ -180,7 +180,7 @@
   <g class="fadeUp">
     <rect x="22" y="22" width="4" height="18" rx="2" fill="url(#accentGrad)"/>
     <text x="36" y="37" class="cardTitle">GITHUB STATS</text>
-    <text x="618" y="36" text-anchor="end" class="cardSub">CẬP NHẬT 22/11 · 10:08</text>
+    <text x="618" y="36" text-anchor="end" class="cardSub">CẬP NHẬT 24/11 · 12:58</text>
   </g>
   <g clip-path="url(#cardBody)">
     <rect x="0" y="-40" width="640" height="30" fill="url(#sheenGrad)" opacity=".26" class="scan" style="animation-duration:9s"/>
@@ -209,7 +209,7 @@
     <g class="bob" style="animation-delay:-1.20s">
 <g transform="translate(37.5 135.5) scale(0.8)" fill="none" stroke="#7DD3FC" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4.4" y="4.4" width="15.2" height="15.2" rx="3"/><path d="M8.4 9h7.2"/><path d="M8.4 12.6h5"/></g>
     </g>
-    <text x="74" y="147" class="tileValue">3</text>
+    <text x="74" y="147" class="tileValue">2</text>
     <text x="74" y="161" class="tileLabel">REPOS</text>
   </g>
   <g class="fadeUp" style="animation-delay:0.29s">
@@ -247,20 +247,20 @@
       <circle cx="528" cy="76" r="2.6" fill="#7DD3FC" opacity=".9"/>
     </g>
     <circle cx="528" cy="144" r="56" fill="none" stroke="#38BDF8" stroke-width="9" stroke-opacity=".18"/>
-    <circle cx="528" cy="144" r="56" fill="none" stroke="url(#accentGrad)" stroke-width="9" stroke-linecap="round" transform="rotate(-90 528 144)" stroke-dasharray="351.9" stroke-dashoffset="198.2">
-      <animate attributeName="stroke-dashoffset" from="351.9" to="198.2" dur="1.6s" begin=".15s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
+    <circle cx="528" cy="144" r="56" fill="none" stroke="url(#accentGrad)" stroke-width="9" stroke-linecap="round" transform="rotate(-90 528 144)" stroke-dasharray="351.9" stroke-dashoffset="207.2">
+      <animate attributeName="stroke-dashoffset" from="351.9" to="207.2" dur="1.6s" begin=".15s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.2 0.8 0.2 1"/>
     </circle>
     <g>
-      <circle cx="549.7" cy="195.6" r="10" fill="none" stroke="#7DD3FC" stroke-opacity=".45" class="pulseSlow"/>
-      <circle cx="549.7" cy="195.6" r="4.6" fill="#7DD3FC" filter="url(#glow)" class="pulse"/>
+      <circle cx="557.6" cy="191.5" r="10" fill="none" stroke="#7DD3FC" stroke-opacity=".45" class="pulseSlow"/>
+      <circle cx="557.6" cy="191.5" r="4.6" fill="#7DD3FC" filter="url(#glow)" class="pulse"/>
     </g>
     <text x="528" y="150" text-anchor="middle" class="fSans" style="font-weight:800;font-size:32px;font-family:'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#E8F4FF">B+</text>
     <text x="528" y="168" text-anchor="middle" class="fSans" style="font-weight:700;font-size:8.5px;font-family:'Segoe UI',Inter,Ubuntu,Helvetica,Arial,sans-serif;fill:#8CA4BD;letter-spacing:2px">RANK</text>
-    <text x="528" y="224" text-anchor="middle" class="cardSub">44% TỚI HẠNG A</text>
+    <text x="528" y="224" text-anchor="middle" class="cardSub">41% TỚI HẠNG A</text>
   </g>
   <g class="fadeUp" style="animation-delay:.62s">
     <circle cx="26" cy="242" r="3" fill="#38BDF8" class="pulse"/>
     <text x="36" y="245" class="footNote">Dữ liệu thật từ GitHub API · ảnh nằm trong repo nên không bao giờ rate-limit</text>
   </g>
-<!-- data:2e63ebae41ec -->
+<!-- data:0a328ae97076 -->
 </svg>
