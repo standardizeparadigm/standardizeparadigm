@@ -322,7 +322,7 @@ Toàn bộ hình lớn trên trang — ảnh bìa, thẻ thống kê, đồng h�
 
   <br />
 
-  <sub>Trang được nuôi dưỡng tự động — lần cập nhật gần nhất: <!-- TENDED_AT: 24/11/2026 13:10 --></sub>
+  <sub>Trang được nuôi dưỡng tự động — lần cập nhật gần nhất: <!-- TENDED_AT: 25/11/2026 00:58 --></sub>
 
 </div>
 
